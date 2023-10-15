@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { deleteUser, getUesr, updateUser } from ".";
+import { deletePost, getPost, updatePost } from ".";
 
 export default async function handler(
   req: NextApiRequest,
@@ -7,11 +7,11 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "GET":
-      return await getUesr(req, res);
+      return await getPost(req, res);
     case "UPDATE":
-      return await updateUser(req, res);
+      return await updatePost(req, res);
     case "DELETE":
-      return await deleteUser(req, res);
+      return await deletePost(req, res);
     default:
       return res.status(405).end();
   }

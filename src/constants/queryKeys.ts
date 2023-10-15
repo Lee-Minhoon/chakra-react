@@ -1,6 +1,7 @@
 export const queryKeys = {
   USER: "users",
-  LIKED_USER: "likedUsers",
+  POST: "posts",
+  LIKED_POST: "likedPosts",
 };
 
 export type QueryKey = (typeof queryKeys)[keyof typeof queryKeys];

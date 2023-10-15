@@ -1,9 +1,14 @@
 import { useGetUsers, usePostUser } from "@/apis";
+import { useGetLikedPosts, useGetPosts, usePostPost } from "@/apis/post";
 import Head from "next/head";
 
 export default function Home() {
   const { data: users } = useGetUsers();
-  const { mutate } = usePostUser();
+  const { mutate: postUser } = usePostUser();
+
+  const { data: posts } = useGetPosts();
+  const { data: likedPosts } = useGetLikedPosts();
+  const { mutate: postPost } = usePostPost();
 
   return (
     <>
@@ -13,14 +18,17 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <button onClick={() => mutate({ name: "user" })}>Create</button>
-      {users && (
+      <button onClick={() => postUser({ name: "user" })}>Create</button>
+      <div>{users?.map((user, idx) => <div key={idx}>{user.name}</div>)}</div>
+      <button onClick={() => postPost({ title: "post" })}>Create Post</button>
+      <div style={{ display: "flex", gap: "20px" }}>
         <div>
-          {users.map((user) => (
-            <div key={user.id}>{user.name}</div>
-          ))}
+          {posts?.map((post, idx) => <div key={idx}>{post.title}</div>)}
         </div>
-      )}
+        <div>
+          {likedPosts?.map((post, idx) => <div key={idx}>{post.title}</div>)}
+        </div>
+      </div>
     </>
   );
 }

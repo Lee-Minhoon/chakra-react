@@ -1,4 +1,5 @@
 export const apiRoutes = {
   USER: "api/users",
-  LIKED_USER: "api/users/liked",
+  POST: "api/posts",
+  LIKED_POST: "api/posts/liked",
 };
