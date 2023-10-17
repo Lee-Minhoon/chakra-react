@@ -1,5 +1,7 @@
 import "@/styles/globals.css";
+import { ApiError } from "@/utils";
 import {
+  MutationCache,
   QueryCache,
   QueryClient,
   QueryClientProvider,
@@ -17,7 +19,18 @@ const queryClient = new QueryClient({
     },
   },
   queryCache: new QueryCache({
-    onError: (error) => console.log(error),
+    onError: (error) => {
+      if (error instanceof ApiError) {
+        console.log(error.status, error.message);
+      }
+    },
+  }),
+  mutationCache: new MutationCache({
+    onError: (error) => {
+      if (error instanceof ApiError) {
+        console.log(error.status, error.message);
+      }
+    },
   }),
 });
 

@@ -3,6 +3,32 @@ import { QueryParams } from "@/types";
 const protoc = process.env.NODE_ENV === "production" ? "https" : "http";
 const domain = process.env.NEXT_PUBLIC_SERVER_DOMAIN;
 
+export interface ApiResponse<T> {
+  data: T;
+  message: string;
+}
+
+export class ApiError extends Error {
+  private _status: number;
+
+  constructor(status: number, message: string) {
+    super(message);
+    this._status = status;
+  }
+
+  get status() {
+    return this._status;
+  }
+}
+
+const extendedFetch = async (input: RequestInfo, init?: RequestInit) => {
+  return fetch(input, init).then(async (res) => {
+    const data = await res.json();
+    if (!res.ok) throw new ApiError(res.status, data.message);
+    return data;
+  });
+};
+
 type Api = {
   get: <T>(url: string, params?: QueryParams) => Promise<T>;
   post: <T>(url: string, body?: unknown) => Promise<T>;
@@ -13,37 +39,37 @@ type Api = {
 export const api: Api = {
   get: (url, params) => {
     const queryString = new URLSearchParams(params as Record<string, string>);
-    return fetch(`${protoc}://${domain}/${url}?${queryString}`, {
+    return extendedFetch(`${protoc}://${domain}/${url}?${queryString}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((res) => res.json());
+    });
   },
   post: (url, body) => {
-    return fetch(`${protoc}://${domain}/${url}`, {
+    return extendedFetch(`${protoc}://${domain}/${url}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
-    }).then((res) => res.json());
+    });
   },
   put: (url, body) => {
-    return fetch(`${protoc}://${domain}/${url}`, {
+    return extendedFetch(`${protoc}://${domain}/${url}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
-    }).then((res) => res.json());
+    });
   },
   delete: (url) => {
-    return fetch(`${protoc}://${domain}/${url}`, {
+    return extendedFetch(`${protoc}://${domain}/${url}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((res) => res.json());
+    });
   },
 };

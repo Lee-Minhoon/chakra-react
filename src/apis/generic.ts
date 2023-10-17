@@ -1,6 +1,6 @@
 import { QueryKey } from "@/constants";
 import { QueryParams } from "@/types";
-import { api } from "@/utils";
+import { ApiError, ApiResponse, api } from "@/utils";
 import {
   MutationFunction,
   UseMutationOptions,
@@ -10,41 +10,34 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 
-interface Response<T> {
-  data: T;
-  message: string;
-}
-
-type Error = unknown;
-
-const useQuery = <TResponse, TError = Error>(
+const useQuery = <TResponse>(
   queryKey: QueryKey,
   url: string,
   params?: QueryParams,
-  options?: UseQueryOptions<TResponse, TError, TResponse, readonly unknown[]>
+  options?: UseQueryOptions<TResponse, ApiError, TResponse, readonly unknown[]>
 ) => {
-  return _useQuery<TResponse, TError>(
+  return _useQuery<TResponse, ApiError>(
     [queryKey, params],
-    () => api.get<Response<TResponse>>(url, params).then((res) => res.data),
+    () => api.get<ApiResponse<TResponse>>(url, params).then((res) => res.data),
     options
   );
 };
 
-const useMutation = <TOldData, TNewData, TResponse, TError = Error>(
+const useMutation = <TOldData, TNewData, TResponse>(
   mutationFn: MutationFunction<TResponse, TNewData>,
   queryKey: string | string[],
   params?: unknown,
-  options?: UseMutationOptions<TResponse, TError, TNewData>,
+  options?: UseMutationOptions<TResponse, ApiError, TNewData>,
   updater?: (old: TOldData, data: TNewData) => any
 ) => {
   const queryClient = useQueryClient();
 
-  return _useMutation<TResponse, TError, TNewData>(mutationFn, {
+  return _useMutation<TResponse, ApiError, TNewData>(mutationFn, {
     ...options,
     onMutate: async (variables) => {
       options?.onMutate?.(variables);
       await queryClient.cancelQueries([queryKey, params]);
-      const previousData = queryClient.getQueryData([queryKey, undefined]);
+      const previousData = queryClient.getQueryData([queryKey, params]);
       queryClient.setQueryData<TOldData>([queryKey, params], (old) => {
         return updater ? updater(old!, variables) : old;
       });
@@ -61,28 +54,23 @@ const useMutation = <TOldData, TNewData, TResponse, TError = Error>(
   });
 };
 
-export const useGet = <TResponse, TError = Error>(
+export const useGet = <TResponse>(
   queryKey: QueryKey,
   url: string,
   params?: QueryParams,
-  options?: UseQueryOptions<TResponse, TError, TResponse, readonly unknown[]>
+  options?: UseQueryOptions<TResponse, ApiError, TResponse, readonly unknown[]>
 ) => {
-  return useQuery<TResponse, TError>(queryKey, url, params, options);
+  return useQuery<TResponse>(queryKey, url, params, options);
 };
 
-export const usePost = <
-  TOldData,
-  TNewData,
-  TResponse = unknown,
-  TError = Error,
->(
+export const usePost = <TOldData, TNewData, TResponse = unknown>(
   queryKey: QueryKey,
   url: string,
   params?: object,
-  options?: UseMutationOptions<TResponse, TError, TNewData>,
+  options?: UseMutationOptions<TResponse, ApiError, TNewData>,
   updater?: (old: TOldData, data: TNewData) => TOldData
 ) => {
-  return useMutation<TOldData, TNewData, TResponse, TError>(
+  return useMutation<TOldData, TNewData, TResponse>(
     (data) => api.post<TResponse>(url, data),
     queryKey,
     params,
@@ -91,19 +79,14 @@ export const usePost = <
   );
 };
 
-export const useUpdate = <
-  TOldData,
-  TNewData,
-  TResponse = unknown,
-  TError = Error,
->(
+export const useUpdate = <TOldData, TNewData, TResponse = unknown>(
   queryKey: QueryKey,
   url: string,
   params?: object,
-  options?: UseMutationOptions<TResponse, TError, TNewData>,
+  options?: UseMutationOptions<TResponse, ApiError, TNewData>,
   updater?: (old: TOldData, data: TNewData) => TOldData
 ) => {
-  return useMutation<TOldData, TNewData, TResponse, TError>(
+  return useMutation<TOldData, TNewData, TResponse>(
     (data) => api.put<TResponse>(url, data),
     queryKey,
     params,
@@ -112,14 +95,14 @@ export const useUpdate = <
   );
 };
 
-export const useDelete = <TOldData, TResponse, TId = number, TError = Error>(
+export const useDelete = <TOldData, TResponse, TId = number>(
   queryKey: QueryKey,
   url: string,
   params?: object,
-  options?: UseMutationOptions<TResponse, TError, TId>,
+  options?: UseMutationOptions<TResponse, ApiError, TId>,
   updater?: (old: TOldData, id: TId) => TOldData
 ) => {
-  return useMutation<TOldData, TId, TResponse, TError>(
+  return useMutation<TOldData, TId, TResponse>(
     (id) => api.delete<TResponse>(`${url}/${id}`),
     queryKey,
     params,
