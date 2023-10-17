@@ -2,7 +2,7 @@ import { apiRoutes, queryKeys } from "@/constants";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDelete, useGet, usePost, useUpdate } from "./generic";
 
-interface Post {
+export interface Post {
   id?: number;
   title: string;
 }

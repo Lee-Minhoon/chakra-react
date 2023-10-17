@@ -1,7 +1,7 @@
 import { apiRoutes, queryKeys } from "@/constants";
 import { useDelete, useGet, usePost, useUpdate } from "./generic";
 
-interface User {
+export interface User {
   id?: number;
   name: string;
 }
@@ -19,6 +19,7 @@ export const usePostUser = () => {
     queryKeys.USER,
     apiRoutes.USER,
     undefined,
+    undefined,
     (old, data) => {
       return [...old, data];
     }
@@ -30,6 +31,7 @@ export const useUpdateUser = () => {
     queryKeys.USER,
     apiRoutes.USER,
     undefined,
+    undefined,
     (old, data) => {
       return old.map((item) => (item.id === data.id ? data : item));
     }
@@ -40,6 +42,7 @@ export const useDeleteUser = () => {
   return useDelete<User[], number>(
     queryKeys.USER,
     apiRoutes.USER,
+    undefined,
     undefined,
     (old, id) => {
       return old.filter((item) => item.id !== id);
