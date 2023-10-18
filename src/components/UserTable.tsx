@@ -14,8 +14,15 @@ const columns = [
     cell: (info) => info.renderValue(),
   }),
   columnHelper.accessor("name", {
-    id: "name",
     header: () => <span>Name</span>,
+    cell: (info) => info.renderValue(),
+  }),
+  columnHelper.accessor("email", {
+    header: () => <span>Email</span>,
+    cell: (info) => info.renderValue(),
+  }),
+  columnHelper.accessor("phone", {
+    header: () => <span>Phone</span>,
     cell: (info) => info.renderValue(),
   }),
 ];

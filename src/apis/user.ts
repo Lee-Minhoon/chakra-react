@@ -1,22 +1,23 @@
-import { apiRoutes, queryKeys } from "@/constants";
+import { apiRoutes } from "@/constants";
 import { useDelete, useGet, usePost, useUpdate } from "./generic";
 
 export interface User {
   id?: number;
   name: string;
+  email: string;
+  phone: string;
 }
 
 export const useGetUser = (id: number) => {
-  return useGet<User>(queryKeys.USER, apiRoutes.USER, { id });
+  return useGet<User>(apiRoutes.USER, { id });
 };
 
 export const useGetUsers = () => {
-  return useGet<User[]>(queryKeys.USER, apiRoutes.USER);
+  return useGet<User[]>(apiRoutes.USER);
 };
 
 export const usePostUser = () => {
   return usePost<User[], User>(
-    queryKeys.USER,
     apiRoutes.USER,
     undefined,
     undefined,
@@ -28,7 +29,6 @@ export const usePostUser = () => {
 
 export const useUpdateUser = () => {
   return useUpdate<User[], User>(
-    queryKeys.USER,
     apiRoutes.USER,
     undefined,
     undefined,
@@ -40,7 +40,6 @@ export const useUpdateUser = () => {
 
 export const useDeleteUser = () => {
   return useDelete<User[], number>(
-    queryKeys.USER,
     apiRoutes.USER,
     undefined,
     undefined,

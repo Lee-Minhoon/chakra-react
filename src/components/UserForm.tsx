@@ -11,6 +11,8 @@ const UserForm = () => {
       onSubmit={handleSubmit(useCallback((data) => postUser(data), [postUser]))}
     >
       <input {...register("name")} />
+      <input {...register("email")} />
+      <input {...register("phone")} />
       <button>Create User</button>
     </form>
   );
