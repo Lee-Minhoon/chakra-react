@@ -1,5 +1,5 @@
+import { ApiError } from "@/apis";
 import "@/styles/globals.css";
-import { ApiError } from "@/utils";
 import {
   MutationCache,
   QueryCache,

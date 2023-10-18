@@ -1,25 +1,7 @@
-import { QueryParams } from "@/types";
+import { ApiError } from ".";
 
 const protoc = process.env.NODE_ENV === "production" ? "https" : "http";
 const domain = process.env.NEXT_PUBLIC_SERVER_DOMAIN;
-
-export interface ApiResponse<T> {
-  data: T;
-  message: string;
-}
-
-export class ApiError extends Error {
-  private _status: number;
-
-  constructor(status: number, message: string) {
-    super(message);
-    this._status = status;
-  }
-
-  get status() {
-    return this._status;
-  }
-}
 
 const extendedFetch = async (input: RequestInfo, init?: RequestInit) => {
   return fetch(input, init).then(async (res) => {
@@ -30,9 +12,9 @@ const extendedFetch = async (input: RequestInfo, init?: RequestInit) => {
 };
 
 type Api = {
-  get: <T>(url: string, params?: QueryParams) => Promise<T>;
-  post: <T>(url: string, body?: unknown) => Promise<T>;
-  put: <T>(url: string, body?: unknown) => Promise<T>;
+  get: <T>(url: string, params?: object) => Promise<T>;
+  post: <T>(url: string, body?: object) => Promise<T>;
+  put: <T>(url: string, body?: object) => Promise<T>;
   delete: <T>(url: string) => Promise<T>;
 };
 

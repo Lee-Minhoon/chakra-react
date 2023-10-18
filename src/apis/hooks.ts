@@ -1,30 +1,73 @@
-import { QueryParams } from "@/types";
-import { ApiError, ApiResponse, api } from "@/utils";
+import { Nullable, Optional } from "@/types";
 import {
   MutationFunction,
+  QueryFunctionContext,
   UseMutationOptions,
   UseQueryOptions,
+  useInfiniteQuery as _useInfiniteQuery,
   useMutation as _useMutation,
   useQuery as _useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import { ApiError, ApiResponse, InfiniteQueryData, api } from ".";
+
+type QueryKeyType = [string, Optional<object>];
+
+const fetcher = async <TResponse>(
+  context: QueryFunctionContext<QueryKeyType>
+) => {
+  const { queryKey, pageParam } = context;
+  const [url, params] = queryKey;
+  return api
+    .get<ApiResponse<TResponse>>(
+      url!,
+      pageParam !== undefined ? { ...params, cursor: pageParam } : { ...params }
+    )
+    .then((res) => res.data);
+};
 
 const useQuery = <TResponse>(
-  url: string,
-  params?: QueryParams,
-  options?: UseQueryOptions<TResponse, ApiError, TResponse, readonly unknown[]>
+  url: Nullable<string>,
+  params?: object,
+  options?: UseQueryOptions<TResponse, ApiError, TResponse, QueryKeyType>
 ) => {
-  return _useQuery<TResponse, ApiError>(
-    [url, params],
-    () => api.get<ApiResponse<TResponse>>(url, params).then((res) => res.data),
-    options
+  return _useQuery<TResponse, ApiError, TResponse, QueryKeyType>(
+    [url!, params],
+    (context) => fetcher<TResponse>(context),
+    {
+      enabled: !!url,
+      ...options,
+    }
+  );
+};
+
+const useInfiniteQuery = <TResponse>(
+  url: Nullable<string>,
+  params?: object
+) => {
+  return _useInfiniteQuery<
+    InfiniteQueryData<TResponse, number>,
+    ApiError,
+    InfiniteQueryData<TResponse, number>,
+    QueryKeyType
+  >(
+    [url!, params],
+    ({ pageParam = 1, ...rest }) =>
+      fetcher<InfiniteQueryData<TResponse, number>>({ pageParam, ...rest }),
+    {
+      getPreviousPageParam: (firstPage) => firstPage.previous ?? false,
+      getNextPageParam: (lastPage) => {
+        console.log(lastPage.next, !!lastPage.next);
+        return lastPage.next ?? false;
+      },
+    }
   );
 };
 
 const useMutation = <TOldData, TNewData, TResponse>(
   mutationFn: MutationFunction<TResponse, TNewData>,
   url: string,
-  params?: unknown,
+  params?: object,
   options?: UseMutationOptions<TResponse, ApiError, TNewData>,
   updater?: (old: TOldData, data: TNewData) => any
 ) => {
@@ -52,15 +95,19 @@ const useMutation = <TOldData, TNewData, TResponse>(
   });
 };
 
+export const useLoadMore = <TResponse>(url: string, params?: object) => {
+  return useInfiniteQuery<TResponse>(url, params);
+};
+
 export const useGet = <TResponse>(
   url: string,
-  params?: QueryParams,
-  options?: UseQueryOptions<TResponse, ApiError, TResponse, readonly unknown[]>
+  params?: object,
+  options?: UseQueryOptions<TResponse, ApiError, TResponse, QueryKeyType>
 ) => {
   return useQuery<TResponse>(url, params, options);
 };
 
-export const usePost = <TOldData, TNewData, TResponse = unknown>(
+export const usePost = <TOldData, TNewData extends object, TResponse = unknown>(
   url: string,
   params?: object,
   options?: UseMutationOptions<TResponse, ApiError, TNewData>,
@@ -75,7 +122,11 @@ export const usePost = <TOldData, TNewData, TResponse = unknown>(
   );
 };
 
-export const useUpdate = <TOldData, TNewData, TResponse = unknown>(
+export const useUpdate = <
+  TOldData,
+  TNewData extends object,
+  TResponse = unknown,
+>(
   url: string,
   params?: object,
   options?: UseMutationOptions<TResponse, ApiError, TNewData>,

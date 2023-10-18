@@ -13,6 +13,19 @@ export var users: User[] = [];
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case "GET":
+      const { cursor, limit } = req.query;
+      if (cursor && limit) {
+        const index = users.findIndex((user) => user.id === Number(cursor));
+        const slicedUsers = users.slice(index, index + Number(limit));
+        return res.status(200).json({
+          data: {
+            previous: users[index - Number(limit)]?.id ?? null,
+            next: users[index + Number(limit)]?.id ?? null,
+            data: slicedUsers,
+          },
+          message: "success",
+        });
+      }
       return res.status(200).json({ data: users, message: "success" });
     case "POST":
       const { body } = req;

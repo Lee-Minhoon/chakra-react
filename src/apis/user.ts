@@ -1,5 +1,6 @@
 import { apiRoutes } from "@/constants";
-import { useDelete, useGet, usePost, useUpdate } from "./generic";
+import { useDelete, useGet, useLoadMore, usePost, useUpdate } from "./hooks";
+import { CursorQueryParams } from "./types";
 
 export interface User {
   id?: number;
@@ -14,6 +15,10 @@ export const useGetUser = (id: number) => {
 
 export const useGetUsers = () => {
   return useGet<User[]>(apiRoutes.USER);
+};
+
+export const useGetUsersList = (params: CursorQueryParams) => {
+  return useLoadMore<User[]>(apiRoutes.USER, params);
 };
 
 export const usePostUser = () => {

@@ -1,6 +1,6 @@
 import { apiRoutes } from "@/constants";
 import { useQueryClient } from "@tanstack/react-query";
-import { useDelete, useGet, usePost, useUpdate } from "./generic";
+import { useDelete, useGet, usePost, useUpdate } from "./hooks";
 
 export interface Post {
   id?: number;
