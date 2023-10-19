@@ -2,7 +2,7 @@ import { useCreateTestUsers } from "@/apis";
 import Layout from "@/components/Layout";
 import UserForm from "@/containers/users/UserForm";
 import UsersAll from "@/containers/users/UsersAll";
-import UserList from "@/containers/users/UsersByCursor";
+import UsersByCursor from "@/containers/users/UsersByCursor";
 import UsersByOffset from "@/containers/users/UsersByOffset";
 import {
   Button,
@@ -16,7 +16,12 @@ import {
 } from "@chakra-ui/react";
 import Head from "next/head";
 
-const tabs = ["Users", "Users Offset", "Users Cursor"];
+const tabs = [
+  "Users",
+  "Users Offset",
+  "Users Cursor (Button)",
+  "Users Cursor (Observer)",
+];
 const count = 50;
 
 const Users = () => {
@@ -51,7 +56,10 @@ const Users = () => {
                 <UsersByOffset />
               </TabPanel>
               <TabPanel>
-                <UserList />
+                <UsersByCursor />
+              </TabPanel>
+              <TabPanel>
+                <UsersByCursor observe />
               </TabPanel>
             </TabPanels>
           </Tabs>

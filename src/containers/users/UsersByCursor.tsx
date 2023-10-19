@@ -7,13 +7,38 @@ import {
   Text,
   UnorderedList,
 } from "@chakra-ui/react";
+import { useCallback, useEffect, useRef } from "react";
 
-const UserList = () => {
+interface UsersByCursorProps {
+  observe?: boolean;
+}
+
+const UsersByCursor = ({ observe }: UsersByCursorProps) => {
   const {
     data: users,
     fetchNextPage,
     hasNextPage,
   } = useGetUsersByCursor({ limit: 10 });
+
+  const target = useRef<HTMLDivElement>(null);
+
+  const callback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          fetchNextPage();
+        }
+      });
+    },
+    [fetchNextPage]
+  );
+
+  useEffect(() => {
+    if (!observe || !target.current) return;
+    const observer = new IntersectionObserver(callback, { threshold: 0.5 });
+    observer.observe(target.current);
+    return () => observer.disconnect();
+  }, [callback, observe]);
 
   return (
     <Flex direction={"column"} gap={4}>
@@ -39,11 +64,15 @@ const UserList = () => {
           ))
         )}
       </UnorderedList>
-      <Button onClick={() => fetchNextPage()} isDisabled={!hasNextPage}>
-        Load More
-      </Button>
+      {observe ? (
+        <div ref={target} />
+      ) : (
+        <Button onClick={() => fetchNextPage()} isDisabled={!hasNextPage}>
+          Load More
+        </Button>
+      )}
     </Flex>
   );
 };
 
-export default UserList;
+export default UsersByCursor;
