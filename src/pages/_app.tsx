@@ -1,6 +1,12 @@
 import { ApiError } from "@/apis";
 import "@/styles/globals.css";
 import {
+  ChakraProvider,
+  baseTheme,
+  extendTheme,
+  withDefaultColorScheme,
+} from "@chakra-ui/react";
+import {
   MutationCache,
   QueryCache,
   QueryClient,
@@ -34,11 +40,24 @@ const queryClient = new QueryClient({
   }),
 });
 
+const theme = extendTheme(
+  {
+    colors: {
+      primary: baseTheme.colors.teal,
+    },
+  },
+  withDefaultColorScheme({
+    colorScheme: "primary",
+  })
+);
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools />
-      <Component {...pageProps} />
+      <ChakraProvider theme={theme}>
+        <ReactQueryDevtools />
+        <Component {...pageProps} />
+      </ChakraProvider>
     </QueryClientProvider>
   );
 }

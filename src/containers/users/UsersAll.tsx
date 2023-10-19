@@ -1,10 +1,11 @@
 import { User, useGetUsers } from "@/apis";
+import DataTable from "@/components/DataTable";
 import {
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import ReactTable from "./ReactTable";
+import { useMemo } from "react";
 
 const columnHelper = createColumnHelper<User>();
 
@@ -27,8 +28,12 @@ const columns = [
   }),
 ];
 
-const UserTable = () => {
-  const { data: users } = useGetUsers();
+const UsersAll = () => {
+  const { data } = useGetUsers();
+
+  const users = useMemo(() => {
+    return data ? data : [];
+  }, [data]);
 
   const table = useReactTable({
     data: users ?? [],
@@ -36,7 +41,7 @@ const UserTable = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return <ReactTable<User> table={table} />;
+  return <DataTable<User> table={table} />;
 };
 
-export default UserTable;
+export default UsersAll;

@@ -25,7 +25,7 @@ export const usePostPost = () => {
   return usePost<Post[], Post>(
     apiRoutes.POST,
     undefined,
-    { onSettled: () => queryClient.invalidateQueries([apiRoutes.LIKED_POST]) },
+    { onSuccess: () => queryClient.invalidateQueries([apiRoutes.LIKED_POST]) },
     (old, data) => {
       return [...old, data];
     }
@@ -38,7 +38,7 @@ export const useUpdatePost = () => {
   return useUpdate<Post[], Post>(
     apiRoutes.POST,
     undefined,
-    { onSettled: () => queryClient.invalidateQueries([apiRoutes.LIKED_POST]) },
+    { onSuccess: () => queryClient.invalidateQueries([apiRoutes.LIKED_POST]) },
     (old, data) => {
       return old.map((item) => (item.id === data.id ? data : item));
     }
@@ -51,7 +51,7 @@ export const useDeletePost = () => {
   return useDelete<Post[], number>(
     apiRoutes.POST,
     undefined,
-    { onSettled: () => queryClient.invalidateQueries([apiRoutes.LIKED_POST]) },
+    { onSuccess: () => queryClient.invalidateQueries([apiRoutes.LIKED_POST]) },
     (old, id) => {
       return old.filter((item) => item.id !== id);
     }

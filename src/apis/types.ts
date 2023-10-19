@@ -16,13 +16,7 @@ export class ApiError extends Error {
   }
 }
 
-export interface InfiniteQueryData<T, S> {
-  previous: S;
-  next: S;
-  data: T;
-}
-
-export type PageQueryParams = {
+export type OffsetQueryParams = {
   offset: number;
   limit: number;
 };
@@ -30,3 +24,14 @@ export type PageQueryParams = {
 export type CursorQueryParams = {
   limit: number;
 };
+
+export interface OffsetQueryData<T> {
+  total: number;
+  data: T;
+}
+
+export interface CursorQueryData<T, S> {
+  previous: S;
+  next: S;
+  data: T;
+}

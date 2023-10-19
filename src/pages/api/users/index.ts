@@ -26,7 +26,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 export const getUser = (req: NextApiRequest, res: NextApiResponse) => {
-  const id = req.query.id;
+  const { id } = req.query;
   const user = users.find((user) => user.id === Number(id));
   return res.status(200).json({ data: user, message: "success" });
 };
@@ -41,7 +41,10 @@ export const getUsersByOffset = (req: NextApiRequest, res: NextApiResponse) => {
     Number(offset),
     Number(offset) + Number(limit)
   );
-  return res.status(200).json({ data: slicedUsers, message: "success" });
+  return res.status(200).json({
+    data: { total: users.length, data: slicedUsers },
+    message: "success",
+  });
 };
 
 export const getUsersByCursor = (req: NextApiRequest, res: NextApiResponse) => {
@@ -59,8 +62,7 @@ export const getUsersByCursor = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const postUser = (req: NextApiRequest, res: NextApiResponse) => {
-  const { body } = req;
-  const { name, email, phone } = body;
+  const { name, email, phone } = req.body;
   if (users.some((user) => user.name === name)) {
     return res.status(409).json({ data: null, message: "name already exists" });
   }
@@ -75,9 +77,8 @@ export const postUser = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const updateUser = (req: NextApiRequest, res: NextApiResponse) => {
-  const id = req.query.id;
-  const { body } = req;
-  const { name, email, phone } = body;
+  const { id } = req.query;
+  const { name, email, phone } = req.body;
   users = users.map((user) => {
     if (user.id === Number(id)) {
       return { id: user.id, name, email, phone };
@@ -88,7 +89,22 @@ export const updateUser = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const deleteUser = (req: NextApiRequest, res: NextApiResponse) => {
-  const id = req.query.id;
+  const { id } = req.query;
   users = users.filter((user) => user.id !== Number(id));
   return res.status(200).json({ data: id, message: "success" });
+};
+
+export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
+  const { count } = req.query;
+  const lastId = users[users.length - 1]?.id ?? 0;
+  for (let i = 0; i < +(count ?? 10); i++) {
+    const currentId = lastId + i + 1;
+    users.push({
+      id: currentId,
+      name: `user-${currentId}`,
+      email: `user-${currentId}@gmail.com`,
+      phone: `010-0000-0000`,
+    });
+  }
+  return res.status(200).json({ data: users, message: "success" });
 };

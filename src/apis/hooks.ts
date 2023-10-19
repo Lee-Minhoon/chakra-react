@@ -10,8 +10,12 @@ import {
   useQuery as _useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { ApiRoutes, QueryType } from "./constants";
-import { ApiError, ApiResponse, InfiniteQueryData } from "./types";
+import {
+  ApiError,
+  ApiResponse,
+  CursorQueryData,
+  OffsetQueryData,
+} from "./types";
 import { api } from "./utils";
 
 type QueryKeyType = [string, Optional<object>];
@@ -48,29 +52,26 @@ const useInfiniteQuery = <TResponse>(
   url: Nullable<string>,
   params?: object,
   options?: UseInfiniteQueryOptions<
-    InfiniteQueryData<TResponse, number>,
+    CursorQueryData<TResponse, number>,
     ApiError,
-    InfiniteQueryData<TResponse, number>,
-    InfiniteQueryData<TResponse, number>,
+    CursorQueryData<TResponse, number>,
+    CursorQueryData<TResponse, number>,
     QueryKeyType
   >
 ) => {
   return _useInfiniteQuery<
-    InfiniteQueryData<TResponse, number>,
+    CursorQueryData<TResponse, number>,
     ApiError,
-    InfiniteQueryData<TResponse, number>,
+    CursorQueryData<TResponse, number>,
     QueryKeyType
   >(
     [url!, params],
     ({ pageParam = 1, ...rest }) =>
-      fetcher<InfiniteQueryData<TResponse, number>>({ pageParam, ...rest }),
+      fetcher<CursorQueryData<TResponse, number>>({ pageParam, ...rest }),
     {
       ...options,
-      getPreviousPageParam: (firstPage) => firstPage.previous ?? false,
-      getNextPageParam: (lastPage) => {
-        console.log(lastPage.next, !!lastPage.next);
-        return lastPage.next ?? false;
-      },
+      getPreviousPageParam: (firstPage) => firstPage.previous,
+      getNextPageParam: (lastPage) => lastPage.next,
     }
   );
 };
@@ -110,10 +111,10 @@ export const useLoadMore = <TResponse>(
   url: string,
   params?: object,
   options?: UseInfiniteQueryOptions<
-    InfiniteQueryData<TResponse, number>,
+    CursorQueryData<TResponse, number>,
     ApiError,
-    InfiniteQueryData<TResponse, number>,
-    InfiniteQueryData<TResponse, number>,
+    CursorQueryData<TResponse, number>,
+    CursorQueryData<TResponse, number>,
     QueryKeyType
   >
 ) => {
@@ -126,6 +127,22 @@ export const useGet = <TResponse>(
   options?: UseQueryOptions<TResponse, ApiError, TResponse, QueryKeyType>
 ) => {
   return useQuery<TResponse>(url, params, options);
+};
+
+export const useGetPage = <TResponse>(
+  url: string,
+  params?: object,
+  options?: UseQueryOptions<
+    OffsetQueryData<TResponse>,
+    ApiError,
+    OffsetQueryData<TResponse>,
+    QueryKeyType
+  >
+) => {
+  return useQuery<OffsetQueryData<TResponse>>(url, params, {
+    ...options,
+    keepPreviousData: true,
+  });
 };
 
 export const usePost = <TOldData, TNewData extends object, TResponse = unknown>(
@@ -175,15 +192,4 @@ export const useDelete = <TOldData, TResponse, TId = number>(
     options,
     updater
   );
-};
-
-export const useInvalidate = (queryKey: ApiRoutes, type: QueryType) => {
-  const queryClient = useQueryClient();
-
-  const offsetQueryKey = queryClient
-    .getQueryCache()
-    .findAll([queryKey])
-    .find((value) => value.meta?.type === type)?.queryKey;
-
-  return { callback: () => queryClient.invalidateQueries(offsetQueryKey) };
 };

@@ -4,7 +4,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import ReactTable from "./ReactTable";
+import { useMemo } from "react";
+import DataTable from "../../components/DataTable";
 
 const columnHelper = createColumnHelper<Post>();
 
@@ -21,7 +22,11 @@ const columns = [
 ];
 
 const PostTable = () => {
-  const { data: posts } = useGetPosts();
+  const { data } = useGetPosts();
+
+  const posts = useMemo(() => {
+    return data ? data : [];
+  }, [data]);
 
   const table = useReactTable({
     data: posts ?? [],
@@ -29,7 +34,7 @@ const PostTable = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return <ReactTable<Post> table={table} />;
+  return <DataTable<Post> table={table} />;
 };
 
 export default PostTable;

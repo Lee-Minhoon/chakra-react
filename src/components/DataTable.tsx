@@ -1,57 +1,58 @@
-import { Table, flexRender } from "@tanstack/react-table";
+import { Table, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
+import { Table as ReactTable, flexRender } from "@tanstack/react-table";
 
 interface ReactTableProps<T> {
-  table: Table<T>;
+  table: ReactTable<T>;
 }
 
-const ReactTable = <T extends any>({ table }: ReactTableProps<T>) => {
+const DataTable = <T extends any>({ table }: ReactTableProps<T>) => {
   return (
-    <table>
-      <thead>
+    <Table>
+      <Thead>
         {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
+          <Tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <th key={header.id}>
+              <Th key={header.id}>
                 {header.isPlaceholder
                   ? null
                   : flexRender(
                       header.column.columnDef.header,
                       header.getContext()
                     )}
-              </th>
+              </Th>
             ))}
-          </tr>
+          </Tr>
         ))}
-      </thead>
-      <tbody>
+      </Thead>
+      <Tbody>
         {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
+          <Tr key={row.id}>
             {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>
+              <Td key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
+              </Td>
             ))}
-          </tr>
+          </Tr>
         ))}
-      </tbody>
-      <tfoot>
+      </Tbody>
+      <Tfoot>
         {table.getFooterGroups().map((footerGroup) => (
-          <tr key={footerGroup.id}>
+          <Tr key={footerGroup.id}>
             {footerGroup.headers.map((header) => (
-              <th key={header.id}>
+              <Th key={header.id}>
                 {header.isPlaceholder
                   ? null
                   : flexRender(
                       header.column.columnDef.footer,
                       header.getContext()
                     )}
-              </th>
+              </Th>
             ))}
-          </tr>
+          </Tr>
         ))}
-      </tfoot>
-    </table>
+      </Tfoot>
+    </Table>
   );
 };
 
-export default ReactTable;
+export default DataTable;

@@ -6,10 +6,10 @@ export const apiRoutes = {
 
 export type ApiRoutes = (typeof apiRoutes)[keyof typeof apiRoutes];
 
-export const queryType = {
+export const queryTypes = {
   ALL: "all",
   OFFSET: "offset",
   CURSOR: "cursor",
 } as const;
 
-export type QueryType = (typeof queryType)[keyof typeof queryType];
+export type QueryType = (typeof queryTypes)[keyof typeof queryTypes];

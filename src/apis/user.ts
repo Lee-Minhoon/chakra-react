@@ -1,13 +1,14 @@
-import { apiRoutes, queryType } from "./constants";
+import { useQueryClient } from "@tanstack/react-query";
+import { apiRoutes, queryTypes } from "./constants";
 import {
   useDelete,
   useGet,
-  useInvalidate,
+  useGetPage,
   useLoadMore,
   usePost,
   useUpdate,
 } from "./hooks";
-import { CursorQueryParams, PageQueryParams } from "./types";
+import { CursorQueryParams, OffsetQueryParams } from "./types";
 
 export interface User {
   id?: number;
@@ -23,35 +24,48 @@ export const useGetUser = (id: number) => {
 export const useGetUsers = () => {
   return useGet<User[]>(apiRoutes.USER, undefined, {
     meta: {
-      type: queryType.ALL,
+      type: queryTypes.ALL,
     },
   });
 };
 
-export const useGetUsersByOffset = (params: PageQueryParams) => {
-  return useGet<User[]>(apiRoutes.USER, params, {
+export const useGetUsersByOffset = (params: OffsetQueryParams) => {
+  return useGetPage<User[]>(apiRoutes.USER, params, {
     meta: {
-      type: queryType.OFFSET,
+      type: queryTypes.OFFSET,
     },
-    keepPreviousData: true,
   });
 };
 
 export const useGetUsersByCursor = (params: CursorQueryParams) => {
   return useLoadMore<User[]>(apiRoutes.USER, params, {
     meta: {
-      type: queryType.CURSOR,
+      type: queryTypes.CURSOR,
     },
   });
 };
 
 export const usePostUser = () => {
-  const { callback } = useInvalidate(apiRoutes.USER, queryType.OFFSET);
+  const queryClient = useQueryClient();
+
+  const queryKeys = queryClient
+    .getQueryCache()
+    .findAll([apiRoutes.USER])
+    .filter(
+      (value) =>
+        value.meta?.type === queryTypes.OFFSET ||
+        value.meta?.type === queryTypes.CURSOR
+    );
 
   return usePost<User[], User>(
     apiRoutes.USER,
     undefined,
-    { onSuccess: callback },
+    {
+      onSuccess: () =>
+        queryKeys.forEach((queryKey) =>
+          queryClient.invalidateQueries(queryKey)
+        ),
+    },
     (old, data) => {
       return [...old, data];
     }
@@ -78,4 +92,15 @@ export const useDeleteUser = () => {
       return old.filter((item) => item.id !== id);
     }
   );
+};
+
+export const useCreateTestUsers = (count: number) => {
+  const queryClient = useQueryClient();
+
+  const queryKeys = queryClient.getQueryCache().findAll([apiRoutes.USER]);
+
+  return usePost(`${apiRoutes.USER}/test/${count}`, undefined, {
+    onSuccess: () =>
+      queryKeys.forEach((queryKey) => queryClient.invalidateQueries(queryKey)),
+  });
 };

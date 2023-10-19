@@ -1,4 +1,5 @@
 import { User, usePostUser } from "@/apis";
+import { Button, Flex, Input } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 
@@ -7,14 +8,18 @@ const UserForm = () => {
   const { mutate: postUser } = usePostUser();
 
   return (
-    <form
+    <Flex
+      as={"form"}
+      direction={"column"}
+      gap={4}
+      w={80}
       onSubmit={handleSubmit(useCallback((data) => postUser(data), [postUser]))}
     >
-      <input {...register("name")} />
-      <input {...register("email")} />
-      <input {...register("phone")} />
-      <button>Create User</button>
-    </form>
+      <Input {...register("name")} placeholder="name" />
+      <Input {...register("email")} placeholder="email" />
+      <Input {...register("phone")} placeholder="phone" />
+      <Button type={"submit"}>Create User</Button>
+    </Flex>
   );
 };
 

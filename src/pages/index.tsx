@@ -1,10 +1,11 @@
-import PostForm from "@/components/PostForm";
-import PostTable from "@/components/PostTable";
-import UserForm from "@/components/UserForm";
-import UserTable from "@/components/UserTable";
+import Layout from "@/components/Layout";
+import { Button, Flex } from "@chakra-ui/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <>
       <Head>
@@ -13,10 +14,16 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <UserForm />
-      <PostForm />
-      <UserTable />
-      <PostTable />
+      <Layout>
+        <Flex gap={4}>
+          <Button onClick={() => router.push({ pathname: "/users" })}>
+            Users
+          </Button>
+          <Button onClick={() => router.push({ pathname: "/posts" })}>
+            Posts
+          </Button>
+        </Flex>
+      </Layout>
     </>
   );
 }

@@ -22,8 +22,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 export const getPost = (req: NextApiRequest, res: NextApiResponse) => {
-  const id = req.query.id;
-  const user = posts.find((user) => user.id === Number(id));
+  const { id } = req.query;
+  const user = posts.find((post) => post.id === Number(id));
   return res.status(200).json({ data: user, message: "success" });
 };
 
@@ -31,9 +31,34 @@ export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json({ data: posts, message: "success" });
 };
 
+export const getPostsByOffset = (req: NextApiRequest, res: NextApiResponse) => {
+  const { offset, limit } = req.query;
+  const slicedPosts = posts.slice(
+    Number(offset),
+    Number(offset) + Number(limit)
+  );
+  return res.status(200).json({
+    data: { total: posts.length, data: slicedPosts },
+    message: "success",
+  });
+};
+
+export const getPostsByCursor = (req: NextApiRequest, res: NextApiResponse) => {
+  const { cursor, limit } = req.query;
+  const index = posts.findIndex((user) => user.id === Number(cursor));
+  const slicedPosts = posts.slice(index, index + Number(limit));
+  return res.status(200).json({
+    data: {
+      previous: posts[index - Number(limit)]?.id ?? null,
+      next: posts[index + Number(limit)]?.id ?? null,
+      data: slicedPosts,
+    },
+    message: "success",
+  });
+};
+
 export const postPost = (req: NextApiRequest, res: NextApiResponse) => {
-  const { body } = req;
-  const { title, content } = body;
+  const { title, content } = req.body;
   const newPost = {
     id: (posts[posts.length - 1]?.id ?? 0) + 1,
     title,
@@ -44,25 +69,24 @@ export const postPost = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const updatePost = (req: NextApiRequest, res: NextApiResponse) => {
-  const id = req.query.id;
-  const { body } = req;
-  const { title, content } = body;
-  posts = posts.map((user) => {
-    if (user.id === Number(id)) {
-      return { id: user.id, title, content };
+  const { id } = req.query;
+  const { title, content } = req.body;
+  posts = posts.map((post) => {
+    if (post.id === Number(id)) {
+      return { id: post.id, title, content };
     }
-    return user;
+    return post;
   });
   return res.status(200).json({ data: id, message: "success" });
 };
 
 export const deletePost = (req: NextApiRequest, res: NextApiResponse) => {
-  const id = req.query.id;
-  posts = posts.filter((user) => user.id !== Number(id));
+  const { id } = req.query;
+  posts = posts.filter((post) => post.id !== Number(id));
   return res.status(200).json({ data: id, message: "success" });
 };
 
 export const getLikedPosts = (req: NextApiRequest, res: NextApiResponse) => {
-  const likedPosts = posts.filter((user) => user.id % 2 === 0);
+  const likedPosts = posts.filter((post) => post.id % 2 === 0);
   return res.status(200).json({ data: likedPosts, message: "success" });
 };

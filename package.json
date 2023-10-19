@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@tanstack/react-query": "^4.36.1",
     "@tanstack/react-query-devtools": "^4.36.1",
     "@tanstack/react-table": "^8.10.7",
+    "framer-motion": "^10.16.4",
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",
