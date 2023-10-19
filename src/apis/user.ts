@@ -1,6 +1,13 @@
-import { apiRoutes } from "@/constants";
-import { useDelete, useGet, useLoadMore, usePost, useUpdate } from "./hooks";
-import { CursorQueryParams } from "./types";
+import { apiRoutes, queryType } from "./constants";
+import {
+  useDelete,
+  useGet,
+  useInvalidate,
+  useLoadMore,
+  usePost,
+  useUpdate,
+} from "./hooks";
+import { CursorQueryParams, PageQueryParams } from "./types";
 
 export interface User {
   id?: number;
@@ -14,18 +21,37 @@ export const useGetUser = (id: number) => {
 };
 
 export const useGetUsers = () => {
-  return useGet<User[]>(apiRoutes.USER);
+  return useGet<User[]>(apiRoutes.USER, undefined, {
+    meta: {
+      type: queryType.ALL,
+    },
+  });
 };
 
-export const useGetUsersList = (params: CursorQueryParams) => {
-  return useLoadMore<User[]>(apiRoutes.USER, params);
+export const useGetUsersByOffset = (params: PageQueryParams) => {
+  return useGet<User[]>(apiRoutes.USER, params, {
+    meta: {
+      type: queryType.OFFSET,
+    },
+    keepPreviousData: true,
+  });
+};
+
+export const useGetUsersByCursor = (params: CursorQueryParams) => {
+  return useLoadMore<User[]>(apiRoutes.USER, params, {
+    meta: {
+      type: queryType.CURSOR,
+    },
+  });
 };
 
 export const usePostUser = () => {
+  const { callback } = useInvalidate(apiRoutes.USER, queryType.OFFSET);
+
   return usePost<User[], User>(
     apiRoutes.USER,
     undefined,
-    undefined,
+    { onSuccess: callback },
     (old, data) => {
       return [...old, data];
     }

@@ -2,6 +2,7 @@ import { Nullable, Optional } from "@/types";
 import {
   MutationFunction,
   QueryFunctionContext,
+  UseInfiniteQueryOptions,
   UseMutationOptions,
   UseQueryOptions,
   useInfiniteQuery as _useInfiniteQuery,
@@ -9,7 +10,9 @@ import {
   useQuery as _useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { ApiError, ApiResponse, InfiniteQueryData, api } from ".";
+import { ApiRoutes, QueryType } from "./constants";
+import { ApiError, ApiResponse, InfiniteQueryData } from "./types";
+import { api } from "./utils";
 
 type QueryKeyType = [string, Optional<object>];
 
@@ -43,7 +46,14 @@ const useQuery = <TResponse>(
 
 const useInfiniteQuery = <TResponse>(
   url: Nullable<string>,
-  params?: object
+  params?: object,
+  options?: UseInfiniteQueryOptions<
+    InfiniteQueryData<TResponse, number>,
+    ApiError,
+    InfiniteQueryData<TResponse, number>,
+    InfiniteQueryData<TResponse, number>,
+    QueryKeyType
+  >
 ) => {
   return _useInfiniteQuery<
     InfiniteQueryData<TResponse, number>,
@@ -55,6 +65,7 @@ const useInfiniteQuery = <TResponse>(
     ({ pageParam = 1, ...rest }) =>
       fetcher<InfiniteQueryData<TResponse, number>>({ pageParam, ...rest }),
     {
+      ...options,
       getPreviousPageParam: (firstPage) => firstPage.previous ?? false,
       getNextPageParam: (lastPage) => {
         console.log(lastPage.next, !!lastPage.next);
@@ -80,7 +91,7 @@ const useMutation = <TOldData, TNewData, TResponse>(
       await queryClient.cancelQueries();
       const previousData = queryClient.getQueryData([url, params]);
       queryClient.setQueryData<TOldData>([url, params], (old) => {
-        return updater ? updater(old!, variables) : old;
+        return old && updater ? updater(old, variables) : old;
       });
       return previousData;
     },
@@ -95,8 +106,18 @@ const useMutation = <TOldData, TNewData, TResponse>(
   });
 };
 
-export const useLoadMore = <TResponse>(url: string, params?: object) => {
-  return useInfiniteQuery<TResponse>(url, params);
+export const useLoadMore = <TResponse>(
+  url: string,
+  params?: object,
+  options?: UseInfiniteQueryOptions<
+    InfiniteQueryData<TResponse, number>,
+    ApiError,
+    InfiniteQueryData<TResponse, number>,
+    InfiniteQueryData<TResponse, number>,
+    QueryKeyType
+  >
+) => {
+  return useInfiniteQuery<TResponse>(url, params, options);
 };
 
 export const useGet = <TResponse>(
@@ -154,4 +175,15 @@ export const useDelete = <TOldData, TResponse, TId = number>(
     options,
     updater
   );
+};
+
+export const useInvalidate = (queryKey: ApiRoutes, type: QueryType) => {
+  const queryClient = useQueryClient();
+
+  const offsetQueryKey = queryClient
+    .getQueryCache()
+    .findAll([queryKey])
+    .find((value) => value.meta?.type === type)?.queryKey;
+
+  return { callback: () => queryClient.invalidateQueries(offsetQueryKey) };
 };

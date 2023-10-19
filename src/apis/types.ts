@@ -22,6 +22,11 @@ export interface InfiniteQueryData<T, S> {
   data: T;
 }
 
+export type PageQueryParams = {
+  offset: number;
+  limit: number;
+};
+
 export type CursorQueryParams = {
   limit: number;
 };

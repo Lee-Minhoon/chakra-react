@@ -1,4 +1,4 @@
-import { ApiError } from ".";
+import { ApiError } from "./types";
 
 const protoc = process.env.NODE_ENV === "production" ? "https" : "http";
 const domain = process.env.NEXT_PUBLIC_SERVER_DOMAIN;

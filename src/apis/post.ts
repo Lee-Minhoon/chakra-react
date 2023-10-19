@@ -1,5 +1,5 @@
-import { apiRoutes } from "@/constants";
 import { useQueryClient } from "@tanstack/react-query";
+import { apiRoutes } from "./constants";
 import { useDelete, useGet, usePost, useUpdate } from "./hooks";
 
 export interface Post {

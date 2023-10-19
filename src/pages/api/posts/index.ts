@@ -10,21 +10,12 @@ interface Post {
 export var posts: Post[] = [];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  sleep(500);
   switch (req.method) {
     case "GET":
-      return res.status(200).json({ data: posts, message: "success" });
+      return getPosts(req, res);
     case "POST":
-      const { body } = req;
-      const { title, content } = body;
-      sleep(200);
-      const newPost = {
-        id: (posts[posts.length - 1]?.id ?? 0) + 1,
-        title,
-        content,
-      };
-      posts.push(newPost);
-      sleep(200);
-      return res.status(200).json({ data: newPost.id, message: "success" });
+      return postPost(req, res);
     default:
       return res.status(405).end();
   }
@@ -34,6 +25,22 @@ export const getPost = (req: NextApiRequest, res: NextApiResponse) => {
   const id = req.query.id;
   const user = posts.find((user) => user.id === Number(id));
   return res.status(200).json({ data: user, message: "success" });
+};
+
+export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
+  return res.status(200).json({ data: posts, message: "success" });
+};
+
+export const postPost = (req: NextApiRequest, res: NextApiResponse) => {
+  const { body } = req;
+  const { title, content } = body;
+  const newPost = {
+    id: (posts[posts.length - 1]?.id ?? 0) + 1,
+    title,
+    content,
+  };
+  posts.push(newPost);
+  return res.status(200).json({ data: newPost.id, message: "success" });
 };
 
 export const updatePost = (req: NextApiRequest, res: NextApiResponse) => {
@@ -46,14 +53,12 @@ export const updatePost = (req: NextApiRequest, res: NextApiResponse) => {
     }
     return user;
   });
-  sleep(400);
   return res.status(200).json({ data: id, message: "success" });
 };
 
 export const deletePost = (req: NextApiRequest, res: NextApiResponse) => {
   const id = req.query.id;
   posts = posts.filter((user) => user.id !== Number(id));
-  sleep(400);
   return res.status(200).json({ data: id, message: "success" });
 };
 
