@@ -81,7 +81,7 @@ const useMutation = <TOldData, TNewData, TResponse>(
   url: string,
   params?: object,
   options?: UseMutationOptions<TResponse, ApiError, TNewData>,
-  updater?: (old: TOldData, data: TNewData) => any
+  updater?: (old: TOldData, data: TNewData) => Optional<TOldData>
 ) => {
   const queryClient = useQueryClient();
 
