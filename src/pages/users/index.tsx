@@ -1,4 +1,4 @@
-import { useCreateTestUsers } from "@/apis";
+import { useCreateTestUsers, useResetTestUsers } from "@/apis";
 import Layout from "@/components/Layout";
 import UserForm from "@/containers/users/UserForm";
 import UsersAll from "@/containers/users/UsersAll";
@@ -25,7 +25,10 @@ const tabs = [
 const count = 50;
 
 const Users = () => {
-  const { mutate: createTestUsers, isLoading } = useCreateTestUsers(count);
+  const { mutate: createTestUsers, isLoading: createTestUsersLoading } =
+    useCreateTestUsers(count);
+  const { mutate: resetTestUsers, isLoading: restTestUsersLoading } =
+    useResetTestUsers(count);
 
   return (
     <>
@@ -37,9 +40,22 @@ const Users = () => {
       </Head>
       <Layout>
         <Flex direction={"column"} gap={4}>
-          <Button onClick={() => createTestUsers({})} isDisabled={isLoading}>
-            {`Create ${count} Users`}
-          </Button>
+          <Flex gap={4}>
+            <Button
+              flex={1}
+              onClick={() => createTestUsers({})}
+              isDisabled={createTestUsersLoading}
+            >
+              {`Create ${count} Users`}
+            </Button>
+            <Button
+              flex={1}
+              onClick={() => resetTestUsers({})}
+              isDisabled={restTestUsersLoading}
+            >
+              {`Reset Users`}
+            </Button>
+          </Flex>
           <UserForm />
           <Divider />
           <Tabs variant="enclosed">

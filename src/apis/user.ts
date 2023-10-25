@@ -104,3 +104,14 @@ export const useCreateTestUsers = (count: number) => {
       queryKeys.forEach((queryKey) => queryClient.invalidateQueries(queryKey)),
   });
 };
+
+export const useResetTestUsers = (count: number) => {
+  const queryClient = useQueryClient();
+
+  const queryKeys = queryClient.getQueryCache().findAll([apiRoutes.USER]);
+
+  return usePost(`${apiRoutes.USER}/test/reset`, undefined, {
+    onSuccess: () =>
+      queryKeys.forEach((queryKey) => queryClient.invalidateQueries(queryKey)),
+  });
+};

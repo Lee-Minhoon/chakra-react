@@ -108,3 +108,8 @@ export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
   }
   return res.status(200).json({ data: users, message: "success" });
 };
+
+export const resetTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
+  users = [];
+  return res.status(200).json({ data: users, message: "success" });
+};
