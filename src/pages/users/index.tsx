@@ -18,9 +18,9 @@ import Head from "next/head";
 
 const tabs = [
   "Users",
-  "Users Offset",
-  "Users Cursor (Button)",
-  "Users Cursor (Observer)",
+  "Users (Offset)",
+  "Users (Cursor + Button)",
+  "Users (Cursor + Observer)",
 ];
 const count = 50;
 
