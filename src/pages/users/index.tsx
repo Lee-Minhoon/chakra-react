@@ -1,6 +1,6 @@
-import { useCreateTestUsers, useResetTestUsers } from "@/apis";
+import { useCreateTestUsers, usePostUser, useResetTestUsers } from "@/apis";
 import Layout from "@/components/Layout";
-import UserForm from "@/containers/users/UserForm";
+import PostUserModal from "@/containers/users/PostUserModal";
 import UsersAll from "@/containers/users/UsersAll";
 import UsersByCursor from "@/containers/users/UsersByCursor";
 import UsersByOffset from "@/containers/users/UsersByOffset";
@@ -13,6 +13,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Head from "next/head";
 
@@ -24,11 +25,35 @@ const tabs = [
 ];
 const count = 50;
 
+const randomString = (length: number) => {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  let str = "";
+  for (let i = 0; i < length; i++) {
+    str += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return str;
+};
+
+const randomPhone = () => {
+  const chars = "0123456789";
+  let str = "010-";
+  for (let i = 0; i < 4; i++) {
+    str += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  str += "-";
+  for (let i = 0; i < 4; i++) {
+    str += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return str;
+};
+
 const Users = () => {
+  const { mutate: postUser } = usePostUser();
   const { mutate: createTestUsers, isLoading: createTestUsersLoading } =
     useCreateTestUsers(count);
   const { mutate: resetTestUsers, isLoading: restTestUsersLoading } =
     useResetTestUsers(count);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -39,8 +64,24 @@ const Users = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
+        <PostUserModal isOpen={isOpen} onClose={onClose} />
         <Flex direction={"column"} gap={4}>
           <Flex gap={4}>
+            <Button flex={1} onClick={onOpen}>
+              Create User
+            </Button>
+            <Button
+              flex={1}
+              onClick={() =>
+                postUser({
+                  name: randomString(10),
+                  email: `${randomString(20)}@gmail.com`,
+                  phone: randomPhone(),
+                })
+              }
+            >
+              Create Random User
+            </Button>
             <Button
               flex={1}
               onClick={() => createTestUsers({})}
@@ -56,7 +97,6 @@ const Users = () => {
               {`Reset Users`}
             </Button>
           </Flex>
-          <UserForm />
           <Divider />
           <Tabs variant="enclosed">
             <TabList>

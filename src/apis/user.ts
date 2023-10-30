@@ -66,13 +66,21 @@ const useInvalidate = () => {
 };
 
 export const usePostUser = () => {
+  const { openAlert } = useModalStore(["openAlert"]);
   const invalidate = useInvalidate();
 
   return usePost<User[], User>(
     toUrl(apiRoutes.USER),
     undefined,
     {
-      onSuccess: invalidate,
+      onSuccess: () => {
+        invalidate().then(() =>
+          openAlert({
+            title: "User created",
+            message: "User created successfully",
+          })
+        );
+      },
     },
     (old, data) => {
       return [...old, data];
