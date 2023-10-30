@@ -1,3 +1,4 @@
+import { useModalStore } from "@/stores";
 import { useQueryClient } from "@tanstack/react-query";
 import { toUrl } from ".";
 import { apiRoutes, queryTypes } from "./constants";
@@ -49,17 +50,18 @@ export const useGetUsersByCursor = (params: CursorQueryParams) => {
 const useInvalidate = () => {
   const queryClient = useQueryClient();
 
-  const queryKeys = queryClient
-    .getQueryCache()
-    .findAll([toUrl(apiRoutes.USER)])
-    .filter(
-      (value) =>
-        value.meta?.type === queryTypes.OFFSET ||
-        value.meta?.type === queryTypes.CURSOR
-    );
-
   return () => {
-    queryKeys.forEach((queryKey) => queryClient.invalidateQueries(queryKey));
+    return Promise.all(
+      queryClient
+        .getQueryCache()
+        .findAll([toUrl(apiRoutes.USER)])
+        .filter(
+          (value) =>
+            value.meta?.type === queryTypes.OFFSET ||
+            value.meta?.type === queryTypes.CURSOR
+        )
+        .map((queryKey) => queryClient.invalidateQueries(queryKey))
+    );
   };
 };
 
@@ -90,13 +92,21 @@ export const useUpdateUser = () => {
 };
 
 export const useDeleteUser = () => {
+  const { openAlert } = useModalStore(["openAlert"]);
   const invalidate = useInvalidate();
 
   return useDelete<User[], number>(
     toUrl(apiRoutes.USER),
     undefined,
     {
-      onSuccess: invalidate,
+      onSuccess: () => {
+        invalidate().then(() =>
+          openAlert({
+            title: "User deleted",
+            message: "User deleted successfully",
+          })
+        );
+      },
     },
     (old, id) => {
       return old.filter((item) => item.id !== id);

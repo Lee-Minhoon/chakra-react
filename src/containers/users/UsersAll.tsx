@@ -1,6 +1,7 @@
 import { User, useDeleteUser, useGetUsers } from "@/apis";
 import DataTable from "@/components/DataTable";
 import RowActions from "@/components/DataTable/RowActions";
+import { useModalStore } from "@/stores";
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -13,6 +14,7 @@ const columnHelper = createColumnHelper<User>();
 const UsersAll = () => {
   const { data } = useGetUsers();
   const { mutate: deleteUser } = useDeleteUser();
+  const { openConfirm } = useModalStore(["openConfirm"]);
 
   const users = useMemo(() => {
     return data ? data : [];
@@ -21,9 +23,13 @@ const UsersAll = () => {
   const handleDelete = useCallback<(id?: number) => void>(
     (id) => {
       if (!id) return;
-      deleteUser(id);
+      openConfirm({
+        title: "Delete User",
+        message: "Are you sure you want to delete this user?",
+        onConfirm: () => deleteUser(id),
+      });
     },
-    [deleteUser]
+    [deleteUser, openConfirm]
   );
 
   const columns = useMemo(

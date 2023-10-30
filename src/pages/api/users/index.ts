@@ -17,7 +17,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       const { offset, cursor, limit } = req.query;
       if (offset && limit) return getUsersByOffset(req, res);
       if (cursor && limit) return getUsersByCursor(req, res);
-      return res.status(200).json({ data: users, message: "success" });
+      return getUsers(req, res);
     case "POST":
       return postUser(req, res);
     default:
