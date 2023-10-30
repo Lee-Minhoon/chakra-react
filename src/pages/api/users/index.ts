@@ -11,7 +11,7 @@ interface User {
 export var users: User[] = [];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  sleep(500);
+  sleep(200);
   switch (req.method) {
     case "GET":
       const { offset, cursor, limit } = req.query;
