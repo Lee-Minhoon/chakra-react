@@ -162,7 +162,7 @@ export const usePost = <TOldData, TNewData extends object, TResponse = unknown>(
 
 export const useUpdate = <
   TOldData,
-  TNewData extends object,
+  TNewData extends object & { id?: number },
   TResponse = unknown,
 >(
   url: string,
@@ -171,7 +171,10 @@ export const useUpdate = <
   updater?: (old: TOldData, data: TNewData) => TOldData
 ) => {
   return useMutation<TOldData, TNewData, TResponse>(
-    (data) => api.put<TResponse>(url, data),
+    (data) => {
+      const { id, ...rest } = data;
+      return api.put<TResponse>(`${url}/${data.id}`, rest);
+    },
     url,
     params,
     options,

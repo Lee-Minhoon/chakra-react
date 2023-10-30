@@ -1,4 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { toUrl } from ".";
 import { apiRoutes, queryTypes } from "./constants";
 import {
   useDelete,
@@ -18,11 +19,11 @@ export interface User {
 }
 
 export const useGetUser = (id: number) => {
-  return useGet<User>(apiRoutes.USER, { id });
+  return useGet<User>(toUrl(apiRoutes.USER, { id }));
 };
 
 export const useGetUsers = () => {
-  return useGet<User[]>(apiRoutes.USER, undefined, {
+  return useGet<User[]>(toUrl(apiRoutes.USER), undefined, {
     meta: {
       type: queryTypes.ALL,
     },
@@ -30,7 +31,7 @@ export const useGetUsers = () => {
 };
 
 export const useGetUsersByOffset = (params: OffsetQueryParams) => {
-  return useGetPage<User[]>(apiRoutes.USER, params, {
+  return useGetPage<User[]>(toUrl(apiRoutes.USER), params, {
     meta: {
       type: queryTypes.OFFSET,
     },
@@ -38,33 +39,38 @@ export const useGetUsersByOffset = (params: OffsetQueryParams) => {
 };
 
 export const useGetUsersByCursor = (params: CursorQueryParams) => {
-  return useLoadMore<User[]>(apiRoutes.USER, params, {
+  return useLoadMore<User[]>(toUrl(apiRoutes.USER), params, {
     meta: {
       type: queryTypes.CURSOR,
     },
   });
 };
 
-export const usePostUser = () => {
+const useInvalidate = () => {
   const queryClient = useQueryClient();
 
   const queryKeys = queryClient
     .getQueryCache()
-    .findAll([apiRoutes.USER])
+    .findAll([toUrl(apiRoutes.USER)])
     .filter(
       (value) =>
         value.meta?.type === queryTypes.OFFSET ||
         value.meta?.type === queryTypes.CURSOR
     );
 
+  return () => {
+    queryKeys.forEach((queryKey) => queryClient.invalidateQueries(queryKey));
+  };
+};
+
+export const usePostUser = () => {
+  const invalidate = useInvalidate();
+
   return usePost<User[], User>(
-    apiRoutes.USER,
+    toUrl(apiRoutes.USER),
     undefined,
     {
-      onSuccess: () =>
-        queryKeys.forEach((queryKey) =>
-          queryClient.invalidateQueries(queryKey)
-        ),
+      onSuccess: invalidate,
     },
     (old, data) => {
       return [...old, data];
@@ -74,7 +80,7 @@ export const usePostUser = () => {
 
 export const useUpdateUser = () => {
   return useUpdate<User[], User>(
-    apiRoutes.USER,
+    toUrl(apiRoutes.USER),
     undefined,
     undefined,
     (old, data) => {
@@ -84,10 +90,14 @@ export const useUpdateUser = () => {
 };
 
 export const useDeleteUser = () => {
+  const invalidate = useInvalidate();
+
   return useDelete<User[], number>(
-    apiRoutes.USER,
+    toUrl(apiRoutes.USER),
     undefined,
-    undefined,
+    {
+      onSuccess: invalidate,
+    },
     (old, id) => {
       return old.filter((item) => item.id !== id);
     }
@@ -97,9 +107,11 @@ export const useDeleteUser = () => {
 export const useCreateTestUsers = (count: number) => {
   const queryClient = useQueryClient();
 
-  const queryKeys = queryClient.getQueryCache().findAll([apiRoutes.USER]);
+  const queryKeys = queryClient
+    .getQueryCache()
+    .findAll([toUrl(apiRoutes.USER)]);
 
-  return usePost(`${apiRoutes.USER}/test/${count}`, undefined, {
+  return usePost(`${toUrl(apiRoutes.USER)}/test/${count}`, undefined, {
     onSuccess: () =>
       queryKeys.forEach((queryKey) => queryClient.invalidateQueries(queryKey)),
   });
@@ -108,9 +120,11 @@ export const useCreateTestUsers = (count: number) => {
 export const useResetTestUsers = (count: number) => {
   const queryClient = useQueryClient();
 
-  const queryKeys = queryClient.getQueryCache().findAll([apiRoutes.USER]);
+  const queryKeys = queryClient
+    .getQueryCache()
+    .findAll([toUrl(apiRoutes.USER)]);
 
-  return usePost(`${apiRoutes.USER}/test/reset`, undefined, {
+  return usePost(`${toUrl(apiRoutes.USER)}/test/reset`, undefined, {
     onSuccess: () =>
       queryKeys.forEach((queryKey) => queryClient.invalidateQueries(queryKey)),
   });
