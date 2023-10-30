@@ -173,7 +173,7 @@ export const useUpdate = <
   return useMutation<TOldData, TNewData, TResponse>(
     (data) => {
       const { id, ...rest } = data;
-      return api.put<TResponse>(`${url}/${data.id}`, rest);
+      return api.put<TResponse>(`${url}/${id}`, rest);
     },
     url,
     params,
