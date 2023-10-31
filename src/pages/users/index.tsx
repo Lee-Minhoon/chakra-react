@@ -1,6 +1,6 @@
-import { useCreateTestUsers, usePostUser, useResetTestUsers } from "@/apis";
+import { useCreateTestUsers, useCreateUser, useResetTestUsers } from "@/apis";
 import Layout from "@/components/Layout";
-import PostUserModal from "@/containers/users/PostUserModal";
+import CreateUserModal from "@/containers/users/CreateUserModal";
 import UsersAll from "@/containers/users/UsersAll";
 import UsersByCursor from "@/containers/users/UsersByCursor";
 import UsersByOffset from "@/containers/users/UsersByOffset";
@@ -48,11 +48,11 @@ const randomPhone = () => {
 };
 
 const Users = () => {
-  const { mutate: postUser } = usePostUser();
+  const { mutate: postUser } = useCreateUser();
   const { mutate: createTestUsers, isLoading: createTestUsersLoading } =
     useCreateTestUsers(count);
   const { mutate: resetTestUsers, isLoading: restTestUsersLoading } =
-    useResetTestUsers(count);
+    useResetTestUsers();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -64,7 +64,7 @@ const Users = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <PostUserModal isOpen={isOpen} onClose={onClose} />
+        <CreateUserModal isOpen={isOpen} onClose={onClose} />
         <Flex direction={"column"} gap={4}>
           <Flex gap={4}>
             <Button flex={1} onClick={onOpen}>

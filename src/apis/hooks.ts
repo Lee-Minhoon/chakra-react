@@ -76,11 +76,10 @@ const useInfiniteQuery = <TResponse>(
   );
 };
 
-const useMutation = <TOldData, TNewData, TResponse>(
+export const useMutation = <TOldData, TNewData, TResponse>(
   mutationFn: MutationFunction<TResponse, TNewData>,
-  url: string,
-  params?: object,
   options?: UseMutationOptions<TResponse, ApiError, TNewData>,
+  queryKey?: QueryKeyType,
   updater?: (old: TOldData, data: TNewData) => Optional<TOldData>
 ) => {
   const queryClient = useQueryClient();
@@ -89,36 +88,25 @@ const useMutation = <TOldData, TNewData, TResponse>(
     ...options,
     onMutate: async (variables) => {
       options?.onMutate?.(variables);
+      if (!queryKey) return;
       await queryClient.cancelQueries();
-      const previousData = queryClient.getQueryData([url, params]);
-      queryClient.setQueryData<TOldData>([url, params], (old) => {
+      const previousData = queryClient.getQueryData(queryKey);
+      queryClient.setQueryData<TOldData>(queryKey, (old) => {
         return old && updater ? updater(old, variables) : old;
       });
       return previousData;
     },
     onError: (error, variables, context) => {
       options?.onError?.(error, variables, context);
-      queryClient.setQueryData([url, params], context);
+      if (!queryKey) return;
+      queryClient.setQueryData(queryKey, context);
     },
     onSettled: (data, err, variables, context) => {
       options?.onSettled?.(data, err, variables, context);
-      queryClient.invalidateQueries([url, params]);
+      if (!queryKey) return;
+      queryClient.invalidateQueries(queryKey);
     },
   });
-};
-
-export const useLoadMore = <TResponse>(
-  url: string,
-  params?: object,
-  options?: UseInfiniteQueryOptions<
-    CursorQueryData<TResponse, number>,
-    ApiError,
-    CursorQueryData<TResponse, number>,
-    CursorQueryData<TResponse, number>,
-    QueryKeyType
-  >
-) => {
-  return useInfiniteQuery<TResponse>(url, params, options);
 };
 
 export const useGet = <TResponse>(
@@ -145,7 +133,25 @@ export const useGetPage = <TResponse>(
   });
 };
 
-export const usePost = <TOldData, TNewData extends object, TResponse = unknown>(
+export const useLoadMore = <TResponse>(
+  url: string,
+  params?: object,
+  options?: UseInfiniteQueryOptions<
+    CursorQueryData<TResponse, number>,
+    ApiError,
+    CursorQueryData<TResponse, number>,
+    CursorQueryData<TResponse, number>,
+    QueryKeyType
+  >
+) => {
+  return useInfiniteQuery<TResponse>(url, params, options);
+};
+
+export const useCreate = <
+  TOldData,
+  TNewData extends object,
+  TResponse = unknown,
+>(
   url: string,
   params?: object,
   options?: UseMutationOptions<TResponse, ApiError, TNewData>,
@@ -153,9 +159,8 @@ export const usePost = <TOldData, TNewData extends object, TResponse = unknown>(
 ) => {
   return useMutation<TOldData, TNewData, TResponse>(
     (data) => api.post<TResponse>(url, data),
-    url,
-    params,
     options,
+    [url, params],
     updater
   );
 };
@@ -173,11 +178,10 @@ export const useUpdate = <
   return useMutation<TOldData, TNewData, TResponse>(
     (data) => {
       const { id, ...rest } = data;
-      return api.put<TResponse>(`${url}/${id}`, rest);
+      return api.put<TResponse>(id ? `${url}/${id}` : url, rest);
     },
-    url,
-    params,
     options,
+    [url, params],
     updater
   );
 };
@@ -190,9 +194,8 @@ export const useDelete = <TOldData, TResponse, TId = number>(
 ) => {
   return useMutation<TOldData, TId, TResponse>(
     (id) => api.delete<TResponse>(`${url}/${id}`),
-    url,
-    params,
     options,
+    [url, params],
     updater
   );
 };

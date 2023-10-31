@@ -1,4 +1,4 @@
-import { User, usePostUser } from "@/apis";
+import { User, useCreateUser } from "@/apis";
 import {
   Button,
   Flex,
@@ -13,14 +13,14 @@ import {
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-interface PostUserModal {
+interface CreateUserModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const PostUserModal = ({ isOpen, onClose }: PostUserModal) => {
+const CreateUserModal = ({ isOpen, onClose }: CreateUserModalProps) => {
   const { register, handleSubmit } = useForm<User>();
-  const { mutate: postUser, isSuccess } = usePostUser();
+  const { mutate: postUser, isSuccess } = useCreateUser();
 
   useEffect(() => {
     if (!isSuccess) return;
@@ -53,4 +53,4 @@ const PostUserModal = ({ isOpen, onClose }: PostUserModal) => {
   );
 };
 
-export default PostUserModal;
+export default CreateUserModal;

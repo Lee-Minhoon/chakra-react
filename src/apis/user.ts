@@ -1,13 +1,13 @@
 import { useModalStore } from "@/stores";
 import { useQueryClient } from "@tanstack/react-query";
-import { toUrl } from ".";
+import { api, toUrl, useMutation } from ".";
 import { apiRoutes, queryTypes } from "./constants";
 import {
+  useCreate,
   useDelete,
   useGet,
   useGetPage,
   useLoadMore,
-  usePost,
   useUpdate,
 } from "./hooks";
 import { CursorQueryParams, OffsetQueryParams } from "./types";
@@ -65,11 +65,11 @@ const useInvalidate = () => {
   };
 };
 
-export const usePostUser = () => {
+export const useCreateUser = () => {
   const { openAlert } = useModalStore(["openAlert"]);
   const invalidate = useInvalidate();
 
-  return usePost<User[], User>(
+  return useCreate<User[], User>(
     toUrl(apiRoutes.USER),
     undefined,
     {
@@ -123,27 +123,17 @@ export const useDeleteUser = () => {
 };
 
 export const useCreateTestUsers = (count: number) => {
-  const queryClient = useQueryClient();
+  const invalidate = useInvalidate();
 
-  const queryKeys = queryClient
-    .getQueryCache()
-    .findAll([toUrl(apiRoutes.USER)]);
-
-  return usePost(`${toUrl(apiRoutes.USER)}/test/${count}`, undefined, {
-    onSuccess: () =>
-      queryKeys.forEach((queryKey) => queryClient.invalidateQueries(queryKey)),
+  return useMutation(() => api.post(`${toUrl(apiRoutes.USER)}/test/${count}`), {
+    onSuccess: invalidate,
   });
 };
 
-export const useResetTestUsers = (count: number) => {
-  const queryClient = useQueryClient();
+export const useResetTestUsers = () => {
+  const invalidate = useInvalidate();
 
-  const queryKeys = queryClient
-    .getQueryCache()
-    .findAll([toUrl(apiRoutes.USER)]);
-
-  return usePost(`${toUrl(apiRoutes.USER)}/test/reset`, undefined, {
-    onSuccess: () =>
-      queryKeys.forEach((queryKey) => queryClient.invalidateQueries(queryKey)),
+  return useMutation(() => api.post(`${toUrl(apiRoutes.USER)}/test/reset`), {
+    onSuccess: invalidate,
   });
 };

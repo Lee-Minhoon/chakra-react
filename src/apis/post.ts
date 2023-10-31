@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { apiRoutes } from "./constants";
-import { useDelete, useGet, usePost, useUpdate } from "./hooks";
+import { useDelete, useGet, useCreate, useUpdate } from "./hooks";
 
 export interface Post {
   id?: number;
@@ -22,7 +22,7 @@ export const useGetLikedPosts = () => {
 export const usePostPost = () => {
   const queryClient = useQueryClient();
 
-  return usePost<Post[], Post>(
+  return useCreate<Post[], Post>(
     apiRoutes.POST,
     undefined,
     { onSuccess: () => queryClient.invalidateQueries([apiRoutes.LIKED_POST]) },
