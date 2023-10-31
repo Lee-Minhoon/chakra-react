@@ -89,7 +89,7 @@ export const useMutation = <TOldData, TNewData, TResponse>(
     onMutate: async (variables) => {
       options?.onMutate?.(variables);
       if (!queryKey) return;
-      await queryClient.cancelQueries();
+      await queryClient.cancelQueries(queryKey);
       const previousData = queryClient.getQueryData(queryKey);
       queryClient.setQueryData<TOldData>(queryKey, (old) => {
         return old && updater ? updater(old, variables) : old;

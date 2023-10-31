@@ -125,15 +125,23 @@ export const useDeleteUser = () => {
 export const useCreateTestUsers = (count: number) => {
   const invalidate = useInvalidate();
 
-  return useMutation(() => api.post(`${toUrl(apiRoutes.USER)}/test/${count}`), {
-    onSuccess: invalidate,
-  });
+  return useMutation(
+    () => api.post(`${toUrl(apiRoutes.USER)}/test/${count}`),
+    {
+      onSuccess: invalidate,
+    },
+    [toUrl(apiRoutes.USER), undefined]
+  );
 };
 
 export const useResetTestUsers = () => {
   const invalidate = useInvalidate();
 
-  return useMutation(() => api.post(`${toUrl(apiRoutes.USER)}/test/reset`), {
-    onSuccess: invalidate,
-  });
+  return useMutation(
+    () => api.post(`${toUrl(apiRoutes.USER)}/test/reset`),
+    {
+      onSuccess: invalidate,
+    },
+    [toUrl(apiRoutes.USER), undefined]
+  );
 };
