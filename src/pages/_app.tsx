@@ -1,5 +1,6 @@
 import { ApiError } from "@/apis";
 import ModalProvider from "@/components/ModalProvider";
+import { modalStore } from "@/stores";
 import "@/styles/globals.css";
 import {
   ChakraProvider,
@@ -21,22 +22,24 @@ const queryClient = new QueryClient({
     queries: {
       retry: 0,
       refetchOnWindowFocus: false,
-      staleTime: 10000,
-      cacheTime: 10000,
     },
   },
   queryCache: new QueryCache({
-    onError: (error) => {
-      if (error instanceof ApiError) {
-        console.log(error.status, error.message);
-      }
+    onError: (error, query) => {
+      if (!(error instanceof ApiError) || query.meta?.ignoreError) return;
+      modalStore.getState().openAlert({
+        title: "Error",
+        message: error.message,
+      });
     },
   }),
   mutationCache: new MutationCache({
-    onError: (error) => {
-      if (error instanceof ApiError) {
-        console.log(error.status, error.message);
-      }
+    onError: (error, variables, context, mutation) => {
+      if (!(error instanceof ApiError) || mutation.meta?.ignoreError) return;
+      modalStore.getState().openAlert({
+        title: "Error",
+        message: error.message,
+      });
     },
   }),
 });

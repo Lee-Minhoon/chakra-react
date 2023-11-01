@@ -14,7 +14,7 @@ interface T {
   closeConfirm: () => void;
 }
 
-const modalStore = create<T>((set) => ({
+export const modalStore = create<T>((set) => ({
   alert: null,
   confirm: null,
 
