@@ -15,7 +15,7 @@ const Pagination = ({
 }: PaginationProps) => {
   const currentBlock = Math.floor((currentPage - 1) / limit);
   const start = currentBlock * limit + 1;
-  const end = Math.min(start + limit - 1, total / limit);
+  const end = Math.min(start + limit - 1, Math.ceil(total / limit));
 
   return (
     <Flex gap={4} justify={"center"}>
@@ -34,7 +34,7 @@ const Pagination = ({
         )
       )}
       <Button
-        isDisabled={end === total / limit}
+        isDisabled={currentPage === end}
         onClick={() => onChange(end + 1)}
       >
         Next
