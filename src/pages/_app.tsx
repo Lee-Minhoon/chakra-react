@@ -58,8 +58,8 @@ const theme = extendTheme(
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools />
       <ChakraProvider theme={theme}>
-        <ReactQueryDevtools />
         <ModalProvider />
         <Component {...pageProps} />
       </ChakraProvider>
