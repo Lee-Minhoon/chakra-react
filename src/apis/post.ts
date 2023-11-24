@@ -1,6 +1,6 @@
 import { ApiRoutes } from "@/constants";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCreate, useDelete, useGet, useUpdate } from "./hooks";
+import { usePost, useDelete, useFetch, useUpdate } from "./hooks";
 
 export interface Post {
   id?: number;
@@ -8,21 +8,21 @@ export interface Post {
 }
 
 export const useGetPost = (id: number) => {
-  return useGet<Post>(ApiRoutes.Post, { id });
+  return useFetch<Post>(ApiRoutes.Post, { id });
 };
 
 export const useGetPosts = () => {
-  return useGet<Post[]>(ApiRoutes.Post);
+  return useFetch<Post[]>(ApiRoutes.Post);
 };
 
 export const useGetLikedPosts = () => {
-  return useGet<Post[]>(ApiRoutes.LikedPost);
+  return useFetch<Post[]>(ApiRoutes.LikedPost);
 };
 
 export const usePostPost = () => {
   const queryClient = useQueryClient();
 
-  return useCreate<Post[], Post>(
+  return usePost<Post[], Post>(
     ApiRoutes.Post,
     undefined,
     { onSuccess: () => queryClient.invalidateQueries([ApiRoutes.LikedPost]) },

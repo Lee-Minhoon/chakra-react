@@ -2,13 +2,12 @@ import { ApiRoutes } from "@/constants";
 import { useModalStore } from "@/stores";
 import { toUrl } from "@/utils";
 import { useQueryClient } from "@tanstack/react-query";
-import { api, useMutation } from ".";
 import {
-  useCreate,
   useDelete,
-  useGet,
+  useFetch,
   useGetPage,
   useLoadMore,
+  usePost,
   useUpdate,
 } from "./hooks";
 import { CursorQueryParams, OffsetQueryParams } from "./types";
@@ -22,11 +21,11 @@ export interface User {
 }
 
 export const useGetUser = (id: number) => {
-  return useGet<User>(toUrl(ApiRoutes.User, { id }));
+  return useFetch<User>(toUrl(ApiRoutes.User, { id }));
 };
 
 export const useGetUsers = () => {
-  return useGet<User[]>(toUrl(ApiRoutes.User), undefined);
+  return useFetch<User[]>(toUrl(ApiRoutes.User), undefined);
 };
 
 export const useGetUsersByOffset = (params: OffsetQueryParams) => {
@@ -35,19 +34,6 @@ export const useGetUsersByOffset = (params: OffsetQueryParams) => {
 
 export const useGetUsersByCursor = (params: CursorQueryParams) => {
   return useLoadMore<User[]>(toUrl(ApiRoutes.User), params);
-};
-
-const useInvalidate = () => {
-  const queryClient = useQueryClient();
-
-  return () => {
-    return Promise.all(
-      queryClient
-        .getQueryCache()
-        .findAll([toUrl(ApiRoutes.User)])
-        .map((queryKey) => queryClient.invalidateQueries(queryKey))
-    );
-  };
 };
 
 export interface UserCreate {
@@ -61,7 +47,7 @@ export const useCreateUser = (
 ) => {
   const { openAlert } = useModalStore(["openAlert"]);
 
-  return useCreate<User[], UserCreate>(
+  return usePost<User[], UserCreate>(
     toUrl(ApiRoutes.User),
     params,
     {
@@ -128,18 +114,31 @@ export const useDeleteUser = () => {
   );
 };
 
+const useInvalidate = () => {
+  const queryClient = useQueryClient();
+
+  return () => {
+    return Promise.all(
+      queryClient
+        .getQueryCache()
+        .findAll([toUrl(ApiRoutes.User)])
+        .map((queryKey) => queryClient.invalidateQueries(queryKey))
+    );
+  };
+};
+
 export const useCreateTestUsers = (count: number) => {
-  return useMutation(
-    () => api.post(`${toUrl(ApiRoutes.User)}/test/${count}`),
-    undefined,
-    [toUrl(ApiRoutes.User), undefined]
-  );
+  const invalidate = useInvalidate();
+
+  return usePost(`${toUrl(ApiRoutes.User)}/test/${count}`, undefined, {
+    onSuccess: invalidate,
+  });
 };
 
 export const useResetTestUsers = () => {
-  return useMutation(
-    () => api.post(`${toUrl(ApiRoutes.User)}/test/reset`),
-    undefined,
-    [toUrl(ApiRoutes.User), undefined]
-  );
+  const invalidate = useInvalidate();
+
+  return usePost(`${toUrl(ApiRoutes.User)}/test/reset`, undefined, {
+    onSuccess: invalidate,
+  });
 };

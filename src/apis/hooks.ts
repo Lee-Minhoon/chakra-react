@@ -118,7 +118,7 @@ export const useMutation = <TOldData, TNewData, TResponse>(
   });
 };
 
-export const useGet = <TResponse>(
+export const useFetch = <TResponse>(
   url: string,
   params?: object,
   options?: UseQueryOptions<TResponse, ApiError, TResponse, QueryKeyType>
@@ -156,11 +156,7 @@ export const useLoadMore = <TResponse>(
   return useInfiniteQuery<TResponse>(url, params, options);
 };
 
-export const useCreate = <
-  TOldData,
-  TNewData extends object,
-  TResponse = unknown,
->(
+export const usePost = <TOldData, TNewData extends object, TResponse = unknown>(
   url: string,
   params?: object,
   options?: UseMutationOptions<TResponse, ApiError, TNewData>,
