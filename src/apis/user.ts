@@ -1,7 +1,8 @@
+import { ApiRoutes } from "@/constants";
 import { useModalStore } from "@/stores";
+import { toUrl } from "@/utils";
 import { useQueryClient } from "@tanstack/react-query";
-import { api, toUrl, useMutation } from ".";
-import { apiRoutes, queryTypes } from "./constants";
+import { api, useMutation } from ".";
 import {
   useCreate,
   useDelete,
@@ -13,38 +14,27 @@ import {
 import { CursorQueryParams, OffsetQueryParams } from "./types";
 
 export interface User {
-  id?: number;
+  id: number;
   name: string;
   email: string;
   phone: string;
+  approved: boolean;
 }
 
 export const useGetUser = (id: number) => {
-  return useGet<User>(toUrl(apiRoutes.USER, { id }));
+  return useGet<User>(toUrl(ApiRoutes.User, { id }));
 };
 
 export const useGetUsers = () => {
-  return useGet<User[]>(toUrl(apiRoutes.USER), undefined, {
-    meta: {
-      type: queryTypes.ALL,
-    },
-  });
+  return useGet<User[]>(toUrl(ApiRoutes.User), undefined);
 };
 
 export const useGetUsersByOffset = (params: OffsetQueryParams) => {
-  return useGetPage<User[]>(toUrl(apiRoutes.USER), params, {
-    meta: {
-      type: queryTypes.OFFSET,
-    },
-  });
+  return useGetPage<User[]>(toUrl(ApiRoutes.User), params);
 };
 
 export const useGetUsersByCursor = (params: CursorQueryParams) => {
-  return useLoadMore<User[]>(toUrl(apiRoutes.USER), params, {
-    meta: {
-      type: queryTypes.CURSOR,
-    },
-  });
+  return useLoadMore<User[]>(toUrl(ApiRoutes.User), params);
 };
 
 const useInvalidate = () => {
@@ -54,67 +44,83 @@ const useInvalidate = () => {
     return Promise.all(
       queryClient
         .getQueryCache()
-        .findAll([toUrl(apiRoutes.USER)])
-        .filter(
-          (value) =>
-            value.meta?.type === queryTypes.OFFSET ||
-            value.meta?.type === queryTypes.CURSOR
-        )
+        .findAll([toUrl(ApiRoutes.User)])
         .map((queryKey) => queryClient.invalidateQueries(queryKey))
     );
   };
 };
 
-export const useCreateUser = () => {
-  const { openAlert } = useModalStore(["openAlert"]);
-  const invalidate = useInvalidate();
+export interface UserCreate {
+  name: string;
+  email: string;
+  phone: string;
+}
 
-  return useCreate<User[], User>(
-    toUrl(apiRoutes.USER),
-    undefined,
+export const useCreateUser = (
+  params?: OffsetQueryParams | CursorQueryParams
+) => {
+  const { openAlert } = useModalStore(["openAlert"]);
+
+  return useCreate<User[], UserCreate>(
+    toUrl(ApiRoutes.User),
+    params,
     {
-      onSuccess: () => {
-        invalidate().then(() =>
-          openAlert({
-            title: "User created",
-            message: "User created successfully",
-          })
-        );
-      },
+      onSuccess: () =>
+        openAlert({
+          title: "User created",
+          message: "User created successfully",
+        }),
     },
     (old, data) => {
-      return [...old, data];
+      const newUser = { id: 0, approved: false, ...data };
+      return [...old, newUser];
     }
   );
 };
 
+export interface UserUpdate {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+}
+
 export const useUpdateUser = () => {
-  return useUpdate<User[], User>(
-    toUrl(apiRoutes.USER),
+  const { openAlert } = useModalStore(["openAlert"]);
+
+  return useUpdate<User[], UserUpdate>(
+    toUrl(ApiRoutes.User),
     undefined,
-    undefined,
+    {
+      onSuccess: () =>
+        openAlert({
+          title: "User updated",
+          message: "User updated successfully",
+        }),
+    },
     (old, data) => {
-      return old.map((item) => (item.id === data.id ? data : item));
+      const finded = old.find((item) => item.id === data.id);
+      if (!finded) return old;
+      finded.name = data.name;
+      finded.email = data.email;
+      finded.phone = data.phone;
+      return old.map((item) => (item.id === data.id ? finded : item));
     }
   );
 };
 
 export const useDeleteUser = () => {
   const { openAlert } = useModalStore(["openAlert"]);
-  const invalidate = useInvalidate();
 
   return useDelete<User[], number>(
-    toUrl(apiRoutes.USER),
+    toUrl(ApiRoutes.User),
     undefined,
     {
-      onSuccess: () => {
-        invalidate().then(() =>
-          openAlert({
-            title: "User deleted",
-            message: "User deleted successfully",
-          })
-        );
-      },
+      onSuccess: () =>
+        openAlert({
+          title: "User deleted",
+          message: "User deleted successfully",
+        }),
     },
     (old, id) => {
       return old.filter((item) => item.id !== id);
@@ -123,25 +129,17 @@ export const useDeleteUser = () => {
 };
 
 export const useCreateTestUsers = (count: number) => {
-  const invalidate = useInvalidate();
-
   return useMutation(
-    () => api.post(`${toUrl(apiRoutes.USER)}/test/${count}`),
-    {
-      onSuccess: invalidate,
-    },
-    [toUrl(apiRoutes.USER), undefined]
+    () => api.post(`${toUrl(ApiRoutes.User)}/test/${count}`),
+    undefined,
+    [toUrl(ApiRoutes.User), undefined]
   );
 };
 
 export const useResetTestUsers = () => {
-  const invalidate = useInvalidate();
-
   return useMutation(
-    () => api.post(`${toUrl(apiRoutes.USER)}/test/reset`),
-    {
-      onSuccess: invalidate,
-    },
-    [toUrl(apiRoutes.USER), undefined]
+    () => api.post(`${toUrl(ApiRoutes.User)}/test/reset`),
+    undefined,
+    [toUrl(ApiRoutes.User), undefined]
   );
 };

@@ -38,6 +38,7 @@ const UsersAll = () => {
       columnHelper.accessor("name", {}),
       columnHelper.accessor("email", {}),
       columnHelper.accessor("phone", {}),
+      columnHelper.accessor("approved", {}),
       columnHelper.display({
         id: "actions",
         cell: (context) => (

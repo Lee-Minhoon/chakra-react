@@ -7,7 +7,7 @@ interface Post {
   content: string;
 }
 
-export var posts: Post[] = [];
+export let posts: Post[] = [];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   sleep(500);

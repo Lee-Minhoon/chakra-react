@@ -34,7 +34,7 @@ const limit = 10;
 
 const UsersByOffset = () => {
   const router = useRouter();
-  const page = router.query.page ? Number(router.query.page) : 1;
+  const page = router.query?.page ? Number(router.query?.page) : 1;
   const { data } = useGetUsersByOffset({
     offset: (page - 1) * limit,
     limit: 10,

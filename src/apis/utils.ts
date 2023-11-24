@@ -1,12 +1,7 @@
-import { compile } from "path-to-regexp";
-import { ApiRoutes } from ".";
 import { ApiError } from "./types";
 
 const protoc = process.env.NODE_ENV === "production" ? "https" : "http";
 const domain = process.env.NEXT_PUBLIC_SERVER_DOMAIN;
-
-export const toUrl = (path: ApiRoutes, params?: object) =>
-  compile(path, { encode: encodeURIComponent })(params);
 
 const extendedFetch = async (input: RequestInfo, init?: RequestInit) => {
   return fetch(input, init).then(async (res) => {

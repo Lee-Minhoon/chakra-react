@@ -89,6 +89,9 @@ export const useMutation = <TOldData, TNewData, TResponse>(
     onMutate: async (variables) => {
       options?.onMutate?.(variables);
       if (!queryKey) return;
+
+      // 낙관적 업데이트(쿼리 키가 없으면 실행되지 않음)
+      // Optimistic update(does not run if query key is not present)
       await queryClient.cancelQueries(queryKey);
       const previousData = queryClient.getQueryData(queryKey);
       queryClient.setQueryData<TOldData>(queryKey, (old) => {
@@ -99,12 +102,18 @@ export const useMutation = <TOldData, TNewData, TResponse>(
     onError: (error, variables, context) => {
       options?.onError?.(error, variables, context);
       if (!queryKey) return;
+
+      // 에러가 발생할 경우 이전 데이터로 되돌립니다.
+      // If an error occurs, it returns to old data.
       queryClient.setQueryData(queryKey, context);
     },
     onSettled: (data, err, variables, context) => {
       options?.onSettled?.(data, err, variables, context);
       if (!queryKey) return;
-      queryClient.invalidateQueries(queryKey);
+      queryClient
+        .getQueryCache()
+        .findAll([queryKey[0]])
+        .forEach((queryKey) => queryClient.invalidateQueries(queryKey));
     },
   });
 };
