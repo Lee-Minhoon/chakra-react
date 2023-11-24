@@ -1,5 +1,5 @@
-import { sleep } from "@/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { sleep } from "../utils";
 
 interface Post {
   id: number;

@@ -1,8 +1,8 @@
-import { sleep } from "@/utils";
 import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 import { User, readDB } from "../db";
+import { sleep } from "../utils";
 
 export const readUsers = (): User[] => {
   try {

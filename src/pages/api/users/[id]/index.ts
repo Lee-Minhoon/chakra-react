@@ -1,6 +1,6 @@
-import { sleep } from "@/utils";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { deleteUser, getUser, updateUser } from "..";
+import { sleep } from "../../utils";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   sleep(200);

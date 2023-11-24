@@ -1,9 +1,9 @@
-import { sleep } from "@/utils";
 import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 import { User, readDB } from "../db";
 import { readUsers } from "../users";
+import { sleep } from "../utils";
 
 export const writeSession = (user: User) => {
   try {
