@@ -25,7 +25,7 @@ const Confirm = () => {
       <ModalContent>
         <ModalHeader>{confirm?.title}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>{confirm?.message}</ModalBody>
+        <ModalBody>{confirm?.content}</ModalBody>
         <ModalFooter>
           <Button mr={3} onClick={closeConfirm}>
             Close

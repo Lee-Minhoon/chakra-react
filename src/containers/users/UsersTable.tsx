@@ -25,7 +25,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
       if (!id) return;
       openConfirm({
         title: "Approve User",
-        message: "Are you sure you want to approve this user?",
+        content: "Are you sure you want to approve this user?",
         onConfirm: () => approveUser({ id }),
       });
     },
@@ -37,7 +37,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
       if (!id) return;
       openConfirm({
         title: "Delete User",
-        message: "Are you sure you want to delete this user?",
+        content: "Are you sure you want to delete this user?",
         onConfirm: () => deleteUser(id),
       });
     },

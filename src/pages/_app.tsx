@@ -29,7 +29,7 @@ const queryClient = new QueryClient({
       if (!(error instanceof ApiError) || query.meta?.ignoreError) return;
       modalStore.getState().openAlert({
         title: "Error",
-        message: error.message,
+        content: error.message,
       });
     },
   }),
@@ -38,7 +38,7 @@ const queryClient = new QueryClient({
       if (!(error instanceof ApiError) || mutation.meta?.ignoreError) return;
       modalStore.getState().openAlert({
         title: "Error",
-        message: error.message,
+        content: error.message,
       });
     },
   }),

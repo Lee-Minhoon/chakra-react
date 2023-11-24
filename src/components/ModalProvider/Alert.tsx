@@ -19,7 +19,7 @@ const Alert = () => {
       <ModalContent>
         <ModalHeader>{alert?.title}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>{alert?.message}</ModalBody>
+        <ModalBody>{alert?.content}</ModalBody>
         <ModalFooter>
           <Button variant="ghost" onClick={closeAlert}>
             Confirm

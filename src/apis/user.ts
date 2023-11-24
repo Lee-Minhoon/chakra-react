@@ -55,7 +55,7 @@ export const useCreateUser = (
       onSuccess: () =>
         openAlert({
           title: "User created",
-          message: "User created successfully",
+          content: "User created successfully",
         }),
     },
     (old, data) => {
@@ -82,7 +82,7 @@ export const useUpdateUser = () => {
       onSuccess: () =>
         openAlert({
           title: "User updated",
-          message: "User updated successfully",
+          content: "User updated successfully",
         }),
     },
     (old, data) => {
@@ -106,7 +106,7 @@ export const useDeleteUser = () => {
       onSuccess: () =>
         openAlert({
           title: "User deleted",
-          message: "User deleted successfully",
+          content: "User deleted successfully",
         }),
     },
     (old, id) => {
@@ -131,7 +131,7 @@ export const useApproveUser = () => {
         invalidate().then(() =>
           openAlert({
             title: "User approved",
-            message: "User approved successfully",
+            content: "User approved successfully",
           })
         ),
     },
