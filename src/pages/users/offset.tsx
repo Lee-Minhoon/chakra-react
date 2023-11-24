@@ -1,13 +1,24 @@
+import { useGetUsersByOffset } from "@/apis";
 import Layout from "@/components/Layout";
+import Pagination from "@/components/Pagination";
 import CreateUserModal from "@/containers/users/CreateUserModal";
-import UsersByOffset from "@/containers/users/UsersByOffset";
 import UsersTab from "@/containers/users/UsersTab";
+import UsersTable from "@/containers/users/UsersTable";
 import UsersUtils from "@/containers/users/UsersUtils";
 import { Divider, Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
+
+const limit = 10;
 
 const UsersOffsetPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter();
+  const page = router.query?.page ? Number(router.query?.page) : 1;
+  const { data } = useGetUsersByOffset({
+    offset: (page - 1) * limit,
+    limit: 10,
+  });
 
   return (
     <>
@@ -23,7 +34,13 @@ const UsersOffsetPage = () => {
           <UsersUtils onCreateUser={onOpen} />
           <Divider />
           <UsersTab />
-          <UsersByOffset />
+          <UsersTable users={data?.data ?? []} />
+          <Pagination
+            currentPage={page}
+            limit={10}
+            total={data?.total ?? 0}
+            onChange={(page) => router.push({ query: { page } })}
+          />
         </Flex>
       </Layout>
     </>

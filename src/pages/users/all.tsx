@@ -1,13 +1,15 @@
+import { useGetUsers } from "@/apis";
 import Layout from "@/components/Layout";
 import CreateUserModal from "@/containers/users/CreateUserModal";
-import UsersAll from "@/containers/users/UsersAll";
 import UsersTab from "@/containers/users/UsersTab";
+import UsersTable from "@/containers/users/UsersTable";
 import UsersUtils from "@/containers/users/UsersUtils";
 import { Divider, Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 
 const UsersAllPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { data } = useGetUsers();
 
   return (
     <>
@@ -23,7 +25,7 @@ const UsersAllPage = () => {
           <UsersUtils onCreateUser={onOpen} />
           <Divider />
           <UsersTab />
-          <UsersAll />
+          <UsersTable users={data ?? []} />
         </Flex>
       </Layout>
     </>

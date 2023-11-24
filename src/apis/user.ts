@@ -3,6 +3,7 @@ import { useModalStore } from "@/stores";
 import { toUrl } from "@/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import {
+  useCommand,
   useDelete,
   useFetch,
   useGetPage,
@@ -110,6 +111,35 @@ export const useDeleteUser = () => {
     },
     (old, id) => {
       return old.filter((item) => item.id !== id);
+    }
+  );
+};
+
+export interface UserApprove {
+  id: number;
+}
+
+export const useApproveUser = () => {
+  const { openAlert } = useModalStore(["openAlert"]);
+  const invalidate = useInvalidate();
+
+  return useCommand<User[], UserApprove>(
+    ApiRoutes.ApproveUser,
+    undefined,
+    {
+      onSuccess: () =>
+        invalidate().then(() =>
+          openAlert({
+            title: "User approved",
+            message: "User approved successfully",
+          })
+        ),
+    },
+    (old, data) => {
+      const finded = old.find((item) => item.id === data.id);
+      if (!finded) return old;
+      finded.approved = true;
+      return old.map((item) => (item.id === data.id ? finded : item));
     }
   );
 };

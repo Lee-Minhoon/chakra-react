@@ -15,6 +15,7 @@ type Api = {
   get: <T>(url: string, params?: object) => Promise<T>;
   post: <T>(url: string, body?: object) => Promise<T>;
   put: <T>(url: string, body?: object) => Promise<T>;
+  patch: <T>(url: string, body?: object) => Promise<T>;
   delete: <T>(url: string) => Promise<T>;
 };
 
@@ -40,6 +41,15 @@ export const api: Api = {
   put: (url, body) => {
     return extendedFetch(`${protoc}://${domain}/${url}`, {
       method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+  },
+  patch: (url, body) => {
+    return extendedFetch(`${protoc}://${domain}/${url}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },

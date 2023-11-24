@@ -1,4 +1,6 @@
+import { ApiRoutes } from "@/constants";
 import { Nullable, Optional } from "@/types";
+import { toUrl } from "@/utils";
 import {
   MutationFunction,
   QueryFunctionContext,
@@ -199,6 +201,35 @@ export const useDelete = <TOldData, TResponse, TId = number>(
 ) => {
   return useMutation<TOldData, TId, TResponse>(
     (id) => api.delete<TResponse>(`${url}/${id}`),
+    options,
+    [url, params],
+    updater
+  );
+};
+
+export const useCommand = <
+  TOldData,
+  TNewData extends object & { id?: number },
+  TResponse = unknown,
+>(
+  url: ApiRoutes,
+  params?: object,
+  options?: UseMutationOptions<TResponse, ApiError, TNewData>,
+  updater?: (old: TOldData, data: TNewData) => TOldData,
+  method: "POST" | "PUT" | "PATCH" = "POST"
+) => {
+  return useMutation<TOldData, TNewData, TResponse>(
+    (data) => {
+      const { id, ...rest } = data;
+      switch (method) {
+        case "POST":
+          return api.post<TResponse>(id ? toUrl(url, { id }) : url, rest);
+        case "PUT":
+          return api.put<TResponse>(id ? toUrl(url, { id }) : url, rest);
+        case "PATCH":
+          return api.patch<TResponse>(id ? toUrl(url, { id }) : url, rest);
+      }
+    },
     options,
     [url, params],
     updater

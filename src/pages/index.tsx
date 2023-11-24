@@ -1,4 +1,5 @@
 import Layout from "@/components/Layout";
+import { PageRoutes } from "@/constants";
 import { Button, Flex } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -16,7 +17,9 @@ export default function Home() {
       </Head>
       <Layout>
         <Flex gap={4}>
-          <Button onClick={() => router.push({ pathname: "/users" })}>
+          <Button
+            onClick={() => router.push({ pathname: PageRoutes.UsersAll })}
+          >
             Users
           </Button>
           <Button onClick={() => router.push({ pathname: "/posts" })}>

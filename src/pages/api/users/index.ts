@@ -152,6 +152,26 @@ export const deleteUser = (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json({ data: id, message: "success" });
 };
 
+export const approveUser = (req: NextApiRequest, res: NextApiResponse) => {
+  const { id } = req.query;
+
+  let users = read();
+  users = users.map((user) => {
+    if (user.id === Number(id)) {
+      return { ...user, approved: true };
+    }
+    return user;
+  });
+
+  try {
+    write(users);
+  } catch {
+    return res.status(500).json({ data: null, message: "failed" });
+  }
+
+  return res.status(200).json({ data: id, message: "success" });
+};
+
 export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
   const { count } = req.query;
 

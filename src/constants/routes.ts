@@ -7,6 +7,7 @@ export enum PageRoutes {
 
 export enum ApiRoutes {
   User = "api/users/:id?",
+  ApproveUser = "api/users/:id?/approve",
   Post = "api/posts/:id?",
   LikedPost = "api/posts/liked",
 }
