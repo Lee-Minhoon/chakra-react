@@ -1,12 +1,9 @@
 import Layout from "@/components/Layout";
-import { PageRoutes } from "@/constants";
-import { Button, Flex } from "@chakra-ui/react";
+import SigninForm from "@/containers/home/SigninForm";
+import { Center } from "@chakra-ui/react";
 import Head from "next/head";
-import { useRouter } from "next/router";
 
 export default function Home() {
-  const router = useRouter();
-
   return (
     <>
       <Head>
@@ -16,16 +13,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <Flex gap={4}>
-          <Button
-            onClick={() => router.push({ pathname: PageRoutes.UsersAll })}
-          >
-            Users
-          </Button>
-          <Button onClick={() => router.push({ pathname: "/posts" })}>
-            Posts
-          </Button>
-        </Flex>
+        <Center>
+          <SigninForm />
+        </Center>
       </Layout>
     </>
   );

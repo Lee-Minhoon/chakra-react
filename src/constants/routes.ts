@@ -6,6 +6,7 @@ export enum PageRoutes {
 }
 
 export enum ApiRoutes {
+  Signin = "api/auth/signin",
   User = "api/users/:id?",
   ApproveUser = "api/users/:id?/approve",
   Post = "api/posts/:id?",
