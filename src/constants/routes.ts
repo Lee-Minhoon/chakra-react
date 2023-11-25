@@ -4,6 +4,8 @@ export enum PageRoutes {
   UsersByOffset = "/users/offset",
   UsersByCursor = "/users/cursor",
   PostsAll = "/posts/all",
+  PostsByOffset = "/posts/offset",
+  PostsByCursor = "/posts/cursor",
 }
 
 export enum ApiRoutes {
