@@ -11,10 +11,9 @@ import {
   usePost,
   useUpdate,
 } from "./hooks";
-import { CursorQueryParams, OffsetQueryParams } from "./types";
+import { CursorQueryParams, OffsetQueryParams, Scheme } from "./types";
 
-export interface User {
-  id: number;
+export interface User extends Scheme {
   name: string;
   email: string;
   phone: string;
@@ -65,12 +64,7 @@ export const useCreateUser = (
   );
 };
 
-export interface UserUpdate {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-}
+export type UserUpdate = Omit<User, "approved">;
 
 export const useUpdateUser = () => {
   const { openAlert } = useModalStore(["openAlert"]);

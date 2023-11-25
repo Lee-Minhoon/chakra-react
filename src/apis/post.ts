@@ -1,7 +1,7 @@
 import { ApiRoutes } from "@/constants";
 import { useModalStore } from "@/stores";
 import { toUrl } from "@/utils";
-import { CursorQueryParams, OffsetQueryParams } from ".";
+import { CursorQueryParams, OffsetQueryParams, Scheme } from ".";
 import {
   useDelete,
   useFetch,
@@ -11,8 +11,7 @@ import {
   useUpdate,
 } from "./hooks";
 
-export interface Post {
-  id: number;
+export interface Post extends Scheme {
   title: string;
   content: string;
 }
@@ -60,11 +59,7 @@ export const useCreatePost = (
   );
 };
 
-export interface PostUpdate {
-  id: number;
-  title: string;
-  content: string;
-}
+export type PostUpdate = Post;
 
 export const useUpdatePost = () => {
   const { openAlert } = useModalStore(["openAlert"]);

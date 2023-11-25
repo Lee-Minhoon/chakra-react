@@ -1,12 +1,5 @@
-import { useGetUsersByCursor } from "@/apis";
-import {
-  Button,
-  Card,
-  Flex,
-  ListItem,
-  Text,
-  UnorderedList,
-} from "@chakra-ui/react";
+import { User, useGetUsersByCursor } from "@/apis";
+import InfiniteList from "@/components/InfiniteList";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef } from "react";
 
@@ -45,37 +38,12 @@ const UsersByCursor = ({ observe }: UsersByCursorProps) => {
   }, [callback, observe]);
 
   return (
-    <Flex direction={"column"} gap={4}>
-      <UnorderedList
-        display={"flex"}
-        flexDirection={"column"}
-        listStyleType={"none"}
-        gap={4}
-        m={0}
-      >
-        {(users?.pages ?? []).map((page) =>
-          page.data.map((user) => (
-            <ListItem key={user.id}>
-              <Card p={4}>
-                <Flex direction={"column"} gap={2}>
-                  <Text>{`id: ${user.id}`}</Text>
-                  <Text>{`name: ${user.name}`}</Text>
-                  <Text>{`email: ${user.email}`}</Text>
-                  <Text>{`phone: ${user.phone}`}</Text>
-                </Flex>
-              </Card>
-            </ListItem>
-          ))
-        )}
-      </UnorderedList>
-      {observe ? (
-        <div ref={target} />
-      ) : (
-        <Button onClick={() => fetchNextPage()} isDisabled={!hasNextPage}>
-          Load More
-        </Button>
-      )}
-    </Flex>
+    <InfiniteList<User>
+      observe={observe}
+      data={users}
+      hasNextPage={hasNextPage}
+      fetchNextPage={fetchNextPage}
+    />
   );
 };
 
