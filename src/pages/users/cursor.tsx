@@ -1,5 +1,5 @@
 import Layout from "@/components/Layout";
-import CreateUserModal from "@/containers/users/CreateUserModal";
+import UserCreateModal from "@/containers/users/UserCreateModal";
 import UsersByCursor from "@/containers/users/UsersByCursor";
 import UsersTab from "@/containers/users/UsersTab";
 import UsersUtils from "@/containers/users/UsersUtils";
@@ -20,7 +20,7 @@ const UsersCursorPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <CreateUserModal isOpen={isOpen} onClose={onClose} />
+        <UserCreateModal isOpen={isOpen} onClose={onClose} />
         <Flex direction={"column"} gap={4}>
           <UsersUtils onCreateUser={onOpen} />
           <Divider />

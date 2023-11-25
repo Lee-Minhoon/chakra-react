@@ -1,6 +1,6 @@
 import { useGetUsers } from "@/apis";
 import Layout from "@/components/Layout";
-import CreateUserModal from "@/containers/users/CreateUserModal";
+import UserCreateModal from "@/containers/users/UserCreateModal";
 import UsersTab from "@/containers/users/UsersTab";
 import UsersTable from "@/containers/users/UsersTable";
 import UsersUtils from "@/containers/users/UsersUtils";
@@ -20,7 +20,7 @@ const UsersAllPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <CreateUserModal isOpen={isOpen} onClose={onClose} />
+        <UserCreateModal isOpen={isOpen} onClose={onClose} />
         <Flex direction={"column"} gap={4}>
           <UsersUtils onCreateUser={onOpen} />
           <Divider />

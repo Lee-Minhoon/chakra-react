@@ -7,18 +7,19 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-interface CreateUserModalProps {
+interface UserCreateModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const CreateUserModal = ({ isOpen, onClose }: CreateUserModalProps) => {
+const UserCreateModal = ({ isOpen, onClose }: UserCreateModalProps) => {
   const { register, handleSubmit } = useForm<User>();
   const { mutate: postUser, isSuccess } = useCreateUser();
 
@@ -30,27 +31,32 @@ const CreateUserModal = ({ isOpen, onClose }: CreateUserModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent
+        as={"form"}
+        onSubmit={handleSubmit(
+          useCallback((data) => postUser(data), [postUser])
+        )}
+      >
         <ModalHeader>Create User</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Flex
-            as={"form"}
-            direction={"column"}
-            gap={4}
-            onSubmit={handleSubmit(
-              useCallback((data) => postUser(data), [postUser])
-            )}
-          >
+          <Flex direction={"column"} gap={4}>
             <Input {...register("name")} placeholder="name" />
             <Input {...register("email")} placeholder="email" />
             <Input {...register("phone")} placeholder="phone" />
-            <Button type={"submit"}>Create User</Button>
           </Flex>
         </ModalBody>
+        <ModalFooter>
+          <Button mr={3} onClick={onClose}>
+            Close
+          </Button>
+          <Button variant="ghost" type={"submit"}>
+            Create Uesr
+          </Button>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );
 };
 
-export default CreateUserModal;
+export default UserCreateModal;
