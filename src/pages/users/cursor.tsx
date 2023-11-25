@@ -1,9 +1,9 @@
 import Layout from "@/components/Layout";
+import ViewOptions from "@/components/ViewOptions";
 import UserCreateModal from "@/containers/users/UserCreateModal";
 import UsersByCursor from "@/containers/users/UsersByCursor";
-import UsersTab from "@/containers/users/UsersTab";
 import UsersUtils from "@/containers/users/UsersUtils";
-import { Divider, Flex, useDisclosure } from "@chakra-ui/react";
+import { Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -23,8 +23,9 @@ const UsersCursorPage = () => {
         <UserCreateModal isOpen={isOpen} onClose={onClose} />
         <Flex direction={"column"} gap={4}>
           <UsersUtils onCreateUser={onOpen} />
-          <Divider />
-          <UsersTab />
+          <Flex justifyContent={"flex-end"} gap={4}>
+            <ViewOptions />
+          </Flex>
           <UsersByCursor observe={router.query?.type === "observer"} />
         </Flex>
       </Layout>

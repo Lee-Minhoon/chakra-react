@@ -1,23 +1,23 @@
 import { useGetUsersByOffset } from "@/apis";
 import Layout from "@/components/Layout";
+import PageOptions from "@/components/PageOptions";
 import Pagination from "@/components/Pagination";
+import ViewOptions from "@/components/ViewOptions";
 import UserCreateModal from "@/containers/users/UserCreateModal";
-import UsersTab from "@/containers/users/UsersTab";
 import UsersTable from "@/containers/users/UsersTable";
 import UsersUtils from "@/containers/users/UsersUtils";
-import { Divider, Flex, useDisclosure } from "@chakra-ui/react";
+import { Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-
-const limit = 10;
 
 const UsersOffsetPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const page = router.query?.page ? Number(router.query?.page) : 1;
+  const limit = router.query?.limit ? Number(router.query?.limit) : 10;
   const { data } = useGetUsersByOffset({
     offset: (page - 1) * limit,
-    limit: 10,
+    limit,
   });
 
   return (
@@ -32,14 +32,18 @@ const UsersOffsetPage = () => {
         <UserCreateModal isOpen={isOpen} onClose={onClose} />
         <Flex direction={"column"} gap={4}>
           <UsersUtils onCreateUser={onOpen} />
-          <Divider />
-          <UsersTab />
+          <Flex justifyContent={"flex-end"} gap={4}>
+            <ViewOptions />
+            <PageOptions />
+          </Flex>
           <UsersTable users={data?.data ?? []} />
           <Pagination
             currentPage={page}
-            limit={10}
+            limit={limit}
             total={data?.total ?? 0}
-            onChange={(page) => router.push({ query: { page } })}
+            onChange={(page) =>
+              router.push({ query: { ...router.query, page } })
+            }
           />
         </Flex>
       </Layout>
