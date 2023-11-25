@@ -26,7 +26,7 @@ export const useGetUser = (id: number) => {
 };
 
 export const useGetUsers = () => {
-  return useFetch<User[]>(toUrl(ApiRoutes.User), undefined);
+  return useFetch<User[]>(toUrl(ApiRoutes.User));
 };
 
 export const useGetUsersByOffset = (params: OffsetQueryParams) => {

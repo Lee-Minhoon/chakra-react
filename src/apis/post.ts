@@ -1,57 +1,107 @@
 import { ApiRoutes } from "@/constants";
-import { useQueryClient } from "@tanstack/react-query";
-import { usePost, useDelete, useFetch, useUpdate } from "./hooks";
+import { useModalStore } from "@/stores";
+import { toUrl } from "@/utils";
+import { CursorQueryParams, OffsetQueryParams } from ".";
+import {
+  useDelete,
+  useFetch,
+  useGetPage,
+  useLoadMore,
+  usePost,
+  useUpdate,
+} from "./hooks";
 
 export interface Post {
-  id?: number;
+  id: number;
   title: string;
+  content: string;
 }
 
 export const useGetPost = (id: number) => {
-  return useFetch<Post>(ApiRoutes.Post, { id });
+  return useFetch<Post>(toUrl(ApiRoutes.Post), { id });
 };
 
 export const useGetPosts = () => {
-  return useFetch<Post[]>(ApiRoutes.Post);
+  return useFetch<Post[]>(toUrl(ApiRoutes.Post));
 };
 
-export const useGetLikedPosts = () => {
-  return useFetch<Post[]>(ApiRoutes.LikedPost);
+export const useGetPostsByOffset = (params: OffsetQueryParams) => {
+  return useGetPage<Post[]>(toUrl(ApiRoutes.Post), params);
 };
 
-export const usePostPost = () => {
-  const queryClient = useQueryClient();
+export const useGetPostsByCursor = (params: CursorQueryParams) => {
+  return useLoadMore<Post[]>(toUrl(ApiRoutes.Post), params);
+};
 
-  return usePost<Post[], Post>(
-    ApiRoutes.Post,
-    undefined,
-    { onSuccess: () => queryClient.invalidateQueries([ApiRoutes.LikedPost]) },
+export interface PostCreate {
+  title: string;
+  content: string;
+}
+
+export const useCreatePost = (
+  params?: OffsetQueryParams | CursorQueryParams
+) => {
+  const { openAlert } = useModalStore(["openAlert"]);
+
+  return usePost<Post[], PostCreate>(
+    toUrl(ApiRoutes.Post),
+    params,
+    {
+      onSuccess: () =>
+        openAlert({
+          title: "Post created",
+          content: "Post created successfully",
+        }),
+    },
     (old, data) => {
-      return [...old, data];
+      const newPost = { id: 0, ...data };
+      return [...old, newPost];
     }
   );
 };
 
-export const useUpdatePost = () => {
-  const queryClient = useQueryClient();
+export interface PostUpdate {
+  id: number;
+  title: string;
+  content: string;
+}
 
-  return useUpdate<Post[], Post>(
-    ApiRoutes.Post,
+export const useUpdatePost = () => {
+  const { openAlert } = useModalStore(["openAlert"]);
+
+  return useUpdate<Post[], PostUpdate>(
+    toUrl(ApiRoutes.Post),
     undefined,
-    { onSuccess: () => queryClient.invalidateQueries([ApiRoutes.LikedPost]) },
+    {
+      onSuccess: () =>
+        openAlert({
+          title: "Post updated",
+          content: "Post updated successfully",
+        }),
+    },
     (old, data) => {
-      return old.map((item) => (item.id === data.id ? data : item));
+      const finded = old.find((item) => item.id === data.id);
+      if (!finded) return old;
+      finded.title = data.title;
+      finded.content = data.content;
+      return old.map((item) => (item.id === data.id ? finded : item));
     }
   );
 };
 
 export const useDeletePost = () => {
-  const queryClient = useQueryClient();
+  const { openAlert } = useModalStore(["openAlert"]);
 
   return useDelete<Post[], number>(
-    ApiRoutes.Post,
+    toUrl(ApiRoutes.Post),
     undefined,
-    { onSuccess: () => queryClient.invalidateQueries([ApiRoutes.LikedPost]) },
+    {
+      onSuccess: () =>
+        openAlert({
+          title: "Post deleted",
+          content: "Post deleted successfully",
+        }),
+    },
     (old, id) => {
       return old.filter((item) => item.id !== id);
     }

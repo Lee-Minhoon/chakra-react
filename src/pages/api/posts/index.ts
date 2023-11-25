@@ -1,11 +1,32 @@
+import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
+import path from "path";
+import { Post, readDB } from "../db";
 import { sleep } from "../utils";
 
-interface Post {
-  id: number;
-  title: string;
-  content: string;
-}
+export const readPosts = (): Post[] => {
+  try {
+    const db = readDB();
+    return db.posts;
+  } catch (err) {
+    console.log("failed to read db.json");
+    throw err;
+  }
+};
+
+export const writePosts = (posts: Post[]) => {
+  try {
+    const db = readDB();
+    fs.writeFileSync(
+      path.join(process.cwd(), "/db.json"),
+      JSON.stringify({ ...db, posts }, null, 2),
+      "utf8"
+    );
+  } catch (err) {
+    console.log("failed to write db.json");
+    throw err;
+  }
+};
 
 export let posts: Post[] = [];
 
@@ -13,6 +34,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   sleep(500);
   switch (req.method) {
     case "GET":
+      const { offset, cursor, limit } = req.query;
+      if (offset && limit) return getPostsByOffset(req, res);
+      if (cursor && limit) return getPostsByCursor(req, res);
       return getPosts(req, res);
     case "POST":
       return postPost(req, res);
@@ -23,70 +47,130 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
 export const getPost = (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
-  const user = posts.find((post) => post.id === Number(id));
-  return res.status(200).json({ data: user, message: "success" });
+
+  try {
+    const posts = readPosts();
+    const post = posts.find((user) => user.id === Number(id));
+    return res.status(200).json({ data: post, message: "success" });
+  } catch {
+    return res.status(500).json({ data: null, message: "failed" });
+  }
 };
 
 export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
-  return res.status(200).json({ data: posts, message: "success" });
+  try {
+    const posts = readPosts();
+    return res.status(200).json({ data: posts, message: "success" });
+  } catch {
+    return res.status(500).json({ data: null, message: "failed" });
+  }
 };
 
 export const getPostsByOffset = (req: NextApiRequest, res: NextApiResponse) => {
   const { offset, limit } = req.query;
-  const slicedPosts = posts.slice(
-    Number(offset),
-    Number(offset) + Number(limit)
-  );
-  return res.status(200).json({
-    data: { total: posts.length, data: slicedPosts },
-    message: "success",
-  });
+
+  try {
+    const posts = readPosts();
+    const slicedPosts = posts.slice(
+      Number(offset),
+      Number(offset) + Number(limit)
+    );
+
+    return res.status(200).json({
+      data: { total: posts.length, data: slicedPosts },
+      message: "success",
+    });
+  } catch {
+    return res.status(500).json({ data: null, message: "failed" });
+  }
 };
 
 export const getPostsByCursor = (req: NextApiRequest, res: NextApiResponse) => {
   const { cursor, limit } = req.query;
-  const index = posts.findIndex((user) => user.id === Number(cursor));
-  const slicedPosts = posts.slice(index, index + Number(limit));
-  return res.status(200).json({
-    data: {
-      previous: posts[index - Number(limit)]?.id ?? null,
-      next: posts[index + Number(limit)]?.id ?? null,
-      data: slicedPosts,
-    },
-    message: "success",
-  });
+
+  try {
+    const posts = readPosts();
+    const index = posts.findIndex((user) => user.id === Number(cursor));
+    const slicedPosts = posts.slice(index, index + Number(limit));
+
+    return res.status(200).json({
+      data: {
+        previous: posts[index - Number(limit)]?.id ?? null,
+        next: posts[index + Number(limit)]?.id ?? null,
+        data: slicedPosts,
+      },
+      message: "success",
+    });
+  } catch {
+    return res.status(500).json({ data: null, message: "failed" });
+  }
 };
 
 export const postPost = (req: NextApiRequest, res: NextApiResponse) => {
   const { title, content } = req.body;
-  const newPost = {
-    id: (posts[posts.length - 1]?.id ?? 0) + 1,
-    title,
-    content,
-  };
-  posts.push(newPost);
-  return res.status(200).json({ data: newPost.id, message: "success" });
+
+  try {
+    const posts = readPosts();
+
+    const newPost: Post = {
+      id: (posts[posts.length - 1]?.id ?? 0) + 1,
+      title,
+      content,
+    };
+    posts.push(newPost);
+
+    try {
+      writePosts(posts);
+    } catch {
+      return res.status(500).json({ data: null, message: "failed" });
+    }
+
+    return res.status(200).json({ data: newPost.id, message: "success" });
+  } catch {
+    return res.status(500).json({ data: null, message: "failed" });
+  }
 };
 
 export const updatePost = (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
   const { title, content } = req.body;
-  posts = posts.map((post) => {
-    if (post.id === Number(id)) {
-      return { id: post.id, title, content };
+
+  try {
+    let posts = readPosts();
+    posts = posts.map((post) => {
+      if (post.id === Number(id)) {
+        return { ...post, title, content };
+      }
+      return post;
+    });
+
+    try {
+      writePosts(posts);
+    } catch {
+      return res.status(500).json({ data: null, message: "failed" });
     }
-    return post;
-  });
-  return res.status(200).json({ data: id, message: "success" });
+
+    return res.status(200).json({ data: id, message: "success" });
+  } catch {
+    return res.status(500).json({ data: null, message: "failed" });
+  }
 };
 
 export const deletePost = (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
-  posts = posts.filter((post) => post.id !== Number(id));
-  return res.status(200).json({ data: id, message: "success" });
-};
 
-export const getLikedPosts = (req: NextApiRequest, res: NextApiResponse) => {
-  const likedPosts = posts.filter((post) => post.id % 2 === 0);
-  return res.status(200).json({ data: likedPosts, message: "success" });
+  try {
+    let posts = readPosts();
+    posts = posts.filter((user) => user.id !== Number(id));
+
+    try {
+      writePosts(posts);
+    } catch {
+      return res.status(500).json({ data: null, message: "failed" });
+    }
+
+    return res.status(200).json({ data: id, message: "success" });
+  } catch {
+    return res.status(500).json({ data: null, message: "failed" });
+  }
 };
