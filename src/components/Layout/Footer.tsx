@@ -1,4 +1,5 @@
 import { Divider, Flex, Link, Text, Tooltip } from "@chakra-ui/react";
+import { Fragment } from "react";
 
 const links = [
   {
@@ -54,24 +55,24 @@ const Footer = () => {
       <Flex direction={"column"} w={1024} gap={4}>
         <Flex gap={4}>
           {links.map((link, idx) => (
-            <>
-              <Link key={idx} href={link.url} target={"_blank"}>
+            <Fragment key={idx}>
+              <Link href={link.url} target={"_blank"}>
                 {link.title}
               </Link>
               {idx !== links.length - 1 && (
                 <Divider orientation={"vertical"} color={"gray.300"} />
               )}
-            </>
+            </Fragment>
           ))}
         </Flex>
         <Flex gap={4}>
           {libraries.map((link, idx) => (
-            <>
-              <Link key={idx} href={link.url} target={"_blank"} fontSize={"sm"}>
+            <Fragment key={idx}>
+              <Link href={link.url} target={"_blank"} fontSize={"sm"}>
                 {link.title}
               </Link>
               <Divider orientation={"vertical"} color={"gray.300"} />
-            </>
+            </Fragment>
           ))}
           <Tooltip hasArrow label={"react, nextjs, typescript, etc..."}>
             <Text fontSize={"sm"}>and more...</Text>

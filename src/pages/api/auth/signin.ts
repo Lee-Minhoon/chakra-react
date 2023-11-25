@@ -1,23 +1,7 @@
-import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
-import path from "path";
-import { User, readDB } from "../db";
+import { writeSession } from ".";
 import { readUsers } from "../users";
 import { sleep } from "../utils";
-
-export const writeSession = (user: User) => {
-  try {
-    const db = readDB();
-    fs.writeFileSync(
-      path.join(process.cwd(), "/db.json"),
-      JSON.stringify({ ...db, session: user }, null, 2),
-      "utf8"
-    );
-  } catch (err) {
-    console.log("failed to write db.json");
-    throw err;
-  }
-};
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   sleep(200);

@@ -1,11 +1,14 @@
+import { Nullable } from "@/types";
 import fs from "fs";
 import path from "path";
 
 interface Scheme {
-  session: User;
+  session: Session;
   users: User[];
   posts: Post[];
 }
+
+export type Session = Nullable<User>;
 
 export interface User {
   id: number;

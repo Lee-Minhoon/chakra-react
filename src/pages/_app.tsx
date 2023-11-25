@@ -1,4 +1,5 @@
 import { ApiError } from "@/apis";
+import Authenticator from "@/components/Authenticator";
 import ModalProvider from "@/components/ModalProvider";
 import { modalStore } from "@/stores";
 import "@/styles/globals.css";
@@ -60,6 +61,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
       <ChakraProvider theme={theme}>
+        <Authenticator />
         <ModalProvider />
         <Component {...pageProps} />
       </ChakraProvider>
