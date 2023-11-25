@@ -15,6 +15,7 @@ const Authenticator = () => {
   const { isError } = useGetMe(!whiteList.includes(router.pathname));
 
   useEffect(() => {
+    if (whiteList.includes(router.pathname)) return;
     if (isError) {
       router.push(PageRoutes.Home);
     }
