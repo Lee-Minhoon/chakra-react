@@ -8,9 +8,11 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <Flex direction={"column"} w={1024} margin={"auto"}>
+    <Flex direction={"column"} align={"center"}>
       <Header />
-      <Box as={"main"}>{children}</Box>
+      <Box as={"main"} w={1024}>
+        {children}
+      </Box>
       <Footer />
     </Flex>
   );

@@ -13,6 +13,7 @@ const Header = () => {
       gap={4}
       mb={4}
       pt={10}
+      w={1024}
     >
       <Center>
         <Heading onClick={() => router.push("/")} cursor={"pointer"}>
