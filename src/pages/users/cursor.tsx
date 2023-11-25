@@ -23,10 +23,12 @@ const UsersCursorPage = () => {
       <Layout>
         <UserCreateModal isOpen={isOpen} onClose={onClose} />
         <Flex direction={"column"} gap={4}>
-          <UsersUtils onCreateUser={onOpen} />
-          <Flex justifyContent={"flex-end"} gap={4}>
-            <ViewOptions />
-            <PageOptions />
+          <Flex justifyContent={"space-between"}>
+            <UsersUtils onCreateUser={onOpen} />
+            <Flex gap={4}>
+              <ViewOptions />
+              <PageOptions />
+            </Flex>
           </Flex>
           <UsersByCursor observe={router.query?.type === "observer"} />
         </Flex>

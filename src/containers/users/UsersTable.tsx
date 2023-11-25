@@ -8,6 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useCallback, useMemo } from "react";
+import { TbCheck, TbTrash } from "react-icons/tb";
 
 const columnHelper = createColumnHelper<User>();
 
@@ -56,7 +57,10 @@ const UsersTable = ({ users }: UsersTableProps) => {
             {context.row.original.approved ? (
               "Approved"
             ) : (
-              <Button onClick={() => handleApprove(context.row.original.id)}>
+              <Button
+                rightIcon={<TbCheck />}
+                onClick={() => handleApprove(context.row.original.id)}
+              >
                 Approve
               </Button>
             )}
@@ -67,7 +71,10 @@ const UsersTable = ({ users }: UsersTableProps) => {
         id: "actions",
         header: "Actions",
         cell: (context) => (
-          <Button onClick={() => handleDelete(context.row.original.id)}>
+          <Button
+            rightIcon={<TbTrash />}
+            onClick={() => handleDelete(context.row.original.id)}
+          >
             Delete
           </Button>
         ),

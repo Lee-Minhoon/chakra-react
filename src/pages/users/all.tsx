@@ -1,5 +1,6 @@
 import { useGetUsers } from "@/apis";
 import Layout from "@/components/Layout";
+import PageOptions from "@/components/PageOptions";
 import ViewOptions from "@/components/ViewOptions";
 import UserCreateModal from "@/containers/users/UserCreateModal";
 import UsersTable from "@/containers/users/UsersTable";
@@ -23,9 +24,12 @@ const UsersAllPage = () => {
       <Layout>
         <UserCreateModal isOpen={isOpen} onClose={onClose} />
         <Flex direction={"column"} gap={4}>
-          <UsersUtils onCreateUser={onOpen} />
-          <Flex justifyContent={"flex-end"} gap={4}>
-            <ViewOptions />
+          <Flex justifyContent={"space-between"}>
+            <UsersUtils onCreateUser={onOpen} />
+            <Flex gap={4}>
+              <ViewOptions />
+              <PageOptions />
+            </Flex>
           </Flex>
           <UsersTable users={data ?? []} />
         </Flex>
