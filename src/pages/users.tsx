@@ -1,26 +1,32 @@
-import { useGetUsersByOffset } from "@/apis";
+import { useGetUsers, useGetUsersByOffset } from "@/apis";
 import Layout from "@/components/Layout";
 import PageOptions from "@/components/PageOptions";
 import Pagination from "@/components/Pagination";
 import ViewOptions from "@/components/ViewOptions";
+import { ViewOptionQueries } from "@/constants";
 import UserCreateModal from "@/containers/users/UserCreateModal";
+import UsersByCursor from "@/containers/users/UsersByCursor";
 import UsersTable from "@/containers/users/UsersTable";
 import UsersUtils from "@/containers/users/UsersUtils";
 import { Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-const UsersOffsetPage = () => {
+const UsersAllPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const router = useRouter();
+  const viewOption = router.query?.view as ViewOptionQueries;
   const page = router.query?.page ? Number(router.query?.page) : 1;
   const limit = router.query?.limit ? Number(router.query?.limit) : 10;
-
-  const { data } = useGetUsersByOffset({
-    offset: (page - 1) * limit,
-    limit,
-  });
+  const { data: users } = useGetUsers(viewOption === ViewOptionQueries.All);
+  const { data: usersByOffset } = useGetUsersByOffset(
+    {
+      offset: (page - 1) * limit,
+      limit,
+    },
+    viewOption === ViewOptionQueries.Offset
+  );
 
   return (
     <>
@@ -40,19 +46,32 @@ const UsersOffsetPage = () => {
               <PageOptions />
             </Flex>
           </Flex>
-          <UsersTable users={data?.data ?? []} />
-          <Pagination
-            currentPage={page}
-            limit={limit}
-            total={data?.total ?? 0}
-            onChange={(page) =>
-              router.push({ query: { ...router.query, page } })
-            }
-          />
+          {viewOption === ViewOptionQueries.All && (
+            <UsersTable users={users ?? []} />
+          )}
+          {viewOption === ViewOptionQueries.Offset && (
+            <>
+              <UsersTable users={usersByOffset?.data ?? []} />
+              <Pagination
+                currentPage={page}
+                limit={limit}
+                total={usersByOffset?.total ?? 0}
+                onChange={(page) =>
+                  router.push({ query: { ...router.query, page } })
+                }
+              />
+            </>
+          )}
+          {(viewOption === ViewOptionQueries.CursorButton ||
+            viewOption === ViewOptionQueries.CursorObserver) && (
+            <UsersByCursor
+              observe={viewOption === ViewOptionQueries.CursorObserver}
+            />
+          )}
         </Flex>
       </Layout>
     </>
   );
 };
 
-export default UsersOffsetPage;
+export default UsersAllPage;

@@ -3,12 +3,7 @@ import { PageRoutes } from "@/constants";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const whiteList: string[] = [
-  PageRoutes.Home,
-  PageRoutes.UsersAll,
-  PageRoutes.UsersByOffset,
-  PageRoutes.UsersByCursor,
-];
+const whiteList: string[] = [PageRoutes.Home, PageRoutes.Users];
 
 const Authenticator = () => {
   const router = useRouter();

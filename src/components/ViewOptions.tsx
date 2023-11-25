@@ -1,24 +1,28 @@
-import { PageRoutes } from "@/constants";
+import { PageRoutes, ViewOptionQueries } from "@/constants";
 import { Select } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 
 const options = [
-  { label: "All", pathname: PageRoutes.UsersAll, query: {} },
+  {
+    label: "All",
+    pathname: PageRoutes.Users,
+    query: { view: ViewOptionQueries.All },
+  },
   {
     label: "Offset",
-    pathname: PageRoutes.UsersByOffset,
-    query: { page: 1, limit: 10 },
+    query: { view: ViewOptionQueries.Offset, page: 1, limit: 10 },
   },
   {
     label: "Cursor(Button)",
-    pathname: PageRoutes.UsersByCursor,
-    query: { type: "button", limit: 10 },
+    query: { view: ViewOptionQueries.CursorButton, limit: 10 },
   },
   {
     label: "Cursor(Observer)",
-    pathname: PageRoutes.UsersByCursor,
-    query: { type: "observer", limit: 10 },
+    query: {
+      view: ViewOptionQueries.CursorObserver,
+      limit: 10,
+    },
   },
 ];
 
@@ -27,17 +31,17 @@ const ViewOptions = () => {
 
   const selectedIdx = useMemo(() => {
     return options.findIndex(
-      (option) =>
-        option.pathname === router.pathname &&
-        option.query?.type === router.query?.type
+      (option) => option.query?.view === router.query?.view
     );
-  }, [router.pathname, router.query?.type]);
+  }, [router.query?.view]);
 
   return (
     <Select
       w={"fit-content"}
       value={selectedIdx}
-      onChange={(e) => router.push({ ...options[Number(e.target.value)] })}
+      onChange={(e) =>
+        router.push({ query: options[Number(e.target.value)].query })
+      }
     >
       {options.map((option, idx) => (
         <option key={option.label} value={idx}>

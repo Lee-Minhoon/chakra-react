@@ -1,13 +1,18 @@
-import { PageRoutes } from "@/constants";
+import { PageRoutes, ViewOptionQueries } from "@/constants";
 import { Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 
 const tabs = [
-  { label: "Users", pathname: PageRoutes.UsersAll },
+  {
+    label: "Users",
+    pathname: PageRoutes.Users,
+    query: { view: ViewOptionQueries.All },
+  },
   {
     label: "Posts",
-    pathname: PageRoutes.PostsAll,
+    pathname: PageRoutes.Posts,
+    query: { view: ViewOptionQueries.All },
   },
 ];
 
@@ -24,7 +29,10 @@ const Navbar = () => {
     <Tabs
       variant="enclosed"
       index={selectedIndex}
-      onChange={(index) => router.push({ ...tabs[index] })}
+      onChange={(index) => {
+        const tab = tabs[index];
+        router.push({ pathname: tab.pathname, query: tab.query });
+      }}
     >
       <TabList>
         {tabs.map((tab) => (

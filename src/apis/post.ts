@@ -20,16 +20,22 @@ export const useGetPost = (id: number) => {
   return useFetch<Post>(toUrl(ApiRoutes.Post), { id });
 };
 
-export const useGetPosts = () => {
-  return useFetch<Post[]>(toUrl(ApiRoutes.Post));
+export const useGetPosts = (enabled: boolean) => {
+  return useFetch<Post[]>(toUrl(ApiRoutes.Post), undefined, { enabled });
 };
 
-export const useGetPostsByOffset = (params: OffsetQueryParams) => {
-  return useGetPage<Post[]>(toUrl(ApiRoutes.Post), params);
+export const useGetPostsByOffset = (
+  params: OffsetQueryParams,
+  enabled: boolean
+) => {
+  return useGetPage<Post[]>(toUrl(ApiRoutes.Post), params, { enabled });
 };
 
-export const useGetPostsByCursor = (params: CursorQueryParams) => {
-  return useLoadMore<Post[]>(toUrl(ApiRoutes.Post), params);
+export const useGetPostsByCursor = (
+  params: CursorQueryParams,
+  enabled: boolean
+) => {
+  return useLoadMore<Post[]>(toUrl(ApiRoutes.Post), params, { enabled });
 };
 
 export interface PostCreate {
