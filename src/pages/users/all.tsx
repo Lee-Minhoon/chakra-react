@@ -9,6 +9,7 @@ import Head from "next/head";
 
 const UsersAllPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const { data } = useGetUsers();
 
   return (

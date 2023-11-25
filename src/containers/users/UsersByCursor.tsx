@@ -7,6 +7,7 @@ import {
   Text,
   UnorderedList,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef } from "react";
 
 interface UsersByCursorProps {
@@ -14,11 +15,14 @@ interface UsersByCursorProps {
 }
 
 const UsersByCursor = ({ observe }: UsersByCursorProps) => {
+  const router = useRouter();
+  const limit = router.query?.limit ? Number(router.query?.limit) : 10;
+
   const {
     data: users,
     fetchNextPage,
     hasNextPage,
-  } = useGetUsersByCursor({ limit: 10 });
+  } = useGetUsersByCursor({ limit });
 
   const target = useRef<HTMLDivElement>(null);
 

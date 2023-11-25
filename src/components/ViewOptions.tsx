@@ -13,12 +13,12 @@ const options = [
   {
     label: "Cursor(Button)",
     pathname: PageRoutes.UsersByCursor,
-    query: { type: "button" },
+    query: { type: "button", limit: 10 },
   },
   {
     label: "Cursor(Observer)",
     pathname: PageRoutes.UsersByCursor,
-    query: { type: "observer" },
+    query: { type: "observer", limit: 10 },
   },
 ];
 

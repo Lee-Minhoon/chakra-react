@@ -1,4 +1,5 @@
 import Layout from "@/components/Layout";
+import PageOptions from "@/components/PageOptions";
 import ViewOptions from "@/components/ViewOptions";
 import UserCreateModal from "@/containers/users/UserCreateModal";
 import UsersByCursor from "@/containers/users/UsersByCursor";
@@ -25,6 +26,7 @@ const UsersCursorPage = () => {
           <UsersUtils onCreateUser={onOpen} />
           <Flex justifyContent={"flex-end"} gap={4}>
             <ViewOptions />
+            <PageOptions />
           </Flex>
           <UsersByCursor observe={router.query?.type === "observer"} />
         </Flex>

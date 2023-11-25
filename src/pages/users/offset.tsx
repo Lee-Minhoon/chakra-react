@@ -12,9 +12,11 @@ import { useRouter } from "next/router";
 
 const UsersOffsetPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const router = useRouter();
   const page = router.query?.page ? Number(router.query?.page) : 1;
   const limit = router.query?.limit ? Number(router.query?.limit) : 10;
+
   const { data } = useGetUsersByOffset({
     offset: (page - 1) * limit,
     limit,

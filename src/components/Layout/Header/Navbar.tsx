@@ -15,7 +15,9 @@ const Navbar = () => {
   const router = useRouter();
 
   const selectedIndex = useMemo(() => {
-    return tabs.findIndex((tab) => tab.pathname === router.pathname);
+    return tabs.findIndex(
+      (tab) => tab.pathname.split("/")[1] === router.pathname.split("/")[1]
+    );
   }, [router.pathname]);
 
   return (
