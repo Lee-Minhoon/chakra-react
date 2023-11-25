@@ -34,7 +34,7 @@ const Pagination = ({
         )
       )}
       <Button
-        isDisabled={currentPage === end}
+        isDisabled={total === 0 || currentPage === end}
         onClick={() => onChange(end + 1)}
       >
         Next
