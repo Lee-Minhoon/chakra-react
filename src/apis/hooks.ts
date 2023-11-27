@@ -113,10 +113,14 @@ export const useMutation = <TOldData, TNewData, TResponse>(
     onSettled: (data, err, variables, context) => {
       options?.onSettled?.(data, err, variables, context);
       if (!queryKey) return;
-      queryClient
-        .getQueryCache()
-        .findAll([queryKey[0]])
-        .forEach((queryKey) => queryClient.invalidateQueries(queryKey));
+
+      // 변수를 고려하지않고, 모든 쿼리를 무효화 합니다.
+      // 변수를 고려해야 한다면, queryClient.invalidateQueries(queryKey)를 사용하세요.
+      // Invalidates all queries without considering variables.
+      // If you need to consider variables, use queryClient.invalidateQueries(queryKey).
+      const queryKeyToInvalidate = queryKey[0];
+      console.log("invalidateQueries", queryKeyToInvalidate);
+      queryClient.invalidateQueries([queryKeyToInvalidate]);
     },
   });
 };
