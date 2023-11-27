@@ -1,6 +1,7 @@
 import { ApiRoutes } from "@/constants";
 import { Nullable } from "@/types";
 import { toUrl } from "@/utils";
+import { useQueryClient } from "@tanstack/react-query";
 import { User, useFetch, usePost } from ".";
 
 export interface AuthSignin {
@@ -8,10 +9,24 @@ export interface AuthSignin {
 }
 
 export const useSignin = () => {
-  return usePost<undefined, AuthSignin>(toUrl(ApiRoutes.Signin));
+  const queryClient = useQueryClient();
+
+  return usePost<undefined, AuthSignin>(toUrl(ApiRoutes.Signin), undefined, {
+    onSuccess: () => queryClient.invalidateQueries([toUrl(ApiRoutes.Me)]),
+    meta: { successMessage: "Signin successfully" },
+  });
 };
 
-export const useGetMe = (enabled: boolean) => {
+export const useSignout = () => {
+  const queryClient = useQueryClient();
+
+  return usePost<undefined>(toUrl(ApiRoutes.Signout), undefined, {
+    onSuccess: () => queryClient.invalidateQueries([toUrl(ApiRoutes.Me)]),
+    meta: { successMessage: "Signout successfully" },
+  });
+};
+
+export const useGetMe = (enabled?: boolean) => {
   return useFetch<Nullable<User>>(toUrl(ApiRoutes.Me), undefined, {
     enabled,
   });

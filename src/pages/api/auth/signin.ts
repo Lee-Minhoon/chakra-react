@@ -13,7 +13,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export const signin = (req: NextApiRequest, res: NextApiResponse) => {
+const signin = (req: NextApiRequest, res: NextApiResponse) => {
   const { email } = req.body;
 
   const users = readUsers();

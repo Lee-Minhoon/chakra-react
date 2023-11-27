@@ -15,9 +15,5 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 export const me = (req: NextApiRequest, res: NextApiResponse) => {
   const session = readSession();
 
-  if (!session) {
-    return res.status(401).json({ message: "unauthorized" });
-  }
-
   return res.status(200).json({ data: session, message: "success" });
 };

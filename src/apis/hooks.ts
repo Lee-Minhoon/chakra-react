@@ -164,14 +164,19 @@ export const useLoadMore = <TResponse>(
   return useInfiniteQuery<TResponse>(url, params, options);
 };
 
-export const usePost = <TOldData, TNewData extends object, TResponse = unknown>(
+export const usePost = <
+  TOldData,
+  TNewData extends object | void = void,
+  TResponse = unknown,
+>(
   url: string,
   params?: object,
   options?: UseMutationOptions<TResponse, ApiError, TNewData>,
   updater?: (old: TOldData, data: TNewData) => TOldData
 ) => {
   return useMutation<TOldData, TNewData, TResponse>(
-    (data) => api.post<TResponse>(url, data),
+    (data) =>
+      data ? api.post<TResponse>(url, data) : api.post<TResponse>(url),
     options,
     [url, params],
     updater

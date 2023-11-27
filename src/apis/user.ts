@@ -134,12 +134,7 @@ const useInvalidate = () => {
   const queryClient = useQueryClient();
 
   return () => {
-    return Promise.all(
-      queryClient
-        .getQueryCache()
-        .findAll([toUrl(ApiRoutes.User)])
-        .map((queryKey) => queryClient.invalidateQueries(queryKey))
-    );
+    return queryClient.invalidateQueries([toUrl(ApiRoutes.User)]);
   };
 };
 
