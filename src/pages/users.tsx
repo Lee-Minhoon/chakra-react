@@ -32,7 +32,7 @@ const UsersAllPage = () => {
             <UsersUtils onCreateUser={onOpen} />
             <Flex gap={4}>
               <ViewOptions />
-              <PageOptions />
+              {viewOption !== ViewOptionQueries.All && <PageOptions />}
             </Flex>
           </Flex>
           {viewOption === ViewOptionQueries.All && <UsersAll />}

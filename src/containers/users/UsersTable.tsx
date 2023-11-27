@@ -1,5 +1,6 @@
 import { User, useApproveUser, useDeleteUser } from "@/apis";
 import DataTable from "@/components/DataTable";
+import { usePagination } from "@/hooks";
 import { useModalStore } from "@/stores";
 import { Button, Flex } from "@chakra-ui/react";
 import {
@@ -18,8 +19,11 @@ interface UsersTableProps {
 
 const UsersTable = ({ users }: UsersTableProps) => {
   const { openConfirm } = useModalStore(["openConfirm"]);
-  const { mutate: deleteUser } = useDeleteUser();
-  const { mutate: approveUser } = useApproveUser();
+
+  const { offset, limit, isExist } = usePagination();
+  const queryKeyValues = isExist ? { offset, limit } : undefined;
+  const { mutate: deleteUser } = useDeleteUser(queryKeyValues);
+  const { mutate: approveUser } = useApproveUser(queryKeyValues);
 
   const handleApprove = useCallback<(id?: number) => void>(
     (id) => {

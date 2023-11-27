@@ -26,7 +26,7 @@ const PostsAllPage = () => {
           <Flex justifyContent={"space-between"}>
             <Flex gap={4}>
               <ViewOptions />
-              <PageOptions />
+              {viewOption !== ViewOptionQueries.All && <PageOptions />}
             </Flex>
           </Flex>
           {viewOption === ViewOptionQueries.All && <PostsAll />}

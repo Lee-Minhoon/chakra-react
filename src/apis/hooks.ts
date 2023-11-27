@@ -92,6 +92,7 @@ export const useMutation = <TOldData, TNewData, TResponse>(
     onMutate: async (variables) => {
       options?.onMutate?.(variables);
       if (!queryKey) return;
+      console.log("onMutate", queryKey);
 
       // 낙관적 업데이트(쿼리 키가 없으면 실행되지 않음)
       // Optimistic update(does not run if query key is not present)

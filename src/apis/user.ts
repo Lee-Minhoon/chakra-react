@@ -11,7 +11,12 @@ import {
   usePost,
   useUpdate,
 } from "./hooks";
-import { CursorQueryParams, OffsetQueryParams, Scheme } from "./types";
+import {
+  CursorQueryParams,
+  OffsetQueryData,
+  OffsetQueryParams,
+  Scheme,
+} from "./types";
 
 export interface User extends Scheme {
   name: string;
@@ -90,12 +95,12 @@ export const useUpdateUser = () => {
   );
 };
 
-export const useDeleteUser = () => {
+export const useDeleteUser = (params?: object) => {
   const { openAlert } = useModalStore(["openAlert"]);
 
-  return useDelete<User[], number>(
+  return useDelete<User[] | OffsetQueryData<User[]>, number>(
     toUrl(ApiRoutes.User),
-    undefined,
+    params,
     {
       onSuccess: () =>
         openAlert({
@@ -104,7 +109,15 @@ export const useDeleteUser = () => {
         }),
     },
     (old, id) => {
-      return old.filter((item) => item.id !== id);
+      const newData = "data" in old ? old.data : old;
+      if (!Array.isArray(old)) {
+        return {
+          ...old,
+          data: newData.filter((item) => item.id !== id),
+        };
+      } else {
+        return newData.filter((item) => item.id !== id);
+      }
     }
   );
 };
@@ -113,27 +126,31 @@ export interface UserApprove {
   id: number;
 }
 
-export const useApproveUser = () => {
+export const useApproveUser = (params?: object) => {
   const { openAlert } = useModalStore(["openAlert"]);
-  const invalidate = useInvalidate();
 
-  return useCommand<User[], UserApprove>(
+  return useCommand<User[] | OffsetQueryData<User[]>, UserApprove>(
     ApiRoutes.ApproveUser,
     {
       onSuccess: () =>
-        invalidate().then(() =>
-          openAlert({
-            title: "User approved",
-            content: "User approved successfully",
-          })
-        ),
+        openAlert({
+          title: "User approved",
+          content: "User approved successfully",
+        }),
     },
-    [toUrl(ApiRoutes.User), undefined],
+    [toUrl(ApiRoutes.User), params],
     (old, data) => {
-      const finded = old.find((item) => item.id === data.id);
+      const newData = "data" in old ? old.data : old;
+      const finded = newData.find((item) => item.id === data.id);
       if (!finded) return old;
       finded.approved = true;
-      return old.map((item) => (item.id === data.id ? finded : item));
+      if (!Array.isArray(old)) {
+        return {
+          ...old,
+          data: old.data.map((item) => (item.id === data.id ? finded : item)),
+        };
+      }
+      return newData.map((item) => (item.id === data.id ? finded : item));
     }
   );
 };

@@ -12,6 +12,10 @@ const usePagination = () => {
     return router.query?.limit ? Number(router.query?.limit) : 10;
   }, [router.query?.limit]);
 
+  const isExist = useMemo(() => {
+    return router.query?.page && router.query?.limit;
+  }, [router.query?.page, router.query?.limit]);
+
   const onPageChange = useCallback(
     (page: number) => {
       router.push({
@@ -22,7 +26,7 @@ const usePagination = () => {
     [router]
   );
 
-  return { page, offset: (page - 1) * limit, limit, onPageChange };
+  return { page, offset: (page - 1) * limit, limit, isExist, onPageChange };
 };
 
 export default usePagination;
