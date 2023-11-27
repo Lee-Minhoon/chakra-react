@@ -16,8 +16,10 @@ export class ApiError extends Error {
   }
 }
 
+export type ID = number;
+
 export interface Scheme {
-  id: number;
+  id: ID;
 }
 
 export type OffsetQueryParams = {

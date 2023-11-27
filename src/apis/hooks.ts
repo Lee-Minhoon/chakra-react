@@ -16,6 +16,7 @@ import {
   ApiError,
   ApiResponse,
   CursorQueryData,
+  ID,
   OffsetQueryData,
 } from "./types";
 import { api } from "./utils";
@@ -174,7 +175,7 @@ export const usePost = <TOldData, TNewData extends object, TResponse = unknown>(
 
 export const useUpdate = <
   TOldData,
-  TNewData extends object & { id?: number },
+  TNewData extends object & { id?: ID },
   TResponse = unknown,
 >(
   url: string,
@@ -193,7 +194,7 @@ export const useUpdate = <
   );
 };
 
-export const useDelete = <TOldData, TResponse, TId = number>(
+export const useDelete = <TOldData, TResponse, TId = ID>(
   url: string,
   params?: object,
   options?: UseMutationOptions<TResponse, ApiError, TId>,
@@ -209,7 +210,7 @@ export const useDelete = <TOldData, TResponse, TId = number>(
 
 export const useCommand = <
   TOldData,
-  TNewData extends object & { id?: number },
+  TNewData extends object & { id?: ID },
   TResponse = unknown,
 >(
   url: ApiRoutes,
