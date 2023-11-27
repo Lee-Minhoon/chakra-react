@@ -1,11 +1,10 @@
-import { useGetPosts, useGetPostsByOffset } from "@/apis";
 import Layout from "@/components/Layout";
 import PageOptions from "@/components/PageOptions";
-import Pagination from "@/components/Pagination";
 import ViewOptions from "@/components/ViewOptions";
 import { ViewOptionQueries } from "@/constants";
+import PostsAll from "@/containers/posts/PostsAll";
 import PostsByCursor from "@/containers/posts/PostsByCursor";
-import PostsTable from "@/containers/posts/PostsTable";
+import PostsByOffset from "@/containers/posts/PostsByOffset";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -13,16 +12,6 @@ import { useRouter } from "next/router";
 const PostsAllPage = () => {
   const router = useRouter();
   const viewOption = router.query?.view as ViewOptionQueries;
-  const page = router.query?.page ? Number(router.query?.page) : 1;
-  const limit = router.query?.limit ? Number(router.query?.limit) : 10;
-  const { data: posts } = useGetPosts(viewOption === ViewOptionQueries.All);
-  const { data: postsByOffset } = useGetPostsByOffset(
-    {
-      offset: (page - 1) * limit,
-      limit,
-    },
-    viewOption === ViewOptionQueries.Offset
-  );
 
   return (
     <>
@@ -40,22 +29,8 @@ const PostsAllPage = () => {
               <PageOptions />
             </Flex>
           </Flex>
-          {viewOption === ViewOptionQueries.All && (
-            <PostsTable posts={posts ?? []} />
-          )}
-          {viewOption === ViewOptionQueries.Offset && (
-            <>
-              <PostsTable posts={postsByOffset?.data ?? []} />
-              <Pagination
-                currentPage={page}
-                limit={limit}
-                total={postsByOffset?.total ?? 0}
-                onChange={(page) =>
-                  router.push({ query: { ...router.query, page } })
-                }
-              />
-            </>
-          )}
+          {viewOption === ViewOptionQueries.All && <PostsAll />}
+          {viewOption === ViewOptionQueries.Offset && <PostsByOffset />}
           {(viewOption === ViewOptionQueries.CursorButton ||
             viewOption === ViewOptionQueries.CursorObserver) && (
             <PostsByCursor

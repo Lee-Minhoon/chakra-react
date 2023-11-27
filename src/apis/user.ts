@@ -24,22 +24,16 @@ export const useGetUser = (id: number) => {
   return useFetch<User>(toUrl(ApiRoutes.User, { id }));
 };
 
-export const useGetUsers = (enabled: boolean) => {
-  return useFetch<User[]>(toUrl(ApiRoutes.User), undefined, { enabled });
+export const useGetUsers = () => {
+  return useFetch<User[]>(toUrl(ApiRoutes.User));
 };
 
-export const useGetUsersByOffset = (
-  params: OffsetQueryParams,
-  enabled: boolean
-) => {
-  return useGetPage<User[]>(toUrl(ApiRoutes.User), params, { enabled });
+export const useGetUsersByOffset = (params: OffsetQueryParams) => {
+  return useGetPage<User[]>(toUrl(ApiRoutes.User), params);
 };
 
-export const useGetUsersByCursor = (
-  params: CursorQueryParams,
-  enabled: boolean
-) => {
-  return useLoadMore<User[]>(toUrl(ApiRoutes.User), params, { enabled });
+export const useGetUsersByCursor = (params: CursorQueryParams) => {
+  return useLoadMore<User[]>(toUrl(ApiRoutes.User), params);
 };
 
 export interface UserCreate {

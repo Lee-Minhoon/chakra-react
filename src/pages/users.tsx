@@ -1,12 +1,11 @@
-import { useGetUsers, useGetUsersByOffset } from "@/apis";
 import Layout from "@/components/Layout";
 import PageOptions from "@/components/PageOptions";
-import Pagination from "@/components/Pagination";
 import ViewOptions from "@/components/ViewOptions";
 import { ViewOptionQueries } from "@/constants";
 import UserCreateModal from "@/containers/users/UserCreateModal";
+import UsersAll from "@/containers/users/UsersAll";
 import UsersByCursor from "@/containers/users/UsersByCursor";
-import UsersTable from "@/containers/users/UsersTable";
+import UsersByOffset from "@/containers/users/UsersByOffset";
 import UsersUtils from "@/containers/users/UsersUtils";
 import { Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
@@ -17,16 +16,6 @@ const UsersAllPage = () => {
 
   const router = useRouter();
   const viewOption = router.query?.view as ViewOptionQueries;
-  const page = router.query?.page ? Number(router.query?.page) : 1;
-  const limit = router.query?.limit ? Number(router.query?.limit) : 10;
-  const { data: users } = useGetUsers(viewOption === ViewOptionQueries.All);
-  const { data: usersByOffset } = useGetUsersByOffset(
-    {
-      offset: (page - 1) * limit,
-      limit,
-    },
-    viewOption === ViewOptionQueries.Offset
-  );
 
   return (
     <>
@@ -46,22 +35,8 @@ const UsersAllPage = () => {
               <PageOptions />
             </Flex>
           </Flex>
-          {viewOption === ViewOptionQueries.All && (
-            <UsersTable users={users ?? []} />
-          )}
-          {viewOption === ViewOptionQueries.Offset && (
-            <>
-              <UsersTable users={usersByOffset?.data ?? []} />
-              <Pagination
-                currentPage={page}
-                limit={limit}
-                total={usersByOffset?.total ?? 0}
-                onChange={(page) =>
-                  router.push({ query: { ...router.query, page } })
-                }
-              />
-            </>
-          )}
+          {viewOption === ViewOptionQueries.All && <UsersAll />}
+          {viewOption === ViewOptionQueries.Offset && <UsersByOffset />}
           {(viewOption === ViewOptionQueries.CursorButton ||
             viewOption === ViewOptionQueries.CursorObserver) && (
             <UsersByCursor
