@@ -1,5 +1,4 @@
 import { ApiRoutes } from "@/constants";
-import { useModalStore } from "@/stores";
 import { toUrl } from "@/utils";
 import { CursorQueryParams, OffsetQueryParams, Scheme } from ".";
 import {
@@ -40,17 +39,11 @@ export interface PostCreate {
 export const useCreatePost = (
   params?: OffsetQueryParams | CursorQueryParams
 ) => {
-  const { openAlert } = useModalStore(["openAlert"]);
-
   return usePost<Post[], PostCreate>(
     toUrl(ApiRoutes.Post),
     params,
     {
-      onSuccess: () =>
-        openAlert({
-          title: "Post created",
-          content: "Post created successfully",
-        }),
+      meta: { successMessage: "Post created successfully" },
     },
     (old, data) => {
       const newPost = { id: 0, ...data };
@@ -62,17 +55,11 @@ export const useCreatePost = (
 export type PostUpdate = Post;
 
 export const useUpdatePost = () => {
-  const { openAlert } = useModalStore(["openAlert"]);
-
   return useUpdate<Post[], PostUpdate>(
     toUrl(ApiRoutes.Post),
     undefined,
     {
-      onSuccess: () =>
-        openAlert({
-          title: "Post updated",
-          content: "Post updated successfully",
-        }),
+      meta: { successMessage: "Post updated successfully" },
     },
     (old, data) => {
       const finded = old.find((item) => item.id === data.id);
@@ -85,17 +72,11 @@ export const useUpdatePost = () => {
 };
 
 export const useDeletePost = () => {
-  const { openAlert } = useModalStore(["openAlert"]);
-
   return useDelete<Post[], number>(
     toUrl(ApiRoutes.Post),
     undefined,
     {
-      onSuccess: () =>
-        openAlert({
-          title: "Post deleted",
-          content: "Post deleted successfully",
-        }),
+      meta: { successMessage: "Post deleted successfully" },
     },
     (old, id) => {
       return old.filter((item) => item.id !== id);

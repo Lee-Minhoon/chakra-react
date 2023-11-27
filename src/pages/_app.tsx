@@ -6,6 +6,7 @@ import "@/styles/globals.css";
 import {
   ChakraProvider,
   baseTheme,
+  createStandaloneToast,
   extendTheme,
   withDefaultColorScheme,
 } from "@chakra-ui/react";
@@ -17,6 +18,8 @@ import {
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
+
+const { ToastContainer, toast } = createStandaloneToast();
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,11 +38,24 @@ const queryClient = new QueryClient({
     },
   }),
   mutationCache: new MutationCache({
+    onSuccess: (data, variables, context, mutation) => {
+      if (!mutation.meta?.successMessage) return;
+      toast({
+        title: "Success",
+        description: mutation.meta.successMessage,
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+      });
+    },
     onError: (error, variables, context, mutation) => {
       if (!(error instanceof ApiError) || mutation.meta?.ignoreError) return;
-      modalStore.getState().openAlert({
-        title: "Error",
-        content: error.message,
+      toast({
+        title: "Failed",
+        description: error.message,
+        status: "error",
+        duration: 2000,
+        isClosable: true,
       });
     },
   }),
@@ -63,6 +79,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme}>
         <Authenticator />
         <ModalProvider />
+        <ToastContainer />
         <Component {...pageProps} />
       </ChakraProvider>
     </QueryClientProvider>

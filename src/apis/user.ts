@@ -1,5 +1,4 @@
 import { ApiRoutes } from "@/constants";
-import { useModalStore } from "@/stores";
 import { toUrl } from "@/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -50,17 +49,11 @@ export interface UserCreate {
 export const useCreateUser = (
   params?: OffsetQueryParams | CursorQueryParams
 ) => {
-  const { openAlert } = useModalStore(["openAlert"]);
-
   return usePost<User[], UserCreate>(
     toUrl(ApiRoutes.User),
     params,
     {
-      onSuccess: () =>
-        openAlert({
-          title: "User created",
-          content: "User created successfully",
-        }),
+      meta: { successMessage: "User created successfully" },
     },
     (old, data) => {
       const newUser = { id: 0, approved: false, ...data };
@@ -72,17 +65,11 @@ export const useCreateUser = (
 export type UserUpdate = Omit<User, "approved">;
 
 export const useUpdateUser = () => {
-  const { openAlert } = useModalStore(["openAlert"]);
-
   return useUpdate<User[], UserUpdate>(
     toUrl(ApiRoutes.User),
     undefined,
     {
-      onSuccess: () =>
-        openAlert({
-          title: "User updated",
-          content: "User updated successfully",
-        }),
+      meta: { successMessage: "User updated successfully" },
     },
     (old, data) => {
       const finded = old.find((item) => item.id === data.id);
@@ -96,17 +83,11 @@ export const useUpdateUser = () => {
 };
 
 export const useDeleteUser = (params?: object) => {
-  const { openAlert } = useModalStore(["openAlert"]);
-
   return useDelete<User[] | OffsetQueryData<User[]>, number>(
     toUrl(ApiRoutes.User),
     params,
     {
-      onSuccess: () =>
-        openAlert({
-          title: "User deleted",
-          content: "User deleted successfully",
-        }),
+      meta: { successMessage: "User deleted successfully" },
     },
     (old, id) => {
       const newData = "data" in old ? old.data : old;
@@ -127,16 +108,10 @@ export interface UserApprove {
 }
 
 export const useApproveUser = (params?: object) => {
-  const { openAlert } = useModalStore(["openAlert"]);
-
   return useCommand<User[] | OffsetQueryData<User[]>, UserApprove>(
     ApiRoutes.ApproveUser,
     {
-      onSuccess: () =>
-        openAlert({
-          title: "User approved",
-          content: "User approved successfully",
-        }),
+      meta: { successMessage: "User approved successfully" },
     },
     [toUrl(ApiRoutes.User), params],
     (old, data) => {
@@ -173,6 +148,7 @@ export const useCreateTestUsers = (count: number) => {
 
   return usePost(`${toUrl(ApiRoutes.User)}/test/${count}`, undefined, {
     onSuccess: invalidate,
+    meta: { successMessage: "Test users created successfully" },
   });
 };
 
@@ -181,5 +157,6 @@ export const useResetTestUsers = () => {
 
   return usePost(`${toUrl(ApiRoutes.User)}/test/reset`, undefined, {
     onSuccess: invalidate,
+    meta: { successMessage: "Test users reset successfully" },
   });
 };
