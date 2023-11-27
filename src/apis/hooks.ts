@@ -210,12 +210,12 @@ export const useDelete = <TOldData, TResponse, TId = ID>(
 
 export const useCommand = <
   TOldData,
-  TNewData extends object & { id?: ID },
+  TNewData extends object & { id: ID },
   TResponse = unknown,
 >(
   url: ApiRoutes,
-  params?: object,
   options?: UseMutationOptions<TResponse, ApiError, TNewData>,
+  queryKey?: QueryKeyType,
   updater?: (old: TOldData, data: TNewData) => TOldData,
   method: "POST" | "PUT" | "PATCH" = "POST"
 ) => {
@@ -224,15 +224,15 @@ export const useCommand = <
       const { id, ...rest } = data;
       switch (method) {
         case "POST":
-          return api.post<TResponse>(id ? toUrl(url, { id }) : url, rest);
+          return api.post<TResponse>(toUrl(url, { id }), rest);
         case "PUT":
-          return api.put<TResponse>(id ? toUrl(url, { id }) : url, rest);
+          return api.put<TResponse>(toUrl(url, { id }), rest);
         case "PATCH":
-          return api.patch<TResponse>(id ? toUrl(url, { id }) : url, rest);
+          return api.patch<TResponse>(toUrl(url, { id }), rest);
       }
     },
     options,
-    [url, params],
+    queryKey,
     updater
   );
 };

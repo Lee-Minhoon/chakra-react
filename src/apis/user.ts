@@ -125,7 +125,6 @@ export const useApproveUser = () => {
 
   return useCommand<User[], UserApprove>(
     ApiRoutes.ApproveUser,
-    undefined,
     {
       onSuccess: () =>
         invalidate().then(() =>
@@ -135,6 +134,7 @@ export const useApproveUser = () => {
           })
         ),
     },
+    [toUrl(ApiRoutes.User), undefined],
     (old, data) => {
       const finded = old.find((item) => item.id === data.id);
       if (!finded) return old;
