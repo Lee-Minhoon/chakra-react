@@ -1,7 +1,18 @@
 import { Nullable } from "@/types";
+import { ReactNode } from "react";
 import { create } from "zustand";
-import { Alert, Confirm } from "./types";
-import { useShallow } from "../hooks";
+import { useShallow } from "./hooks";
+
+interface Alert {
+  title: string;
+  content: ReactNode;
+}
+
+interface Confirm {
+  title: string;
+  content: ReactNode;
+  onConfirm?: () => void;
+}
 
 interface T {
   alert: Nullable<Alert>;
