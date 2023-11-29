@@ -204,7 +204,7 @@ export const useUpdate = <
   );
 };
 
-export const useDelete = <TOldData, TResponse, TId = ID>(
+export const useDelete = <TOldData, TResponse = unknown, TId = ID>(
   url: string,
   params?: object,
   options?: UseMutationOptions<TResponse, ApiError, TId>,
