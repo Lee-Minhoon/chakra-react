@@ -1,7 +1,8 @@
 import { useCreateTestUsers, useCreateUser, useResetTestUsers } from "@/apis";
 import { Button, Flex, Tooltip } from "@chakra-ui/react";
-import { TbPlus } from "react-icons/tb";
+import { useCallback } from "react";
 import { GrPowerReset } from "react-icons/gr";
+import { TbPlus } from "react-icons/tb";
 
 const count = 50;
 
@@ -38,6 +39,22 @@ const UsersUtils = ({ onCreateUser }: UsersUtilsProps) => {
   const { mutate: resetTestUsers, isLoading: restTestUsersLoading } =
     useResetTestUsers();
 
+  const handleCreateRandomUser = useCallback(() => {
+    postUser({
+      name: randomString(10),
+      email: `${randomString(20)}@gmail.com`,
+      phone: randomPhone(),
+    });
+  }, [postUser]);
+
+  const handleCreateTestUsers = useCallback(() => {
+    createTestUsers();
+  }, [createTestUsers]);
+
+  const handleResetTestUsers = useCallback(() => {
+    resetTestUsers();
+  }, [resetTestUsers]);
+
   return (
     <Flex gap={4}>
       <Tooltip hasArrow label={"Create User"}>
@@ -46,23 +63,14 @@ const UsersUtils = ({ onCreateUser }: UsersUtilsProps) => {
         </Button>
       </Tooltip>
       <Tooltip hasArrow label={"Create Random User"}>
-        <Button
-          leftIcon={<TbPlus />}
-          onClick={() =>
-            postUser({
-              name: randomString(10),
-              email: `${randomString(20)}@gmail.com`,
-              phone: randomPhone(),
-            })
-          }
-        >
+        <Button leftIcon={<TbPlus />} onClick={handleCreateRandomUser}>
           Random User
         </Button>
       </Tooltip>
       <Tooltip hasArrow label={"Create 50 Users for Test"}>
         <Button
           leftIcon={<TbPlus />}
-          onClick={() => createTestUsers({})}
+          onClick={handleCreateTestUsers}
           isDisabled={createTestUsersLoading}
         >
           {`${count} Users`}
@@ -71,7 +79,7 @@ const UsersUtils = ({ onCreateUser }: UsersUtilsProps) => {
       <Tooltip hasArrow label={"Reset All Users"}>
         <Button
           leftIcon={<GrPowerReset />}
-          onClick={() => resetTestUsers({})}
+          onClick={handleResetTestUsers}
           isDisabled={restTestUsersLoading}
         >
           Users
