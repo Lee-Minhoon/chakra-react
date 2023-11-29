@@ -1,5 +1,6 @@
 import { PageRoutes, ViewOptionQueries } from "@/constants";
 import { Tab, TabList, Tabs } from "@chakra-ui/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 
@@ -26,17 +27,15 @@ const Navbar = () => {
   }, [router.pathname]);
 
   return (
-    <Tabs
-      variant="enclosed"
-      index={selectedIndex}
-      onChange={(index) => {
-        const tab = tabs[index];
-        router.push({ pathname: tab.pathname, query: tab.query });
-      }}
-    >
+    <Tabs variant="enclosed" index={selectedIndex}>
       <TabList>
         {tabs.map((tab) => (
-          <Tab key={tab.label}>{tab.label}</Tab>
+          <Link
+            key={tab.label}
+            href={{ pathname: tab.pathname, query: tab.query }}
+          >
+            <Tab>{tab.label}</Tab>
+          </Link>
         ))}
       </TabList>
     </Tabs>

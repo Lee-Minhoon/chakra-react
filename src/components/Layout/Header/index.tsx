@@ -1,11 +1,10 @@
 import { useGetMe, useSignout } from "@/apis/auth";
 import { Box, Button, Center, Flex, Heading } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import Navbar from "./Navbar";
 
 const Header = () => {
-  const router = useRouter();
   const { data } = useGetMe();
   const { mutate: signout } = useSignout();
 
@@ -27,9 +26,9 @@ const Header = () => {
         )}
       </Flex>
       <Center>
-        <Heading onClick={() => router.push("/")} cursor={"pointer"}>
-          Home
-        </Heading>
+        <Link href={"/"}>
+          <Heading>Home</Heading>
+        </Link>
       </Center>
       <Navbar />
     </Box>
