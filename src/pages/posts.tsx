@@ -5,12 +5,31 @@ import useLayout from "@/hooks/useLayout";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useMemo } from "react";
 
 const PostsAllPage = () => {
   const { Layout } = useLayout();
 
   const router = useRouter();
   const viewOption = router.query?.view as ViewOptionQueries;
+
+  const display = useMemo(() => {
+    switch (viewOption) {
+      case ViewOptionQueries.All:
+        return <PostsAll />;
+      case ViewOptionQueries.Offset:
+        return <PostsByOffset />;
+      case ViewOptionQueries.CursorButton:
+      case ViewOptionQueries.CursorObserver:
+        return (
+          <PostsByCursor
+            observe={viewOption === ViewOptionQueries.CursorObserver}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [viewOption]);
 
   return (
     <>
@@ -28,14 +47,7 @@ const PostsAllPage = () => {
               {viewOption !== ViewOptionQueries.All && <PageOptions />}
             </Flex>
           </Flex>
-          {viewOption === ViewOptionQueries.All && <PostsAll />}
-          {viewOption === ViewOptionQueries.Offset && <PostsByOffset />}
-          {(viewOption === ViewOptionQueries.CursorButton ||
-            viewOption === ViewOptionQueries.CursorObserver) && (
-            <PostsByCursor
-              observe={viewOption === ViewOptionQueries.CursorObserver}
-            />
-          )}
+          {display}
         </Flex>
       </Layout>
     </>

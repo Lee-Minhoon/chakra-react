@@ -11,6 +11,7 @@ import useLayout from "@/hooks/useLayout";
 import { Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useMemo } from "react";
 
 const UsersPage = () => {
   const { Layout } = useLayout();
@@ -18,6 +19,24 @@ const UsersPage = () => {
 
   const router = useRouter();
   const viewOption = router.query?.view as ViewOptionQueries;
+
+  const display = useMemo(() => {
+    switch (viewOption) {
+      case ViewOptionQueries.All:
+        return <UsersAll />;
+      case ViewOptionQueries.Offset:
+        return <UsersByOffset />;
+      case ViewOptionQueries.CursorButton:
+      case ViewOptionQueries.CursorObserver:
+        return (
+          <UsersByCursor
+            observe={viewOption === ViewOptionQueries.CursorObserver}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [viewOption]);
 
   return (
     <>
@@ -37,14 +56,7 @@ const UsersPage = () => {
               {viewOption !== ViewOptionQueries.All && <PageOptions />}
             </Flex>
           </Flex>
-          {viewOption === ViewOptionQueries.All && <UsersAll />}
-          {viewOption === ViewOptionQueries.Offset && <UsersByOffset />}
-          {(viewOption === ViewOptionQueries.CursorButton ||
-            viewOption === ViewOptionQueries.CursorObserver) && (
-            <UsersByCursor
-              observe={viewOption === ViewOptionQueries.CursorObserver}
-            />
-          )}
+          {display}
         </Flex>
       </Layout>
     </>
