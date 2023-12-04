@@ -1,5 +1,5 @@
 import { useGetMe, useSignout } from "@/apis/auth";
-import { ColorMode, LayoutMode } from "@/components";
+import { ColorMode, LayoutMode, Logo } from "@/components";
 import { Box, Button, Center, Flex, Heading } from "@chakra-ui/react";
 import Link from "next/link";
 import { RiLogoutBoxRLine } from "react-icons/ri";
@@ -32,11 +32,7 @@ const Header = () => {
           </Button>
         )}
       </Flex>
-      <Center>
-        <Link href={"/"}>
-          <Heading>Home</Heading>
-        </Link>
-      </Center>
+      <Logo />
       <Navbar />
     </Box>
   );

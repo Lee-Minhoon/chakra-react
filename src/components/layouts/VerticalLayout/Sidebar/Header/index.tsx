@@ -1,6 +1,5 @@
-import { ColorMode, LayoutMode } from "@/components";
+import { ColorMode, LayoutMode, Logo } from "@/components";
 import { Center, Flex } from "@chakra-ui/react";
-import Logo from "./Logo";
 
 const SidebarHeader = () => {
   return (

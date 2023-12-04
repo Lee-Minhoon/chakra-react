@@ -1,9 +1,11 @@
-import { Layout } from "@/components";
 import { SigninForm } from "@/containers";
+import useLayout from "@/hooks/useLayout";
 import { Center } from "@chakra-ui/react";
 import Head from "next/head";
 
 export default function Home() {
+  const { Layout } = useLayout();
+
   return (
     <>
       <Head>
