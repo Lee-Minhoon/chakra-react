@@ -8,11 +8,11 @@ const whiteList: string[] = [PageRoutes.Home, PageRoutes.Users];
 
 const Authenticator = () => {
   const router = useRouter();
-  const { data } = useGetMe(!whiteList.includes(router.pathname));
+  const { data, isFetching } = useGetMe(!whiteList.includes(router.pathname));
   const { openAlert } = useModalStore(["openAlert"]);
 
   useEffect(() => {
-    if (whiteList.includes(router.pathname)) return;
+    if (whiteList.includes(router.pathname) || isFetching) return;
     if (!data) {
       openAlert({
         title: "Unauthorized",
@@ -20,7 +20,7 @@ const Authenticator = () => {
       });
       router.push(PageRoutes.Home);
     }
-  }, [router, data, openAlert]);
+  }, [router, data, openAlert, isFetching]);
 
   return <></>;
 };

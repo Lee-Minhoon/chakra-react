@@ -1,11 +1,15 @@
 import { Table, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
-import { Table as ReactTable, flexRender } from "@tanstack/react-table";
+import { Table as ReactTable, Row, flexRender } from "@tanstack/react-table";
 
 interface ReactTableProps<T> {
   table: ReactTable<T>;
+  onRowClick?: (row: Row<T>) => void;
 }
 
-const DataTable = <T extends any>({ table }: ReactTableProps<T>) => {
+const DataTable = <T extends any>({
+  table,
+  onRowClick,
+}: ReactTableProps<T>) => {
   return (
     <Table>
       <Thead>
@@ -26,7 +30,14 @@ const DataTable = <T extends any>({ table }: ReactTableProps<T>) => {
       </Thead>
       <Tbody>
         {table.getRowModel().rows.map((row) => (
-          <Tr key={row.id}>
+          <Tr
+            key={row.id}
+            onClick={() => onRowClick?.(row)}
+            _hover={{
+              cursor: onRowClick ? "pointer" : "default",
+              bgColor: onRowClick ? "gray.100" : undefined,
+            }}
+          >
             {row.getVisibleCells().map((cell) => (
               <Td key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}

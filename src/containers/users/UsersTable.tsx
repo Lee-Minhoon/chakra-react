@@ -1,9 +1,10 @@
 import { User, useApproveUser, useDeleteUser } from "@/apis";
 import DataTable from "@/components/DataTable";
-import { usePagination } from "@/hooks";
+import { usePagination, useRouterPush } from "@/hooks";
 import { useModalStore } from "@/stores";
 import { Button, Flex } from "@chakra-ui/react";
 import {
+  Row,
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
@@ -20,6 +21,7 @@ interface UsersTableProps {
 const UsersTable = ({ users }: UsersTableProps) => {
   const { openConfirm } = useModalStore(["openConfirm"]);
 
+  const { push } = useRouterPush();
   const { offset, limit, isExist } = usePagination();
   const queryKeyValues = isExist ? { offset, limit } : undefined;
   const { mutate: deleteUser } = useDeleteUser(queryKeyValues);
@@ -58,7 +60,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
       columnHelper.accessor("approved", {
         cell: (context) => (
           <Flex>
-            {context.row.original.approved ? (
+            {context.renderValue() ? (
               "Approved"
             ) : (
               <Button
@@ -93,7 +95,14 @@ const UsersTable = ({ users }: UsersTableProps) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return <DataTable<User> table={table} />;
+  const handleClickRow = useCallback<(row: Row<User>) => void>(
+    (row) => {
+      push(`/users/${row.original.id}`);
+    },
+    [push]
+  );
+
+  return <DataTable<User> table={table} onRowClick={handleClickRow} />;
 };
 
 export default UsersTable;

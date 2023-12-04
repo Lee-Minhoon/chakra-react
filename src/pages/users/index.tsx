@@ -11,7 +11,7 @@ import { Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-const UsersAllPage = () => {
+const UsersPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const router = useRouter();
@@ -49,4 +49,4 @@ const UsersAllPage = () => {
   );
 };
 
-export default UsersAllPage;
+export default UsersPage;

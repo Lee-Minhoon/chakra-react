@@ -24,7 +24,7 @@ export interface User extends Scheme {
   approved: boolean;
 }
 
-export const useGetUser = (id: number) => {
+export const useGetUser = (id?: number) => {
   return useFetch<User>(toUrl(ApiRoutes.User, { id }));
 };
 
