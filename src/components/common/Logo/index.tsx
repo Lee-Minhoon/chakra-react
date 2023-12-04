@@ -5,7 +5,9 @@ const Logo = () => {
   return (
     <Center>
       <Link href={"/"}>
-        <Heading>Home</Heading>
+        <Heading size={"md"} color={"primary.500"}>
+          NextJS Boilerplate
+        </Heading>
       </Link>
     </Center>
   );
