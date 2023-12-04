@@ -1,9 +1,9 @@
-import { useAppStore } from "@/stores/app";
+import useLayout from "@/hooks/useLayout";
 import { Icon, IconButton, Tooltip } from "@chakra-ui/react";
 import { BsLayoutSidebar } from "react-icons/bs";
 
 const LayoutMode = () => {
-  const { layout, toggleLayout } = useAppStore(["layout", "toggleLayout"]);
+  const { layout, toggleLayout } = useLayout();
 
   return (
     <Tooltip
