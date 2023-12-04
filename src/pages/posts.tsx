@@ -1,11 +1,14 @@
-import { Layout, PageOptions, ViewOptions } from "@/components";
+import { PageOptions, ViewOptions } from "@/components";
 import { ViewOptionQueries } from "@/constants";
 import { PostsAll, PostsByCursor, PostsByOffset } from "@/containers";
+import useLayout from "@/hooks/useLayout";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
 const PostsAllPage = () => {
+  const { Layout } = useLayout();
+
   const router = useRouter();
   const viewOption = router.query?.view as ViewOptionQueries;
 

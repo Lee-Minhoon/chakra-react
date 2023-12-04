@@ -1,3 +1,4 @@
+import useBgColor from "@/hooks/useBgColor";
 import { Divider, Flex, Link, Text, Tooltip } from "@chakra-ui/react";
 import { Fragment } from "react";
 
@@ -40,6 +41,8 @@ const libraries = [
 ];
 
 const Footer = () => {
+  const bgColor = useBgColor();
+
   return (
     <Flex
       as={"footer"}
@@ -48,9 +51,7 @@ const Footer = () => {
       mt={10}
       pt={10}
       pb={20}
-      borderTop={"1px solid"}
-      borderColor={"gray.100"}
-      bgColor={"gray.50"}
+      bgColor={bgColor}
     >
       <Flex direction={"column"} w={1024} gap={4}>
         <Flex gap={4}>
@@ -59,9 +60,7 @@ const Footer = () => {
               <Link href={link.url} target={"_blank"}>
                 {link.title}
               </Link>
-              {idx !== links.length - 1 && (
-                <Divider orientation={"vertical"} color={"gray.300"} />
-              )}
+              {idx !== links.length - 1 && <Divider orientation={"vertical"} />}
             </Fragment>
           ))}
         </Flex>
@@ -71,7 +70,7 @@ const Footer = () => {
               <Link href={link.url} target={"_blank"} fontSize={"sm"}>
                 {link.title}
               </Link>
-              <Divider orientation={"vertical"} color={"gray.300"} />
+              <Divider orientation={"vertical"} />
             </Fragment>
           ))}
           <Tooltip hasArrow label={"react, nextjs, typescript, etc..."}>

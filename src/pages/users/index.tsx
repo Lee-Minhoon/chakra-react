@@ -1,4 +1,4 @@
-import { Layout, PageOptions, ViewOptions } from "@/components";
+import { PageOptions, ViewOptions } from "@/components";
 import { ViewOptionQueries } from "@/constants";
 import {
   UserCreateModal,
@@ -7,11 +7,13 @@ import {
   UsersByOffset,
   UsersUtils,
 } from "@/containers";
+import useLayout from "@/hooks/useLayout";
 import { Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
 const UsersPage = () => {
+  const { Layout } = useLayout();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const router = useRouter();
@@ -27,7 +29,7 @@ const UsersPage = () => {
       </Head>
       <Layout>
         <UserCreateModal isOpen={isOpen} onClose={onClose} />
-        <Flex direction={"column"} gap={4}>
+        <Flex direction={"column"} gap={4} h={"100%"}>
           <Flex justifyContent={"space-between"}>
             <UsersUtils onCreateUser={onOpen} />
             <Flex gap={4}>

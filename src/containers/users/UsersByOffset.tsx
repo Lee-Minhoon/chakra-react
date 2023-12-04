@@ -2,6 +2,7 @@ import { useGetUsersByOffset } from "@/apis";
 import { Pagination } from "@/components";
 import { UsersTable } from "@/containers";
 import { usePagination } from "@/hooks";
+import { TableContainer } from "@chakra-ui/react";
 
 const UsersByOffset = () => {
   const { page, offset, limit, onPageChange } = usePagination();
@@ -12,7 +13,9 @@ const UsersByOffset = () => {
 
   return (
     <>
-      <UsersTable users={usersByOffset?.data ?? []} />
+      <TableContainer flex={1} overflowY={"auto"}>
+        <UsersTable users={usersByOffset?.data ?? []} />
+      </TableContainer>
       <Pagination
         currentPage={page}
         limit={limit}

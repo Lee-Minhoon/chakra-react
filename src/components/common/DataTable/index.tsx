@@ -1,3 +1,4 @@
+import useBgColor from "@/hooks/useBgColor";
 import { Table, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
 import { Table as ReactTable, Row, flexRender } from "@tanstack/react-table";
 
@@ -10,6 +11,8 @@ const DataTable = <T extends any>({
   table,
   onRowClick,
 }: ReactTableProps<T>) => {
+  const bgColor = useBgColor();
+
   return (
     <Table>
       <Thead>
@@ -35,7 +38,7 @@ const DataTable = <T extends any>({
             onClick={() => onRowClick?.(row)}
             _hover={{
               cursor: onRowClick ? "pointer" : "default",
-              bgColor: onRowClick ? "gray.100" : undefined,
+              bgColor: onRowClick ? bgColor : undefined,
             }}
           >
             {row.getVisibleCells().map((cell) => (

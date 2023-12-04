@@ -1,3 +1,6 @@
+import { BsFillPostcardFill } from "react-icons/bs";
+import { FaUser } from "react-icons/fa";
+
 export enum ApiRoutes {
   Signin = "api/auth/signin",
   Signout = "api/auth/signout",
@@ -20,3 +23,20 @@ export enum ViewOptionQueries {
   CursorButton = "cursorButton",
   CursorObserver = "cursorObserver",
 }
+
+export const navbarTabs = [
+  {
+    label: "Users",
+    pathname: PageRoutes.Users,
+    query: { view: ViewOptionQueries.All },
+    icon: FaUser,
+  },
+  {
+    label: "Posts",
+    pathname: PageRoutes.Posts,
+    query: { view: ViewOptionQueries.All },
+    icon: BsFillPostcardFill,
+  },
+];
+
+export type NavbarTab = (typeof navbarTabs)[number];

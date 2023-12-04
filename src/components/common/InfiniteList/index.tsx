@@ -45,7 +45,7 @@ const InfiniteList = <T extends Scheme>({
   }, [callback, observe]);
 
   return (
-    <Flex direction={"column"} gap={4}>
+    <Flex direction={"column"} gap={4} overflowY={"auto"}>
       <UnorderedList
         display={"flex"}
         flexDirection={"column"}
@@ -70,7 +70,11 @@ const InfiniteList = <T extends Scheme>({
       {observe ? (
         <div ref={target} />
       ) : (
-        <Button onClick={() => fetchNextPage()} isDisabled={!hasNextPage}>
+        <Button
+          onClick={() => fetchNextPage()}
+          isDisabled={!hasNextPage}
+          flexShrink={0}
+        >
           Load More
         </Button>
       )}
