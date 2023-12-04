@@ -1,5 +1,5 @@
 import { useGetPosts } from "@/apis";
-import PostsTable from "@/containers/posts/PostsTable";
+import { PostsTable } from "@/containers";
 
 const PostsAll = () => {
   const { data: posts } = useGetPosts();

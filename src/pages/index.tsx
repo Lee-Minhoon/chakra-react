@@ -1,5 +1,5 @@
-import Layout from "@/components/Layout";
-import SigninForm from "@/containers/home/SigninForm";
+import { Layout } from "@/components";
+import { SigninForm } from "@/containers";
 import { Center } from "@chakra-ui/react";
 import Head from "next/head";
 

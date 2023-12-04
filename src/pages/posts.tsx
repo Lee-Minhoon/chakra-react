@@ -1,10 +1,6 @@
-import Layout from "@/components/Layout";
-import PageOptions from "@/components/PageOptions";
-import ViewOptions from "@/components/ViewOptions";
+import { Layout, PageOptions, ViewOptions } from "@/components";
 import { ViewOptionQueries } from "@/constants";
-import PostsAll from "@/containers/posts/PostsAll";
-import PostsByCursor from "@/containers/posts/PostsByCursor";
-import PostsByOffset from "@/containers/posts/PostsByOffset";
+import { PostsAll, PostsByCursor, PostsByOffset } from "@/containers";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";

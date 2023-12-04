@@ -1,5 +1,5 @@
 import { User, useApproveUser, useDeleteUser } from "@/apis";
-import DataTable from "@/components/DataTable";
+import { DataTable } from "@/components";
 import { usePagination, useRouterPush } from "@/hooks";
 import { useModalStore } from "@/stores";
 import { Button, Flex } from "@chakra-ui/react";

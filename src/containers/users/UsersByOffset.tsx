@@ -1,6 +1,6 @@
 import { useGetUsersByOffset } from "@/apis";
-import Pagination from "@/components/Pagination";
-import UsersTable from "@/containers/users/UsersTable";
+import { Pagination } from "@/components";
+import { UsersTable } from "@/containers";
 import { usePagination } from "@/hooks";
 
 const UsersByOffset = () => {

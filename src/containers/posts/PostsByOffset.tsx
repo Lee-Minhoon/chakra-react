@@ -1,6 +1,6 @@
 import { useGetPostsByOffset } from "@/apis";
-import Pagination from "@/components/Pagination";
-import PostsTable from "@/containers/posts/PostsTable";
+import { Pagination } from "@/components";
+import { PostsTable } from "@/containers";
 import { usePagination } from "@/hooks";
 
 const PostsAllPage = () => {

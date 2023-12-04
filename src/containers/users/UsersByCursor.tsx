@@ -1,5 +1,5 @@
 import { User, useGetUsersByCursor } from "@/apis";
-import InfiniteList from "@/components/InfiniteList";
+import { InfiniteList } from "@/components";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef } from "react";
 

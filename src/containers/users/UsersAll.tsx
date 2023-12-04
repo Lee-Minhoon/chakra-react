@@ -1,5 +1,5 @@
 import { useGetUsers } from "@/apis";
-import UsersTable from "@/containers/users/UsersTable";
+import { UsersTable } from "@/containers";
 
 const UsersAll = () => {
   const { data: users } = useGetUsers();

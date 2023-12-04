@@ -1,5 +1,5 @@
 import { Post } from "@/apis";
-import DataTable from "@/components/DataTable";
+import { DataTable } from "@/components";
 import {
   createColumnHelper,
   getCoreRowModel,

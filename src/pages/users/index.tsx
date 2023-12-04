@@ -1,12 +1,12 @@
-import Layout from "@/components/Layout";
-import PageOptions from "@/components/PageOptions";
-import ViewOptions from "@/components/ViewOptions";
+import { Layout, PageOptions, ViewOptions } from "@/components";
 import { ViewOptionQueries } from "@/constants";
-import UserCreateModal from "@/containers/users/UserCreateModal";
-import UsersAll from "@/containers/users/UsersAll";
-import UsersByCursor from "@/containers/users/UsersByCursor";
-import UsersByOffset from "@/containers/users/UsersByOffset";
-import UsersUtils from "@/containers/users/UsersUtils";
+import {
+  UserCreateModal,
+  UsersAll,
+  UsersByCursor,
+  UsersByOffset,
+  UsersUtils,
+} from "@/containers";
 import { Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";

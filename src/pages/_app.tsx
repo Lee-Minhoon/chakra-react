@@ -1,6 +1,5 @@
 import { ApiError } from "@/apis";
-import Authenticator from "@/components/Authenticator";
-import ModalProvider from "@/components/ModalProvider";
+import { Authenticator, ModalProvider } from "@/components";
 import { modalStore } from "@/stores";
 import "@/styles/globals.css";
 import {
