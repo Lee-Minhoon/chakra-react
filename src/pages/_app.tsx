@@ -1,5 +1,5 @@
 import { ApiError } from "@/apis";
-import { Authenticator, ModalProvider } from "@/components";
+import { Authenticator, LayoutProvider, ModalProvider } from "@/components";
 import { modalStore } from "@/stores";
 import "@/styles/globals.css";
 import {
@@ -79,7 +79,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <Authenticator />
         <ModalProvider />
         <ToastContainer />
-        <Component {...pageProps} />
+        <LayoutProvider>
+          <Component {...pageProps} />
+        </LayoutProvider>
       </ChakraProvider>
     </QueryClientProvider>
   );
