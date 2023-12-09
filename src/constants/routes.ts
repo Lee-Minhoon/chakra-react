@@ -14,6 +14,7 @@ export enum ApiRoutes {
 export enum PageRoutes {
   Home = "/",
   Users = "/users",
+  UserDetail = "/users/:id",
   Posts = "/posts",
 }
 

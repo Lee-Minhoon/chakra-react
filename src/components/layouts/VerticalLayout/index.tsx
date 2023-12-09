@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+import Header from "./Header";
 import Sidebar from "./Sidebar";
 
 interface VerticalLayoutProps {
@@ -10,6 +11,7 @@ const VerticalLayout = ({ children }: VerticalLayoutProps) => {
     <Flex>
       <Sidebar />
       <Box as={"main"} flex={1} p={4} maxH={"100vh"}>
+        <Header />
         {children}
       </Box>
     </Flex>

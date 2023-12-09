@@ -1,7 +1,6 @@
 import { useGetMe, useSignout } from "@/apis/auth";
 import { ColorMode, LayoutMode, Logo } from "@/components";
-import { Box, Button, Center, Flex, Heading } from "@chakra-ui/react";
-import Link from "next/link";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import Navbar from "./Navbar";
 

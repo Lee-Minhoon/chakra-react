@@ -13,9 +13,11 @@ const Sidebar = () => {
       display={"flex"}
       flexDirection={"column"}
       bgColor={bgColor}
-      w={64}
+      minW={64}
       p={4}
       h={"100vh"}
+      ml={{ base: -64, lg: 0 }}
+      transition={"margin-left 0.3s ease-in-out"}
     >
       <SidebarHeader />
       <Divider />
