@@ -22,8 +22,8 @@ const UsersTable = ({ users }: UsersTableProps) => {
   const { openConfirm } = useModalStore(["openConfirm"]);
 
   const { push } = useRouterPush();
-  const { offset, limit, isExist } = usePagination();
-  const queryKeyValues = isExist ? { offset, limit } : undefined;
+  const { offset, limit, sort, order, isExist } = usePagination();
+  const queryKeyValues = isExist ? { offset, limit, sort, order } : undefined;
   const { mutate: deleteUser } = useDeleteUser(queryKeyValues);
   const { mutate: approveUser } = useApproveUser(queryKeyValues);
 
@@ -53,10 +53,10 @@ const UsersTable = ({ users }: UsersTableProps) => {
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor("id", {}),
-      columnHelper.accessor("name", {}),
-      columnHelper.accessor("email", {}),
-      columnHelper.accessor("phone", {}),
+      columnHelper.accessor("id", { meta: { sortable: true } }),
+      columnHelper.accessor("name", { meta: { sortable: true } }),
+      columnHelper.accessor("email", { meta: { sortable: true } }),
+      columnHelper.accessor("phone", { meta: { sortable: true } }),
       columnHelper.accessor("approved", {
         cell: (context) => (
           <Flex>

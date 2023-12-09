@@ -1,32 +1,44 @@
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 
+export interface OnPaginationParams {
+  page?: number;
+  limit?: number;
+  sort?: string;
+  order?: string;
+}
+
 const usePagination = () => {
   const router = useRouter();
 
-  const page = useMemo(() => {
-    return router.query?.page ? Number(router.query?.page) : 1;
-  }, [router.query?.page]);
+  const params = useMemo(() => {
+    return {
+      page: router.query?.page ? Number(router.query?.page) : 1,
+      limit: router.query?.limit ? Number(router.query?.limit) : 10,
+      sort: router.query?.sort ? router.query?.sort : "",
+      order: router.query?.order ? router.query?.order : "",
+    };
+  }, [router.query]);
 
-  const limit = useMemo(() => {
-    return router.query?.limit ? Number(router.query?.limit) : 10;
-  }, [router.query?.limit]);
+  const offset = useMemo(() => {
+    return (params.page - 1) * params.limit;
+  }, [params]);
 
   const isExist = useMemo(() => {
     return router.query?.page && router.query?.limit;
   }, [router.query?.page, router.query?.limit]);
 
-  const onPageChange = useCallback(
-    (page: number) => {
+  const onPagination = useCallback(
+    (params: OnPaginationParams) => {
       router.push({
         pathname: router.pathname,
-        query: { ...router.query, page },
+        query: { ...router.query, ...params },
       });
     },
     [router]
   );
 
-  return { page, offset: (page - 1) * limit, limit, isExist, onPageChange };
+  return { ...params, offset, isExist, onPagination };
 };
 
 export default usePagination;

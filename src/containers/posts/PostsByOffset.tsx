@@ -4,7 +4,7 @@ import { PostsTable } from "@/containers";
 import { usePagination } from "@/hooks";
 
 const PostsAllPage = () => {
-  const { page, offset, limit, onPageChange } = usePagination();
+  const { page, offset, limit, onPagination } = usePagination();
   const { data: postsByOffset } = useGetPostsByOffset({
     offset,
     limit,
@@ -17,7 +17,7 @@ const PostsAllPage = () => {
         currentPage={page}
         limit={limit}
         total={postsByOffset?.total ?? 0}
-        onChange={onPageChange}
+        onChange={(page) => onPagination({ page })}
       />
     </>
   );
