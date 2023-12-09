@@ -72,6 +72,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
             )}
           </Flex>
         ),
+        meta: { sortable: true },
       }),
       columnHelper.display({
         id: "actions",

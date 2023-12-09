@@ -24,6 +24,8 @@ export interface Post {
   content: string;
 }
 
+export type Order = "asc" | "desc";
+
 export const readDB = (): Scheme => {
   const data = fs.readFileSync(path.join(process.cwd(), "/db.json"), "utf8");
   return JSON.parse(data);

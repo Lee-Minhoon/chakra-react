@@ -5,10 +5,12 @@ import { usePagination } from "@/hooks";
 import { TableContainer } from "@chakra-ui/react";
 
 const UsersByOffset = () => {
-  const { page, offset, limit, onPagination } = usePagination();
+  const { page, offset, limit, sort, order, onPagination } = usePagination();
   const { data: usersByOffset } = useGetUsersByOffset({
     offset,
     limit,
+    sort,
+    order,
   });
 
   return (

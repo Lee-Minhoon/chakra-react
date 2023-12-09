@@ -15,8 +15,10 @@ const usePagination = () => {
     return {
       page: router.query?.page ? Number(router.query?.page) : 1,
       limit: router.query?.limit ? Number(router.query?.limit) : 10,
-      sort: router.query?.sort ? router.query?.sort : "",
-      order: router.query?.order ? router.query?.order : "",
+      sort: router.query?.sort ? router.query?.sort.toString() : "",
+      order: (router.query?.order ? router.query?.order.toString() : "") as
+        | "asc"
+        | "desc",
     };
   }, [router.query]);
 
