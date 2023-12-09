@@ -1,5 +1,5 @@
 import { useGetUser } from "@/apis";
-import { Layout } from "@/components";
+import { useLayout } from "@/hooks";
 import {
   Box,
   Card,
@@ -15,6 +15,8 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 
 const UserPage = () => {
+  const { Layout } = useLayout();
+
   const router = useRouter();
   const { data: user } = useGetUser(
     router.query?.id ? +router.query.id : undefined

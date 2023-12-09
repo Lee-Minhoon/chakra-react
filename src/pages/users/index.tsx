@@ -7,7 +7,7 @@ import {
   UsersByOffset,
   UsersUtils,
 } from "@/containers";
-import useLayout from "@/hooks/useLayout";
+import { useLayout } from "@/hooks";
 import { Flex, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
