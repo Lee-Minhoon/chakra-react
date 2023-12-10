@@ -1,4 +1,5 @@
 import { User, useCreateUser } from "@/apis";
+import { WithLabel } from "@/components";
 import {
   Button,
   Flex,
@@ -41,9 +42,15 @@ const UserCreateModal = ({ isOpen, onClose }: UserCreateModalProps) => {
         <ModalCloseButton />
         <ModalBody>
           <Flex direction={"column"} gap={4}>
-            <Input {...register("name")} placeholder="name" />
-            <Input {...register("email")} placeholder="email" />
-            <Input {...register("phone")} placeholder="phone" />
+            <WithLabel label={"Name"}>
+              <Input {...register("name")} placeholder="name" />
+            </WithLabel>
+            <WithLabel label={"Email"}>
+              <Input {...register("email")} placeholder="email" />
+            </WithLabel>
+            <WithLabel label={"Phone"}>
+              <Input {...register("phone")} placeholder="phone" />
+            </WithLabel>
           </Flex>
         </ModalBody>
         <ModalFooter>

@@ -64,6 +64,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
               "Approved"
             ) : (
               <Button
+                size={"sm"}
                 rightIcon={<TbCheck />}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -82,6 +83,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
         header: "Actions",
         cell: (context) => (
           <Button
+            size={"sm"}
             rightIcon={<TbTrash />}
             onClick={(e) => {
               e.stopPropagation();

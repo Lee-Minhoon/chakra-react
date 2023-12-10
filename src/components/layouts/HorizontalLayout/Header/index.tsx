@@ -1,10 +1,13 @@
 import { useGetMe, useSignout } from "@/apis/auth";
 import { ColorMode, LayoutMode, Logo } from "@/components";
+import { PageRoutes } from "@/constants";
+import { useRouterPush } from "@/hooks";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import Navbar from "./Navbar";
 
 const Header = () => {
+  const { push } = useRouterPush();
   const { data: me } = useGetMe();
   const { mutate: signout } = useSignout();
 
@@ -31,7 +34,7 @@ const Header = () => {
           </Button>
         )}
       </Flex>
-      <Logo />
+      <Logo onClick={() => push(PageRoutes.Home)} />
       <Navbar />
     </Box>
   );

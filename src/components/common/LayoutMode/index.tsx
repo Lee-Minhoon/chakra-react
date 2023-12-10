@@ -7,6 +7,7 @@ const LayoutMode = () => {
 
   return (
     <Tooltip
+      hasArrow
       label={layout === "horizontal" ? "Vertical Layout" : "Horizontal Layout"}
       placement={"auto"}
     >

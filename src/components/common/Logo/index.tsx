@@ -1,14 +1,21 @@
 import { Center, Heading } from "@chakra-ui/react";
-import Link from "next/link";
 
-const Logo = () => {
+interface LogoProps {
+  onClick?: () => void;
+}
+
+const Logo = ({ onClick }: LogoProps) => {
   return (
     <Center>
-      <Link href={"/"}>
-        <Heading size={"md"} color={"primary.500"}>
-          NextJS Boilerplate
-        </Heading>
-      </Link>
+      <Heading
+        size={"md"}
+        color={"primary.500"}
+        cursor={onClick ? "pointer" : "default"}
+        onClick={onClick}
+        _hover={{ color: onClick ? "primary.600" : "primary.500" }}
+      >
+        NextJS Boilerplate
+      </Heading>
     </Center>
   );
 };

@@ -1,10 +1,8 @@
-import useLayout from "@/hooks/useLayout";
-import { Center, Heading } from "@chakra-ui/react";
+import { CenteredLayout } from "@/components";
+import { SigninForm } from "@/containers";
 import Head from "next/head";
 
-export default function Home() {
-  const { Layout } = useLayout();
-
+const SigninPage = () => {
   return (
     <>
       <Head>
@@ -13,11 +11,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>
-        <Center h={"lg"}>
-          <Heading size={"lg"}>Welcome to Next.js!</Heading>
-        </Center>
-      </Layout>
+      <CenteredLayout>
+        <SigninForm />
+      </CenteredLayout>
     </>
   );
-}
+};
+
+export default SigninPage;

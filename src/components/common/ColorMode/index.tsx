@@ -6,6 +6,7 @@ const ColorMode = () => {
 
   return (
     <Tooltip
+      hasArrow
       label={colorMode === "light" ? "Dark Mode" : "Light Mode"}
       placement={"auto"}
     >

@@ -26,8 +26,9 @@ export const useSignout = () => {
   });
 };
 
-export const useGetMe = (enabled = true) => {
+export const useGetMe = () => {
   return useFetch<Nullable<User>>(toUrl(ApiRoutes.Me), undefined, {
-    enabled,
+    staleTime: Infinity,
+    cacheTime: Infinity,
   });
 };

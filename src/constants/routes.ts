@@ -15,6 +15,7 @@ export enum ApiRoutes {
 
 export enum PageRoutes {
   Home = "/",
+  Signin = "/auth/signin",
   Users = "/users",
   UserDetail = "/users/:id",
   Posts = "/posts",
@@ -70,7 +71,11 @@ export const findNavInHierarchy = (
     const matched = !!nav.matcher(pathname);
     if (matched) return [...parents, nav];
     if (nav.children) {
-      return findNavInHierarchy(pathname, nav.children, [...parents, nav]);
+      const navs = findNavInHierarchy(pathname, nav.children, [
+        ...parents,
+        nav,
+      ]);
+      if (navs.length) return navs;
     } else {
       continue;
     }
