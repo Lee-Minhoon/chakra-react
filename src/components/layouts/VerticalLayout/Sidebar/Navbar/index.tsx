@@ -1,10 +1,16 @@
-import { navs } from "@/constants";
+import { findNavInHierarchy, navs } from "@/constants";
 import { UnorderedList } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useMemo } from "react";
 import Tab from "./Tab";
 
 const Navbar = () => {
   const router = useRouter();
+
+  const hierarchy = useMemo(
+    () => findNavInHierarchy(router.pathname),
+    [router.pathname]
+  );
 
   return (
     <UnorderedList
@@ -16,11 +22,7 @@ const Navbar = () => {
       gap={4}
     >
       {navs.map((nav) => (
-        <Tab
-          key={nav.label}
-          nav={nav}
-          isActivated={!!nav.matcher(router.pathname)}
-        />
+        <Tab key={nav.label} nav={nav} isActivated={hierarchy.includes(nav)} />
       ))}
     </UnorderedList>
   );

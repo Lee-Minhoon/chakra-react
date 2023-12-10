@@ -1,4 +1,4 @@
-import { navs } from "@/constants";
+import { findNavInHierarchy, navs } from "@/constants";
 import { Tab, TabList, Tabs } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,9 +7,14 @@ import { useMemo } from "react";
 const Navbar = () => {
   const router = useRouter();
 
+  const hierarchy = useMemo(
+    () => findNavInHierarchy(router.pathname),
+    [router.pathname]
+  );
+
   const selectedIndex = useMemo(() => {
-    return navs.findIndex((nav) => nav.matcher(router.pathname));
-  }, [router.pathname]);
+    return navs.findIndex((nav) => hierarchy.includes(nav));
+  }, [hierarchy]);
 
   return (
     <Tabs variant="enclosed" index={selectedIndex}>
