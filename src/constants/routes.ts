@@ -1,3 +1,5 @@
+import { MatchFunction, match } from "path-to-regexp";
+import { IconType } from "react-icons";
 import { BsFillPostcardFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 
@@ -16,6 +18,7 @@ export enum PageRoutes {
   Users = "/users",
   UserDetail = "/users/:id",
   Posts = "/posts",
+  PostDetail = "/posts/:id",
 }
 
 export enum ViewOptionQueries {
@@ -25,19 +28,52 @@ export enum ViewOptionQueries {
   CursorObserver = "cursorObserver",
 }
 
-export const navbarTabs = [
+export interface Nav {
+  label: string;
+  pathname: string;
+  query?: Record<string, string>;
+  icon?: IconType;
+  matcher: MatchFunction;
+  children?: Nav[];
+}
+
+export const navs: Nav[] = [
   {
     label: "Users",
     pathname: PageRoutes.Users,
     query: { view: ViewOptionQueries.All },
     icon: FaUser,
+    matcher: match(PageRoutes.Users),
+    children: [
+      {
+        label: "User Detail",
+        pathname: PageRoutes.UserDetail,
+        matcher: match(PageRoutes.UserDetail),
+      },
+    ],
   },
   {
     label: "Posts",
     pathname: PageRoutes.Posts,
     query: { view: ViewOptionQueries.All },
     icon: BsFillPostcardFill,
+    matcher: match(PageRoutes.Posts),
   },
 ];
 
-export type NavbarTab = (typeof navbarTabs)[number];
+export const findNavInHierarchy = (
+  pathname: string,
+  items = navs,
+  parents: Nav[] = []
+): Nav[] => {
+  for (const nav of items) {
+    const matched = !!nav.matcher(pathname);
+    if (matched) return [...parents, nav];
+    if (nav.children) {
+      return findNavInHierarchy(pathname, nav.children, [...parents, nav]);
+    } else {
+      continue;
+    }
+  }
+  return [];
+};

@@ -1,4 +1,4 @@
-import { navbarTabs } from "@/constants";
+import { navs } from "@/constants";
 import { Tab, TabList, Tabs } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,20 +8,18 @@ const Navbar = () => {
   const router = useRouter();
 
   const selectedIndex = useMemo(() => {
-    return navbarTabs.findIndex(
-      (tab) => tab.pathname.split("/")[1] === router.pathname.split("/")[1]
-    );
+    return navs.findIndex((nav) => nav.matcher(router.pathname));
   }, [router.pathname]);
 
   return (
     <Tabs variant="enclosed" index={selectedIndex}>
       <TabList>
-        {navbarTabs.map((tab) => (
+        {navs.map((nav) => (
           <Link
-            key={tab.label}
-            href={{ pathname: tab.pathname, query: tab.query }}
+            key={nav.label}
+            href={{ pathname: nav.pathname, query: nav.query }}
           >
-            <Tab>{tab.label}</Tab>
+            <Tab>{nav.label}</Tab>
           </Link>
         ))}
       </TabList>

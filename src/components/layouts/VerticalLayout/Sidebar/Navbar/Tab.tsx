@@ -1,21 +1,21 @@
-import { NavbarTab } from "@/constants";
+import { Nav } from "@/constants";
 import useBgColor from "@/hooks/useBgColor";
 import { Center, Flex, Icon, ListItem, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 interface TabProps {
-  tab: NavbarTab;
-  isSelected: boolean;
+  nav: Nav;
+  isActivated: boolean;
 }
 
-const Tab = ({ tab, isSelected }: TabProps) => {
+const Tab = ({ nav, isActivated }: TabProps) => {
   const bgColor = useBgColor();
 
   return (
-    <ListItem key={tab.label}>
-      <Link key={tab.label} href={{ pathname: tab.pathname, query: tab.query }}>
+    <ListItem key={nav.label}>
+      <Link key={nav.label} href={{ pathname: nav.pathname, query: nav.query }}>
         <Flex
-          bgColor={isSelected ? bgColor : "transparent"}
+          bgColor={isActivated ? bgColor : "transparent"}
           h={12}
           align={"center"}
           p={4}
@@ -25,14 +25,14 @@ const Tab = ({ tab, isSelected }: TabProps) => {
           <Center
             w={8}
             h={8}
-            bgColor={isSelected ? "primary.500" : "transparent"}
+            bgColor={isActivated ? "primary.500" : "transparent"}
             border={"1px solid"}
-            borderColor={isSelected ? "transparent" : "primary.500"}
+            borderColor={isActivated ? "transparent" : "primary.500"}
             borderRadius={"md"}
           >
-            <Icon as={tab.icon} color={isSelected ? "white" : "primary.500"} />
+            <Icon as={nav.icon} color={isActivated ? "white" : "primary.500"} />
           </Center>
-          <Text>{tab.label}</Text>
+          <Text>{nav.label}</Text>
         </Flex>
       </Link>
     </ListItem>
