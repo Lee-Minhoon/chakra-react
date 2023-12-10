@@ -19,7 +19,7 @@ const DataTableHeader = <T,>({ table }: DataTableHeaderProps<T>) => {
       {table.getHeaderGroups().map((headerGroup) => (
         <Tr key={headerGroup.id}>
           {headerGroup.headers.map((header) => (
-            <Th key={header.id}>
+            <Th key={header.id} px={4}>
               <Flex align={"center"} gap={2}>
                 {header.isPlaceholder
                   ? null

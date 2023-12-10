@@ -28,8 +28,10 @@ export const useGetUser = (id?: number) => {
   return useFetch<User>(toUrl(ApiRoutes.User, { id }));
 };
 
-export const useGetUsers = () => {
-  return useFetch<User[]>(toUrl(ApiRoutes.User));
+export const useGetUsers = (
+  params: Pick<OffsetQueryParams, "sort" | "order">
+) => {
+  return useFetch<User[]>(toUrl(ApiRoutes.User), params);
 };
 
 export const useGetUsersByOffset = (params: OffsetQueryParams) => {

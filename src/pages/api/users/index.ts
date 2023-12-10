@@ -68,8 +68,10 @@ export const getUser = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const getUsers = (req: NextApiRequest, res: NextApiResponse) => {
+  const { sort, order } = req.query;
+
   try {
-    const users = readUsers();
+    const users = readUsers(sort as keyof User, order as Order);
     return res.status(200).json({ data: users, message: "success" });
   } catch {
     return res.status(500).json({ data: null, message: "failed" });

@@ -65,7 +65,10 @@ const UsersTable = ({ users }: UsersTableProps) => {
             ) : (
               <Button
                 rightIcon={<TbCheck />}
-                onClick={() => handleApprove(context.row.original.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleApprove(context.row.original.id);
+                }}
               >
                 Approve
               </Button>
@@ -80,7 +83,10 @@ const UsersTable = ({ users }: UsersTableProps) => {
         cell: (context) => (
           <Button
             rightIcon={<TbTrash />}
-            onClick={() => handleDelete(context.row.original.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDelete(context.row.original.id);
+            }}
           >
             Delete
           </Button>
