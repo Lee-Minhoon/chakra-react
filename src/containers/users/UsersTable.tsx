@@ -99,7 +99,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
       columnHelper.accessor("approved", {
         cell: (context) => (
           <Flex>
-            {context.renderValue() ? (
+            {context.row.original.approved ? (
               "Approved"
             ) : (
               <Tooltip label={"Approve User"}>
