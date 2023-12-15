@@ -154,13 +154,13 @@ export const postUser = (req: NextApiRequest, res: NextApiResponse) => {
 
 export const updateUser = (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
-  const { name, email, phone } = req.body;
+  const { name, email, phone, profile } = req.body;
 
   try {
     let users = readUsers();
     users = users.map((user) => {
       if (user.id === Number(id)) {
-        return { ...user, name, email, phone };
+        return { ...user, name, email, phone, profile };
       }
       return user;
     });

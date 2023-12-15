@@ -2,7 +2,8 @@ import { User, useApproveUser, useDeleteUser } from "@/apis";
 import { DataTable } from "@/components";
 import { useBgColor, usePagination, useRouterPush } from "@/hooks";
 import { useModalStore } from "@/stores";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Optional } from "@/types";
+import { Box, Button, Flex, useDisclosure } from "@chakra-ui/react";
 import {
   Row,
   createColumnHelper,
@@ -10,8 +11,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import Image from "next/image";
-import { useCallback, useMemo } from "react";
-import { TbCheck, TbTrash } from "react-icons/tb";
+import { useCallback, useMemo, useState } from "react";
+import { TbCheck, TbEdit, TbTrash } from "react-icons/tb";
+import UserUpdateModal from "./UserUpdateModal";
 
 const columnHelper = createColumnHelper<User>();
 
@@ -20,6 +22,8 @@ interface UsersTableProps {
 }
 
 const UsersTable = ({ users }: UsersTableProps) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedUser, setSelectedUser] = useState<Optional<User>>();
   const { openConfirm } = useModalStore(["openConfirm"]);
   const bgColor = useBgColor();
   const { push } = useRouterPush();
@@ -71,6 +75,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
                 {profile && (
                   <Image
                     fill
+                    sizes={"100%"}
                     src={profile}
                     alt={"profile"}
                     style={{ objectFit: "cover" }}
@@ -110,20 +115,33 @@ const UsersTable = ({ users }: UsersTableProps) => {
         id: "actions",
         header: "Actions",
         cell: (context) => (
-          <Button
-            size={"sm"}
-            rightIcon={<TbTrash />}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDelete(context.row.original.id);
-            }}
-          >
-            Delete
-          </Button>
+          <Flex gap={2}>
+            <Button
+              size={"sm"}
+              rightIcon={<TbEdit />}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedUser(context.row.original);
+                onOpen();
+              }}
+            >
+              Edit
+            </Button>
+            <Button
+              size={"sm"}
+              rightIcon={<TbTrash />}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(context.row.original.id);
+              }}
+            >
+              Delete
+            </Button>
+          </Flex>
         ),
       }),
     ],
-    [handleApprove, handleDelete, bgColor]
+    [bgColor, handleApprove, onOpen, handleDelete]
   );
 
   const table = useReactTable({
@@ -139,7 +157,21 @@ const UsersTable = ({ users }: UsersTableProps) => {
     [push]
   );
 
-  return <DataTable<User> table={table} onRowClick={handleClickRow} />;
+  return (
+    <>
+      {selectedUser && (
+        <UserUpdateModal
+          user={selectedUser}
+          isOpen={isOpen}
+          onClose={() => {
+            setSelectedUser(undefined);
+            onClose();
+          }}
+        />
+      )}
+      <DataTable<User> table={table} onRowClick={handleClickRow} />
+    </>
+  );
 };
 
 export default UsersTable;

@@ -24,7 +24,7 @@ const Authenticator = () => {
       });
       router.push({
         pathname: PageRoutes.Signin,
-        query: { redirect: router.pathname },
+        query: { redirect: router.asPath },
       });
     }
   }, [router, data, openAlert, isFetching]);

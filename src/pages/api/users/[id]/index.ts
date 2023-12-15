@@ -7,7 +7,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case "GET":
       return getUser(req, res);
-    case "UPDATE":
+    case "PUT":
       return updateUser(req, res);
     case "DELETE":
       return deleteUser(req, res);

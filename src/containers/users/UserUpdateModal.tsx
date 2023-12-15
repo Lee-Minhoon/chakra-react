@@ -1,4 +1,4 @@
-import { User, useCreateUser } from "@/apis";
+import { User, useUpdateUser } from "@/apis";
 import { useUpload } from "@/apis/upload";
 import {
   Button,
@@ -14,17 +14,26 @@ import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import UserFormFields from "./UserFormFields";
 
-interface UserCreateModalProps {
+interface UserUpdateModalProps {
+  user: User;
   isOpen: boolean;
   onClose: () => void;
 }
 
-const UserCreateModal = ({ isOpen, onClose }: UserCreateModalProps) => {
-  const { register, handleSubmit, reset } = useForm<User>();
-  const { mutate: createUser } = useCreateUser();
+const UserUpdateModal = ({ user, isOpen, onClose }: UserUpdateModalProps) => {
+  const { register, handleSubmit, setValue, reset } = useForm<User>({
+    defaultValues: user,
+  });
+  const { mutate: updateUser } = useUpdateUser();
   const { mutate: upload } = useUpload();
   const [file, setFile] = useState<File>();
-  const [preview, setPreview] = useState("");
+  const [preview, setPreview] = useState(user.profile ?? "");
+
+  useEffect(() => {
+    if (isOpen && user.profile) {
+      setPreview(user.profile);
+    }
+  }, [isOpen, user.profile]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -32,7 +41,7 @@ const UserCreateModal = ({ isOpen, onClose }: UserCreateModalProps) => {
       setFile(undefined);
       setPreview("");
     }
-  }, [isOpen, reset]);
+  }, [isOpen, reset, setValue]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -42,23 +51,26 @@ const UserCreateModal = ({ isOpen, onClose }: UserCreateModalProps) => {
         onSubmit={handleSubmit(
           useCallback(
             (data) => {
-              if (!file) return;
-              const formData = new FormData();
-              formData.append("file", file);
+              if (file) {
+                const formData = new FormData();
+                formData.append("file", file);
 
-              upload(formData, {
-                onSuccess: (res) => {
-                  data.profile =
-                    res.data["file"][0].filepath.split("public")[1];
-                  createUser(data, { onSuccess: onClose });
-                },
-              });
+                upload(formData, {
+                  onSuccess: (res) => {
+                    data.profile =
+                      res.data["file"][0].filepath.split("public")[1];
+                    updateUser(data, { onSuccess: onClose });
+                  },
+                });
+              } else {
+                updateUser(data, { onSuccess: onClose });
+              }
             },
-            [file, upload, createUser, onClose]
+            [file, onClose, updateUser, upload]
           )
         )}
       >
-        <ModalHeader>Create User</ModalHeader>
+        <ModalHeader>Update User</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <UserFormFields
@@ -75,7 +87,7 @@ const UserCreateModal = ({ isOpen, onClose }: UserCreateModalProps) => {
             Close
           </Button>
           <Button variant="ghost" type={"submit"}>
-            Create User
+            Update User
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -83,4 +95,4 @@ const UserCreateModal = ({ isOpen, onClose }: UserCreateModalProps) => {
   );
 };
 
-export default UserCreateModal;
+export default UserUpdateModal;
