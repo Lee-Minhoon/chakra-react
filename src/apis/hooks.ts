@@ -80,14 +80,14 @@ const useInfiniteQuery = <TResponse>(
 };
 
 export const useMutation = <TOldData, TNewData, TResponse>(
-  mutationFn: MutationFunction<TResponse, TNewData>,
-  options?: UseMutationOptions<TResponse, ApiError, TNewData>,
+  mutationFn: MutationFunction<ApiResponse<TResponse>, TNewData>,
+  options?: UseMutationOptions<ApiResponse<TResponse>, ApiError, TNewData>,
   queryKey?: QueryKeyType,
   updater?: (old: TOldData, data: TNewData) => Optional<TOldData>
 ) => {
   const queryClient = useQueryClient();
 
-  return _useMutation<TResponse, ApiError, TNewData>(mutationFn, {
+  return _useMutation<ApiResponse<TResponse>, ApiError, TNewData>(mutationFn, {
     ...options,
     onMutate: async (variables) => {
       options?.onMutate?.(variables);
@@ -171,12 +171,14 @@ export const usePost = <
 >(
   url: string,
   params?: object,
-  options?: UseMutationOptions<TResponse, ApiError, TNewData>,
+  options?: UseMutationOptions<ApiResponse<TResponse>, ApiError, TNewData>,
   updater?: (old: TOldData, data: TNewData) => TOldData
 ) => {
   return useMutation<TOldData, TNewData, TResponse>(
     (data) =>
-      data ? api.post<TResponse>(url, data) : api.post<TResponse>(url),
+      data
+        ? api.post<ApiResponse<TResponse>>(url, data)
+        : api.post<ApiResponse<TResponse>>(url),
     options,
     [url, params],
     updater
@@ -190,13 +192,13 @@ export const useUpdate = <
 >(
   url: string,
   params?: object,
-  options?: UseMutationOptions<TResponse, ApiError, TNewData>,
+  options?: UseMutationOptions<ApiResponse<TResponse>, ApiError, TNewData>,
   updater?: (old: TOldData, data: TNewData) => TOldData
 ) => {
   return useMutation<TOldData, TNewData, TResponse>(
     (data) => {
       const { id, ...rest } = data;
-      return api.put<TResponse>(id ? `${url}/${id}` : url, rest);
+      return api.put<ApiResponse<TResponse>>(id ? `${url}/${id}` : url, rest);
     },
     options,
     [url, params],
@@ -207,11 +209,11 @@ export const useUpdate = <
 export const useDelete = <TOldData, TResponse = unknown, TId = ID>(
   url: string,
   params?: object,
-  options?: UseMutationOptions<TResponse, ApiError, TId>,
+  options?: UseMutationOptions<ApiResponse<TResponse>, ApiError, TId>,
   updater?: (old: TOldData, id: TId) => TOldData
 ) => {
   return useMutation<TOldData, TId, TResponse>(
-    (id) => api.delete<TResponse>(`${url}/${id}`),
+    (id) => api.delete<ApiResponse<TResponse>>(`${url}/${id}`),
     options,
     [url, params],
     updater
@@ -224,7 +226,7 @@ export const useCommand = <
   TResponse = unknown,
 >(
   url: ApiRoutes,
-  options?: UseMutationOptions<TResponse, ApiError, TNewData>,
+  options?: UseMutationOptions<ApiResponse<TResponse>, ApiError, TNewData>,
   queryKey?: QueryKeyType,
   updater?: (old: TOldData, data: TNewData) => TOldData,
   method: "POST" | "PUT" | "PATCH" = "POST"
@@ -234,15 +236,36 @@ export const useCommand = <
       const { id, ...rest } = data;
       switch (method) {
         case "POST":
-          return api.post<TResponse>(toUrl(url, { id }), rest);
+          return api.post<ApiResponse<TResponse>>(toUrl(url, { id }), rest);
         case "PUT":
-          return api.put<TResponse>(toUrl(url, { id }), rest);
+          return api.put<ApiResponse<TResponse>>(toUrl(url, { id }), rest);
         case "PATCH":
-          return api.patch<TResponse>(toUrl(url, { id }), rest);
+          return api.patch<ApiResponse<TResponse>>(toUrl(url, { id }), rest);
       }
     },
     options,
     queryKey,
+    updater
+  );
+};
+
+export const usePostForm = <
+  TOldData,
+  TNewData extends FormData,
+  TResponse = unknown,
+>(
+  url: string,
+  params?: object,
+  options?: UseMutationOptions<ApiResponse<TResponse>, ApiError, TNewData>,
+  updater?: (old: TOldData, data: TNewData) => TOldData
+) => {
+  return useMutation<TOldData, TNewData, TResponse>(
+    (data) =>
+      data
+        ? api.postForm<ApiResponse<TResponse>>(url, data)
+        : api.postForm<ApiResponse<TResponse>>(url),
+    options,
+    [url, params],
     updater
   );
 };
