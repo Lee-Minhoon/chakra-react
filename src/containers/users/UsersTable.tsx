@@ -3,7 +3,13 @@ import { DataTable } from "@/components";
 import { useBgColor, usePagination, useRouterPush } from "@/hooks";
 import { useModalStore } from "@/stores";
 import { Optional } from "@/types";
-import { Box, Button, Flex, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  IconButton,
+  Tooltip,
+  useDisclosure,
+} from "@chakra-ui/react";
 import {
   Row,
   createColumnHelper,
@@ -96,16 +102,17 @@ const UsersTable = ({ users }: UsersTableProps) => {
             {context.renderValue() ? (
               "Approved"
             ) : (
-              <Button
-                size={"sm"}
-                rightIcon={<TbCheck />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleApprove(context.row.original.id);
-                }}
-              >
-                Approve
-              </Button>
+              <Tooltip label={"Approve User"}>
+                <IconButton
+                  aria-label="approve"
+                  size={"sm"}
+                  icon={<TbCheck />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleApprove(context.row.original.id);
+                  }}
+                />
+              </Tooltip>
             )}
           </Flex>
         ),
@@ -116,27 +123,29 @@ const UsersTable = ({ users }: UsersTableProps) => {
         header: "Actions",
         cell: (context) => (
           <Flex gap={2}>
-            <Button
-              size={"sm"}
-              rightIcon={<TbEdit />}
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedUser(context.row.original);
-                onOpen();
-              }}
-            >
-              Edit
-            </Button>
-            <Button
-              size={"sm"}
-              rightIcon={<TbTrash />}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDelete(context.row.original.id);
-              }}
-            >
-              Delete
-            </Button>
+            <Tooltip label={"Edit User"}>
+              <IconButton
+                aria-label="edit"
+                size={"sm"}
+                icon={<TbEdit />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedUser(context.row.original);
+                  onOpen();
+                }}
+              />
+            </Tooltip>
+            <Tooltip label={"Delete User"}>
+              <IconButton
+                aria-label="delete"
+                size={"sm"}
+                icon={<TbTrash />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(context.row.original.id);
+                }}
+              />
+            </Tooltip>
           </Flex>
         ),
       }),

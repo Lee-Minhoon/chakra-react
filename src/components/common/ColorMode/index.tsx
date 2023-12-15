@@ -8,7 +8,6 @@ const ColorMode = () => {
     <Tooltip
       hasArrow
       label={colorMode === "light" ? "Dark Mode" : "Light Mode"}
-      placement={"auto"}
     >
       <IconButton aria-label={"theme"} onClick={toggleColorMode} size={"sm"}>
         <Icon as={colorMode === "light" ? FiMoon : FiSun} />

@@ -9,7 +9,6 @@ const LayoutMode = () => {
     <Tooltip
       hasArrow
       label={layout === "horizontal" ? "Vertical Layout" : "Horizontal Layout"}
-      placement={"auto"}
     >
       <IconButton aria-label={"theme"} onClick={toggleLayout} size={"sm"}>
         <Icon
