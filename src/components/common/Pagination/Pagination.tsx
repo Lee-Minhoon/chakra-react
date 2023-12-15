@@ -7,15 +7,18 @@ interface PaginationProps {
   onChange: (page: number) => void;
 }
 
+const blockSize = 10;
+
 const Pagination = ({
   currentPage,
   limit,
   total,
   onChange,
 }: PaginationProps) => {
-  const currentBlock = Math.floor((currentPage - 1) / limit);
-  const start = currentBlock * limit + 1;
-  const end = Math.min(start + limit - 1, Math.ceil(total / limit));
+  const totalPage = Math.ceil(total / limit);
+  const currentBlock = Math.floor((currentPage - 1) / blockSize);
+  const start = currentBlock * blockSize + 1;
+  const end = Math.min(start + blockSize - 1, totalPage);
 
   return (
     <Flex gap={4} justify={"center"}>
@@ -34,7 +37,7 @@ const Pagination = ({
         )
       )}
       <Button
-        isDisabled={total === 0 || currentPage === end}
+        isDisabled={total === 0 || end === totalPage}
         onClick={() => onChange(end + 1)}
       >
         Next
