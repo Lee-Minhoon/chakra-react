@@ -17,6 +17,7 @@ type Api = {
   put: <T>(url: string, body?: object) => Promise<T>;
   patch: <T>(url: string, body?: object) => Promise<T>;
   delete: <T>(url: string) => Promise<T>;
+  postForm: <T>(url: string, body?: FormData) => Promise<T>;
 };
 
 export const api: Api = {
@@ -62,6 +63,12 @@ export const api: Api = {
       headers: {
         "Content-Type": "application/json",
       },
+    });
+  },
+  postForm: (url, body) => {
+    return extendedFetch(`${protoc}://${domain}/${url}`, {
+      method: "POST",
+      body,
     });
   },
 };

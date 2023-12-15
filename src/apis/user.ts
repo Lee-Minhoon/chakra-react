@@ -21,6 +21,7 @@ export interface User extends Scheme {
   name: string;
   email: string;
   phone: string;
+  profile?: string;
   approved: boolean;
 }
 

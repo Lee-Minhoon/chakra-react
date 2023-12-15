@@ -1,10 +1,11 @@
+import { RequiredKeys } from "@/types";
 import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 import { Order, User, readDB } from "../db";
 import { sleep } from "../utils";
 
-export const readUsers = (sort?: keyof User, order?: Order): User[] => {
+export const readUsers = (sort?: RequiredKeys<User>, order?: Order): User[] => {
   try {
     const db = readDB();
     if (sort && order) {
@@ -71,7 +72,7 @@ export const getUsers = (req: NextApiRequest, res: NextApiResponse) => {
   const { sort, order } = req.query;
 
   try {
-    const users = readUsers(sort as keyof User, order as Order);
+    const users = readUsers(sort as RequiredKeys<User>, order as Order);
     return res.status(200).json({ data: users, message: "success" });
   } catch {
     return res.status(500).json({ data: null, message: "failed" });
@@ -82,7 +83,7 @@ export const getUsersByOffset = (req: NextApiRequest, res: NextApiResponse) => {
   const { offset, limit, sort, order } = req.query;
 
   try {
-    const users = readUsers(sort as keyof User, order as Order);
+    const users = readUsers(sort as RequiredKeys<User>, order as Order);
     const slicedUsers = users.slice(
       Number(offset),
       Number(offset) + Number(limit)

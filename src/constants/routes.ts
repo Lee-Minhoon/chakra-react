@@ -4,6 +4,7 @@ import { BsFillPostcardFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 
 export enum ApiRoutes {
+  Upload = "api/upload",
   Signin = "api/auth/signin",
   Signout = "api/auth/signout",
   Me = "api/auth/me",
