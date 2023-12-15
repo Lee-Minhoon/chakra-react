@@ -1,3 +1,4 @@
+export { default as UserCard } from "./UserCard";
 export { default as UserCreateModal } from "./UserCreateModal";
 export { default as UsersAll } from "./UsersAll";
 export { default as UsersByCursor } from "./UsersByCursor";

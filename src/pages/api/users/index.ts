@@ -120,7 +120,7 @@ export const getUsersByCursor = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const postUser = (req: NextApiRequest, res: NextApiResponse) => {
-  const { name, email, phone } = req.body;
+  const { name, email, phone, profile } = req.body;
 
   try {
     const users = readUsers();
@@ -135,6 +135,7 @@ export const postUser = (req: NextApiRequest, res: NextApiResponse) => {
       name,
       email,
       phone,
+      profile,
       approved: false,
     };
     users.push(newUser);

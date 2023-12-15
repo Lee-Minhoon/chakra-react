@@ -27,13 +27,19 @@ interface UserCreateModalProps {
 }
 
 const UserCreateModal = ({ isOpen, onClose }: UserCreateModalProps) => {
-  const { register, handleSubmit } = useForm<User>();
+  const { register, handleSubmit, reset } = useForm<User>();
   const { mutate: postUser, isSuccess } = useCreateUser();
   const bgColor = useBgColor();
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState("");
   const { mutateAsync: upload } = useUpload();
+
+  useEffect(() => {
+    reset();
+    setFile(undefined);
+    setPreview("");
+  }, [isOpen, reset]);
 
   useEffect(() => {
     if (!isSuccess) return;

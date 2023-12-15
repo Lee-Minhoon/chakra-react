@@ -1,14 +1,15 @@
 import { User, useApproveUser, useDeleteUser } from "@/apis";
 import { DataTable } from "@/components";
-import { usePagination, useRouterPush } from "@/hooks";
+import { useBgColor, usePagination, useRouterPush } from "@/hooks";
 import { useModalStore } from "@/stores";
-import { Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import {
   Row,
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import Image from "next/image";
 import { useCallback, useMemo } from "react";
 import { TbCheck, TbTrash } from "react-icons/tb";
 
@@ -20,7 +21,7 @@ interface UsersTableProps {
 
 const UsersTable = ({ users }: UsersTableProps) => {
   const { openConfirm } = useModalStore(["openConfirm"]);
-
+  const bgColor = useBgColor();
   const { push } = useRouterPush();
   const { offset, limit, sort, order, isExist } = usePagination();
   const queryKeyValues = isExist ? { offset, limit, sort, order } : undefined;
@@ -54,7 +55,34 @@ const UsersTable = ({ users }: UsersTableProps) => {
   const columns = useMemo(
     () => [
       columnHelper.accessor("id", { meta: { sortable: true } }),
-      columnHelper.accessor("name", { meta: { sortable: true } }),
+      columnHelper.accessor("name", {
+        cell: (context) => {
+          const profile = context.row.original.profile;
+          return (
+            <Flex gap={4} align={"center"}>
+              <Box
+                pos={"relative"}
+                overflow={"hidden"}
+                w={10}
+                h={10}
+                bgColor={bgColor}
+                borderRadius={"full"}
+              >
+                {profile && (
+                  <Image
+                    fill
+                    src={profile}
+                    alt={"profile"}
+                    style={{ objectFit: "cover" }}
+                  />
+                )}
+              </Box>
+              {context.renderValue()}
+            </Flex>
+          );
+        },
+        meta: { sortable: true },
+      }),
       columnHelper.accessor("email", { meta: { sortable: true } }),
       columnHelper.accessor("phone", { meta: { sortable: true } }),
       columnHelper.accessor("approved", {
@@ -95,7 +123,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
         ),
       }),
     ],
-    [handleApprove, handleDelete]
+    [handleApprove, handleDelete, bgColor]
   );
 
   const table = useReactTable({
