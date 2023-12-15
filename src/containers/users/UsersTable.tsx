@@ -102,7 +102,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
             {context.row.original.approved ? (
               "Approved"
             ) : (
-              <Tooltip label={"Approve User"}>
+              <Tooltip hasArrow label={"Approve User"}>
                 <IconButton
                   aria-label="approve"
                   size={"sm"}
@@ -123,7 +123,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
         header: "Actions",
         cell: (context) => (
           <Flex gap={2}>
-            <Tooltip label={"Edit User"}>
+            <Tooltip hasArrow label={"Edit User"}>
               <IconButton
                 aria-label="edit"
                 size={"sm"}
@@ -135,7 +135,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
                 }}
               />
             </Tooltip>
-            <Tooltip label={"Delete User"}>
+            <Tooltip hasArrow label={"Delete User"}>
               <IconButton
                 aria-label="delete"
                 size={"sm"}

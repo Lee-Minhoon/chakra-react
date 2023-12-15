@@ -13,7 +13,7 @@ const SidebarFooter = () => {
     <Center as={"footer"} mt={"auto"} gap={4} py={4}>
       {me ? (
         <>
-          <Text>
+          <Text display={{ base: "none", xl: "block" }}>
             {`Welcome `}
             <Text as={"b"} color={"primary.500"}>
               {me?.name}
@@ -31,7 +31,7 @@ const SidebarFooter = () => {
         </>
       ) : (
         <>
-          <Text>Not Signed In</Text>
+          <Text display={{ base: "none", xl: "block" }}>Not Signed In</Text>
           <Tooltip hasArrow label={"Sign In"}>
             <IconButton
               aria-label="signin"
