@@ -1,26 +1,28 @@
 import { useBgColor } from "@/hooks";
-import { Box } from "@chakra-ui/react";
+import { Box, BoxProps } from "@chakra-ui/react";
 import Image from "next/image";
 
-interface ProfileProps {
+interface ProfileProps extends Pick<BoxProps, "w" | "width" | "h" | "height"> {
   profile?: string;
+  priority?: boolean;
 }
 
-const Profile = ({ profile }: ProfileProps) => {
+const Profile = ({ profile, w, width, h, height, priority }: ProfileProps) => {
   const bgColor = useBgColor();
 
   return (
     <Box
       pos={"relative"}
       overflow={"hidden"}
-      w={10}
-      h={10}
+      w={w ?? width}
+      h={h ?? height}
       bgColor={bgColor}
       borderRadius={"full"}
     >
       {profile && (
         <Image
           fill
+          priority={priority}
           sizes={"100%"}
           src={profile}
           alt={"profile"}

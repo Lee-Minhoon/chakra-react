@@ -23,7 +23,7 @@ const PostCard = ({ post }: PostCardProps) => {
       <CardHeader>
         <Skeleton isLoaded={!!user}>
           <Flex gap={4} align={"center"}>
-            <Profile profile={user?.profile} />
+            <Profile profile={user?.profile} w={10} h={10} />
             <Flex direction={"column"} gap={2}>
               <Text>{user?.name ?? "User Name"}</Text>
               <Text>{user?.email ?? "User Email"}</Text>

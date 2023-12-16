@@ -63,7 +63,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
           const profile = context.row.original.profile;
           return (
             <Flex gap={4} align={"center"}>
-              <Profile profile={profile} />
+              <Profile profile={profile} w={10} h={10} />
               {context.renderValue()}
             </Flex>
           );

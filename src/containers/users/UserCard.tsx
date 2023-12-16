@@ -1,4 +1,5 @@
 import { User } from "@/apis";
+import { Profile } from "@/components";
 import { useBgColor } from "@/hooks";
 import {
   Box,
@@ -15,7 +16,6 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import Image from "next/image";
 import { useMemo } from "react";
 import { TbEdit } from "react-icons/tb";
 import UserUpdateModal from "./UserUpdateModal";
@@ -44,29 +44,9 @@ const UserCard = ({ user }: UserCardProps) => {
       )}
       <Card direction={"row"}>
         <Box p={5}>
-          {user ? (
-            <Box
-              pos={"relative"}
-              overflow={"hidden"}
-              w={40}
-              h={40}
-              bgColor={bgColor}
-              borderRadius={"full"}
-            >
-              {user?.profile && (
-                <Image
-                  priority
-                  fill
-                  sizes={"100%"}
-                  src={user.profile}
-                  alt={"profile"}
-                  style={{ objectFit: "cover" }}
-                />
-              )}
-            </Box>
-          ) : (
-            <SkeletonCircle size={"40"} />
-          )}
+          <SkeletonCircle isLoaded={!!user} size={"40"}>
+            <Profile profile={user?.profile} priority w={40} h={40} />
+          </SkeletonCircle>
         </Box>
         <Flex flex={1} direction={"column"}>
           <CardHeader>
