@@ -11,12 +11,13 @@ import {
 } from "./hooks";
 
 export interface Post extends Scheme {
+  userId: number;
   title: string;
   content: string;
 }
 
-export const useGetPost = (id: number) => {
-  return useFetch<Post>(toUrl(ApiRoutes.Post), { id });
+export const useGetPost = (id?: number) => {
+  return useFetch<Post>(toUrl(ApiRoutes.Post, { id }));
 };
 
 export const useGetPosts = () => {
@@ -31,22 +32,14 @@ export const useGetPostsByCursor = (params: CursorQueryParams) => {
   return useLoadMore<Post[]>(toUrl(ApiRoutes.Post), params);
 };
 
-export type PostCreate = Pick<Post, "title" | "content">;
+export type PostCreate = Omit<Post, "id">;
 
 export const useCreatePost = (
   params?: OffsetQueryParams | CursorQueryParams
 ) => {
-  return usePost<Post[], PostCreate>(
-    toUrl(ApiRoutes.Post),
-    params,
-    {
-      meta: { successMessage: "Post created successfully" },
-    },
-    (old, data) => {
-      const newPost = { id: 0, ...data };
-      return [...old, newPost];
-    }
-  );
+  return usePost<Post[], PostCreate, number>(toUrl(ApiRoutes.Post), params, {
+    meta: { successMessage: "Post created successfully" },
+  });
 };
 
 export type PostUpdate = Post;

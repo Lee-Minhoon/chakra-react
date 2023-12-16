@@ -1,8 +1,16 @@
+import { useGetPost } from "@/apis";
+import { PostCard } from "@/containers";
 import { useLayout } from "@/hooks";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 const PostPage = () => {
   const { Layout } = useLayout();
+
+  const router = useRouter();
+  const { data: post } = useGetPost(
+    router.query?.id ? +router.query.id : undefined
+  );
 
   return (
     <>
@@ -12,7 +20,9 @@ const PostPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout></Layout>
+      <Layout>
+        <PostCard post={post} />
+      </Layout>
     </>
   );
 };

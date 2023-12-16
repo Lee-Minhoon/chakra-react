@@ -107,13 +107,14 @@ export const getPostsByCursor = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const postPost = (req: NextApiRequest, res: NextApiResponse) => {
-  const { title, content } = req.body;
+  const { userId, title, content } = req.body;
 
   try {
     const posts = readPosts();
 
     const newPost: Post = {
       id: (posts[posts.length - 1]?.id ?? 0) + 1,
+      userId,
       title,
       content,
     };

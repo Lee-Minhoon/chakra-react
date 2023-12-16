@@ -1,22 +1,15 @@
 import { User, useApproveUser, useDeleteUser } from "@/apis";
-import { DataTable } from "@/components";
+import { DataTable, Profile } from "@/components";
 import { useBgColor, usePagination, useRouterPush } from "@/hooks";
 import { useModalStore } from "@/stores";
 import { Optional } from "@/types";
-import {
-  Box,
-  Flex,
-  IconButton,
-  Tooltip,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Flex, IconButton, Tooltip, useDisclosure } from "@chakra-ui/react";
 import {
   Row,
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
 import { TbCheck, TbEdit, TbTrash } from "react-icons/tb";
 import UserUpdateModal from "./UserUpdateModal";
@@ -70,24 +63,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
           const profile = context.row.original.profile;
           return (
             <Flex gap={4} align={"center"}>
-              <Box
-                pos={"relative"}
-                overflow={"hidden"}
-                w={10}
-                h={10}
-                bgColor={bgColor}
-                borderRadius={"full"}
-              >
-                {profile && (
-                  <Image
-                    fill
-                    sizes={"100%"}
-                    src={profile}
-                    alt={"profile"}
-                    style={{ objectFit: "cover" }}
-                  />
-                )}
-              </Box>
+              <Profile profile={profile} />
               {context.renderValue()}
             </Flex>
           );
