@@ -31,6 +31,8 @@ export type OffsetQueryParams = {
 
 export type CursorQueryParams = {
   limit: number;
+  sort?: string;
+  order?: "asc" | "desc";
 };
 
 export interface OffsetQueryData<T> {

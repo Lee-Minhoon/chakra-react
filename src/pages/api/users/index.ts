@@ -99,17 +99,18 @@ export const getUsersByOffset = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const getUsersByCursor = (req: NextApiRequest, res: NextApiResponse) => {
-  const { cursor, limit } = req.query;
+  const { cursor, limit, sort, order } = req.query;
 
   try {
-    const users = readUsers();
-    const index = users.findIndex((user) => user.id === Number(cursor));
+    const users = readUsers(sort as RequiredKeys<User>, order as Order);
+    const index = users.findIndex((_, idx) => idx === Number(cursor));
     const slicedUsers = users.slice(index, index + Number(limit));
 
     return res.status(200).json({
       data: {
-        previous: users[index - Number(limit)]?.id ?? null,
-        next: users[index + Number(limit)]?.id ?? null,
+        previous: index - Number(limit) >= 0 ? index - Number(limit) : null,
+        next:
+          index + Number(limit) < users.length ? index + Number(limit) : null,
         data: slicedUsers,
       },
       message: "success",

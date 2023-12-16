@@ -43,7 +43,7 @@ export const navs: Nav[] = [
   {
     label: "Users",
     pathname: PageRoutes.Users,
-    query: { view: ViewOptionQueries.All },
+    query: { view: ViewOptionQueries.All, sort: "id", order: "desc" },
     icon: FaUser,
     matcher: match(PageRoutes.Users),
     children: [

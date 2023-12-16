@@ -69,7 +69,7 @@ const useInfiniteQuery = <TResponse>(
     QueryKeyType
   >(
     [url!, params],
-    ({ pageParam = 1, ...rest }) =>
+    ({ pageParam = 0, ...rest }) =>
       fetcher<CursorQueryData<TResponse, number>>({ pageParam, ...rest }),
     {
       ...options,

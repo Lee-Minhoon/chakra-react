@@ -1,6 +1,6 @@
 import { User, useGetUsersByCursor } from "@/apis";
 import { InfiniteList } from "@/components";
-import { useRouter } from "next/router";
+import { usePagination } from "@/hooks";
 import { useCallback, useEffect, useRef } from "react";
 
 interface UsersByCursorProps {
@@ -8,14 +8,13 @@ interface UsersByCursorProps {
 }
 
 const UsersByCursor = ({ observe }: UsersByCursorProps) => {
-  const router = useRouter();
-  const limit = router.query?.limit ? Number(router.query?.limit) : 10;
+  const { limit, sort, order } = usePagination();
 
   const {
     data: users,
     fetchNextPage,
     hasNextPage,
-  } = useGetUsersByCursor({ limit });
+  } = useGetUsersByCursor({ limit, sort, order });
 
   const target = useRef<HTMLDivElement>(null);
 

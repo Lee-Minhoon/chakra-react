@@ -7,21 +7,34 @@ const options = [
   {
     label: "All",
     pathname: PageRoutes.Users,
-    query: { view: ViewOptionQueries.All },
+    query: { view: ViewOptionQueries.All, sort: "id", order: "desc" },
   },
   {
     label: "Offset",
-    query: { view: ViewOptionQueries.Offset, page: 1, limit: 10 },
+    query: {
+      view: ViewOptionQueries.Offset,
+      page: 1,
+      limit: 10,
+      sort: "id",
+      order: "desc",
+    },
   },
   {
     label: "Cursor(Button)",
-    query: { view: ViewOptionQueries.CursorButton, limit: 10 },
+    query: {
+      view: ViewOptionQueries.CursorButton,
+      limit: 10,
+      sort: "id",
+      order: "desc",
+    },
   },
   {
     label: "Cursor(Observer)",
     query: {
       view: ViewOptionQueries.CursorObserver,
       limit: 10,
+      sort: "id",
+      order: "desc",
     },
   },
 ];
