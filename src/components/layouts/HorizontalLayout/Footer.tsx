@@ -36,7 +36,10 @@ const Footer = () => {
               <Divider orientation={"vertical"} />
             </Fragment>
           ))}
-          <Tooltip hasArrow label={"react, nextjs, typescript, etc..."}>
+          <Tooltip
+            hasArrow
+            label={"React, NextJS, Typescript, Emotion, ETC..."}
+          >
             <Text fontSize={"sm"}>and more...</Text>
           </Tooltip>
         </Flex>
