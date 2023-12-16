@@ -62,6 +62,7 @@ const UserCreateModal = ({ isOpen, onClose }: UserCreateModalProps) => {
         <ModalCloseButton />
         <ModalBody>
           <UserFormFields
+            fields={["name", "email", "phone"]}
             register={register}
             profilePreview={preview}
             onProfileChange={(file) => {

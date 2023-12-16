@@ -1,23 +1,25 @@
-import { UserCreate } from "@/apis";
 import { FileInput, WithLabel } from "@/components";
 import { useBgColor } from "@/hooks";
+import { toTitle } from "@/utils";
 import { Box, Center, Flex, Icon, Input } from "@chakra-ui/react";
 import Image from "next/image";
 import { useMemo, useRef } from "react";
-import { UseFormRegister } from "react-hook-form";
+import { FieldPath, UseFormRegister } from "react-hook-form";
 import { PiPlusThin } from "react-icons/pi";
 
-interface UserFormFieldsProps {
-  register: UseFormRegister<UserCreate>;
+interface UserFormFieldsProps<T extends object> {
+  fields: FieldPath<T>[];
+  register: UseFormRegister<T>;
   profilePreview: string;
   onProfileChange: (file: File) => void;
 }
 
-const UserFormFields = ({
+const UserFormFields = <T extends object>({
+  fields,
   register,
   profilePreview,
   onProfileChange,
-}: UserFormFieldsProps) => {
+}: UserFormFieldsProps<T>) => {
   const bgColor = useBgColor();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -59,15 +61,11 @@ const UserFormFields = ({
           )}
         </Center>
       </WithLabel>
-      <WithLabel label={"Name"}>
-        <Input {...register("name")} placeholder="Name" required />
-      </WithLabel>
-      <WithLabel label={"Email"}>
-        <Input {...register("email")} placeholder="Email" required />
-      </WithLabel>
-      <WithLabel label={"Phone"}>
-        <Input {...register("phone")} placeholder="Phone" required />
-      </WithLabel>
+      {fields.map((field) => (
+        <WithLabel key={field.toString()} label={toTitle(field.toString())}>
+          <Input {...register(field)} placeholder={toTitle(field.toString())} />
+        </WithLabel>
+      ))}
     </Flex>
   );
 };

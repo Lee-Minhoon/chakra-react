@@ -1,4 +1,4 @@
-import { User, useUpdateUser } from "@/apis";
+import { User, UserUpdate, useUpdateUser } from "@/apis";
 import { useUpload } from "@/apis/upload";
 import {
   Button,
@@ -21,7 +21,7 @@ interface UserUpdateModalProps {
 }
 
 const UserUpdateModal = ({ user, isOpen, onClose }: UserUpdateModalProps) => {
-  const { register, handleSubmit, setValue, reset } = useForm<User>({
+  const { register, handleSubmit, setValue, reset } = useForm<UserUpdate>({
     defaultValues: user,
   });
   const { mutate: updateUser } = useUpdateUser();
@@ -74,6 +74,7 @@ const UserUpdateModal = ({ user, isOpen, onClose }: UserUpdateModalProps) => {
         <ModalCloseButton />
         <ModalBody>
           <UserFormFields
+            fields={["name", "email", "phone"]}
             register={register}
             profilePreview={preview}
             onProfileChange={(file) => {
