@@ -1,13 +1,52 @@
+import { RequiredKeys } from "@/types";
 import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
-import { Post, readDB } from "../db";
+import { Order, Post, readDB } from "../db";
 import { sleep } from "../utils";
 
-export const readPosts = (): Post[] => {
+export const readPosts = (sort?: RequiredKeys<Post>, order?: Order) => {
   try {
     const db = readDB();
     return db.posts;
+  } catch (err) {
+    console.log("failed to read db.json");
+    throw err;
+  }
+};
+
+export const readPostsWithUser = (
+  sort?: RequiredKeys<Post> & "user_name",
+  order?: Order
+) => {
+  try {
+    const db = readDB();
+    const posts = db.posts.map((post) => ({
+      ...post,
+      user: db.users.find((user) => user.id === post.userId),
+    }));
+    if (sort && order) {
+      return posts.sort((a, b) => {
+        if (order === "asc") {
+          if (sort === "user_name") {
+            if ((a.user?.name ?? "") < (b.user?.name ?? "")) return -1;
+            if ((a.user?.name ?? "") > (b.user?.name ?? "")) return 1;
+          }
+          if (a[sort] < b[sort]) return -1;
+          if (a[sort] > b[sort]) return 1;
+        } else {
+          if (sort === "user_name") {
+            if ((a.user?.name ?? "") > (b.user?.name ?? "")) return -1;
+            if ((a.user?.name ?? "") < (b.user?.name ?? "")) return 1;
+          }
+          if (a[sort] > b[sort]) return -1;
+          if (a[sort] < b[sort]) return 1;
+        }
+        return 0;
+      });
+    } else {
+      return posts;
+    }
   } catch (err) {
     console.log("failed to read db.json");
     throw err;
@@ -58,8 +97,13 @@ export const getPost = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
+  const { sort, order } = req.query;
+
   try {
-    const posts = readPosts();
+    const posts = readPostsWithUser(
+      sort as RequiredKeys<Post> & "user_name",
+      order as Order
+    );
     return res.status(200).json({ data: posts, message: "success" });
   } catch {
     return res.status(500).json({ data: null, message: "failed" });
@@ -67,10 +111,13 @@ export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const getPostsByOffset = (req: NextApiRequest, res: NextApiResponse) => {
-  const { offset, limit } = req.query;
+  const { offset, limit, sort, order } = req.query;
 
   try {
-    const posts = readPosts();
+    const posts = readPostsWithUser(
+      sort as RequiredKeys<Post> & "user_name",
+      order as Order
+    );
     const slicedPosts = posts.slice(
       Number(offset),
       Number(offset) + Number(limit)
@@ -86,10 +133,13 @@ export const getPostsByOffset = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const getPostsByCursor = (req: NextApiRequest, res: NextApiResponse) => {
-  const { cursor, limit } = req.query;
+  const { cursor, limit, sort, order } = req.query;
 
   try {
-    const posts = readPosts();
+    const posts = readPostsWithUser(
+      sort as RequiredKeys<Post> & "user_name",
+      order as Order
+    );
     const index = posts.findIndex((user) => user.id === Number(cursor));
     const slicedPosts = posts.slice(index, index + Number(limit));
 

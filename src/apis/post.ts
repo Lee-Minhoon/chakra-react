@@ -1,6 +1,6 @@
 import { ApiRoutes } from "@/constants";
 import { toUrl } from "@/utils";
-import { CursorQueryParams, OffsetQueryParams, Scheme } from ".";
+import { CursorQueryParams, OffsetQueryParams, Scheme, User } from ".";
 import {
   useDelete,
   useFetch,
@@ -16,20 +16,26 @@ export interface Post extends Scheme {
   content: string;
 }
 
+export interface PostWithUser extends Post {
+  user: User;
+}
+
 export const useGetPost = (id?: number) => {
   return useFetch<Post>(toUrl(ApiRoutes.Post, { id }));
 };
 
-export const useGetPosts = () => {
-  return useFetch<Post[]>(toUrl(ApiRoutes.Post));
+export const useGetPosts = (
+  params: Pick<OffsetQueryParams, "sort" | "order">
+) => {
+  return useFetch<PostWithUser[]>(toUrl(ApiRoutes.Post), params);
 };
 
 export const useGetPostsByOffset = (params: OffsetQueryParams) => {
-  return useGetPage<Post[]>(toUrl(ApiRoutes.Post), params);
+  return useGetPage<PostWithUser[]>(toUrl(ApiRoutes.Post), params);
 };
 
 export const useGetPostsByCursor = (params: CursorQueryParams) => {
-  return useLoadMore<Post[]>(toUrl(ApiRoutes.Post), params);
+  return useLoadMore<PostWithUser[]>(toUrl(ApiRoutes.Post), params);
 };
 
 export type PostCreate = Omit<Post, "id">;

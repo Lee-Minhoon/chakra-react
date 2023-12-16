@@ -1,6 +1,6 @@
 import { Post, useGetPostsByCursor } from "@/apis";
 import { InfiniteList } from "@/components";
-import { useRouter } from "next/router";
+import { usePagination } from "@/hooks";
 import { useCallback, useEffect, useRef } from "react";
 
 interface PostsByCursorProps {
@@ -8,14 +8,13 @@ interface PostsByCursorProps {
 }
 
 const PostsByCursor = ({ observe }: PostsByCursorProps) => {
-  const router = useRouter();
-  const limit = router.query?.limit ? Number(router.query?.limit) : 10;
+  const { limit, sort, order } = usePagination();
 
   const {
     data: posts,
     fetchNextPage,
     hasNextPage,
-  } = useGetPostsByCursor({ limit });
+  } = useGetPostsByCursor({ limit, sort, order });
 
   const target = useRef<HTMLDivElement>(null);
 
