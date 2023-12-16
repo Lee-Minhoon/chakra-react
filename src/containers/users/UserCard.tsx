@@ -8,6 +8,8 @@ import {
   CardHeader,
   Flex,
   Heading,
+  Skeleton,
+  SkeletonCircle,
   Stack,
   StackDivider,
   Text,
@@ -29,8 +31,8 @@ const UserCard = ({ user }: UserCardProps) => {
   const attributes = useMemo(
     () => [
       { label: "Approved", value: user?.approved ? "Yes" : "No" },
-      { label: "Email", value: user?.email },
-      { label: "Phone", value: user?.phone },
+      { label: "Email", value: user?.email ?? "Email" },
+      { label: "Phone", value: user?.phone ?? "Phone" },
     ],
     [user]
   );
@@ -42,46 +44,54 @@ const UserCard = ({ user }: UserCardProps) => {
       )}
       <Card direction={"row"}>
         <Box p={5}>
-          <Box
-            pos={"relative"}
-            overflow={"hidden"}
-            w={40}
-            h={40}
-            bgColor={bgColor}
-            borderRadius={"full"}
-          >
-            {user?.profile && (
-              <Image
-                priority
-                fill
-                sizes={"100%"}
-                src={user.profile}
-                alt={"profile"}
-                style={{ objectFit: "cover" }}
-              />
-            )}
-          </Box>
+          {user ? (
+            <Box
+              pos={"relative"}
+              overflow={"hidden"}
+              w={40}
+              h={40}
+              bgColor={bgColor}
+              borderRadius={"full"}
+            >
+              {user?.profile && (
+                <Image
+                  priority
+                  fill
+                  sizes={"100%"}
+                  src={user.profile}
+                  alt={"profile"}
+                  style={{ objectFit: "cover" }}
+                />
+              )}
+            </Box>
+          ) : (
+            <SkeletonCircle size={"40"} />
+          )}
         </Box>
         <Flex flex={1} direction={"column"}>
           <CardHeader>
-            <Flex justify={"space-between"}>
-              <Heading size={"lg"}>{user?.name}</Heading>
-              <Button size={"sm"} rightIcon={<TbEdit />} onClick={onOpen}>
-                Edit
-              </Button>
-            </Flex>
+            <Skeleton isLoaded={!!user}>
+              <Flex justify={"space-between"}>
+                <Heading size={"lg"}>{user?.name ?? "Name"}</Heading>
+                <Button size={"sm"} rightIcon={<TbEdit />} onClick={onOpen}>
+                  Edit
+                </Button>
+              </Flex>
+            </Skeleton>
           </CardHeader>
           <CardBody>
             <Stack divider={<StackDivider />} spacing="4">
               {attributes.map((attribute) => (
-                <Box key={attribute.label}>
-                  <Heading size="xs" textTransform="uppercase">
-                    {attribute.label}
-                  </Heading>
-                  <Text pt="2" fontSize="sm">
-                    {attribute.value}
-                  </Text>
-                </Box>
+                <Skeleton key={attribute.label} isLoaded={!!user}>
+                  <Box>
+                    <Heading size="xs" textTransform="uppercase">
+                      {attribute.label}
+                    </Heading>
+                    <Text pt="2" fontSize="sm">
+                      {attribute.value}
+                    </Text>
+                  </Box>
+                </Skeleton>
               ))}
             </Stack>
           </CardBody>

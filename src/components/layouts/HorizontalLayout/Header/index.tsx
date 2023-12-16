@@ -3,7 +3,7 @@ import { ColorMode, LayoutMode, Logo } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { RiLogoutBoxRLine } from "react-icons/ri";
+import { RiLoginBoxLine, RiLogoutBoxRLine } from "react-icons/ri";
 import Navbar from "./Navbar";
 
 const Header = () => {
@@ -24,13 +24,21 @@ const Header = () => {
       <Flex justify={"flex-end"} gap={4}>
         <LayoutMode />
         <ColorMode />
-        {me && (
+        {me ? (
           <Button
             rightIcon={<RiLogoutBoxRLine />}
             onClick={() => signout()}
             size={"sm"}
           >
             Sign Out
+          </Button>
+        ) : (
+          <Button
+            rightIcon={<RiLoginBoxLine />}
+            onClick={() => push(PageRoutes.Signin)}
+            size={"sm"}
+          >
+            Sign In
           </Button>
         )}
       </Flex>
