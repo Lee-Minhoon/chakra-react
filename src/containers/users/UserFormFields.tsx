@@ -60,13 +60,13 @@ const UserFormFields = ({
         </Center>
       </WithLabel>
       <WithLabel label={"Name"}>
-        <Input {...register("name")} placeholder="name" required />
+        <Input {...register("name")} placeholder="Name" required />
       </WithLabel>
       <WithLabel label={"Email"}>
-        <Input {...register("email")} placeholder="email" required />
+        <Input {...register("email")} placeholder="Email" required />
       </WithLabel>
       <WithLabel label={"Phone"}>
-        <Input {...register("phone")} placeholder="phone" required />
+        <Input {...register("phone")} placeholder="Phone" required />
       </WithLabel>
     </Flex>
   );

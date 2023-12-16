@@ -21,6 +21,7 @@ export enum PageRoutes {
   UserDetail = "/users/:id",
   Posts = "/posts",
   PostDetail = "/posts/:id",
+  WritePost = "/posts/write",
 }
 
 export enum ViewOptionQueries {
@@ -60,6 +61,18 @@ export const navs: Nav[] = [
     query: { view: ViewOptionQueries.All },
     icon: BsFillPostcardFill,
     matcher: match(PageRoutes.Posts),
+    children: [
+      {
+        label: "Write Post",
+        pathname: PageRoutes.WritePost,
+        matcher: match(PageRoutes.WritePost),
+      },
+      {
+        label: "Post Detail",
+        pathname: PageRoutes.PostDetail,
+        matcher: match(PageRoutes.PostDetail),
+      },
+    ],
   },
 ];
 

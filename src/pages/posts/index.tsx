@@ -1,6 +1,11 @@
 import { PageOptions, ViewOptions } from "@/components";
 import { ViewOptionQueries } from "@/constants";
-import { PostsAll, PostsByCursor, PostsByOffset } from "@/containers";
+import {
+  PostsAll,
+  PostsByCursor,
+  PostsByOffset,
+  PostsUtils,
+} from "@/containers";
 import useLayout from "@/hooks/useLayout";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
@@ -42,6 +47,7 @@ const PostsAllPage = () => {
       <Layout>
         <Flex direction={"column"} gap={4}>
           <Flex justifyContent={"space-between"}>
+            <PostsUtils />
             <Flex gap={4}>
               <ViewOptions />
               {viewOption !== ViewOptionQueries.All && <PageOptions />}

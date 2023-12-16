@@ -63,12 +63,17 @@ const UsersUtils = ({ onCreateUser }: UsersUtilsProps) => {
         </Button>
       </Tooltip>
       <Tooltip hasArrow label={"Create Random User"}>
-        <Button leftIcon={<TbPlus />} onClick={handleCreateRandomUser}>
+        <Button
+          variant={"outline"}
+          leftIcon={<TbPlus />}
+          onClick={handleCreateRandomUser}
+        >
           Random User
         </Button>
       </Tooltip>
       <Tooltip hasArrow label={"Create 50 Users for Test"}>
         <Button
+          variant={"outline"}
           leftIcon={<TbPlus />}
           onClick={handleCreateTestUsers}
           isDisabled={createTestUsersLoading}
@@ -78,6 +83,7 @@ const UsersUtils = ({ onCreateUser }: UsersUtilsProps) => {
       </Tooltip>
       <Tooltip hasArrow label={"Reset All Users"}>
         <Button
+          variant={"outline"}
           leftIcon={<GrPowerReset />}
           onClick={handleResetTestUsers}
           isDisabled={restTestUsersLoading}
