@@ -1,4 +1,4 @@
-import { User } from "@/apis";
+import { UserCreate } from "@/apis";
 import { FileInput, WithLabel } from "@/components";
 import { useBgColor } from "@/hooks";
 import { Box, Center, Flex, Icon, Input } from "@chakra-ui/react";
@@ -8,7 +8,7 @@ import { UseFormRegister } from "react-hook-form";
 import { PiPlusThin } from "react-icons/pi";
 
 interface UserFormFieldsProps {
-  register: UseFormRegister<User>;
+  register: UseFormRegister<UserCreate>;
   profilePreview: string;
   onProfileChange: (file: File) => void;
 }

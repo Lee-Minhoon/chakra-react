@@ -43,11 +43,7 @@ export const useGetUsersByCursor = (params: CursorQueryParams) => {
   return useLoadMore<User[]>(toUrl(ApiRoutes.User), params);
 };
 
-export interface UserCreate {
-  name: string;
-  email: string;
-  phone: string;
-}
+export type UserCreate = Pick<User, "name" | "email" | "phone" | "profile">;
 
 export const useCreateUser = (
   params?: OffsetQueryParams | CursorQueryParams

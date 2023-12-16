@@ -1,4 +1,4 @@
-import { User, useCreateUser } from "@/apis";
+import { UserCreate, useCreateUser } from "@/apis";
 import { useUpload } from "@/apis/upload";
 import {
   Button,
@@ -20,7 +20,7 @@ interface UserCreateModalProps {
 }
 
 const UserCreateModal = ({ isOpen, onClose }: UserCreateModalProps) => {
-  const { register, handleSubmit, reset } = useForm<User>();
+  const { register, handleSubmit, reset } = useForm<UserCreate>();
   const { mutate: createUser } = useCreateUser();
   const { mutate: upload } = useUpload();
   const [file, setFile] = useState<File>();

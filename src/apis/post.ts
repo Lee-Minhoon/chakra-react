@@ -31,10 +31,7 @@ export const useGetPostsByCursor = (params: CursorQueryParams) => {
   return useLoadMore<Post[]>(toUrl(ApiRoutes.Post), params);
 };
 
-export interface PostCreate {
-  title: string;
-  content: string;
-}
+export type PostCreate = Pick<Post, "title" | "content">;
 
 export const useCreatePost = (
   params?: OffsetQueryParams | CursorQueryParams
