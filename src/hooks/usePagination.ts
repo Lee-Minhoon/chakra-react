@@ -26,9 +26,22 @@ const usePagination = () => {
     return (params.page - 1) * params.limit;
   }, [params]);
 
-  const isExist = useMemo(() => {
-    return router.query?.page && router.query?.limit;
-  }, [router.query?.page, router.query?.limit]);
+  const queryKey = useMemo(() => {
+    let queryKey = {};
+    if (router.query?.page && router.query?.limit) {
+      queryKey = { ...queryKey, offset };
+    }
+    if (router.query?.limit) {
+      queryKey = { ...queryKey, limit: Number(router.query.limit) };
+    }
+    if (router.query?.sort) {
+      queryKey = { ...queryKey, sort: router.query.sort };
+    }
+    if (router.query?.order) {
+      queryKey = { ...queryKey, order: router.query.order };
+    }
+    return Object.keys(queryKey).length > 0 ? queryKey : undefined;
+  }, [offset, router.query]);
 
   const onPagination = useCallback(
     (params: OnPaginationParams) => {
@@ -40,7 +53,7 @@ const usePagination = () => {
     [router]
   );
 
-  return { ...params, offset, isExist, onPagination };
+  return { ...params, offset, queryKey, onPagination };
 };
 
 export default usePagination;

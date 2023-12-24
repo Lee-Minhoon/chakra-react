@@ -1,7 +1,12 @@
 import { Nullable } from "@/types";
-import { ReactNode } from "react";
+import { ComponentType, ReactNode } from "react";
 import { create } from "zustand";
 import { useShallow } from "./hooks";
+
+interface Modal<T> {
+  modal: ComponentType<T>;
+  props: T;
+}
 
 interface Alert {
   title: string;
@@ -15,23 +20,31 @@ interface Confirm {
 }
 
 interface T {
+  modals: Modal<any>[];
   alert: Nullable<Alert>;
   confirm: Nullable<Confirm>;
 
+  openModal: <T>(modal: ComponentType<T>, props: Omit<T, "onClose">) => void;
   openAlert: (alert: Alert) => void;
   openConfirm: (confirm: Confirm) => void;
 
+  closeModal: (modal: ComponentType) => void;
   closeAlert: () => void;
   closeConfirm: () => void;
 }
 
 export const modalStore = create<T>((set) => ({
+  modals: [],
   alert: null,
   confirm: null,
 
+  openModal: (modal, props) =>
+    set((state) => ({ modals: [...state.modals, { modal, props }] })),
   openAlert: (alert) => set({ alert }),
   openConfirm: (confirm) => set({ confirm }),
 
+  closeModal: (modal) =>
+    set((state) => ({ modals: state.modals.filter((m) => m.modal !== modal) })),
   closeAlert: () => set({ alert: null }),
   closeConfirm: () => set({ confirm: null }),
 }));

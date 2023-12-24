@@ -1,4 +1,4 @@
-import { PageRoutes, ViewOptionQueries } from "@/constants";
+import { PageRoutes, ViewQueries } from "@/constants";
 import { Select } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
@@ -7,12 +7,12 @@ const options = [
   {
     label: "All",
     pathname: PageRoutes.Users,
-    query: { view: ViewOptionQueries.All, sort: "id", order: "desc" },
+    query: { view: ViewQueries.All, sort: "id", order: "desc" },
   },
   {
     label: "Offset",
     query: {
-      view: ViewOptionQueries.Offset,
+      view: ViewQueries.Offset,
       page: 1,
       limit: 10,
       sort: "id",
@@ -22,7 +22,7 @@ const options = [
   {
     label: "Cursor(Button)",
     query: {
-      view: ViewOptionQueries.CursorButton,
+      view: ViewQueries.CursorButton,
       limit: 10,
       sort: "id",
       order: "desc",
@@ -31,7 +31,7 @@ const options = [
   {
     label: "Cursor(Observer)",
     query: {
-      view: ViewOptionQueries.CursorObserver,
+      view: ViewQueries.CursorObserver,
       limit: 10,
       sort: "id",
       order: "desc",

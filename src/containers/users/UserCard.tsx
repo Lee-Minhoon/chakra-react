@@ -1,6 +1,6 @@
 import { User } from "@/apis";
 import { Profile } from "@/components";
-import { useBgColor } from "@/hooks";
+import { useModalStore } from "@/stores";
 import {
   Box,
   Button,
@@ -14,7 +14,6 @@ import {
   Stack,
   StackDivider,
   Text,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { TbEdit } from "react-icons/tb";
@@ -25,8 +24,7 @@ interface UserCardProps {
 }
 
 const UserCard = ({ user }: UserCardProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const bgColor = useBgColor();
+  const { openModal } = useModalStore(["openModal"]);
 
   const attributes = useMemo(
     () => [
@@ -39,9 +37,6 @@ const UserCard = ({ user }: UserCardProps) => {
 
   return (
     <>
-      {user && (
-        <UserUpdateModal user={user} isOpen={isOpen} onClose={onClose} />
-      )}
       <Card direction={"row"}>
         <Box p={5}>
           <SkeletonCircle isLoaded={!!user} size={"40"}>
@@ -53,7 +48,14 @@ const UserCard = ({ user }: UserCardProps) => {
             <Skeleton isLoaded={!!user}>
               <Flex justify={"space-between"}>
                 <Heading size={"lg"}>{user?.name ?? "Name"}</Heading>
-                <Button size={"sm"} rightIcon={<TbEdit />} onClick={onOpen}>
+                <Button
+                  size={"sm"}
+                  rightIcon={<TbEdit />}
+                  onClick={() => {
+                    if (!user) return;
+                    openModal(UserUpdateModal, { user });
+                  }}
+                >
                   Edit
                 </Button>
               </Flex>

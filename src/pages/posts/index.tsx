@@ -1,5 +1,5 @@
 import { PageOptions, ViewOptions } from "@/components";
-import { ViewOptionQueries } from "@/constants";
+import { ViewQueries } from "@/constants";
 import {
   PostsAll,
   PostsByCursor,
@@ -16,20 +16,18 @@ const PostsAllPage = () => {
   const { Layout } = useLayout();
 
   const router = useRouter();
-  const viewOption = router.query?.view as ViewOptionQueries;
+  const viewOption = router.query?.view as ViewQueries;
 
   const display = useMemo(() => {
     switch (viewOption) {
-      case ViewOptionQueries.All:
+      case ViewQueries.All:
         return <PostsAll />;
-      case ViewOptionQueries.Offset:
+      case ViewQueries.Offset:
         return <PostsByOffset />;
-      case ViewOptionQueries.CursorButton:
-      case ViewOptionQueries.CursorObserver:
+      case ViewQueries.CursorButton:
+      case ViewQueries.CursorObserver:
         return (
-          <PostsByCursor
-            observe={viewOption === ViewOptionQueries.CursorObserver}
-          />
+          <PostsByCursor observe={viewOption === ViewQueries.CursorObserver} />
         );
       default:
         return null;
@@ -50,7 +48,7 @@ const PostsAllPage = () => {
             <PostsUtils />
             <Flex gap={4}>
               <ViewOptions />
-              {viewOption !== ViewOptionQueries.All && <PageOptions />}
+              {viewOption !== ViewQueries.All && <PageOptions />}
             </Flex>
           </Flex>
           {display}

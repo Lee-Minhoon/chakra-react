@@ -10,18 +10,17 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import UserFormFields from "./UserFormFields";
 
 interface UserUpdateModalProps {
   user: User;
-  isOpen: boolean;
   onClose: () => void;
 }
 
-const UserUpdateModal = ({ user, isOpen, onClose }: UserUpdateModalProps) => {
-  const { register, handleSubmit, setValue, reset } = useForm<UserUpdate>({
+const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
+  const { register, handleSubmit } = useForm<UserUpdate>({
     defaultValues: user,
   });
   const { mutate: updateUser } = useUpdateUser();
@@ -29,22 +28,8 @@ const UserUpdateModal = ({ user, isOpen, onClose }: UserUpdateModalProps) => {
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState(user.profile ?? "");
 
-  useEffect(() => {
-    if (isOpen && user.profile) {
-      setPreview(user.profile);
-    }
-  }, [isOpen, user.profile]);
-
-  useEffect(() => {
-    if (!isOpen) {
-      reset();
-      setFile(undefined);
-      setPreview("");
-    }
-  }, [isOpen, reset, setValue]);
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen onClose={onClose}>
       <ModalOverlay />
       <ModalContent
         as={"form"}

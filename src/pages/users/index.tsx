@@ -1,5 +1,5 @@
 import { PageOptions, ViewOptions } from "@/components";
-import { ViewOptionQueries } from "@/constants";
+import { ViewQueries } from "@/constants";
 import {
   UserCreateModal,
   UsersAll,
@@ -18,20 +18,18 @@ const UsersPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const router = useRouter();
-  const viewOption = router.query?.view as ViewOptionQueries;
+  const viewOption = router.query?.view as ViewQueries;
 
   const display = useMemo(() => {
     switch (viewOption) {
-      case ViewOptionQueries.All:
+      case ViewQueries.All:
         return <UsersAll />;
-      case ViewOptionQueries.Offset:
+      case ViewQueries.Offset:
         return <UsersByOffset />;
-      case ViewOptionQueries.CursorButton:
-      case ViewOptionQueries.CursorObserver:
+      case ViewQueries.CursorButton:
+      case ViewQueries.CursorObserver:
         return (
-          <UsersByCursor
-            observe={viewOption === ViewOptionQueries.CursorObserver}
-          />
+          <UsersByCursor observe={viewOption === ViewQueries.CursorObserver} />
         );
       default:
         return null;
@@ -53,7 +51,7 @@ const UsersPage = () => {
             <UsersUtils onCreateUser={onOpen} />
             <Flex gap={4}>
               <ViewOptions />
-              {viewOption !== ViewOptionQueries.All && <PageOptions />}
+              {viewOption !== ViewQueries.All && <PageOptions />}
             </Flex>
           </Flex>
           {display}

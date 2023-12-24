@@ -24,7 +24,7 @@ export enum PageRoutes {
   WritePost = "/posts/write",
 }
 
-export enum ViewOptionQueries {
+export enum ViewQueries {
   All = "all",
   Offset = "offset",
   CursorButton = "cursorButton",
@@ -44,7 +44,7 @@ export const navs: Nav[] = [
   {
     label: "Users",
     pathname: PageRoutes.Users,
-    query: { view: ViewOptionQueries.All, sort: "id", order: "desc" },
+    query: { view: ViewQueries.All, sort: "id", order: "desc" },
     icon: FaUser,
     matcher: match(PageRoutes.Users),
     children: [
@@ -58,7 +58,7 @@ export const navs: Nav[] = [
   {
     label: "Posts",
     pathname: PageRoutes.Posts,
-    query: { view: ViewOptionQueries.All },
+    query: { view: ViewQueries.All },
     icon: BsFillPostcardFill,
     matcher: match(PageRoutes.Posts),
     children: [
