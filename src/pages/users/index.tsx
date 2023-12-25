@@ -4,7 +4,7 @@ import {
   UserCreateModal,
   UsersAll,
   UsersByCursor,
-  UsersByOffset,
+  UsersByPage,
   UsersUtils,
 } from "@/containers";
 import { useLayout } from "@/hooks";
@@ -24,8 +24,8 @@ const UsersPage = () => {
     switch (viewOption) {
       case ViewQueries.All:
         return <UsersAll />;
-      case ViewQueries.Offset:
-        return <UsersByOffset />;
+      case ViewQueries.Page:
+        return <UsersByPage />;
       case ViewQueries.CursorButton:
       case ViewQueries.CursorObserver:
         return (

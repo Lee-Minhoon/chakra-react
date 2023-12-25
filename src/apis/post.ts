@@ -1,6 +1,6 @@
 import { ApiRoutes } from "@/constants";
 import { toUrl } from "@/utils";
-import { CursorQueryParams, OffsetQueryParams, Scheme, User } from ".";
+import { CursorQueryParams, PageQueryParams, Scheme, User } from ".";
 import {
   useDelete,
   useFetch,
@@ -25,12 +25,12 @@ export const useGetPost = (id?: number) => {
 };
 
 export const useGetPosts = (
-  params: Pick<OffsetQueryParams, "sort" | "order">
+  params: Pick<PageQueryParams, "sort" | "order">
 ) => {
   return useFetch<PostWithUser[]>(toUrl(ApiRoutes.Post), params);
 };
 
-export const useGetPostsByOffset = (params: OffsetQueryParams) => {
+export const useGetPostsByPage = (params: PageQueryParams) => {
   return useGetPage<PostWithUser[]>(toUrl(ApiRoutes.Post), params);
 };
 
@@ -40,9 +40,7 @@ export const useGetPostsByCursor = (params: CursorQueryParams) => {
 
 export type PostCreate = Omit<Post, "id">;
 
-export const useCreatePost = (
-  params?: OffsetQueryParams | CursorQueryParams
-) => {
+export const useCreatePost = (params?: PageQueryParams | CursorQueryParams) => {
   return usePost<Post[], PostCreate, number>(toUrl(ApiRoutes.Post), params, {
     meta: { successMessage: "Post created successfully" },
   });

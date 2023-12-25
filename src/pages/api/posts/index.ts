@@ -73,8 +73,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   sleep(500);
   switch (req.method) {
     case "GET":
-      const { offset, cursor, limit } = req.query;
-      if (offset && limit) return getPostsByOffset(req, res);
+      const { page, cursor, limit } = req.query;
+      if (page && limit) return getPostsByPage(req, res);
       if (cursor && limit) return getPostsByCursor(req, res);
       return getPosts(req, res);
     case "POST":
@@ -110,8 +110,10 @@ export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export const getPostsByOffset = (req: NextApiRequest, res: NextApiResponse) => {
-  const { offset, limit, sort, order } = req.query;
+export const getPostsByPage = (req: NextApiRequest, res: NextApiResponse) => {
+  const { page, limit, sort, order } = req.query;
+
+  const offset = (Number(page) - 1) * Number(limit);
 
   try {
     const posts = readPostsWithUser(

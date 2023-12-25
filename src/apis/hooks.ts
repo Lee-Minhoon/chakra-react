@@ -17,7 +17,7 @@ import {
   ApiResponse,
   CursorQueryData,
   ID,
-  OffsetQueryData,
+  PageQueryData,
 } from "./types";
 import { api } from "./utils";
 
@@ -138,13 +138,13 @@ export const useGetPage = <TResponse>(
   url: string,
   params?: object,
   options?: UseQueryOptions<
-    OffsetQueryData<TResponse>,
+    PageQueryData<TResponse>,
     ApiError,
-    OffsetQueryData<TResponse>,
+    PageQueryData<TResponse>,
     QueryKeyType
   >
 ) => {
-  return useQuery<OffsetQueryData<TResponse>>(url, params, {
+  return useQuery<PageQueryData<TResponse>>(url, params, {
     ...options,
     keepPreviousData: true,
   });

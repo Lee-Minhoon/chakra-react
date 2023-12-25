@@ -10,9 +10,9 @@ const options = [
     query: { view: ViewQueries.All, sort: "id", order: "desc" },
   },
   {
-    label: "Offset",
+    label: "Page",
     query: {
-      view: ViewQueries.Offset,
+      view: ViewQueries.Page,
       page: 1,
       limit: 10,
       sort: "id",

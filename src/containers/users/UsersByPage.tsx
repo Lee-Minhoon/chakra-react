@@ -1,13 +1,13 @@
-import { useGetPostsByOffset } from "@/apis";
+import { useGetUsersByPage } from "@/apis";
 import { Pagination } from "@/components";
-import { PostsTable } from "@/containers";
+import { UsersTable } from "@/containers";
 import { usePagination } from "@/hooks";
 import { TableContainer } from "@chakra-ui/react";
 
-const PostsAllPage = () => {
-  const { page, offset, limit, sort, order, onPagination } = usePagination();
-  const { data: postsByOffset } = useGetPostsByOffset({
-    offset,
+const UsersByPage = () => {
+  const { page, limit, sort, order, onPagination } = usePagination();
+  const { data: usersByPage } = useGetUsersByPage({
+    page,
     limit,
     sort,
     order,
@@ -16,16 +16,16 @@ const PostsAllPage = () => {
   return (
     <>
       <TableContainer flex={1} overflowY={"auto"}>
-        <PostsTable posts={postsByOffset?.data ?? []} />
+        <UsersTable users={usersByPage?.data ?? []} />
       </TableContainer>
       <Pagination
         currentPage={page}
         limit={limit}
-        total={postsByOffset?.total ?? 0}
+        total={usersByPage?.total ?? 0}
         onChange={(page) => onPagination({ page })}
       />
     </>
   );
 };
 
-export default PostsAllPage;
+export default UsersByPage;

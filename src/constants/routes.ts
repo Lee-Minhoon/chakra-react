@@ -26,7 +26,7 @@ export enum PageRoutes {
 
 export enum ViewQueries {
   All = "all",
-  Offset = "offset",
+  Page = "page",
   CursorButton = "cursorButton",
   CursorObserver = "cursorObserver",
 }

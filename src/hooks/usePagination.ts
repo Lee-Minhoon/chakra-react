@@ -22,14 +22,10 @@ const usePagination = () => {
     };
   }, [router.query]);
 
-  const offset = useMemo(() => {
-    return (params.page - 1) * params.limit;
-  }, [params]);
-
   const queryKey = useMemo(() => {
     let queryKey = {};
-    if (router.query?.page && router.query?.limit) {
-      queryKey = { ...queryKey, offset };
+    if (router.query?.page) {
+      queryKey = { ...queryKey, page: Number(router.query.page) };
     }
     if (router.query?.limit) {
       queryKey = { ...queryKey, limit: Number(router.query.limit) };
@@ -41,7 +37,7 @@ const usePagination = () => {
       queryKey = { ...queryKey, order: router.query.order };
     }
     return Object.keys(queryKey).length > 0 ? queryKey : undefined;
-  }, [offset, router.query]);
+  }, [router.query]);
 
   const onPagination = useCallback(
     (params: OnPaginationParams) => {
@@ -53,7 +49,7 @@ const usePagination = () => {
     [router]
   );
 
-  return { ...params, offset, queryKey, onPagination };
+  return { ...params, queryKey, onPagination };
 };
 
 export default usePagination;

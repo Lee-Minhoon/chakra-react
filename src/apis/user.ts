@@ -12,8 +12,8 @@ import {
 } from "./hooks";
 import {
   CursorQueryParams,
-  OffsetQueryData,
-  OffsetQueryParams,
+  PageQueryData,
+  PageQueryParams,
   Scheme,
 } from "./types";
 
@@ -30,12 +30,12 @@ export const useGetUser = (id?: number) => {
 };
 
 export const useGetUsers = (
-  params: Pick<OffsetQueryParams, "sort" | "order">
+  params: Pick<PageQueryParams, "sort" | "order">
 ) => {
   return useFetch<User[]>(toUrl(ApiRoutes.User), params);
 };
 
-export const useGetUsersByOffset = (params: OffsetQueryParams) => {
+export const useGetUsersByPage = (params: PageQueryParams) => {
   return useGetPage<User[]>(toUrl(ApiRoutes.User), params);
 };
 
@@ -45,9 +45,7 @@ export const useGetUsersByCursor = (params: CursorQueryParams) => {
 
 export type UserCreate = Pick<User, "name" | "email" | "phone" | "profile">;
 
-export const useCreateUser = (
-  params?: OffsetQueryParams | CursorQueryParams
-) => {
+export const useCreateUser = (params?: PageQueryParams | CursorQueryParams) => {
   return usePost<User[], UserCreate>(
     toUrl(ApiRoutes.User),
     params,
@@ -82,7 +80,7 @@ export const useUpdateUser = () => {
 };
 
 export const useDeleteUser = (params?: object) => {
-  return useDelete<User[] | OffsetQueryData<User[]>, number>(
+  return useDelete<User[] | PageQueryData<User[]>, number>(
     toUrl(ApiRoutes.User),
     params,
     {
@@ -107,7 +105,7 @@ export interface UserApprove {
 }
 
 export const useApproveUser = (params?: object) => {
-  return useCommand<User[] | OffsetQueryData<User[]>, UserApprove>(
+  return useCommand<User[] | PageQueryData<User[]>, UserApprove>(
     ApiRoutes.ApproveUser,
     {
       meta: { successMessage: "User approved successfully" },

@@ -45,8 +45,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   sleep(200);
   switch (req.method) {
     case "GET":
-      const { offset, cursor, limit } = req.query;
-      if (offset && limit) return getUsersByOffset(req, res);
+      const { page, cursor, limit } = req.query;
+      if (page && limit) return getUsersByPage(req, res);
       if (cursor && limit) return getUsersByCursor(req, res);
       return getUsers(req, res);
     case "POST":
@@ -79,8 +79,10 @@ export const getUsers = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export const getUsersByOffset = (req: NextApiRequest, res: NextApiResponse) => {
-  const { offset, limit, sort, order } = req.query;
+export const getUsersByPage = (req: NextApiRequest, res: NextApiResponse) => {
+  const { page, limit, sort, order } = req.query;
+
+  const offset = (Number(page) - 1) * Number(limit);
 
   try {
     const users = readUsers(sort as RequiredKeys<User>, order as Order);

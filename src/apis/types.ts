@@ -22,8 +22,8 @@ export interface Scheme {
   id: ID;
 }
 
-export type OffsetQueryParams = {
-  offset: number;
+export type PageQueryParams = {
+  page: number;
   limit: number;
   sort?: string;
   order?: "asc" | "desc";
@@ -35,7 +35,7 @@ export type CursorQueryParams = {
   order?: "asc" | "desc";
 };
 
-export interface OffsetQueryData<T> {
+export interface PageQueryData<T> {
   total: number;
   data: T;
 }

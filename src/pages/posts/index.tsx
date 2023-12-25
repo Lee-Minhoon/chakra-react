@@ -1,11 +1,6 @@
 import { PageOptions, ViewOptions } from "@/components";
 import { ViewQueries } from "@/constants";
-import {
-  PostsAll,
-  PostsByCursor,
-  PostsByOffset,
-  PostsUtils,
-} from "@/containers";
+import { PostsAll, PostsByCursor, PostsByPage, PostsUtils } from "@/containers";
 import useLayout from "@/hooks/useLayout";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
@@ -22,8 +17,8 @@ const PostsAllPage = () => {
     switch (viewOption) {
       case ViewQueries.All:
         return <PostsAll />;
-      case ViewQueries.Offset:
-        return <PostsByOffset />;
+      case ViewQueries.Page:
+        return <PostsByPage />;
       case ViewQueries.CursorButton:
       case ViewQueries.CursorObserver:
         return (
