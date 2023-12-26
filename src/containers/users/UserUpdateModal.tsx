@@ -21,6 +21,7 @@ interface UserUpdateModalProps {
 }
 
 const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
+  const [isOpen, setIsOpen] = useState(true);
   const { queryKey } = usePagination();
   const { register, handleSubmit } = useForm<UserUpdate>({
     defaultValues: user,
@@ -31,13 +32,14 @@ const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
   const [preview, setPreview] = useState(user.profile ?? "");
 
   return (
-    <Modal isOpen onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent
         as={"form"}
         onSubmit={handleSubmit(
           useCallback(
             (data) => {
+              setIsOpen(false);
               if (file) {
                 const formData = new FormData();
                 formData.append("file", file);
