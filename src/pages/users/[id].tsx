@@ -1,6 +1,7 @@
 import { useGetUser } from "@/apis";
 import { UserCard } from "@/containers";
 import { useLayout } from "@/hooks";
+import { queryParser } from "@/utils";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -8,9 +9,7 @@ const UserPage = () => {
   const { Layout } = useLayout();
 
   const router = useRouter();
-  const { data: user } = useGetUser(
-    router.query?.id ? +router.query.id : undefined
-  );
+  const { data: user } = useGetUser(queryParser.toNumber(router.query.id));
 
   return (
     <>

@@ -1,6 +1,7 @@
 import { useGetPost } from "@/apis";
 import { PostCard } from "@/containers";
 import { useLayout } from "@/hooks";
+import { queryParser } from "@/utils";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -8,9 +9,7 @@ const PostPage = () => {
   const { Layout } = useLayout();
 
   const router = useRouter();
-  const { data: post } = useGetPost(
-    router.query?.id ? +router.query.id : undefined
-  );
+  const { data: post } = useGetPost(queryParser.toNumber(router.query.id));
 
   return (
     <>
