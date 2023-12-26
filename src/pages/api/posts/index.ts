@@ -88,7 +88,7 @@ export const getPost = (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   try {
-    const posts = readPosts();
+    const posts = readPostsWithUser();
     const post = posts.find((user) => user.id === Number(id));
     return res.status(200).json({ data: post, message: "success" });
   } catch {

@@ -1,4 +1,4 @@
-import { Post, useGetUser } from "@/apis";
+import { PostWithUser } from "@/apis";
 import { Profile } from "@/components";
 import {
   Box,
@@ -12,21 +12,19 @@ import {
 } from "@chakra-ui/react";
 
 interface PostCardProps {
-  post?: Post;
+  post?: PostWithUser;
 }
 
 const PostCard = ({ post }: PostCardProps) => {
-  const { data: user } = useGetUser(post?.userId);
-
   return (
     <Card>
       <CardHeader>
-        <Skeleton isLoaded={!!user}>
+        <Skeleton isLoaded={!!post?.user}>
           <Flex gap={4} align={"center"}>
-            <Profile profile={user?.profile} w={10} h={10} />
+            <Profile profile={post?.user.profile} w={10} h={10} />
             <Flex direction={"column"} gap={2}>
-              <Text>{user?.name ?? "User Name"}</Text>
-              <Text>{user?.email ?? "User Email"}</Text>
+              <Text>{post?.user.name ?? "User Name"}</Text>
+              <Text>{post?.user.email ?? "User Email"}</Text>
             </Flex>
           </Flex>
         </Skeleton>

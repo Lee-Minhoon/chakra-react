@@ -21,7 +21,7 @@ export interface PostWithUser extends Post {
 }
 
 export const useGetPost = (id?: number) => {
-  return useFetch<Post>(toUrl(ApiRoutes.Post, { id }));
+  return useFetch<PostWithUser>(toUrl(ApiRoutes.Post, { id }));
 };
 
 export const useGetPosts = (
