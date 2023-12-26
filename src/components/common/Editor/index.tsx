@@ -39,7 +39,7 @@ const Editor = ({ defaultValue = "", onChange }: EditorProps) => {
       quill.current.on("text-change", () => {
         onChange(quill.current!.root.innerHTML);
       });
-      quill.current.setText(defaultValue);
+      quill.current.root.innerHTML = defaultValue;
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onChange]);

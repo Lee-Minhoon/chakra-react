@@ -1,15 +1,16 @@
-import { PostWithUser } from "@/apis";
+import { Post, PostWithUser } from "@/apis";
 import { DataTable, Profile } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
 import { toUrl } from "@/utils";
 import { Box, Flex } from "@chakra-ui/react";
 import {
+  Row,
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 const columnHelper = createColumnHelper<PostWithUser>();
 
@@ -33,7 +34,10 @@ const PostsTable = ({ posts }: PostsTableProps) => {
               <Box
                 cursor={"pointer"}
                 _hover={{ opacity: 0.5 }}
-                onClick={() => push(toUrl(PageRoutes.UserDetail, { id }))}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  push(toUrl(PageRoutes.UserDetail, { id }));
+                }}
               >
                 <Profile profile={profile} w={10} h={10} />
               </Box>
@@ -54,7 +58,14 @@ const PostsTable = ({ posts }: PostsTableProps) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return <DataTable<PostWithUser> table={table} />;
+  const handleClickRow = useCallback<(row: Row<Post>) => void>(
+    (row) => {
+      push(toUrl(PageRoutes.PostDetail, { id: row.original.id }));
+    },
+    [push]
+  );
+
+  return <DataTable<PostWithUser> table={table} onRowClick={handleClickRow} />;
 };
 
 export default PostsTable;

@@ -1,8 +1,10 @@
 import { User, useApproveUser, useDeleteUser } from "@/apis";
 import { DataTable } from "@/components";
+import { PageRoutes } from "@/constants";
 import { UserUpdateModal } from "@/containers";
 import { usePagination, useRouterPush } from "@/hooks";
 import { useModalStore } from "@/stores";
+import { toUrl } from "@/utils";
 import {
   Row,
   createColumnHelper,
@@ -112,7 +114,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
 
   const handleClickRow = useCallback<(row: Row<User>) => void>(
     (row) => {
-      push(`/users/${row.original.id}`);
+      push(toUrl(PageRoutes.UserDetail, { id: row.original.id }));
     },
     [push]
   );

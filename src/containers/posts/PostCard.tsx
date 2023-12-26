@@ -1,7 +1,11 @@
-import { PostWithUser } from "@/apis";
+import { PostWithUser, useGetMe } from "@/apis";
 import { Profile } from "@/components";
+import { PageRoutes } from "@/constants";
+import { useRouterPush } from "@/hooks";
+import { toUrl } from "@/utils";
 import {
   Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -10,22 +14,39 @@ import {
   Skeleton,
   Text,
 } from "@chakra-ui/react";
+import { TbEdit } from "react-icons/tb";
 
 interface PostCardProps {
   post?: PostWithUser;
 }
 
 const PostCard = ({ post }: PostCardProps) => {
+  const { push } = useRouterPush();
+  const { data: me } = useGetMe();
+
   return (
     <Card>
       <CardHeader>
         <Skeleton isLoaded={!!post?.user}>
-          <Flex gap={4} align={"center"}>
-            <Profile profile={post?.user.profile} w={10} h={10} />
-            <Flex direction={"column"} gap={2}>
-              <Text>{post?.user.name ?? "User Name"}</Text>
-              <Text>{post?.user.email ?? "User Email"}</Text>
+          <Flex justify={"space-between"}>
+            <Flex gap={4} align={"center"}>
+              <Profile profile={post?.user.profile} w={10} h={10} />
+              <Flex direction={"column"} gap={2}>
+                <Text>{post?.user.name ?? "User Name"}</Text>
+                <Text>{post?.user.email ?? "User Email"}</Text>
+              </Flex>
             </Flex>
+            {me?.id === post?.userId && (
+              <Button
+                size={"sm"}
+                rightIcon={<TbEdit />}
+                onClick={() =>
+                  push(toUrl(PageRoutes.EditPost, { id: post?.id }))
+                }
+              >
+                Edit
+              </Button>
+            )}
           </Flex>
         </Skeleton>
       </CardHeader>

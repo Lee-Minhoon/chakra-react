@@ -8,12 +8,17 @@ import { Button, Flex, Input } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-const PostForm = () => {
+interface PostFormProps {
+  post?: Post;
+}
+
+const PostForm = ({ post }: PostFormProps) => {
   const { push } = useRouterPush();
   const { data: me } = useGetMe();
   const { register, handleSubmit, control } = useForm<Post>({
     defaultValues: {
       userId: me?.id,
+      ...post,
     },
   });
   const { mutate: createPost, isLoading } = useCreatePost();
@@ -39,8 +44,13 @@ const PostForm = () => {
       <Controller
         control={control}
         name="content"
-        render={({ field: { onChange } }) => {
-          return <Editor defaultValue={"Hello, World!"} onChange={onChange} />;
+        render={({ field: { value, onChange } }) => {
+          return (
+            <Editor
+              defaultValue={value ?? "Hello, World!"}
+              onChange={onChange}
+            />
+          );
         }}
       />
       <Button type={"submit"} isDisabled={isLoading} alignSelf={"flex-end"}>

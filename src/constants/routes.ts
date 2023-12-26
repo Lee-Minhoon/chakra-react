@@ -22,6 +22,7 @@ export enum PageRoutes {
   Posts = "/posts",
   PostDetail = "/posts/:id",
   WritePost = "/posts/write",
+  EditPost = "/posts/:id/edit",
 }
 
 export enum ViewQueries {
