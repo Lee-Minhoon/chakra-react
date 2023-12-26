@@ -1,9 +1,9 @@
 import { PostWithUser, useGetMe } from "@/apis";
-import { Profile } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
 import { toUrl } from "@/utils";
 import {
+  Avatar,
   Box,
   Button,
   Card,
@@ -30,7 +30,7 @@ const PostCard = ({ post }: PostCardProps) => {
         <Skeleton isLoaded={!!post?.user}>
           <Flex justify={"space-between"}>
             <Flex gap={4} align={"center"}>
-              <Profile profile={post?.user.profile} w={10} h={10} />
+              <Avatar src={post?.user.profile} w={10} h={10} />
               <Flex direction={"column"} gap={2}>
                 <Text>{post?.user.name ?? "User Name"}</Text>
                 <Text>{post?.user.email ?? "User Email"}</Text>

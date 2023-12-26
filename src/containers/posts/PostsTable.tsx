@@ -1,9 +1,9 @@
 import { Post, PostWithUser } from "@/apis";
-import { DataTable, Profile } from "@/components";
+import { DataTable } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
 import { toUrl } from "@/utils";
-import { Box, Flex } from "@chakra-ui/react";
+import { Avatar, Box, Flex } from "@chakra-ui/react";
 import {
   Row,
   createColumnHelper,
@@ -39,7 +39,7 @@ const PostsTable = ({ posts }: PostsTableProps) => {
                   push(toUrl(PageRoutes.UserDetail, { id }));
                 }}
               >
-                <Profile profile={profile} w={10} h={10} />
+                <Avatar src={profile} w={10} h={10} />
               </Box>
               {context.renderValue()}
             </Flex>

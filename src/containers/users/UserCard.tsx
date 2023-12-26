@@ -1,7 +1,7 @@
 import { User } from "@/apis";
-import { Profile } from "@/components";
 import { useModalStore } from "@/stores";
 import {
+  Avatar,
   Box,
   Button,
   Card,
@@ -40,7 +40,7 @@ const UserCard = ({ user }: UserCardProps) => {
       <Card direction={"row"}>
         <Box p={5}>
           <SkeletonCircle isLoaded={!!user} size={"40"}>
-            <Profile profile={user?.profile} priority w={40} h={40} />
+            <Avatar src={user?.profile} w={40} h={40} />
           </SkeletonCircle>
         </Box>
         <Flex flex={1} direction={"column"}>
