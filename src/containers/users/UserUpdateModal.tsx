@@ -1,5 +1,6 @@
 import { User, UserUpdate, useUpdateUser } from "@/apis";
 import { useUpload } from "@/apis/upload";
+import { usePagination } from "@/hooks";
 import {
   Button,
   Modal,
@@ -20,10 +21,11 @@ interface UserUpdateModalProps {
 }
 
 const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
+  const { queryKey } = usePagination();
   const { register, handleSubmit } = useForm<UserUpdate>({
     defaultValues: user,
   });
-  const { mutate: updateUser } = useUpdateUser();
+  const { mutate: updateUser } = useUpdateUser(queryKey);
   const { mutate: upload } = useUpload();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState(user.profile ?? "");

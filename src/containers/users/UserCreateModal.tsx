@@ -10,32 +10,23 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import UserFormFields from "./UserFormFields";
 
 interface UserCreateModalProps {
-  isOpen: boolean;
   onClose: () => void;
 }
 
-const UserCreateModal = ({ isOpen, onClose }: UserCreateModalProps) => {
-  const { register, handleSubmit, reset } = useForm<UserCreate>();
+const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
+  const { register, handleSubmit } = useForm<UserCreate>();
   const { mutate: createUser } = useCreateUser();
   const { mutate: upload } = useUpload();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState("");
 
-  useEffect(() => {
-    if (!isOpen) {
-      reset();
-      setFile(undefined);
-      setPreview("");
-    }
-  }, [isOpen, reset]);
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen onClose={onClose}>
       <ModalOverlay />
       <ModalContent
         as={"form"}

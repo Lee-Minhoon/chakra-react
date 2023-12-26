@@ -1,21 +1,14 @@
 import { PageOptions, ViewOptions } from "@/components";
 import { ViewQueries } from "@/constants";
-import {
-  UserCreateModal,
-  UsersAll,
-  UsersByCursor,
-  UsersByPage,
-  UsersUtils,
-} from "@/containers";
+import { UsersAll, UsersByCursor, UsersByPage, UsersUtils } from "@/containers";
 import { useLayout } from "@/hooks";
-import { Flex, useDisclosure } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 
 const UsersPage = () => {
   const { Layout } = useLayout();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const router = useRouter();
   const viewOption = router.query?.view as ViewQueries;
@@ -45,10 +38,9 @@ const UsersPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <UserCreateModal isOpen={isOpen} onClose={onClose} />
         <Flex direction={"column"} gap={4} h={"100%"}>
           <Flex justifyContent={"space-between"}>
-            <UsersUtils onCreateUser={onOpen} />
+            <UsersUtils />
             <Flex gap={4}>
               <ViewOptions />
               {viewOption !== ViewQueries.All && <PageOptions />}

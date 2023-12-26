@@ -1,9 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { writeSession } from ".";
-import { sleep } from "../utils";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  sleep(200);
   switch (req.method) {
     case "POST":
       return signout(req, res);

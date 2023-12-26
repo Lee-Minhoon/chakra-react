@@ -24,7 +24,10 @@ interface T {
   alert: Nullable<Alert>;
   confirm: Nullable<Confirm>;
 
-  openModal: <T>(modal: ComponentType<T>, props: Omit<T, "onClose">) => void;
+  openModal: <T>(
+    modal: ComponentType<T>,
+    props: {} extends Omit<T, "onClose"> ? void : Omit<T, "onClose">
+  ) => void;
   openAlert: (alert: Alert) => void;
   openConfirm: (confirm: Confirm) => void;
 

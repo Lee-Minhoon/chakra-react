@@ -16,6 +16,7 @@ import {
   PageQueryParams,
   Scheme,
 } from "./types";
+import { cloneDeep } from "lodash-es";
 
 export interface User extends Scheme {
   name: string;
@@ -45,36 +46,39 @@ export const useGetUsersByCursor = (params: CursorQueryParams) => {
 
 export type UserCreate = Pick<User, "name" | "email" | "phone" | "profile">;
 
-export const useCreateUser = (params?: PageQueryParams | CursorQueryParams) => {
-  return usePost<User[], UserCreate>(
+export const useCreateUser = (params?: object) => {
+  return usePost<User[] | PageQueryData<User[]>, UserCreate>(
     toUrl(ApiRoutes.User),
     params,
     {
       meta: { successMessage: "User created successfully" },
-    },
-    (old, data) => {
-      const newUser = { id: 0, approved: false, ...data };
-      return [...old, newUser];
     }
   );
 };
 
 export type UserUpdate = Omit<User, "approved">;
 
-export const useUpdateUser = () => {
-  return useUpdate<User[], UserUpdate>(
+export const useUpdateUser = (params?: object) => {
+  return useUpdate<User[] | PageQueryData<User[]>, UserUpdate>(
     toUrl(ApiRoutes.User),
-    undefined,
+    params,
     {
       meta: { successMessage: "User updated successfully" },
     },
     (old, data) => {
-      const finded = old.find((item) => item.id === data.id);
+      const newData = cloneDeep("data" in old ? old.data : old);
+      const finded = newData.find((item) => item.id === data.id);
       if (!finded) return old;
       finded.name = data.name;
       finded.email = data.email;
       finded.phone = data.phone;
-      return old.map((item) => (item.id === data.id ? finded : item));
+      if (!Array.isArray(old)) {
+        return {
+          ...old,
+          data: old.data.map((item) => (item.id === data.id ? finded : item)),
+        };
+      }
+      return newData.map((item) => (item.id === data.id ? finded : item));
     }
   );
 };
@@ -93,9 +97,8 @@ export const useDeleteUser = (params?: object) => {
           ...old,
           data: newData.filter((item) => item.id !== id),
         };
-      } else {
-        return newData.filter((item) => item.id !== id);
       }
+      return newData.filter((item) => item.id !== id);
     }
   );
 };
@@ -107,12 +110,12 @@ export interface UserApprove {
 export const useApproveUser = (params?: object) => {
   return useCommand<User[] | PageQueryData<User[]>, UserApprove>(
     ApiRoutes.ApproveUser,
+    [toUrl(ApiRoutes.User), params],
     {
       meta: { successMessage: "User approved successfully" },
     },
-    [toUrl(ApiRoutes.User), params],
     (old, data) => {
-      const newData = "data" in old ? old.data : old;
+      const newData = cloneDeep("data" in old ? old.data : old);
       const finded = newData.find((item) => item.id === data.id);
       if (!finded) return old;
       finded.approved = true;

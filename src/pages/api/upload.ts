@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { sleep, uploadFormData } from "./utils";
+import { uploadFormData } from "./utils";
 
 export const config = {
   api: {
@@ -8,7 +8,6 @@ export const config = {
 };
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  sleep(200);
   switch (req.method) {
     case "POST":
       return upload(req, res);

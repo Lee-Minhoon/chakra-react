@@ -3,7 +3,7 @@ import { createTestUsers } from "..";
 import { sleep } from "../../utils";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  sleep(200);
+  sleep(500);
   switch (req.method) {
     case "POST":
       return createTestUsers(req, res);

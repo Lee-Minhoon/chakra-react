@@ -92,13 +92,14 @@ export const useMutation = <TOldData, TNewData, TResponse>(
     onMutate: async (variables) => {
       options?.onMutate?.(variables);
       if (!queryKey) return;
-      console.log("onMutate", queryKey);
+      console.log("The mutation has been executed.", queryKey);
 
       // 낙관적 업데이트(쿼리 키가 없으면 실행되지 않음)
       // Optimistic update(does not run if query key is not present)
       await queryClient.cancelQueries(queryKey);
       const previousData = queryClient.getQueryData(queryKey);
       queryClient.setQueryData<TOldData>(queryKey, (old) => {
+        old && updater && console.log("Optimistic updates are run.", queryKey);
         return old && updater ? updater(old, variables) : old;
       });
       return previousData;
@@ -120,7 +121,7 @@ export const useMutation = <TOldData, TNewData, TResponse>(
       // Invalidates all queries without considering variables.
       // If you need to consider variables, use queryClient.invalidateQueries(queryKey).
       const queryKeyToInvalidate = queryKey[0];
-      console.log("invalidateQueries", queryKeyToInvalidate);
+      console.log("The query has been invalidated.", queryKeyToInvalidate);
       queryClient.invalidateQueries([queryKeyToInvalidate]);
     },
   });
@@ -226,8 +227,8 @@ export const useCommand = <
   TResponse = unknown,
 >(
   url: ApiRoutes,
-  options?: UseMutationOptions<ApiResponse<TResponse>, ApiError, TNewData>,
   queryKey?: QueryKeyType,
+  options?: UseMutationOptions<ApiResponse<TResponse>, ApiError, TNewData>,
   updater?: (old: TOldData, data: TNewData) => TOldData,
   method: "POST" | "PUT" | "PATCH" = "POST"
 ) => {

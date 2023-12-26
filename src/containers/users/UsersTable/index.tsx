@@ -28,6 +28,14 @@ const UsersTable = ({ users }: UsersTableProps) => {
   const { mutate: deleteUser } = useDeleteUser(queryKey);
   const { mutate: approveUser } = useApproveUser(queryKey);
 
+  const handleUpdate = useCallback<(user: User) => void>(
+    (user) => {
+      if (!user) return;
+      openModal(UserUpdateModal, { user });
+    },
+    [openModal]
+  );
+
   const handleApprove = useCallback<(id: number) => void>(
     (id) => {
       openConfirm({
@@ -83,7 +91,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
           <UserActions
             onUpdate={(e) => {
               e.stopPropagation();
-              openModal(UserUpdateModal, { user: context.row.original });
+              handleUpdate(context.row.original);
             }}
             onDelete={(e) => {
               e.stopPropagation();
@@ -93,7 +101,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
         ),
       }),
     ],
-    [handleApprove, handleDelete, openModal]
+    [handleApprove, handleDelete, handleUpdate]
   );
 
   const table = useReactTable({

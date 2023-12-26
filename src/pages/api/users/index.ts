@@ -42,7 +42,7 @@ export const writeUsers = (users: User[]) => {
 };
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  sleep(200);
+  sleep(500);
   switch (req.method) {
     case "GET":
       const { page, cursor, limit } = req.query;

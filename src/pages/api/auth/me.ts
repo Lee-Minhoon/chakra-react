@@ -1,9 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { readSession } from ".";
-import { sleep } from "../utils";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  sleep(200);
   switch (req.method) {
     case "GET":
       return me(req, res);

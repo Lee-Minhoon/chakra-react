@@ -1,8 +1,10 @@
 import { useCreateTestUsers, useCreateUser, useResetTestUsers } from "@/apis";
+import { useModalStore } from "@/stores";
 import { Button, Flex, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { GrPowerReset } from "react-icons/gr";
 import { TbPlus } from "react-icons/tb";
+import { UserCreateModal } from ".";
 
 const count = 50;
 
@@ -28,24 +30,25 @@ const randomPhone = () => {
   return str;
 };
 
-interface UsersUtilsProps {
-  onCreateUser: () => void;
-}
-
-const UsersUtils = ({ onCreateUser }: UsersUtilsProps) => {
-  const { mutate: postUser } = useCreateUser();
+const UsersUtils = () => {
+  const { openModal } = useModalStore(["openModal"]);
+  const { mutate: createUser } = useCreateUser();
   const { mutate: createTestUsers, isLoading: createTestUsersLoading } =
     useCreateTestUsers(count);
   const { mutate: resetTestUsers, isLoading: restTestUsersLoading } =
     useResetTestUsers();
 
+  const handleCreateUser = useCallback(() => {
+    openModal(UserCreateModal, undefined);
+  }, [openModal]);
+
   const handleCreateRandomUser = useCallback(() => {
-    postUser({
+    createUser({
       name: randomString(10),
       email: `${randomString(20)}@gmail.com`,
       phone: randomPhone(),
     });
-  }, [postUser]);
+  }, [createUser]);
 
   const handleCreateTestUsers = useCallback(() => {
     createTestUsers();
@@ -58,7 +61,7 @@ const UsersUtils = ({ onCreateUser }: UsersUtilsProps) => {
   return (
     <Flex gap={4}>
       <Tooltip hasArrow label={"Create User"}>
-        <Button leftIcon={<TbPlus />} onClick={onCreateUser}>
+        <Button leftIcon={<TbPlus />} onClick={handleCreateUser}>
           User
         </Button>
       </Tooltip>
