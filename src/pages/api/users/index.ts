@@ -1,4 +1,5 @@
 import { RequiredKeys } from "@/types";
+import { getRandomEmail, getRandomPhoneNumber, getRandomString } from "@/utils";
 import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
@@ -233,9 +234,9 @@ export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
       const currentId = lastId + i + 1;
       users.push({
         id: currentId,
-        name: `user-${currentId}`,
-        email: `user-${currentId}@gmail.com`,
-        phone: `010-0000-0000`,
+        name: getRandomString(10),
+        email: getRandomEmail(),
+        phone: getRandomPhoneNumber(),
         approved: Math.random() > 0.5,
       });
     }

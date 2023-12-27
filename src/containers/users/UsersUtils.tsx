@@ -1,5 +1,6 @@
 import { useCreateTestUsers, useCreateUser, useResetTestUsers } from "@/apis";
 import { useModalStore } from "@/stores";
+import { getRandomPhoneNumber, getRandomString } from "@/utils";
 import { Button, Flex, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { GrPowerReset } from "react-icons/gr";
@@ -7,28 +8,6 @@ import { TbPlus } from "react-icons/tb";
 import { UserCreateModal } from ".";
 
 const count = 50;
-
-const randomString = (length: number) => {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-  let str = "";
-  for (let i = 0; i < length; i++) {
-    str += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return str;
-};
-
-const randomPhone = () => {
-  const chars = "0123456789";
-  let str = "010-";
-  for (let i = 0; i < 4; i++) {
-    str += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  str += "-";
-  for (let i = 0; i < 4; i++) {
-    str += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return str;
-};
 
 const UsersUtils = () => {
   const { openModal } = useModalStore(["openModal"]);
@@ -44,9 +23,9 @@ const UsersUtils = () => {
 
   const handleCreateRandomUser = useCallback(() => {
     createUser({
-      name: randomString(10),
-      email: `${randomString(20)}@gmail.com`,
-      phone: randomPhone(),
+      name: getRandomString(10),
+      email: `${getRandomString(20)}@gmail.com`,
+      phone: getRandomPhoneNumber(),
     });
   }, [createUser]);
 
