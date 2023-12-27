@@ -17,8 +17,9 @@ const usePagination = () => {
       page: queryParser.toNumber(router.query.page) ?? 1,
       limit: queryParser.toNumber(router.query.limit) ?? 10,
       sort: queryParser.toString(router.query.sort) ?? "",
-      order:
-        queryParser.toString(router.query.order) ?? ("desc" as "asc" | "desc"),
+      order: (queryParser.toString(router.query.order) ?? "desc") as
+        | "asc"
+        | "desc",
     };
   }, [router.query]);
 
