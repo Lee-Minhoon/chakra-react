@@ -1,74 +1,72 @@
 import { CursorQueryData, Scheme } from "@/apis";
 import { Optional } from "@/types";
-import {
-  Button,
-  Card,
-  Flex,
-  ListItem,
-  Text,
-  UnorderedList,
-} from "@chakra-ui/react";
+import { Button, Flex, UnorderedList } from "@chakra-ui/react";
 import { InfiniteData } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import InfiniteListItem from "./ListItem";
 
 interface InfiniteListProps<T extends Scheme> {
-  observe?: boolean;
+  usesObserver?: boolean;
   data: InfiniteData<CursorQueryData<T[], number>> | undefined;
   hasNextPage: Optional<boolean>;
   fetchNextPage: () => void;
 }
 
 const InfiniteList = <T extends Scheme>({
-  observe,
+  usesObserver,
   data,
   hasNextPage,
   fetchNextPage,
 }: InfiniteListProps<T>) => {
-  const target = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const targetRef = useRef<HTMLDivElement>(null);
+  const [hasScroll, setHasScroll] = useState(false);
 
   const callback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        if (hasNextPage && entry.isIntersecting) {
           fetchNextPage();
         }
       });
     },
-    [fetchNextPage]
+    [fetchNextPage, hasNextPage]
   );
 
   useEffect(() => {
-    if (!observe || !target.current) return;
+    if (!usesObserver || !targetRef.current) return;
     const observer = new IntersectionObserver(callback, { threshold: 0.5 });
-    observer.observe(target.current);
+    observer.observe(targetRef.current);
     return () => observer.disconnect();
-  }, [callback, observe]);
+  }, [callback, usesObserver]);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const { scrollHeight, clientHeight } = containerRef.current;
+    if (scrollHeight > clientHeight) {
+      setHasScroll(true);
+    }
+  }, [data]);
 
   return (
-    <Flex direction={"column"} gap={4} overflowY={"auto"}>
+    <Flex ref={containerRef} direction={"column"} gap={4} overflowY={"auto"}>
       <UnorderedList
         display={"flex"}
         flexDirection={"column"}
         listStyleType={"none"}
         gap={4}
+        p={0.5}
+        pr={hasScroll ? 2 : 0.5}
         m={0}
       >
         {(data?.pages ?? []).map((page) =>
           page.data.map((data) => (
-            <ListItem key={data.id}>
-              <Card p={4}>
-                <Flex direction={"column"} gap={2}>
-                  {Object.entries(data).map(([key, value]) => (
-                    <Text key={key}>{`${key}: ${value}`}</Text>
-                  ))}
-                </Flex>
-              </Card>
-            </ListItem>
+            <InfiniteListItem key={data.id} data={data} />
           ))
         )}
       </UnorderedList>
-      {observe ? (
-        <div ref={target} />
+      {usesObserver ? (
+        <div ref={targetRef} />
       ) : (
         <Button
           onClick={() => fetchNextPage()}
