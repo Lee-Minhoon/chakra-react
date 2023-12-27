@@ -22,7 +22,9 @@ const PostsAllPage = () => {
       case ViewQueries.CursorButton:
       case ViewQueries.CursorObserver:
         return (
-          <PostsByCursor observe={viewOption === ViewQueries.CursorObserver} />
+          <PostsByCursor
+            usesObserver={viewOption === ViewQueries.CursorObserver}
+          />
         );
       default:
         return null;
@@ -38,7 +40,7 @@ const PostsAllPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <Flex direction={"column"} gap={4}>
+        <Flex direction={"column"} gap={4} h={"100%"}>
           <Flex justifyContent={"space-between"}>
             <PostsUtils />
             <Flex gap={4}>

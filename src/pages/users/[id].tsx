@@ -20,7 +20,7 @@ const UserPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <UserCard user={user} />
+        <UserCard data={user} />
       </Layout>
     </>
   );

@@ -1,12 +1,13 @@
 import { User, useGetUsersByCursor } from "@/apis";
 import { InfiniteList } from "@/components";
 import { usePagination } from "@/hooks";
+import { UserListItem } from ".";
 
 interface UsersByCursorProps {
-  observe?: boolean;
+  usesObserver?: boolean;
 }
 
-const UsersByCursor = ({ observe }: UsersByCursorProps) => {
+const UsersByCursor = ({ usesObserver }: UsersByCursorProps) => {
   const { limit, sort, order } = usePagination();
 
   const {
@@ -17,10 +18,11 @@ const UsersByCursor = ({ observe }: UsersByCursorProps) => {
 
   return (
     <InfiniteList<User>
-      usesObserver={observe}
+      listItem={UserListItem}
       data={users}
       hasNextPage={hasNextPage}
       fetchNextPage={fetchNextPage}
+      usesObserver={usesObserver}
     />
   );
 };

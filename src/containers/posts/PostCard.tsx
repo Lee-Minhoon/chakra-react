@@ -17,10 +17,10 @@ import {
 import { TbEdit } from "react-icons/tb";
 
 interface PostCardProps {
-  post?: PostWithUser;
+  data?: PostWithUser;
 }
 
-const PostCard = ({ post }: PostCardProps) => {
+const PostCard = ({ data: post }: PostCardProps) => {
   const { push } = useRouterPush();
   const { data: me } = useGetMe();
 

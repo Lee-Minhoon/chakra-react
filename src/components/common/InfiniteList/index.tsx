@@ -2,21 +2,22 @@ import { CursorQueryData, Scheme } from "@/apis";
 import { Optional } from "@/types";
 import { Button, Flex, UnorderedList } from "@chakra-ui/react";
 import { InfiniteData } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef, useState } from "react";
-import InfiniteListItem from "./ListItem";
+import { ComponentType, useCallback, useEffect, useRef, useState } from "react";
 
 interface InfiniteListProps<T extends Scheme> {
-  usesObserver?: boolean;
+  listItem: ComponentType<{ data: T }>;
   data: InfiniteData<CursorQueryData<T[], number>> | undefined;
   hasNextPage: Optional<boolean>;
   fetchNextPage: () => void;
+  usesObserver?: boolean;
 }
 
 const InfiniteList = <T extends Scheme>({
-  usesObserver,
+  listItem: InfiniteListItem,
   data,
   hasNextPage,
   fetchNextPage,
+  usesObserver,
 }: InfiniteListProps<T>) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const targetRef = useRef<HTMLDivElement>(null);

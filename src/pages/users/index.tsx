@@ -22,7 +22,9 @@ const UsersPage = () => {
       case ViewQueries.CursorButton:
       case ViewQueries.CursorObserver:
         return (
-          <UsersByCursor observe={viewOption === ViewQueries.CursorObserver} />
+          <UsersByCursor
+            usesObserver={viewOption === ViewQueries.CursorObserver}
+          />
         );
       default:
         return null;

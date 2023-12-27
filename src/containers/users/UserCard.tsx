@@ -20,10 +20,10 @@ import { TbEdit } from "react-icons/tb";
 import UserUpdateModal from "./UserUpdateModal";
 
 interface UserCardProps {
-  user?: User;
+  data?: User;
 }
 
-const UserCard = ({ user }: UserCardProps) => {
+const UserCard = ({ data: user }: UserCardProps) => {
   const { openModal } = useModalStore(["openModal"]);
 
   const attributes = useMemo(
@@ -36,50 +36,48 @@ const UserCard = ({ user }: UserCardProps) => {
   );
 
   return (
-    <>
-      <Card direction={"row"}>
-        <Box p={5}>
-          <SkeletonCircle isLoaded={!!user} size={"40"}>
-            <Avatar src={user?.profile} w={40} h={40} />
-          </SkeletonCircle>
-        </Box>
-        <Flex flex={1} direction={"column"}>
-          <CardHeader>
-            <Skeleton isLoaded={!!user}>
-              <Flex justify={"space-between"}>
-                <Heading size={"lg"}>{user?.name ?? "Name"}</Heading>
-                <Button
-                  size={"sm"}
-                  rightIcon={<TbEdit />}
-                  onClick={() => {
-                    if (!user) return;
-                    openModal(UserUpdateModal, { user });
-                  }}
-                >
-                  Edit
-                </Button>
-              </Flex>
-            </Skeleton>
-          </CardHeader>
-          <CardBody>
-            <Stack divider={<StackDivider />} spacing="4">
-              {attributes.map((attribute) => (
-                <Skeleton key={attribute.label} isLoaded={!!user}>
-                  <Box>
-                    <Heading size="xs" textTransform="uppercase">
-                      {attribute.label}
-                    </Heading>
-                    <Text pt="2" fontSize="sm">
-                      {attribute.value}
-                    </Text>
-                  </Box>
-                </Skeleton>
-              ))}
-            </Stack>
-          </CardBody>
-        </Flex>
-      </Card>
-    </>
+    <Card direction={"row"}>
+      <Box p={5}>
+        <SkeletonCircle isLoaded={!!user} size={"40"}>
+          <Avatar src={user?.profile} w={40} h={40} />
+        </SkeletonCircle>
+      </Box>
+      <Flex flex={1} direction={"column"}>
+        <CardHeader>
+          <Skeleton isLoaded={!!user}>
+            <Flex justify={"space-between"}>
+              <Heading size={"lg"}>{user?.name ?? "Name"}</Heading>
+              <Button
+                size={"sm"}
+                rightIcon={<TbEdit />}
+                onClick={() => {
+                  if (!user) return;
+                  openModal(UserUpdateModal, { user });
+                }}
+              >
+                Edit
+              </Button>
+            </Flex>
+          </Skeleton>
+        </CardHeader>
+        <CardBody>
+          <Stack divider={<StackDivider />} spacing="4">
+            {attributes.map((attribute) => (
+              <Skeleton key={attribute.label} isLoaded={!!user}>
+                <Box>
+                  <Heading size="xs" textTransform="uppercase">
+                    {attribute.label}
+                  </Heading>
+                  <Text pt="2" fontSize="sm">
+                    {attribute.value}
+                  </Text>
+                </Box>
+              </Skeleton>
+            ))}
+          </Stack>
+        </CardBody>
+      </Flex>
+    </Card>
   );
 };
 

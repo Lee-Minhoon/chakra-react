@@ -20,7 +20,7 @@ const PostPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <PostCard post={post} />
+        <PostCard data={post} />
       </Layout>
     </>
   );
