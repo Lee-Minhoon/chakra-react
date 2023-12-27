@@ -1,6 +1,6 @@
 import { PageOptions, ViewOptions } from "@/components";
 import { ViewQueries } from "@/constants";
-import { UsersAll, UsersByCursor, UsersByPage, UsersUtils } from "@/containers";
+import { UsersAll, UsersByCursor, UsersByPage, UserUtils } from "@/containers";
 import { useLayout } from "@/hooks";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
@@ -42,7 +42,7 @@ const UsersPage = () => {
       <Layout>
         <Flex direction={"column"} gap={4} h={"100%"}>
           <Flex justifyContent={"space-between"}>
-            <UsersUtils />
+            <UserUtils />
             <Flex gap={4}>
               <ViewOptions />
               {viewOption !== ViewQueries.All && <PageOptions />}
