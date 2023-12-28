@@ -7,4 +7,4 @@ export { default as LayoutMode } from "./LayoutMode";
 export { default as Logo } from "./Logo";
 export * from "./Pagination";
 export { default as ViewOptions } from "./ViewOptions";
-export { default as WithLabel } from "./WithLabel";
+export { default as WithFormLabel } from "./WithFormLabel";

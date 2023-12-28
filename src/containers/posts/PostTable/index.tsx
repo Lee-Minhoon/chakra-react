@@ -14,11 +14,11 @@ import { useCallback, useMemo } from "react";
 
 const columnHelper = createColumnHelper<PostWithUser>();
 
-interface PostsTableProps {
+interface PostTableProps {
   posts: PostWithUser[];
 }
 
-const PostsTable = ({ posts }: PostsTableProps) => {
+const PostTable = ({ posts }: PostTableProps) => {
   const { push } = useRouterPush();
 
   const columns = useMemo(
@@ -75,4 +75,4 @@ const PostsTable = ({ posts }: PostsTableProps) => {
   return <DataTable<PostWithUser> table={table} onRowClick={handleClickRow} />;
 };
 
-export default PostsTable;
+export default PostTable;

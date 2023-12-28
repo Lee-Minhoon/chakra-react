@@ -1,5 +1,7 @@
 import { User } from "@/apis";
+import WithLabel from "@/components/common/WithTitle";
 import { useModalStore } from "@/stores";
+import { formatISO } from "@/utils";
 import {
   Avatar,
   Box,
@@ -13,7 +15,6 @@ import {
   SkeletonCircle,
   Stack,
   StackDivider,
-  Text,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { TbEdit } from "react-icons/tb";
@@ -31,6 +32,14 @@ const UserCard = ({ data: user }: UserCardProps) => {
       { label: "Approved", value: user?.approved ? "Yes" : "No" },
       { label: "Email", value: user?.email ?? "Email" },
       { label: "Phone", value: user?.phone ?? "Phone" },
+      {
+        label: "Created At",
+        value: user?.createdAt ? formatISO(user.createdAt) : "Created At",
+      },
+      {
+        label: "Updated At",
+        value: user?.updatedAt ? formatISO(user.updatedAt) : "Updated At",
+      },
     ],
     [user]
   );
@@ -39,7 +48,7 @@ const UserCard = ({ data: user }: UserCardProps) => {
     <Card direction={"row"}>
       <Box p={5}>
         <SkeletonCircle isLoaded={!!user} size={"40"}>
-          <Avatar src={user?.profile} w={40} h={40} />
+          <Avatar name={user?.name} src={user?.profile} w={40} h={40} />
         </SkeletonCircle>
       </Box>
       <Flex flex={1} direction={"column"}>
@@ -62,18 +71,13 @@ const UserCard = ({ data: user }: UserCardProps) => {
         </CardHeader>
         <CardBody>
           <Stack divider={<StackDivider />} spacing="4">
-            {attributes.map((attribute) => (
-              <Skeleton key={attribute.label} isLoaded={!!user}>
-                <Box>
-                  <Heading size="xs" textTransform="uppercase">
-                    {attribute.label}
-                  </Heading>
-                  <Text pt="2" fontSize="sm">
-                    {attribute.value}
-                  </Text>
-                </Box>
-              </Skeleton>
-            ))}
+            {attributes.map((attribute) => {
+              return (
+                <Skeleton key={attribute.label} isLoaded={!!user}>
+                  <WithLabel {...attribute} />
+                </Skeleton>
+              );
+            })}
           </Stack>
         </CardBody>
       </Flex>

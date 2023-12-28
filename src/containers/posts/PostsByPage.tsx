@@ -1,6 +1,6 @@
 import { useGetPostsByPage } from "@/apis";
 import { Pagination } from "@/components";
-import { PostsTable } from "@/containers";
+import { PostTable } from "@/containers";
 import { usePagination } from "@/hooks";
 import { TableContainer } from "@chakra-ui/react";
 
@@ -16,7 +16,7 @@ const PostsByPage = () => {
   return (
     <>
       <TableContainer flex={1} overflowY={"auto"}>
-        <PostsTable posts={postsByPage?.data ?? []} />
+        <PostTable posts={postsByPage?.data ?? []} />
       </TableContainer>
       <Pagination
         currentPage={page}

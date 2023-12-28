@@ -4,7 +4,7 @@ import { PageRoutes } from "@/constants";
 import { UserUpdateModal } from "@/containers";
 import { usePagination, useRouterPush } from "@/hooks";
 import { useModalStore } from "@/stores";
-import { toUrl } from "@/utils";
+import { formatISO, toUrl } from "@/utils";
 import {
   Row,
   createColumnHelper,
@@ -22,7 +22,7 @@ interface UsersTableProps {
   users: User[];
 }
 
-const UsersTable = ({ users }: UsersTableProps) => {
+const UserTable = ({ users }: UsersTableProps) => {
   const { openModal } = useModalStore(["openModal"]);
   const { openConfirm } = useModalStore(["openConfirm"]);
   const { push } = useRouterPush();
@@ -88,9 +88,11 @@ const UsersTable = ({ users }: UsersTableProps) => {
       }),
       columnHelper.accessor("createdAt", {
         meta: { sortable: true },
+        cell: (context) => formatISO(context.renderValue()!),
       }),
       columnHelper.accessor("updatedAt", {
         meta: { sortable: true },
+        cell: (context) => formatISO(context.renderValue()!),
       }),
       columnHelper.display({
         id: "actions",
@@ -128,4 +130,4 @@ const UsersTable = ({ users }: UsersTableProps) => {
   return <DataTable<User> table={table} onRowClick={handleClickRow} />;
 };
 
-export default UsersTable;
+export default UserTable;

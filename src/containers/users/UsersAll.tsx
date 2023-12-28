@@ -1,5 +1,5 @@
 import { useGetUsers } from "@/apis";
-import { UsersTable } from "@/containers";
+import { UserTable } from "@/containers";
 import { usePagination } from "@/hooks";
 import { TableContainer } from "@chakra-ui/react";
 
@@ -9,7 +9,7 @@ const UsersAll = () => {
 
   return (
     <TableContainer flex={1} overflowY={"auto"}>
-      <UsersTable users={users ?? []} />
+      <UserTable users={users ?? []} />
     </TableContainer>
   );
 };

@@ -1,6 +1,6 @@
 import { useGetUsersByPage } from "@/apis";
 import { Pagination } from "@/components";
-import { UsersTable } from "@/containers";
+import { UserTable } from "@/containers";
 import { usePagination } from "@/hooks";
 import { TableContainer } from "@chakra-ui/react";
 
@@ -16,7 +16,7 @@ const UsersByPage = () => {
   return (
     <>
       <TableContainer flex={1} overflowY={"auto"}>
-        <UsersTable users={usersByPage?.data ?? []} />
+        <UserTable users={usersByPage?.data ?? []} />
       </TableContainer>
       <Pagination
         currentPage={page}

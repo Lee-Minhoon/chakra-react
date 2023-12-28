@@ -1,5 +1,5 @@
 import { AuthSignin, useSignin } from "@/apis/auth";
-import { Logo, WithLabel } from "@/components";
+import { Logo, WithFormLabel } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
 import { Box, Button, Card, Input } from "@chakra-ui/react";
@@ -30,9 +30,9 @@ const SigninForm = () => {
           )
         )}
       >
-        <WithLabel label={"Email"}>
+        <WithFormLabel label={"Email"}>
           <Input {...register("email")} />
-        </WithLabel>
+        </WithFormLabel>
         <Button type={"submit"}>Sign In</Button>
       </Box>
     </Card>

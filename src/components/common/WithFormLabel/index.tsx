@@ -5,7 +5,7 @@ interface WithLabelProps {
   children?: React.ReactNode;
 }
 
-const WithLabel = ({ label, children }: WithLabelProps) => {
+const WithFormLabel = ({ label, children }: WithLabelProps) => {
   return (
     <FormControl>
       <FormLabel>{label}</FormLabel>
@@ -14,4 +14,4 @@ const WithLabel = ({ label, children }: WithLabelProps) => {
   );
 };
 
-export default WithLabel;
+export default WithFormLabel;

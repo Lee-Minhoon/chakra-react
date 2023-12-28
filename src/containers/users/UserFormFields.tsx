@@ -1,4 +1,4 @@
-import { FileInput, WithLabel } from "@/components";
+import { FileInput, WithFormLabel } from "@/components";
 import { useBgColor } from "@/hooks";
 import { toTitle } from "@/utils";
 import { Box, Center, Flex, Icon, Input } from "@chakra-ui/react";
@@ -41,7 +41,7 @@ const UserFormFields = <T extends object>({
 
   return (
     <Flex direction={"column"} gap={4}>
-      <WithLabel label={"Profile"}>
+      <WithFormLabel label={"Profile"}>
         <FileInput ref={inputRef} onChange={onProfileChange} />
         <Center>
           {profilePreview ? (
@@ -60,11 +60,11 @@ const UserFormFields = <T extends object>({
             </Center>
           )}
         </Center>
-      </WithLabel>
+      </WithFormLabel>
       {fields.map((field) => (
-        <WithLabel key={field.toString()} label={toTitle(field.toString())}>
+        <WithFormLabel key={field.toString()} label={toTitle(field.toString())}>
           <Input {...register(field)} placeholder={toTitle(field.toString())} />
-        </WithLabel>
+        </WithFormLabel>
       ))}
     </Flex>
   );

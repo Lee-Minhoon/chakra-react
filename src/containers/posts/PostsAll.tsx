@@ -1,5 +1,5 @@
 import { useGetPosts } from "@/apis";
-import { PostsTable } from "@/containers";
+import { PostTable } from "@/containers";
 import { usePagination } from "@/hooks";
 import { TableContainer } from "@chakra-ui/react";
 
@@ -9,7 +9,7 @@ const PostsAll = () => {
 
   return (
     <TableContainer flex={1} overflowY={"auto"}>
-      <PostsTable posts={posts ?? []} />
+      <PostTable posts={posts ?? []} />
     </TableContainer>
   );
 };
