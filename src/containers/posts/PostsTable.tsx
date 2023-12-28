@@ -27,8 +27,7 @@ const PostsTable = ({ posts }: PostsTableProps) => {
       columnHelper.accessor("user.name", {
         header: "writer",
         cell: (context) => {
-          const id = context.row.original.user?.id;
-          const profile = context.row.original.user?.profile;
+          const user = context.row.original.user;
           return (
             <Flex gap={4} align={"center"}>
               <Box
@@ -36,10 +35,10 @@ const PostsTable = ({ posts }: PostsTableProps) => {
                 _hover={{ opacity: 0.5 }}
                 onClick={(e) => {
                   e.stopPropagation();
-                  push(toUrl(PageRoutes.UserDetail, { id }));
+                  push(toUrl(PageRoutes.UserDetail, { id: user.id }));
                 }}
               >
-                <Avatar src={profile} w={10} h={10} />
+                <Avatar name={user.name} src={user.profile} w={10} h={10} />
               </Box>
               {context.renderValue()}
             </Flex>

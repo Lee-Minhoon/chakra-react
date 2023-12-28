@@ -32,7 +32,7 @@ const UserListItem = ({ data: user }: UserListItemProps) => {
       <Flex flex={1} direction={"column"}>
         <CardHeader>
           <Flex gap={4}>
-            <Avatar src={user.profile} w={10} h={10} />
+            <Avatar name={user.name} src={user.profile} w={10} h={10} />
             <Heading size={"lg"}>{user.name}</Heading>
           </Flex>
         </CardHeader>
