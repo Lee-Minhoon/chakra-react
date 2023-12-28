@@ -2,7 +2,7 @@ import { useGetMe, useSignout } from "@/apis/auth";
 import { ColorMode, LayoutMode, Logo } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { RiLoginBoxLine, RiLogoutBoxRLine } from "react-icons/ri";
 import Navbar from "./Navbar";
 
@@ -42,7 +42,17 @@ const Header = () => {
           </Button>
         )}
       </Flex>
-      <Logo onClick={() => push(PageRoutes.Home)} />
+      <Flex justify={"flex-end"}>
+        <Text>
+          {`Welcome `}
+          <Text as={"b"} color={"primary.500"}>
+            {me?.name}
+          </Text>
+        </Text>
+      </Flex>
+      <Box p={12}>
+        <Logo onClick={() => push(PageRoutes.Home)} />
+      </Box>
       <Navbar />
     </Box>
   );

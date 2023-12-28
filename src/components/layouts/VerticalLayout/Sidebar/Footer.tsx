@@ -1,7 +1,14 @@
 import { useGetMe, useSignout } from "@/apis/auth";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
-import { Center, Icon, IconButton, Text, Tooltip } from "@chakra-ui/react";
+import {
+  Center,
+  Flex,
+  Icon,
+  IconButton,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
 import { RiLoginBoxLine, RiLogoutBoxRLine } from "react-icons/ri";
 
 const SidebarFooter = () => {
@@ -12,8 +19,13 @@ const SidebarFooter = () => {
   return (
     <Center as={"footer"} mt={"auto"} gap={4} py={4}>
       {me ? (
-        <>
-          <Text display={{ base: "none", xl: "block" }}>
+        <Flex gap={4} align={"center"} overflow={"hidden"}>
+          <Text
+            display={{ base: "none", xl: "block" }}
+            whiteSpace={"nowrap"}
+            overflow={"hidden"}
+            textOverflow={"ellipsis"}
+          >
             {`Welcome `}
             <Text as={"b"} color={"primary.500"}>
               {me?.name}
@@ -28,7 +40,7 @@ const SidebarFooter = () => {
               <Icon as={RiLogoutBoxRLine} />
             </IconButton>
           </Tooltip>
-        </>
+        </Flex>
       ) : (
         <>
           <Text display={{ base: "none", xl: "block" }}>Not Signed In</Text>

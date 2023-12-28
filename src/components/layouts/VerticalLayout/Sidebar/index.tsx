@@ -13,7 +13,7 @@ const Sidebar = () => {
       display={"flex"}
       flexDirection={"column"}
       bgColor={bgColor}
-      minW={{ base: 24, xl: 64 }}
+      w={{ base: 24, xl: 64 }}
       p={4}
       h={"100vh"}
       ml={{ base: -24, lg: 0 }}
