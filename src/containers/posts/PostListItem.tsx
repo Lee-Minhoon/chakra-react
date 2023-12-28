@@ -1,4 +1,7 @@
 import { Post } from "@/apis";
+import { PageRoutes } from "@/constants";
+import { useBgColor, useRouterPush } from "@/hooks";
+import { toUrl } from "@/utils";
 import {
   Avatar,
   Box,
@@ -10,14 +13,27 @@ import {
   Stack,
   StackDivider,
 } from "@chakra-ui/react";
+import { useCallback } from "react";
 
 interface PostListItemProps {
   data: Post;
 }
 
 const PostListItem = ({ data: post }: PostListItemProps) => {
+  const bgColor = useBgColor();
+  const { push } = useRouterPush();
+
+  const handleClick = useCallback(() => {
+    push(toUrl(PageRoutes.PostDetail, { id: post.id }));
+  }, [push, post]);
+
   return (
-    <Card direction={"row"}>
+    <Card
+      direction={"row"}
+      onClick={handleClick}
+      cursor={"pointer"}
+      _hover={{ backgroundColor: bgColor }}
+    >
       <Flex flex={1} direction={"column"}>
         <CardHeader>
           <Flex gap={4}>

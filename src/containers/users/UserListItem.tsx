@@ -1,4 +1,7 @@
 import { User } from "@/apis";
+import { PageRoutes } from "@/constants";
+import { useBgColor, useRouterPush } from "@/hooks";
+import { toUrl } from "@/utils";
 import {
   Avatar,
   Box,
@@ -11,13 +14,20 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 interface UserListItemProps {
   data: User;
 }
 
 const UserListItem = ({ data: user }: UserListItemProps) => {
+  const bgColor = useBgColor();
+  const { push } = useRouterPush();
+
+  const handleClick = useCallback(() => {
+    push(toUrl(PageRoutes.UserDetail, { id: user.id }));
+  }, [push, user]);
+
   const attributes = useMemo(
     () => [
       { label: "Approved", value: user.approved ? "Yes" : "No" },
@@ -28,7 +38,12 @@ const UserListItem = ({ data: user }: UserListItemProps) => {
   );
 
   return (
-    <Card direction={"row"}>
+    <Card
+      direction={"row"}
+      onClick={handleClick}
+      cursor={"pointer"}
+      _hover={{ backgroundColor: bgColor }}
+    >
       <Flex flex={1} direction={"column"}>
         <CardHeader>
           <Flex gap={4}>
