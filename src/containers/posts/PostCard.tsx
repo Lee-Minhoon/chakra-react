@@ -3,7 +3,6 @@ import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
 import { toUrl } from "@/utils";
 import {
-  Avatar,
   Box,
   Button,
   Card,
@@ -12,9 +11,9 @@ import {
   Flex,
   Heading,
   Skeleton,
-  Text,
 } from "@chakra-ui/react";
 import { TbEdit } from "react-icons/tb";
+import WriterInfo from "./WriterInfo";
 
 interface PostCardProps {
   data?: PostWithUser;
@@ -27,15 +26,9 @@ const PostCard = ({ data: post }: PostCardProps) => {
   return (
     <Card>
       <CardHeader>
-        <Skeleton isLoaded={!!post?.user}>
+        <Skeleton isLoaded={!!post}>
           <Flex justify={"space-between"}>
-            <Flex gap={4} align={"center"}>
-              <Avatar src={post?.user.profile} w={10} h={10} />
-              <Flex direction={"column"} gap={2}>
-                <Text>{post?.user.name ?? "User Name"}</Text>
-                <Text>{post?.user.email ?? "User Email"}</Text>
-              </Flex>
-            </Flex>
+            <WriterInfo post={post} />
             {me?.id === post?.userId && (
               <Button
                 size={"sm"}

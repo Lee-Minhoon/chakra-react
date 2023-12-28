@@ -1,22 +1,20 @@
-import { Post } from "@/apis";
+import { PostWithUser } from "@/apis";
 import { PageRoutes } from "@/constants";
 import { useBgColor, useRouterPush } from "@/hooks";
 import { toUrl } from "@/utils";
 import {
-  Avatar,
   Box,
   Card,
   CardBody,
   CardHeader,
   Flex,
   Heading,
-  Stack,
-  StackDivider,
 } from "@chakra-ui/react";
 import { useCallback } from "react";
+import WriterInfo from "./WriterInfo";
 
 interface PostListItemProps {
-  data: Post;
+  data: PostWithUser;
 }
 
 const PostListItem = ({ data: post }: PostListItemProps) => {
@@ -36,23 +34,21 @@ const PostListItem = ({ data: post }: PostListItemProps) => {
     >
       <Flex flex={1} direction={"column"}>
         <CardHeader>
-          <Flex gap={4}>
-            <Avatar src={post.title} w={10} h={10} />
-            <Heading size={"lg"}>{post.title ?? "Name"}</Heading>
-          </Flex>
+          <WriterInfo post={post} />
         </CardHeader>
         <CardBody>
-          <Stack divider={<StackDivider />} spacing="4">
-            <Box
-              dangerouslySetInnerHTML={{ __html: post?.content ?? "Content" }}
-              __css={{
-                display: "-webkit-box",
-                overflow: "hidden",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 3,
-              }}
-            />
-          </Stack>
+          <Heading mb={4} size={"md"}>
+            {post.title ?? "Name"}
+          </Heading>
+          <Box
+            dangerouslySetInnerHTML={{ __html: post?.content ?? "Content" }}
+            __css={{
+              display: "-webkit-box",
+              overflow: "hidden",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 1,
+            }}
+          />
         </CardBody>
       </Flex>
     </Card>

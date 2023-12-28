@@ -142,7 +142,7 @@ export const getPostsByCursor = (req: NextApiRequest, res: NextApiResponse) => {
       sort as RequiredKeys<Post> & "user_name",
       order as Order
     );
-    const index = posts.findIndex((user) => user.id === Number(cursor));
+    const index = posts.findIndex((_, idx) => idx === Number(cursor));
     const slicedPosts = posts.slice(index, index + Number(limit));
 
     return res.status(200).json({
