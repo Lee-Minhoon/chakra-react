@@ -31,7 +31,7 @@ const PostsUtils = () => {
     if (!me) return;
     createPost({
       title: getRandomString(10),
-      content: `${getRandomString(20)}@gmail.com`,
+      content: getRandomString(100),
       userId: me.id,
     });
   }, [createPost, me]);
