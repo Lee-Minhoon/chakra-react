@@ -59,7 +59,7 @@ export const navs: Nav[] = [
   {
     label: "Posts",
     pathname: PageRoutes.Posts,
-    query: { view: ViewQueries.All },
+    query: { view: ViewQueries.All, sort: "id", order: "desc" },
     icon: BsFillPostcardFill,
     matcher: match(PageRoutes.Posts),
     children: [
