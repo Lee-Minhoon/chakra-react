@@ -7,7 +7,10 @@ export const fillZero = (num: number, len: number) => {
 };
 
 export const getRandomString = (len: number) => {
-  return Math.random().toString(36).substring(2, len);
+  return Array(len)
+    .fill(0)
+    .map(() => Math.random().toString(36)[2])
+    .join("");
 };
 
 export const getRandomEmail = () => {
