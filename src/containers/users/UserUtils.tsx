@@ -18,7 +18,7 @@ const UsersUtils = () => {
     useResetTestUsers();
 
   const handleCreateUser = useCallback(() => {
-    openModal(UserCreateModal, undefined);
+    openModal(UserCreateModal, {});
   }, [openModal]);
 
   const handleCreateRandomUser = useCallback(() => {
