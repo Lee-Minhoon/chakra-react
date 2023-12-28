@@ -1,8 +1,9 @@
 import { CursorQueryData, Scheme } from "@/apis";
+import useHasScroll from "@/hooks/useHasScroll";
 import { Optional } from "@/types";
 import { Button, Flex, UnorderedList } from "@chakra-ui/react";
 import { InfiniteData } from "@tanstack/react-query";
-import { ComponentType, useCallback, useEffect, useRef, useState } from "react";
+import { ComponentType, useCallback, useEffect, useRef } from "react";
 
 interface InfiniteListProps<T extends Scheme> {
   listItem: ComponentType<{ data: T }>;
@@ -21,7 +22,7 @@ const InfiniteList = <T extends Scheme>({
 }: InfiniteListProps<T>) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const targetRef = useRef<HTMLDivElement>(null);
-  const [hasScroll, setHasScroll] = useState(false);
+  const hasScroll = useHasScroll(containerRef, [data]);
 
   const callback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -40,14 +41,6 @@ const InfiniteList = <T extends Scheme>({
     observer.observe(targetRef.current);
     return () => observer.disconnect();
   }, [callback, usesObserver]);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const { scrollHeight, clientHeight } = containerRef.current;
-    if (scrollHeight > clientHeight) {
-      setHasScroll(true);
-    }
-  }, [data]);
 
   return (
     <Flex ref={containerRef} direction={"column"} gap={4} overflowY={"auto"}>

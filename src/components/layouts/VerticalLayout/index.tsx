@@ -12,9 +12,9 @@ const VerticalLayout = ({ children }: VerticalLayoutProps) => {
       <Sidebar />
       <Flex flex={1} direction={"column"} p={8} gap={4} maxH={"100vh"}>
         <Header />
-        <Box as={"main"} flex={1} overflow={"hidden"}>
+        <Flex as={"main"} flex={1} direction={"column"} overflow={"hidden"}>
           {children}
-        </Box>
+        </Flex>
       </Flex>
     </Flex>
   );

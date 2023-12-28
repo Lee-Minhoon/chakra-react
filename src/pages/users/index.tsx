@@ -1,6 +1,6 @@
 import { PageOptions, ViewOptions } from "@/components";
 import { ViewQueries } from "@/constants";
-import { UsersAll, UsersByCursor, UsersByPage, UserUtils } from "@/containers";
+import { UserUtils, UsersAll, UsersByCursor, UsersByPage } from "@/containers";
 import { useLayout } from "@/hooks";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
