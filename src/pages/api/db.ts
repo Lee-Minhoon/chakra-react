@@ -2,16 +2,23 @@ import { Nullable } from "@/types";
 import fs from "fs";
 import path from "path";
 
-interface Scheme {
+interface DB {
   session: Session;
   users: User[];
   posts: Post[];
 }
 
+export type ID = number;
+
+export interface Scheme {
+  id: ID;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type Session = Nullable<User>;
 
-export interface User {
-  id: number;
+export interface User extends Scheme {
   name: string;
   email: string;
   phone: string;
@@ -19,8 +26,7 @@ export interface User {
   approved: boolean;
 }
 
-export interface Post {
-  id: number;
+export interface Post extends Scheme {
   userId: number;
   title: string;
   content: string;
@@ -32,7 +38,7 @@ export interface PostWithUser extends Post {
 
 export type Order = "asc" | "desc";
 
-export const readDB = (): Scheme => {
+export const readDB = (): DB => {
   const data = fs.readFileSync(path.join(process.cwd(), "/db.json"), "utf8");
   return JSON.parse(data);
 };

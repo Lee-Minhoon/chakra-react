@@ -20,6 +20,8 @@ export type ID = number;
 
 export interface Scheme {
   id: ID;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type PageQueryParams = {

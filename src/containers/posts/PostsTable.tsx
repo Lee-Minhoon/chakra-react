@@ -47,6 +47,12 @@ const PostsTable = ({ posts }: PostsTableProps) => {
         meta: { sortable: true },
       }),
       columnHelper.accessor("title", { meta: { sortable: true } }),
+      columnHelper.accessor("createdAt", {
+        meta: { sortable: true },
+      }),
+      columnHelper.accessor("updatedAt", {
+        meta: { sortable: true },
+      }),
     ],
     [push]
   );

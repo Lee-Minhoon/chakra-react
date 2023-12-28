@@ -141,6 +141,8 @@ export const postUser = (req: NextApiRequest, res: NextApiResponse) => {
       phone,
       profile,
       approved: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
     users.push(newUser);
 
@@ -164,7 +166,14 @@ export const updateUser = (req: NextApiRequest, res: NextApiResponse) => {
     let users = readUsers();
     users = users.map((user) => {
       if (user.id === Number(id)) {
-        return { ...user, name, email, phone, profile };
+        return {
+          ...user,
+          name,
+          email,
+          phone,
+          profile,
+          updatedAt: new Date().toISOString(),
+        };
       }
       return user;
     });
@@ -207,7 +216,7 @@ export const approveUser = (req: NextApiRequest, res: NextApiResponse) => {
     let users = readUsers();
     users = users.map((user) => {
       if (user.id === Number(id)) {
-        return { ...user, approved: true };
+        return { ...user, approved: true, updatedAt: new Date().toISOString() };
       }
       return user;
     });
@@ -238,6 +247,8 @@ export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
         email: getRandomEmail(),
         phone: getRandomPhoneNumber(),
         approved: Math.random() > 0.5,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       });
     }
 

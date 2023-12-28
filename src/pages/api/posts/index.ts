@@ -169,6 +169,8 @@ export const postPost = (req: NextApiRequest, res: NextApiResponse) => {
       userId,
       title,
       content,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
     posts.push(newPost);
 
@@ -192,7 +194,7 @@ export const updatePost = (req: NextApiRequest, res: NextApiResponse) => {
     let posts = readPosts();
     posts = posts.map((post) => {
       if (post.id === Number(id)) {
-        return { ...post, title, content };
+        return { ...post, title, content, updatedAt: new Date().toISOString() };
       }
       return post;
     });

@@ -86,6 +86,12 @@ const UsersTable = ({ users }: UsersTableProps) => {
         ),
         meta: { sortable: true },
       }),
+      columnHelper.accessor("createdAt", {
+        meta: { sortable: true },
+      }),
+      columnHelper.accessor("updatedAt", {
+        meta: { sortable: true },
+      }),
       columnHelper.display({
         id: "actions",
         header: "Actions",
