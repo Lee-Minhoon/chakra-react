@@ -3,7 +3,6 @@ import { DataTable } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
 import { formatISO, toUrl } from "@/utils";
-import { Avatar, Box, Flex } from "@chakra-ui/react";
 import {
   Row,
   createColumnHelper,
@@ -11,6 +10,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useCallback, useMemo } from "react";
+import PostWriter from "./PostWriter";
 
 const columnHelper = createColumnHelper<PostWithUser>();
 
@@ -24,26 +24,9 @@ const PostTable = ({ posts }: PostTableProps) => {
   const columns = useMemo(
     () => [
       columnHelper.accessor("id", { meta: { sortable: true } }),
-      columnHelper.accessor("user.name", {
+      columnHelper.accessor("user", {
         header: "writer",
-        cell: (context) => {
-          const user = context.row.original.user;
-          return (
-            <Flex gap={4} align={"center"}>
-              <Box
-                cursor={"pointer"}
-                _hover={{ opacity: 0.5 }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  push(toUrl(PageRoutes.UserDetail, { id: user.id }));
-                }}
-              >
-                <Avatar name={user.name} src={user.profile} w={10} h={10} />
-              </Box>
-              {context.renderValue()}
-            </Flex>
-          );
-        },
+        cell: (context) => <PostWriter writer={context.renderValue()!} />,
         meta: { sortable: true },
       }),
       columnHelper.accessor("title", { meta: { sortable: true } }),
@@ -56,7 +39,7 @@ const PostTable = ({ posts }: PostTableProps) => {
         cell: (context) => formatISO(context.renderValue()!),
       }),
     ],
-    [push]
+    []
   );
 
   const table = useReactTable({
