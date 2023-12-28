@@ -1,4 +1,4 @@
-import { useCreateTestUsers, useCreateUser, useResetTestUsers } from "@/apis";
+import { useCreateTestPosts, useCreateUser, useResetTestPosts } from "@/apis";
 import { useModalStore } from "@/stores";
 import { getRandomPhoneNumber, getRandomString } from "@/utils";
 import { Button, Flex, Tooltip } from "@chakra-ui/react";
@@ -12,10 +12,10 @@ const count = 50;
 const UsersUtils = () => {
   const { openModal } = useModalStore(["openModal"]);
   const { mutate: createUser } = useCreateUser();
-  const { mutate: createTestUsers, isLoading: createTestUsersLoading } =
-    useCreateTestUsers(count);
-  const { mutate: resetTestUsers, isLoading: restTestUsersLoading } =
-    useResetTestUsers();
+  const { mutate: createTestUsers, isLoading: createTestUsersIsLoading } =
+    useCreateTestPosts(count);
+  const { mutate: resetTestUsers, isLoading: restTestUsersIsLoading } =
+    useResetTestPosts();
 
   const handleCreateUser = useCallback(() => {
     openModal(UserCreateModal, {});
@@ -58,7 +58,7 @@ const UsersUtils = () => {
           variant={"outline"}
           leftIcon={<TbPlus />}
           onClick={handleCreateTestUsers}
-          isDisabled={createTestUsersLoading}
+          isDisabled={createTestUsersIsLoading}
         >
           {`${count} Users`}
         </Button>
@@ -68,7 +68,7 @@ const UsersUtils = () => {
           variant={"outline"}
           leftIcon={<GrPowerReset />}
           onClick={handleResetTestUsers}
-          isDisabled={restTestUsersLoading}
+          isDisabled={restTestUsersIsLoading}
         >
           Users
         </Button>

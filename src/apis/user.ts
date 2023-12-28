@@ -1,6 +1,7 @@
 import { ApiRoutes } from "@/constants";
 import { toUrl } from "@/utils";
 import { useQueryClient } from "@tanstack/react-query";
+import { cloneDeep } from "lodash-es";
 import {
   useCommand,
   useDelete,
@@ -16,7 +17,6 @@ import {
   PageQueryParams,
   Scheme,
 } from "./types";
-import { cloneDeep } from "lodash-es";
 
 export interface User extends Scheme {
   name: string;
@@ -56,7 +56,7 @@ export const useCreateUser = (params?: object) => {
   );
 };
 
-export type UserUpdate = Omit<User, "approved">;
+export type UserUpdate = Omit<User, "approved" | "createdAt" | "updatedAt">;
 
 export const useUpdateUser = (params?: object) => {
   return useUpdate<User[] | PageQueryData<User[]>, UserUpdate>(

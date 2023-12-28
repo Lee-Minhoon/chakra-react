@@ -1,5 +1,6 @@
 import { ApiRoutes } from "@/constants";
 import { toUrl } from "@/utils";
+import { useQueryClient } from "@tanstack/react-query";
 import { CursorQueryParams, PageQueryParams, Scheme, User } from ".";
 import {
   useDelete,
@@ -38,7 +39,7 @@ export const useGetPostsByCursor = (params: CursorQueryParams) => {
   return useLoadMore<PostWithUser[]>(toUrl(ApiRoutes.Post), params);
 };
 
-export type PostCreate = Omit<Post, "id">;
+export type PostCreate = Omit<Post, "id" | "createdAt" | "updatedAt">;
 
 export const useCreatePost = (params?: PageQueryParams | CursorQueryParams) => {
   return usePost<Post[], PostCreate, number>(toUrl(ApiRoutes.Post), params, {
@@ -46,7 +47,7 @@ export const useCreatePost = (params?: PageQueryParams | CursorQueryParams) => {
   });
 };
 
-export type PostUpdate = Post;
+export type PostUpdate = Omit<Post, "createdAt" | "updatedAt">;
 
 export const useUpdatePost = () => {
   return useUpdate<Post[], PostUpdate>(
@@ -76,4 +77,30 @@ export const useDeletePost = () => {
       return old.filter((item) => item.id !== id);
     }
   );
+};
+
+const useInvalidate = () => {
+  const queryClient = useQueryClient();
+
+  return () => {
+    return queryClient.invalidateQueries([toUrl(ApiRoutes.Post)]);
+  };
+};
+
+export const useCreateTestPosts = (count: number) => {
+  const invalidate = useInvalidate();
+
+  return usePost(`${toUrl(ApiRoutes.Post)}/test/${count}`, undefined, {
+    onSuccess: invalidate,
+    meta: { successMessage: "Test posts created successfully" },
+  });
+};
+
+export const useResetTestPosts = () => {
+  const invalidate = useInvalidate();
+
+  return usePost(`${toUrl(ApiRoutes.Post)}/test/reset`, undefined, {
+    onSuccess: invalidate,
+    meta: { successMessage: "Test posts reset successfully" },
+  });
 };

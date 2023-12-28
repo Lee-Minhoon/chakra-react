@@ -1,8 +1,10 @@
 import { RequiredKeys } from "@/types";
+import { getRandomString } from "@/utils";
 import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 import { Order, Post, readDB } from "../db";
+import { readUsers } from "../users";
 import { sleep } from "../utils";
 
 export const readPosts = (sort?: RequiredKeys<Post>, order?: Order) => {
@@ -228,4 +230,45 @@ export const deletePost = (req: NextApiRequest, res: NextApiResponse) => {
   } catch {
     return res.status(500).json({ data: null, message: "failed" });
   }
+};
+
+export const createTestPosts = (req: NextApiRequest, res: NextApiResponse) => {
+  const { count } = req.query;
+
+  try {
+    const users = readUsers();
+    const posts = readPosts();
+    const lastId = posts[posts.length - 1]?.id ?? 0;
+    for (let i = 0; i < +(count ?? 10); i++) {
+      const currentId = lastId + i + 1;
+      posts.push({
+        id: currentId,
+        userId: users[Math.floor(Math.random() * users.length)].id,
+        title: getRandomString(10),
+        content: getRandomString(100),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
+    }
+
+    try {
+      writePosts(posts);
+    } catch {
+      return res.status(500).json({ data: null, message: "failed" });
+    }
+
+    return res.status(200).json({ data: posts, message: "success" });
+  } catch {
+    return res.status(500).json({ data: null, message: "failed" });
+  }
+};
+
+export const resetTestPosts = (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    writePosts([]);
+  } catch {
+    return res.status(500).json({ data: null, message: "failed" });
+  }
+
+  return res.status(200).json({ data: [], message: "success" });
 };
