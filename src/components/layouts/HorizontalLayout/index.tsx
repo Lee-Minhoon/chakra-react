@@ -10,7 +10,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <Flex direction={"column"} align={"center"}>
       <Header />
-      <Box as={"main"} w={1024}>
+      <Box as={"main"} w={1280}>
         {children}
       </Box>
       <Footer />

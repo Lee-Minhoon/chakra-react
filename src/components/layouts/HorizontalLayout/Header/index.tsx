@@ -19,7 +19,7 @@ const Header = () => {
       gap={4}
       mb={4}
       pt={10}
-      w={1024}
+      w={1280}
     >
       <Flex justify={"flex-end"} gap={4}>
         <LayoutMode />

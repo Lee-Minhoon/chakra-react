@@ -16,7 +16,7 @@ const Footer = () => {
       pb={20}
       bgColor={bgColor}
     >
-      <Flex direction={"column"} w={1024} gap={4}>
+      <Flex direction={"column"} w={1280} gap={4}>
         <Flex gap={4}>
           {links.map((link, idx) => (
             <Fragment key={idx}>
