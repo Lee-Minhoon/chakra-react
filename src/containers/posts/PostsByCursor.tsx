@@ -1,4 +1,4 @@
-import { Post, useGetPostsByCursor } from "@/apis";
+import { PostWithUser, useGetPostsByCursor } from "@/apis";
 import { InfiniteList } from "@/components";
 import { usePagination } from "@/hooks";
 import { PostListItem } from ".";
@@ -17,7 +17,7 @@ const PostsByCursor = ({ usesObserver }: PostsByCursorProps) => {
   } = useGetPostsByCursor({ limit, sort, order });
 
   return (
-    <InfiniteList<Post>
+    <InfiniteList<PostWithUser>
       listItem={PostListItem}
       data={posts}
       hasNextPage={hasNextPage}
