@@ -66,16 +66,18 @@ export const useUpdateUser = (params?: object) => {
       meta: { successMessage: "User updated successfully" },
     },
     (old, data) => {
-      const newData = cloneDeep("data" in old ? old.data : old);
+      const isPaginatation = "data" in old;
+      const newData = cloneDeep(isPaginatation ? old.data : old);
       const finded = newData.find((item) => item.id === data.id);
       if (!finded) return old;
       finded.name = data.name;
       finded.email = data.email;
       finded.phone = data.phone;
-      if (!Array.isArray(old)) {
+      finded.updatedAt = new Date().toISOString();
+      if (isPaginatation) {
         return {
           ...old,
-          data: old.data.map((item) => (item.id === data.id ? finded : item)),
+          data: newData.map((item) => (item.id === data.id ? finded : item)),
         };
       }
       return newData.map((item) => (item.id === data.id ? finded : item));
@@ -91,8 +93,9 @@ export const useDeleteUser = (params?: object) => {
       meta: { successMessage: "User deleted successfully" },
     },
     (old, id) => {
-      const newData = "data" in old ? old.data : old;
-      if (!Array.isArray(old)) {
+      const isPaginatation = "data" in old;
+      const newData = isPaginatation ? old.data : old;
+      if (isPaginatation) {
         return {
           ...old,
           data: newData.filter((item) => item.id !== id),
@@ -115,11 +118,13 @@ export const useApproveUser = (params?: object) => {
       meta: { successMessage: "User approved successfully" },
     },
     (old, data) => {
-      const newData = cloneDeep("data" in old ? old.data : old);
+      const isPaginatation = "data" in old;
+      const newData = cloneDeep(isPaginatation ? old.data : old);
       const finded = newData.find((item) => item.id === data.id);
       if (!finded) return old;
       finded.approved = true;
-      if (!Array.isArray(old)) {
+      finded.updatedAt = new Date().toISOString();
+      if (isPaginatation) {
         return {
           ...old,
           data: old.data.map((item) => (item.id === data.id ? finded : item)),
