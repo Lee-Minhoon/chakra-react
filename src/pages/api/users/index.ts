@@ -63,7 +63,7 @@ export const getUser = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const users = readUsers();
     const user = users.find((user) => user.id === Number(id));
-    return res.status(200).json({ data: user, message: "success" });
+    return res.status(200).json({ data: user ?? null, message: "success" });
   } catch {
     return res.status(500).json({ data: null, message: "failed" });
   }

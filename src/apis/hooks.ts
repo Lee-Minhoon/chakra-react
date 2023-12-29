@@ -207,14 +207,14 @@ export const useUpdate = <
   );
 };
 
-export const useDelete = <TOldData, TResponse = unknown, TId = ID>(
+export const useDelete = <TOldData, TId = ID | void, TResponse = unknown>(
   url: string,
   params?: object,
   options?: UseMutationOptions<ApiResponse<TResponse>, ApiError, TId>,
   updater?: (old: TOldData, id: TId) => TOldData
 ) => {
   return useMutation<TOldData, TId, TResponse>(
-    (id) => api.delete<ApiResponse<TResponse>>(`${url}/${id}`),
+    (id) => api.delete<ApiResponse<TResponse>>(id ? `${url}/${id}` : url),
     options,
     [url, params],
     updater

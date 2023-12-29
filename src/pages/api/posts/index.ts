@@ -92,7 +92,7 @@ export const getPost = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const posts = readPostsWithUser();
     const post = posts.find((user) => user.id === Number(id));
-    return res.status(200).json({ data: post, message: "success" });
+    return res.status(200).json({ data: post ?? null, message: "success" });
   } catch {
     return res.status(500).json({ data: null, message: "failed" });
   }

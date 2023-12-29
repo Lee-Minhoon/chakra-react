@@ -1,6 +1,7 @@
-import { PostWithUser, useGetMe } from "@/apis";
+import { PostWithUser, useDeletePost, useGetMe } from "@/apis";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
+import { useModalStore } from "@/stores";
 import { toUrl } from "@/utils";
 import {
   Box,
@@ -22,6 +23,8 @@ interface PostCardProps {
 const PostCard = ({ data: post }: PostCardProps) => {
   const { push } = useRouterPush();
   const { data: me } = useGetMe();
+  const { mutate: deletePost } = useDeletePost();
+  const { openConfirm } = useModalStore(["openConfirm"]);
 
   return (
     <Card>
@@ -30,15 +33,34 @@ const PostCard = ({ data: post }: PostCardProps) => {
           <Flex justify={"space-between"}>
             <WriterInfo post={post} />
             {me?.id === post?.userId && (
-              <Button
-                size={"sm"}
-                rightIcon={<TbEdit />}
-                onClick={() =>
-                  push(toUrl(PageRoutes.EditPost, { id: post?.id }))
-                }
-              >
-                Edit
-              </Button>
+              <Flex gap={4}>
+                <Button
+                  size={"sm"}
+                  rightIcon={<TbEdit />}
+                  onClick={() =>
+                    push(toUrl(PageRoutes.EditPost, { id: post?.id }))
+                  }
+                >
+                  Edit
+                </Button>
+                <Button
+                  size={"sm"}
+                  rightIcon={<TbEdit />}
+                  onClick={() => {
+                    if (!post?.id) return;
+                    openConfirm({
+                      title: "Delete Post",
+                      content: "Are you sure you want to delete this post?",
+                      onConfirm: () =>
+                        deletePost(post?.id, {
+                          onSuccess: () => push(toUrl(PageRoutes.Home)),
+                        }),
+                    });
+                  }}
+                >
+                  Delete
+                </Button>
+              </Flex>
             )}
           </Flex>
         </Skeleton>
