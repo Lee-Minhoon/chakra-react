@@ -1,4 +1,4 @@
-import { useCreateTestPosts, useCreateUser, useResetTestPosts } from "@/apis";
+import { useCreateTestUsers, useCreateUser, useResetTestUsers } from "@/apis";
 import { useModalStore } from "@/stores";
 import { getRandomPhoneNumber, getRandomString } from "@/utils";
 import { Button, Flex, Tooltip } from "@chakra-ui/react";
@@ -13,9 +13,9 @@ const UsersUtils = () => {
   const { openModal } = useModalStore(["openModal"]);
   const { mutate: createUser } = useCreateUser();
   const { mutate: createTestUsers, isLoading: createTestUsersIsLoading } =
-    useCreateTestPosts(count);
+    useCreateTestUsers(count);
   const { mutate: resetTestUsers, isLoading: restTestUsersIsLoading } =
-    useResetTestPosts();
+    useResetTestUsers();
 
   const handleCreateUser = useCallback(() => {
     openModal(UserCreateModal, {});
