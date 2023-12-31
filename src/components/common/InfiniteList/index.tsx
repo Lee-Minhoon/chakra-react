@@ -1,6 +1,13 @@
 import { CursorQueryData, Scheme } from "@/apis";
 import useHasScroll from "@/hooks/useHasScroll";
-import { Button, Center, Flex, Spinner, UnorderedList } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Spinner,
+  UnorderedList,
+} from "@chakra-ui/react";
 import { UseInfiniteQueryResult } from "@tanstack/react-query";
 import { ComponentType, useCallback, useEffect, useRef } from "react";
 
@@ -23,6 +30,7 @@ const InfiniteList = <T extends Scheme>({
   const callback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
+        console.log(entry);
         if (hasNextPage && entry.isIntersecting) {
           fetchNextPage();
         }
@@ -55,23 +63,21 @@ const InfiniteList = <T extends Scheme>({
           ))
         )}
       </UnorderedList>
-      {!isFetching && (
-        <>
-          {usesObserver ? (
-            <div ref={targetRef} />
-          ) : (
-            <Button
-              onClick={() => fetchNextPage()}
-              isDisabled={!hasNextPage}
-              flexShrink={0}
-            >
-              Load More
-            </Button>
-          )}
-        </>
-      )}
+      <Center display={isFetching ? "none" : "flex"}>
+        {usesObserver ? (
+          <Box ref={targetRef} minH={10} />
+        ) : (
+          <Button
+            onClick={() => fetchNextPage()}
+            isDisabled={!hasNextPage}
+            flexShrink={0}
+          >
+            Load More
+          </Button>
+        )}
+      </Center>
       {isFetching && (
-        <Center>
+        <Center minH={10}>
           <Spinner color={"primary.500"} />
         </Center>
       )}
