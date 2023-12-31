@@ -16,10 +16,10 @@ const columnHelper = createColumnHelper<PostWithUser>();
 
 interface PostTableProps {
   posts: PostWithUser[];
-  isFetching?: boolean;
+  isLoading?: boolean;
 }
 
-const PostTable = ({ posts, isFetching }: PostTableProps) => {
+const PostTable = ({ posts, isLoading }: PostTableProps) => {
   const { push } = useRouterPush();
 
   const columns = useMemo(
@@ -59,7 +59,7 @@ const PostTable = ({ posts, isFetching }: PostTableProps) => {
   return (
     <DataTable<PostWithUser>
       table={table}
-      isFetching={isFetching}
+      isLoading={isLoading}
       onRowClick={handleClickRow}
     />
   );

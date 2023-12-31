@@ -20,10 +20,10 @@ const columnHelper = createColumnHelper<User>();
 
 interface UsersTableProps {
   users: User[];
-  isFetching?: boolean;
+  isLoading?: boolean;
 }
 
-const UserTable = ({ users, isFetching }: UsersTableProps) => {
+const UserTable = ({ users, isLoading }: UsersTableProps) => {
   const { openModal } = useModalStore(["openModal"]);
   const { openConfirm } = useModalStore(["openConfirm"]);
   const { push } = useRouterPush();
@@ -131,7 +131,7 @@ const UserTable = ({ users, isFetching }: UsersTableProps) => {
   return (
     <DataTable<User>
       table={table}
-      isFetching={isFetching}
+      isLoading={isLoading}
       onRowClick={handleClickRow}
     />
   );

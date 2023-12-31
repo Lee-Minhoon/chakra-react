@@ -6,23 +6,19 @@ import DataTableHeader from "./Header";
 
 interface DataTableProps<T> {
   table: ReactTable<T>;
-  isFetching?: boolean;
+  isLoading?: boolean;
   onRowClick?: (row: Row<T>) => void;
 }
 
-const DataTable = <T,>({
-  table,
-  isFetching,
-  onRowClick,
-}: DataTableProps<T>) => {
+const DataTable = <T,>({ table, isLoading, onRowClick }: DataTableProps<T>) => {
   return (
     <>
       <Table>
         <DataTableHeader table={table} />
-        {!isFetching && <DataTableBody table={table} onRowClick={onRowClick} />}
+        {!isLoading && <DataTableBody table={table} onRowClick={onRowClick} />}
         <DataTableFooter table={table} />
       </Table>
-      {isFetching && (
+      {isLoading && (
         <Center my={4}>
           <Spinner color={"primary.500"} />
         </Center>

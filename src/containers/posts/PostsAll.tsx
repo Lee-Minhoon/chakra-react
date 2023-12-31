@@ -5,14 +5,14 @@ import { TableContainer } from "@chakra-ui/react";
 
 const PostsAll = () => {
   const { sort, order } = usePagination();
-  const { data: posts, isFetching: postsIsFetching } = useGetPosts({
+  const { data: posts, isLoading: postsIsLoading } = useGetPosts({
     sort,
     order,
   });
 
   return (
     <TableContainer flex={1} overflowY={"auto"}>
-      <PostTable posts={posts ?? []} isFetching={postsIsFetching} />
+      <PostTable posts={posts ?? []} isLoading={postsIsLoading} />
     </TableContainer>
   );
 };

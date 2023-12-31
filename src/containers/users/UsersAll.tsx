@@ -5,14 +5,14 @@ import { TableContainer } from "@chakra-ui/react";
 
 const UsersAll = () => {
   const { sort, order } = usePagination();
-  const { data: users, isFetching: usersIsFetching } = useGetUsers({
+  const { data: users, isLoading: usersIsLoading } = useGetUsers({
     sort,
     order,
   });
 
   return (
     <TableContainer flex={1} overflowY={"auto"}>
-      <UserTable users={users ?? []} isFetching={usersIsFetching} />
+      <UserTable users={users ?? []} isLoading={usersIsLoading} />
     </TableContainer>
   );
 };

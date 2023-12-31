@@ -6,7 +6,7 @@ import { TableContainer } from "@chakra-ui/react";
 
 const UsersByPage = () => {
   const { page, limit, sort, order, onPagination } = usePagination();
-  const { data: usersByPage, isFetching: usersIsFetching } = useGetUsersByPage({
+  const { data: usersByPage, isLoading: usersIsLoading } = useGetUsersByPage({
     page,
     limit,
     sort,
@@ -16,10 +16,7 @@ const UsersByPage = () => {
   return (
     <>
       <TableContainer flex={1} overflowY={"auto"}>
-        <UserTable
-          users={usersByPage?.data ?? []}
-          isFetching={usersIsFetching}
-        />
+        <UserTable users={usersByPage?.data ?? []} isLoading={usersIsLoading} />
       </TableContainer>
       <Pagination
         currentPage={page}
