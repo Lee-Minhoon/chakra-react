@@ -18,12 +18,13 @@ const PostWriter = ({ writer }: PostWriterProps) => {
         _hover={{ opacity: 0.5 }}
         onClick={(e) => {
           e.stopPropagation();
+          if (!writer) return;
           push(toUrl(PageRoutes.UserDetail, { id: writer.id }));
         }}
       >
-        <Avatar name={writer.name} src={writer.profile} w={10} h={10} />
+        <Avatar name={writer?.name} src={writer?.profile} w={10} h={10} />
       </Box>
-      {writer.name}
+      {writer?.name}
     </Flex>
   );
 };

@@ -11,24 +11,31 @@ interface WriterInfoProps {
 const WriterInfo = ({ post }: WriterInfoProps) => {
   const { push } = useRouterPush();
 
+  const user = post?.user;
+
   return (
     <Flex gap={4} align={"center"}>
       <Avatar
-        name={post?.user.name}
-        src={post?.user.profile}
+        name={user?.name}
+        src={user?.profile}
         w={10}
         h={10}
         cursor={"pointer"}
         _hover={{ opacity: 0.5 }}
         onClick={(e) => {
           e.stopPropagation();
-          push(toUrl(PageRoutes.UserDetail, { id: post?.user.id }));
+          if (!user) return;
+          push(toUrl(PageRoutes.UserDetail, { id: user.id }));
         }}
       />
       <Flex direction={"column"} gap={2}>
-        <Text>{`${post?.user.name ?? "User Name"} (${
-          post?.user.email ?? "User Email"
-        })`}</Text>
+        {user ? (
+          <Text>{`${user.name ?? "User Name"} (${
+            user.email ?? "User Email"
+          })`}</Text>
+        ) : (
+          <Text>Deleted User</Text>
+        )}
         <Text>
           {post?.createdAt ? formatISO(post?.createdAt) : "Created At"}
         </Text>

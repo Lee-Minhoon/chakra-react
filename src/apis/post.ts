@@ -10,6 +10,7 @@ import {
   usePost,
   useUpdate,
 } from "./hooks";
+import { Nullable } from "@/types";
 
 export interface Post extends Scheme {
   userId: number;
@@ -18,7 +19,7 @@ export interface Post extends Scheme {
 }
 
 export interface PostWithUser extends Post {
-  user: User;
+  user: Nullable<User>;
 }
 
 export const useGetPost = (id?: number) => {

@@ -32,10 +32,6 @@ export interface Post extends Scheme {
   content: string;
 }
 
-export interface PostWithUser extends Post {
-  user: User;
-}
-
 export type Order = "asc" | "desc";
 
 export const readDB = (): DB => {

@@ -25,7 +25,7 @@ export const readPostsWithUser = (
     const db = readDB();
     const posts = db.posts.map((post) => ({
       ...post,
-      user: db.users.find((user) => user.id === post.userId),
+      user: db.users.find((user) => user.id === post.userId) ?? null,
     }));
     if (sort && order) {
       return posts.sort((a, b) => {
