@@ -1,4 +1,4 @@
-import { ApiError } from "@/apis";
+import { ApiError, ApiResponse } from "@/apis";
 import { Authenticator, LayoutProvider, ModalProvider } from "@/components";
 import { modalStore } from "@/stores";
 import "@/styles/globals.css";
@@ -38,10 +38,11 @@ const queryClient = new QueryClient({
   }),
   mutationCache: new MutationCache({
     onSuccess: (data, variables, context, mutation) => {
-      if (!mutation.meta?.successMessage) return;
+      const typedData = data as ApiResponse<any>;
+      if (!("message" in typedData) || mutation.meta?.ignoreSuccess) return;
       toast({
         title: "Success",
-        description: mutation.meta.successMessage,
+        description: typedData.message,
         status: "success",
         duration: 2000,
         isClosable: true,

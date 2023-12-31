@@ -5,7 +5,7 @@ declare module "@tanstack/query-core" {
     ignoreError?: boolean;
   }
   interface MutationMeta {
-    successMessage?: string;
+    ignoreSuccess?: boolean;
     ignoreError?: boolean;
   }
 }

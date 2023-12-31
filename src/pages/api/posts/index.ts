@@ -12,7 +12,7 @@ export const readPosts = (sort?: RequiredKeys<Post>, order?: Order) => {
     const db = readDB();
     return db.posts;
   } catch (err) {
-    console.log("failed to read db.json");
+    console.log("Failed to read db.json");
     throw err;
   }
 };
@@ -50,7 +50,7 @@ export const readPostsWithUser = (
       return posts;
     }
   } catch (err) {
-    console.log("failed to read db.json");
+    console.log("Failed to read db.json");
     throw err;
   }
 };
@@ -80,7 +80,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       if (cursor && limit) return getPostsByCursor(req, res);
       return getPosts(req, res);
     case "POST":
-      return postPost(req, res);
+      return createPost(req, res);
     default:
       return res.status(405).end();
   }
@@ -92,9 +92,14 @@ export const getPost = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const posts = readPostsWithUser();
     const post = posts.find((user) => user.id === Number(id));
-    return res.status(200).json({ data: post ?? null, message: "success" });
+    return res.status(200).json({
+      data: post ?? null,
+      message: `Successfully retrieved post ${id}`,
+    });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res
+      .status(500)
+      .json({ data: null, message: `Failed to get post ${id}` });
   }
 };
 
@@ -106,9 +111,11 @@ export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
       sort as RequiredKeys<Post> & "user_name",
       order as Order
     );
-    return res.status(200).json({ data: posts, message: "success" });
+    return res
+      .status(200)
+      .json({ data: posts, message: "Successfully retrieved posts" });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res.status(500).json({ data: null, message: "Failed to get posts" });
   }
 };
 
@@ -129,10 +136,10 @@ export const getPostsByPage = (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).json({
       data: { total: posts.length, data: slicedPosts },
-      message: "success",
+      message: "Successfully retrieved posts",
     });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res.status(500).json({ data: null, message: "Failed to get posts" });
   }
 };
 
@@ -153,19 +160,18 @@ export const getPostsByCursor = (req: NextApiRequest, res: NextApiResponse) => {
         next: posts[index + Number(limit)]?.id ?? null,
         data: slicedPosts,
       },
-      message: "success",
+      message: "Successfully retrieved posts",
     });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res.status(500).json({ data: null, message: "Failed to get posts" });
   }
 };
 
-export const postPost = (req: NextApiRequest, res: NextApiResponse) => {
+export const createPost = (req: NextApiRequest, res: NextApiResponse) => {
   const { userId, title, content } = req.body;
 
   try {
     const posts = readPosts();
-
     const newPost: Post = {
       id: (posts[posts.length - 1]?.id ?? 0) + 1,
       userId,
@@ -176,15 +182,14 @@ export const postPost = (req: NextApiRequest, res: NextApiResponse) => {
     };
     posts.push(newPost);
 
-    try {
-      writePosts(posts);
-    } catch {
-      return res.status(500).json({ data: null, message: "failed" });
-    }
-
-    return res.status(200).json({ data: newPost.id, message: "success" });
+    writePosts(posts);
+    return res
+      .status(200)
+      .json({ data: newPost.id, message: `Post ${newPost.id} created` });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res
+      .status(500)
+      .json({ data: null, message: `Post ${title} creation failed` });
   }
 };
 
@@ -201,15 +206,12 @@ export const updatePost = (req: NextApiRequest, res: NextApiResponse) => {
       return post;
     });
 
-    try {
-      writePosts(posts);
-    } catch {
-      return res.status(500).json({ data: null, message: "failed" });
-    }
-
-    return res.status(200).json({ data: id, message: "success" });
+    writePosts(posts);
+    return res.status(200).json({ data: id, message: `Post ${id} updated` });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res
+      .status(500)
+      .json({ data: null, message: `Post ${id} update failed` });
   }
 };
 
@@ -220,15 +222,12 @@ export const deletePost = (req: NextApiRequest, res: NextApiResponse) => {
     let posts = readPosts();
     posts = posts.filter((user) => user.id !== Number(id));
 
-    try {
-      writePosts(posts);
-    } catch {
-      return res.status(500).json({ data: null, message: "failed" });
-    }
-
-    return res.status(200).json({ data: id, message: "success" });
+    writePosts(posts);
+    return res.status(200).json({ data: id, message: `Post ${id} deleted` });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res
+      .status(500)
+      .json({ data: null, message: `Post ${id} deletion failed` });
   }
 };
 
@@ -251,15 +250,14 @@ export const createTestPosts = (req: NextApiRequest, res: NextApiResponse) => {
       });
     }
 
-    try {
-      writePosts(posts);
-    } catch {
-      return res.status(500).json({ data: null, message: "failed" });
-    }
-
-    return res.status(200).json({ data: posts, message: "success" });
+    writePosts(posts);
+    return res
+      .status(200)
+      .json({ data: posts, message: "Successfully created test posts" });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res
+      .status(500)
+      .json({ data: null, message: "Failed to create test posts" });
   }
 };
 
@@ -267,8 +265,12 @@ export const resetTestPosts = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     writePosts([]);
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res
+      .status(500)
+      .json({ data: null, message: "Failed to reset test posts" });
   }
 
-  return res.status(200).json({ data: [], message: "success" });
+  return res
+    .status(200)
+    .json({ data: [], message: "Successfully reset test posts" });
 };

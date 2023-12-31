@@ -23,7 +23,7 @@ export const readUsers = (sort?: RequiredKeys<User>, order?: Order): User[] => {
     }
     return db.users;
   } catch (err) {
-    console.log("failed to read db.json");
+    console.log("Failed to read db.json");
     throw err;
   }
 };
@@ -37,7 +37,7 @@ export const writeUsers = (users: User[]) => {
       "utf8"
     );
   } catch (err) {
-    console.log("failed to write db.json");
+    console.log("Failed to write db.json");
     throw err;
   }
 };
@@ -51,7 +51,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       if (cursor && limit) return getUsersByCursor(req, res);
       return getUsers(req, res);
     case "POST":
-      return postUser(req, res);
+      return createUser(req, res);
     default:
       return res.status(405).end();
   }
@@ -63,9 +63,15 @@ export const getUser = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const users = readUsers();
     const user = users.find((user) => user.id === Number(id));
-    return res.status(200).json({ data: user ?? null, message: "success" });
+
+    return res.status(200).json({
+      data: user ?? null,
+      message: `Successfully retrieved user ${id}`,
+    });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res
+      .status(500)
+      .json({ data: null, message: `Failed to get user ${id}` });
   }
 };
 
@@ -74,9 +80,12 @@ export const getUsers = (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const users = readUsers(sort as RequiredKeys<User>, order as Order);
-    return res.status(200).json({ data: users, message: "success" });
+
+    return res
+      .status(200)
+      .json({ data: users, message: "Successfully retrieved users" });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res.status(500).json({ data: null, message: "Failed to get users" });
   }
 };
 
@@ -94,10 +103,10 @@ export const getUsersByPage = (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).json({
       data: { total: users.length, data: slicedUsers },
-      message: "success",
+      message: "Successfully retrieved users",
     });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res.status(500).json({ data: null, message: "Failed to get users" });
   }
 };
 
@@ -116,14 +125,14 @@ export const getUsersByCursor = (req: NextApiRequest, res: NextApiResponse) => {
           index + Number(limit) < users.length ? index + Number(limit) : null,
         data: slicedUsers,
       },
-      message: "success",
+      message: "Successfully retrieved users",
     });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res.status(500).json({ data: null, message: "Failed to get users" });
   }
 };
 
-export const postUser = (req: NextApiRequest, res: NextApiResponse) => {
+export const createUser = (req: NextApiRequest, res: NextApiResponse) => {
   const { name, email, phone, profile } = req.body;
 
   try {
@@ -131,7 +140,7 @@ export const postUser = (req: NextApiRequest, res: NextApiResponse) => {
     if (users.some((user) => user.email === email)) {
       return res
         .status(409)
-        .json({ data: null, message: "email already exists" });
+        .json({ data: null, message: "Email already exists" });
     }
 
     const newUser: User = {
@@ -146,15 +155,15 @@ export const postUser = (req: NextApiRequest, res: NextApiResponse) => {
     };
     users.push(newUser);
 
-    try {
-      writeUsers(users);
-    } catch {
-      return res.status(500).json({ data: null, message: "failed" });
-    }
+    writeUsers(users);
 
-    return res.status(200).json({ data: newUser.id, message: "success" });
+    return res
+      .status(200)
+      .json({ data: newUser.id, message: `User ${newUser.id} created` });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res
+      .status(500)
+      .json({ data: null, message: `User ${name} creation failed` });
   }
 };
 
@@ -178,15 +187,13 @@ export const updateUser = (req: NextApiRequest, res: NextApiResponse) => {
       return user;
     });
 
-    try {
-      writeUsers(users);
-    } catch {
-      return res.status(500).json({ data: null, message: "failed" });
-    }
+    writeUsers(users);
 
-    return res.status(200).json({ data: id, message: "success" });
+    return res.status(200).json({ data: id, message: `User ${id} updated` });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res
+      .status(500)
+      .json({ data: null, message: `User ${id} update failed` });
   }
 };
 
@@ -197,15 +204,13 @@ export const deleteUser = (req: NextApiRequest, res: NextApiResponse) => {
     let users = readUsers();
     users = users.filter((user) => user.id !== Number(id));
 
-    try {
-      writeUsers(users);
-    } catch {
-      return res.status(500).json({ data: null, message: "failed" });
-    }
+    writeUsers(users);
 
-    return res.status(200).json({ data: id, message: "success" });
+    return res.status(200).json({ data: id, message: `User ${id} deleted` });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res
+      .status(500)
+      .json({ data: null, message: `User ${id} deletion failed` });
   }
 };
 
@@ -221,15 +226,14 @@ export const approveUser = (req: NextApiRequest, res: NextApiResponse) => {
       return user;
     });
 
-    try {
-      writeUsers(users);
-    } catch {
-      return res.status(500).json({ data: null, message: "failed" });
-    }
+    writeUsers(users);
 
-    return res.status(200).json({ data: id, message: "success" });
-  } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res.status(200).json({ data: id, message: `User ${id} approved` });
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .json({ data: null, message: `User ${id} approval failed` });
   }
 };
 
@@ -252,15 +256,15 @@ export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
       });
     }
 
-    try {
-      writeUsers(users);
-    } catch {
-      return res.status(500).json({ data: null, message: "failed" });
-    }
+    writeUsers(users);
 
-    return res.status(200).json({ data: users, message: "success" });
+    return res
+      .status(200)
+      .json({ data: users, message: "Successfully created test users" });
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res
+      .status(500)
+      .json({ data: null, message: "Failed to create test users" });
   }
 };
 
@@ -268,8 +272,12 @@ export const resetTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     writeUsers([]);
   } catch {
-    return res.status(500).json({ data: null, message: "failed" });
+    return res
+      .status(500)
+      .json({ data: null, message: "Failed to reset test users" });
   }
 
-  return res.status(200).json({ data: [], message: "success" });
+  return res
+    .status(200)
+    .json({ data: [], message: "Successfully reset test users" });
 };

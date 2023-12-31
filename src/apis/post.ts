@@ -42,9 +42,7 @@ export const useGetPostsByCursor = (params: CursorQueryParams) => {
 export type PostCreate = Omit<Post, "id" | "createdAt" | "updatedAt">;
 
 export const useCreatePost = (params?: PageQueryParams | CursorQueryParams) => {
-  return usePost<Post[], PostCreate, number>(toUrl(ApiRoutes.Post), params, {
-    meta: { successMessage: "Post created successfully" },
-  });
+  return usePost<Post[], PostCreate, number>(toUrl(ApiRoutes.Post), params);
 };
 
 export type PostUpdate = Omit<Post, "createdAt" | "updatedAt">;
@@ -53,9 +51,7 @@ export const useUpdatePost = () => {
   return useUpdate<Post[], PostUpdate>(
     toUrl(ApiRoutes.Post),
     undefined,
-    {
-      meta: { successMessage: "Post updated successfully" },
-    },
+    undefined,
     (old, data) => {
       const finded = old.find((item) => item.id === data.id);
       if (!finded) return old;
@@ -70,9 +66,7 @@ export const useDeletePost = () => {
   return useDelete<Post[], number>(
     toUrl(ApiRoutes.Post),
     undefined,
-    {
-      meta: { successMessage: "Post deleted successfully" },
-    },
+    undefined,
     (old, id) => {
       return old.filter((item) => item.id !== id);
     }
@@ -92,7 +86,6 @@ export const useCreateTestPosts = (count: number) => {
 
   return usePost(`${toUrl(ApiRoutes.Post)}/test/${count}`, undefined, {
     onSuccess: invalidate,
-    meta: { successMessage: "Test posts created successfully" },
   });
 };
 
@@ -101,6 +94,5 @@ export const useResetTestPosts = () => {
 
   return usePost(`${toUrl(ApiRoutes.Post)}/test/reset`, undefined, {
     onSuccess: invalidate,
-    meta: { successMessage: "Test posts reset successfully" },
   });
 };

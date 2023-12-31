@@ -49,10 +49,7 @@ export type UserCreate = Pick<User, "name" | "email" | "phone" | "profile">;
 export const useCreateUser = (params?: object) => {
   return usePost<User[] | PageQueryData<User[]>, UserCreate>(
     toUrl(ApiRoutes.User),
-    params,
-    {
-      meta: { successMessage: "User created successfully" },
-    }
+    params
   );
 };
 
@@ -62,9 +59,7 @@ export const useUpdateUser = (params?: object) => {
   return useUpdate<User[] | PageQueryData<User[]>, UserUpdate>(
     toUrl(ApiRoutes.User),
     params,
-    {
-      meta: { successMessage: "User updated successfully" },
-    },
+    undefined,
     (old, data) => {
       const isPaginatation = "data" in old;
       const newData = cloneDeep(isPaginatation ? old.data : old);
@@ -89,9 +84,7 @@ export const useDeleteUser = (params?: object) => {
   return useDelete<User[] | PageQueryData<User[]>, number>(
     toUrl(ApiRoutes.User),
     params,
-    {
-      meta: { successMessage: "User deleted successfully" },
-    },
+    undefined,
     (old, id) => {
       const isPaginatation = "data" in old;
       const newData = isPaginatation ? old.data : old;
@@ -114,9 +107,7 @@ export const useApproveUser = (params?: object) => {
   return useCommand<User[] | PageQueryData<User[]>, UserApprove>(
     ApiRoutes.ApproveUser,
     [toUrl(ApiRoutes.User), params],
-    {
-      meta: { successMessage: "User approved successfully" },
-    },
+    undefined,
     (old, data) => {
       const isPaginatation = "data" in old;
       const newData = cloneDeep(isPaginatation ? old.data : old);
@@ -148,7 +139,6 @@ export const useCreateTestUsers = (count: number) => {
 
   return usePost(`${toUrl(ApiRoutes.User)}/test/${count}`, undefined, {
     onSuccess: invalidate,
-    meta: { successMessage: "Test users created successfully" },
   });
 };
 
@@ -157,6 +147,5 @@ export const useResetTestUsers = () => {
 
   return usePost(`${toUrl(ApiRoutes.User)}/test/reset`, undefined, {
     onSuccess: invalidate,
-    meta: { successMessage: "Test users reset successfully" },
   });
 };
