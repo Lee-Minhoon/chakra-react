@@ -5,6 +5,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 import { Order, User, readDB } from "../db";
 import { sleep } from "../utils";
+import { readSession } from "../auth";
 
 export const readUsers = (sort?: RequiredKeys<User>, order?: Order): User[] => {
   try {
@@ -201,6 +202,14 @@ export const deleteUser = (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   try {
+    const session = readSession();
+
+    if (session === Number(id)) {
+      return res
+        .status(409)
+        .json({ data: null, message: "Please sign out before deleting user" });
+    }
+
     let users = readUsers();
     users = users.filter((user) => user.id !== Number(id));
 
@@ -270,6 +279,15 @@ export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
 
 export const resetTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const session = readSession();
+
+    if (session) {
+      return res.status(409).json({
+        data: null,
+        message: "Please sign out before resetting test users",
+      });
+    }
+
     writeUsers([]);
 
     return res
