@@ -32,9 +32,8 @@ const PostForm = ({ post }: PostFormProps) => {
         useCallback(
           (data) =>
             createPost(data, {
-              onSuccess: (res) => {
-                push(toUrl(PageRoutes.PostDetail, { id: res.data }));
-              },
+              onSuccess: (res) =>
+                push(toUrl(PageRoutes.PostDetail, { id: res.data })),
             }),
           [createPost, push]
         )
