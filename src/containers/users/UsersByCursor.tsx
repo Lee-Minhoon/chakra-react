@@ -10,18 +10,10 @@ interface UsersByCursorProps {
 const UsersByCursor = ({ usesObserver }: UsersByCursorProps) => {
   const { limit, sort, order } = usePagination();
 
-  const {
-    data: users,
-    fetchNextPage,
-    hasNextPage,
-  } = useGetUsersByCursor({ limit, sort, order });
-
   return (
     <InfiniteList<User>
       listItem={UserListItem}
-      data={users}
-      hasNextPage={hasNextPage}
-      fetchNextPage={fetchNextPage}
+      infiniteQuery={useGetUsersByCursor({ limit, sort, order })}
       usesObserver={usesObserver}
     />
   );

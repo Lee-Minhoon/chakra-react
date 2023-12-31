@@ -6,7 +6,7 @@ import { TableContainer } from "@chakra-ui/react";
 
 const PostsByPage = () => {
   const { page, limit, sort, order, onPagination } = usePagination();
-  const { data: postsByPage } = useGetPostsByPage({
+  const { data: postsByPage, isFetching: postsIsFetching } = useGetPostsByPage({
     page,
     limit,
     sort,
@@ -16,7 +16,10 @@ const PostsByPage = () => {
   return (
     <>
       <TableContainer flex={1} overflowY={"auto"}>
-        <PostTable posts={postsByPage?.data ?? []} />
+        <PostTable
+          posts={postsByPage?.data ?? []}
+          isFetching={postsIsFetching}
+        />
       </TableContainer>
       <Pagination
         currentPage={page}

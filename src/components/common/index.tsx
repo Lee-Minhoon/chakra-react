@@ -5,6 +5,7 @@ export { default as FileInput } from "./FileInput";
 export { default as InfiniteList } from "./InfiniteList";
 export { default as LayoutMode } from "./LayoutMode";
 export { default as Logo } from "./Logo";
-export * from "./Pagination";
+export { default as PageOptions } from "./PageOptions";
+export { default as Pagination } from "./Pagination";
 export { default as ViewOptions } from "./ViewOptions";
 export { default as WithFormLabel } from "./WithFormLabel";
