@@ -12,7 +12,7 @@ import { useCallback } from "react";
 import { GrPowerReset } from "react-icons/gr";
 import { TbPlus } from "react-icons/tb";
 
-const count = 50;
+const count = 1000;
 
 const PostsUtils = () => {
   const { data: me } = useGetMe();
@@ -60,7 +60,7 @@ const PostsUtils = () => {
           Random Post
         </Button>
       </Tooltip>
-      <Tooltip hasArrow label={"Create 50 Posts for Test"}>
+      <Tooltip hasArrow label={`Create ${count} Posts for Test`}>
         <Button
           variant={"outline"}
           leftIcon={<TbPlus />}
