@@ -271,13 +271,13 @@ export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
 export const resetTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     writeUsers([]);
+
+    return res
+      .status(200)
+      .json({ data: [], message: "Successfully reset test users" });
   } catch {
     return res
       .status(500)
       .json({ data: null, message: "Failed to reset test users" });
   }
-
-  return res
-    .status(200)
-    .json({ data: [], message: "Successfully reset test users" });
 };

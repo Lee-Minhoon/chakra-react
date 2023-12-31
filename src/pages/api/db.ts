@@ -10,13 +10,13 @@ interface DB {
 
 export type ID = number;
 
+export type Session = Nullable<ID>;
+
 export interface Scheme {
   id: ID;
   createdAt: string;
   updatedAt: string;
 }
-
-export type Session = Nullable<User>;
 
 export interface User extends Scheme {
   name: string;

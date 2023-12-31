@@ -14,18 +14,18 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 const signin = (req: NextApiRequest, res: NextApiResponse) => {
   const { email } = req.body;
 
-  const users = readUsers();
-  const user = users.find((user) => user.email === email);
-
-  if (!user) {
-    return res.status(401).json({ message: "email is not registered" });
-  }
-
   try {
-    writeSession(user);
-  } catch {
-    return res.status(500).json({ data: null, message: "failed" });
-  }
+    const users = readUsers();
+    const user = users.find((user) => user.email === email);
 
-  return res.status(200).json({ data: user, message: "success" });
+    if (!user) {
+      return res.status(401).json({ message: "Email is not registered" });
+    }
+
+    writeSession(user.id);
+
+    return res.status(200).json({ data: user, message: "Success" });
+  } catch {
+    return res.status(500).json({ data: null, message: "Failed" });
+  }
 };

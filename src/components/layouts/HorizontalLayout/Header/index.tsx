@@ -42,14 +42,16 @@ const Header = () => {
           </Button>
         )}
       </Flex>
-      <Flex justify={"flex-end"}>
-        <Text>
-          {`Welcome `}
-          <Text as={"b"} color={"primary.500"}>
-            {me?.name}
+      {me && (
+        <Flex justify={"flex-end"}>
+          <Text>
+            {`Welcome `}
+            <Text as={"b"} color={"primary.500"}>
+              {me?.name}
+            </Text>
           </Text>
-        </Text>
-      </Flex>
+        </Flex>
+      )}
       <Box p={12}>
         <Logo onClick={() => push(PageRoutes.Home)} />
       </Box>
