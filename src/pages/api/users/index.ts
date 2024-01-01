@@ -119,11 +119,13 @@ export const getUsersByCursor = (req: NextApiRequest, res: NextApiResponse) => {
     const index = users.findIndex((_, idx) => idx === Number(cursor));
     const slicedUsers = users.slice(index, index + Number(limit));
 
+    const previous = index - Number(limit);
+    const next = index + Number(limit);
+
     return res.status(200).json({
       data: {
-        previous: index - Number(limit) >= 0 ? index - Number(limit) : null,
-        next:
-          index + Number(limit) < users.length ? index + Number(limit) : null,
+        previous: previous >= 0 ? previous : null,
+        next: next < users.length ? next : null,
         data: slicedUsers,
       },
       message: "Successfully retrieved users",

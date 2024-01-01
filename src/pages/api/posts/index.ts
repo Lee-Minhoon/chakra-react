@@ -154,10 +154,13 @@ export const getPostsByCursor = (req: NextApiRequest, res: NextApiResponse) => {
     const index = posts.findIndex((_, idx) => idx === Number(cursor));
     const slicedPosts = posts.slice(index, index + Number(limit));
 
+    const previous = index - Number(limit);
+    const next = index + Number(limit);
+
     return res.status(200).json({
       data: {
-        previous: posts[index - Number(limit)]?.id ?? null,
-        next: posts[index + Number(limit)]?.id ?? null,
+        previous: previous >= 0 ? previous : null,
+        next: next < posts.length ? next : null,
         data: slicedPosts,
       },
       message: "Successfully retrieved posts",

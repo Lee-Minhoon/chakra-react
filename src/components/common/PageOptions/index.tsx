@@ -6,7 +6,7 @@ const PageOptions = () => {
   const router = useRouter();
 
   const options = useMemo(() => {
-    return Array.from({ length: 10 }).map((_, idx) => ({
+    return Array.from({ length: 100 }).map((_, idx) => ({
       label: `Show ${(idx + 1) * 10} per page`,
       value: (idx + 1) * 10,
     }));

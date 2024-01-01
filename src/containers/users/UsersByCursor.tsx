@@ -12,8 +12,8 @@ const UsersByCursor = ({ usesObserver }: UsersByCursorProps) => {
 
   return (
     <InfiniteList<User>
-      listItem={UserListItem}
       infiniteQuery={useGetUsersByCursor({ limit, sort, order })}
+      renderItem={UserListItem}
       usesObserver={usesObserver}
     />
   );

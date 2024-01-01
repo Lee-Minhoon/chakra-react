@@ -12,8 +12,8 @@ const PostsByCursor = ({ usesObserver }: PostsByCursorProps) => {
 
   return (
     <InfiniteList<PostWithUser>
-      listItem={PostListItem}
       infiniteQuery={useGetPostsByCursor({ limit, sort, order })}
+      renderItem={PostListItem}
       usesObserver={usesObserver}
     />
   );
