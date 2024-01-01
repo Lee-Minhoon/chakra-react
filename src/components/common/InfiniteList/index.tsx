@@ -1,6 +1,7 @@
 import { CursorQueryData, Scheme } from "@/apis";
 import { useLayout, useVirtualize } from "@/hooks";
-import { convertRemToPixels, hasScroll } from "@/utils";
+import useHasScroll from "@/hooks/useHasScroll";
+import { convertRemToPixels } from "@/utils";
 import {
   Button,
   Center,
@@ -30,6 +31,7 @@ const InfiniteList = <T extends Scheme>({
   const { data, isFetching, hasNextPage, fetchNextPage } = infiniteQuery;
   const containerRef = useRef<HTMLDivElement>(null);
   const [itemHeight, setItemHeight] = useState(0);
+  const hasScroll = useHasScroll(containerRef.current);
 
   const isMeasured = itemHeight !== 0;
 
@@ -96,7 +98,7 @@ const InfiniteList = <T extends Scheme>({
           listStyleType={"none"}
           minH={containerHeight}
           m={`${margin}rem`}
-          mr={hasScroll(containerRef.current) ? 2 : 0.5}
+          mr={hasScroll ? 2 : 0.5}
         >
           {items}
         </UnorderedList>
