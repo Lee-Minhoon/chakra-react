@@ -6,7 +6,6 @@ import { usePagination, useRouterPush } from "@/hooks";
 import { useModalStore } from "@/stores";
 import { formatISO, toUrl } from "@/utils";
 import {
-  Row,
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
@@ -121,18 +120,13 @@ const UserTable = ({ users, isLoading }: UsersTableProps) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const handleClickRow = useCallback<(row: Row<User>) => void>(
-    (row) => {
-      push(toUrl(PageRoutes.UserDetail, { id: row.original.id }));
-    },
-    [push]
-  );
-
   return (
     <DataTable<User>
       table={table}
       isLoading={isLoading}
-      onRowClick={handleClickRow}
+      onRowClick={(row) =>
+        push(toUrl(PageRoutes.UserDetail, { id: row.original.id }))
+      }
     />
   );
 };

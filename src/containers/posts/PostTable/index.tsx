@@ -1,15 +1,14 @@
-import { Post, PostWithUser } from "@/apis";
+import { PostWithUser } from "@/apis";
 import { DataTable } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
 import { formatISO, toUrl } from "@/utils";
 import {
-  Row,
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import PostWriter from "./PostWriter";
 
 const columnHelper = createColumnHelper<PostWithUser>();
@@ -49,18 +48,13 @@ const PostTable = ({ posts, isLoading }: PostTableProps) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const handleClickRow = useCallback<(row: Row<Post>) => void>(
-    (row) => {
-      push(toUrl(PageRoutes.PostDetail, { id: row.original.id }));
-    },
-    [push]
-  );
-
   return (
     <DataTable<PostWithUser>
       table={table}
       isLoading={isLoading}
-      onRowClick={handleClickRow}
+      onRowClick={(row) =>
+        push(toUrl(PageRoutes.PostDetail, { id: row.original.id }))
+      }
     />
   );
 };
