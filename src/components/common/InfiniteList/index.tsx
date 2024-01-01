@@ -100,7 +100,7 @@ const InfiniteList = <T extends Scheme>({
         >
           {items}
         </UnorderedList>
-        {!usesObserver && !isFetching && (
+        {!usesObserver && isMeasured && !isFetching && (
           <Center>
             <Button
               onClick={() => fetchNextPage()}

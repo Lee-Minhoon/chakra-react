@@ -42,18 +42,31 @@ const useVirtualize = ({
   }, [container, marginTop]);
 
   useEffect(() => {
-    if (!container) return;
-
     handleResize();
     handleScroll();
-    window.addEventListener("resize", handleResize);
+  }, [handleResize, handleScroll]);
+
+  useEffect(() => {
+    if (!container) return;
+
+    let resizeObserver: ResizeObserver;
+    if (container instanceof HTMLElement) {
+      const resizeObserver = new ResizeObserver(handleResize);
+      resizeObserver.observe(container);
+    } else {
+      window.addEventListener("resize", handleResize);
+    }
     container.addEventListener("scroll", handleScroll);
 
     return () => {
-      window?.removeEventListener("resize", handleResize);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      } else {
+        window.removeEventListener("resize", handleResize);
+      }
       container?.removeEventListener("scroll", handleScroll);
     };
-  }, [container, effectiveHeight, handleResize, handleScroll]);
+  }, [container, handleResize, handleScroll]);
 
   const { startIndex, endIndex } = useMemo(() => {
     if (effectiveHeight === 0) return { startIndex: 0, endIndex: 1 };
