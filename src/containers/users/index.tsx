@@ -4,6 +4,5 @@ export { default as UserListItem } from "./UserListItem";
 export { default as UserTable } from "./UserTable";
 export { default as UserUpdateModal } from "./UserUpdateModal";
 export { default as UserUtils } from "./UserUtils";
-export { default as UsersAll } from "./UsersAll";
 export { default as UsersByCursor } from "./UsersByCursor";
 export { default as UsersByPage } from "./UsersByPage";

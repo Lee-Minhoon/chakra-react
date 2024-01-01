@@ -1,14 +1,9 @@
-import { PageRoutes, ViewQueries } from "@/constants";
+import { ViewQueries } from "@/constants";
 import { Select } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 
 const options = [
-  {
-    label: "All",
-    pathname: PageRoutes.Users,
-    query: { view: ViewQueries.All, sort: "id", order: "desc" },
-  },
   {
     label: "Page",
     query: {

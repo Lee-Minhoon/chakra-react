@@ -26,7 +26,6 @@ export enum PageRoutes {
 }
 
 export enum ViewQueries {
-  All = "all",
   Page = "page",
   CursorButton = "cursorButton",
   CursorObserver = "cursorObserver",
@@ -35,7 +34,7 @@ export enum ViewQueries {
 export interface Nav {
   label: string;
   pathname: string;
-  query?: Record<string, string>;
+  query?: Record<string, number | string>;
   icon?: IconType;
   matcher: MatchFunction;
   children?: Nav[];
@@ -45,7 +44,13 @@ export const navs: Nav[] = [
   {
     label: "Users",
     pathname: PageRoutes.Users,
-    query: { view: ViewQueries.All, sort: "id", order: "desc" },
+    query: {
+      view: ViewQueries.Page,
+      page: 1,
+      limit: 10,
+      sort: "id",
+      order: "desc",
+    },
     icon: FaUser,
     matcher: match(PageRoutes.Users),
     children: [
@@ -59,7 +64,13 @@ export const navs: Nav[] = [
   {
     label: "Posts",
     pathname: PageRoutes.Posts,
-    query: { view: ViewQueries.All, sort: "id", order: "desc" },
+    query: {
+      view: ViewQueries.Page,
+      page: 1,
+      limit: 10,
+      sort: "id",
+      order: "desc",
+    },
     icon: BsFillPostcardFill,
     matcher: match(PageRoutes.Posts),
     children: [

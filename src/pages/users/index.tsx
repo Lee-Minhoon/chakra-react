@@ -1,6 +1,6 @@
 import { PageOptions, ViewOptions } from "@/components";
 import { ViewQueries } from "@/constants";
-import { UsersAll, UsersByCursor, UsersByPage, UserUtils } from "@/containers";
+import { UserUtils, UsersByCursor, UsersByPage } from "@/containers";
 import { useLayout } from "@/hooks";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
@@ -15,8 +15,6 @@ const UsersPage = () => {
 
   const display = useMemo(() => {
     switch (viewOption) {
-      case ViewQueries.All:
-        return <UsersAll />;
       case ViewQueries.Page:
         return <UsersByPage />;
       case ViewQueries.CursorButton:
@@ -45,7 +43,7 @@ const UsersPage = () => {
             <UserUtils />
             <Flex gap={4}>
               <ViewOptions />
-              {viewOption !== ViewQueries.All && <PageOptions />}
+              <PageOptions />
             </Flex>
           </Flex>
           {display}

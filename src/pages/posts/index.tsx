@@ -1,6 +1,6 @@
 import { PageOptions, ViewOptions } from "@/components";
 import { ViewQueries } from "@/constants";
-import { PostsAll, PostsByCursor, PostsByPage, PostUtils } from "@/containers";
+import { PostUtils, PostsByCursor, PostsByPage } from "@/containers";
 import useLayout from "@/hooks/useLayout";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
@@ -15,8 +15,6 @@ const PostsAllPage = () => {
 
   const display = useMemo(() => {
     switch (viewOption) {
-      case ViewQueries.All:
-        return <PostsAll />;
       case ViewQueries.Page:
         return <PostsByPage />;
       case ViewQueries.CursorButton:
@@ -45,7 +43,7 @@ const PostsAllPage = () => {
             <PostUtils />
             <Flex gap={4}>
               <ViewOptions />
-              {viewOption !== ViewQueries.All && <PageOptions />}
+              <PageOptions />
             </Flex>
           </Flex>
           {display}

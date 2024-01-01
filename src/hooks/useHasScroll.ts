@@ -1,16 +1,20 @@
+import { Nullable } from "@/types";
 import { useEffect, useState } from "react";
 
-const useHasScroll = (ref: React.RefObject<HTMLElement>, deps: any[]) => {
+const useHasScroll = (elem: Nullable<HTMLElement>) => {
   const [hasScroll, setHasScroll] = useState(false);
 
   useEffect(() => {
-    if (!ref.current) return;
-    const { scrollHeight, clientHeight } = ref.current;
-    if (scrollHeight > clientHeight) {
-      setHasScroll(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ref, ...deps]);
+    if (!elem) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      const { scrollHeight, clientHeight } = entries[0].target;
+      setHasScroll(scrollHeight > clientHeight);
+    });
+    resizeObserver.observe(elem);
+
+    return () => resizeObserver.disconnect();
+  }, [elem]);
 
   return hasScroll;
 };
