@@ -1,4 +1,5 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import { useLayout } from "@/hooks";
+import { useCallback, useEffect, useState } from "react";
 
 interface LayoutProviderProps {
   children: React.ReactNode;
@@ -6,15 +7,8 @@ interface LayoutProviderProps {
 
 type Layout = "horizontal" | "vertical";
 
-export const LayoutContext = createContext<{
-  layout: Layout;
-  toggleLayout: () => void;
-}>({
-  layout: "vertical",
-  toggleLayout: () => {},
-});
-
 const LayoutProvider = ({ children }: LayoutProviderProps) => {
+  const { Provider } = useLayout();
   const [layout, setLayout] = useState<Layout>("vertical");
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -33,9 +27,9 @@ const LayoutProvider = ({ children }: LayoutProviderProps) => {
   }, []);
 
   return (
-    <LayoutContext.Provider value={{ layout, toggleLayout }}>
+    <Provider value={{ layout, toggleLayout }}>
       {isHydrated && children}
-    </LayoutContext.Provider>
+    </Provider>
   );
 };
 

@@ -1,5 +1,13 @@
-import { HorizontalLayout, LayoutContext, VerticalLayout } from "@/components";
-import { useContext, useMemo } from "react";
+import { HorizontalLayout, VerticalLayout } from "@/components";
+import { createContext, useContext, useMemo } from "react";
+
+const LayoutContext = createContext<{
+  layout: "horizontal" | "vertical";
+  toggleLayout: () => void;
+}>({
+  layout: "vertical",
+  toggleLayout: () => {},
+});
 
 const useLayout = () => {
   const { layout, toggleLayout } = useContext(LayoutContext);
@@ -8,7 +16,7 @@ const useLayout = () => {
     return layout === "horizontal" ? HorizontalLayout : VerticalLayout;
   }, [layout]);
 
-  return { layout, toggleLayout, Layout };
+  return { Provider: LayoutContext.Provider, layout, toggleLayout, Layout };
 };
 
 export default useLayout;
