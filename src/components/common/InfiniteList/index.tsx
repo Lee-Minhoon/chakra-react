@@ -1,4 +1,4 @@
-import { CursorQueryData, Scheme } from "@/apis";
+import { CursorQueryResponse, Scheme } from "@/apis";
 import { useLayout, useVirtualize } from "@/hooks";
 import useHasScroll from "@/hooks/useHasScroll";
 import { convertRemToPixels } from "@/utils";
@@ -15,7 +15,7 @@ import { ComponentType, useEffect, useMemo, useRef, useState } from "react";
 
 interface InfiniteListProps<T extends Scheme> {
   renderItem: ComponentType<{ data: T }>;
-  infiniteQuery: UseInfiniteQueryResult<CursorQueryData<T[], number>>;
+  infiniteQuery: UseInfiniteQueryResult<CursorQueryResponse<T[], number>>;
   usesObserver?: boolean;
 }
 

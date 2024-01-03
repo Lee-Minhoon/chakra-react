@@ -1,3 +1,10 @@
+import { Optional } from "@/types";
+import {
+  UseInfiniteQueryOptions,
+  UseMutationOptions,
+  UseQueryOptions,
+} from "@tanstack/react-query";
+
 export interface ApiResponse<T> {
   data: T;
   message: string;
@@ -37,13 +44,38 @@ export type CursorQueryParams = {
   order?: "asc" | "desc";
 };
 
-export interface PageQueryData<T> {
+export interface PageQueryResponse<T> {
   total: number;
   data: T;
 }
 
-export interface CursorQueryData<T, S> {
+export interface CursorQueryResponse<T, S> {
   previous: S;
   next: S;
   data: T;
 }
+
+export type QueryKeyType = [string, Optional<object>];
+
+export type QueryOptions<T> = UseQueryOptions<T, ApiError, T, QueryKeyType>;
+
+export type PageQueryOptions<T> = UseQueryOptions<
+  PageQueryResponse<T>,
+  ApiError,
+  PageQueryResponse<T>,
+  QueryKeyType
+>;
+
+export type InfiniteQueryOptions<T> = UseInfiniteQueryOptions<
+  CursorQueryResponse<T, number>,
+  ApiError,
+  CursorQueryResponse<T, number>,
+  CursorQueryResponse<T, number>,
+  QueryKeyType
+>;
+
+export type MutationOptions<T, S> = UseMutationOptions<
+  ApiResponse<T>,
+  ApiError,
+  S
+>;

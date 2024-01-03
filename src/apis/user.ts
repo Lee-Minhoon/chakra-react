@@ -13,7 +13,7 @@ import {
 } from "./hooks";
 import {
   CursorQueryParams,
-  PageQueryData,
+  PageQueryResponse,
   PageQueryParams,
   Scheme,
 } from "./types";
@@ -47,7 +47,7 @@ export const useGetUsersByCursor = (params: CursorQueryParams) => {
 export type UserCreate = Pick<User, "name" | "email" | "phone" | "profile">;
 
 export const useCreateUser = (params?: object) => {
-  return usePost<User[] | PageQueryData<User[]>, UserCreate>(
+  return usePost<User[] | PageQueryResponse<User[]>, UserCreate>(
     toUrl(ApiRoutes.User),
     params
   );
@@ -55,46 +55,42 @@ export const useCreateUser = (params?: object) => {
 
 export type UserUpdate = Omit<User, "approved" | "createdAt" | "updatedAt">;
 
+const updateUser = (user: User, update: UserUpdate) => {
+  return {
+    ...user,
+    name: update.name,
+    email: update.email,
+    phone: update.phone,
+    updatedAt: new Date().toISOString(),
+  };
+};
+
 export const useUpdateUser = (params?: object) => {
-  return useUpdate<User[] | PageQueryData<User[]>, UserUpdate>(
+  return useUpdate<PageQueryResponse<User[]>, UserUpdate>(
     toUrl(ApiRoutes.User),
     params,
     undefined,
     (old, data) => {
-      const isPaginatation = "data" in old;
-      const newData = cloneDeep(isPaginatation ? old.data : old);
-      const finded = newData.find((item) => item.id === data.id);
-      if (!finded) return old;
-      finded.name = data.name;
-      finded.email = data.email;
-      finded.phone = data.phone;
-      finded.updatedAt = new Date().toISOString();
-      if (isPaginatation) {
-        return {
-          ...old,
-          data: newData.map((item) => (item.id === data.id ? finded : item)),
-        };
-      }
-      return newData.map((item) => (item.id === data.id ? finded : item));
+      return {
+        ...old,
+        data: cloneDeep(old.data).map((item) =>
+          item.id === data.id ? updateUser(item, data) : item
+        ),
+      };
     }
   );
 };
 
 export const useDeleteUser = (params?: object) => {
-  return useDelete<User[] | PageQueryData<User[]>, number>(
+  return useDelete<PageQueryResponse<User[]>, number>(
     toUrl(ApiRoutes.User),
     params,
     undefined,
     (old, id) => {
-      const isPaginatation = "data" in old;
-      const newData = isPaginatation ? old.data : old;
-      if (isPaginatation) {
-        return {
-          ...old,
-          data: newData.filter((item) => item.id !== id),
-        };
-      }
-      return newData.filter((item) => item.id !== id);
+      return {
+        ...old,
+        data: old.data.filter((item) => item.id !== id),
+      };
     }
   );
 };
@@ -104,24 +100,24 @@ export interface UserApprove {
 }
 
 export const useApproveUser = (params?: object) => {
-  return useCommand<User[] | PageQueryData<User[]>, UserApprove>(
+  return useCommand<PageQueryResponse<User[]>, UserApprove>(
     ApiRoutes.ApproveUser,
     [toUrl(ApiRoutes.User), params],
     undefined,
     (old, data) => {
-      const isPaginatation = "data" in old;
-      const newData = cloneDeep(isPaginatation ? old.data : old);
-      const finded = newData.find((item) => item.id === data.id);
-      if (!finded) return old;
-      finded.approved = true;
-      finded.updatedAt = new Date().toISOString();
-      if (isPaginatation) {
-        return {
-          ...old,
-          data: old.data.map((item) => (item.id === data.id ? finded : item)),
-        };
-      }
-      return newData.map((item) => (item.id === data.id ? finded : item));
+      return {
+        ...old,
+        data: cloneDeep(old.data).map((item) => {
+          if (item.id === data.id) {
+            return {
+              ...item,
+              approved: true,
+              updatedAt: new Date().toISOString(),
+            };
+          }
+          return item;
+        }),
+      };
     }
   );
 };
