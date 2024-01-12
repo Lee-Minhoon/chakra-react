@@ -1,7 +1,8 @@
 import { FileInput, WithFormLabel } from "@/components";
+import FormField from "@/components/common/FormField";
+import { InputTypes } from "@/constants";
 import { useBgColor } from "@/hooks";
-import { toTitle } from "@/utils";
-import { Box, Center, Flex, Icon, Input } from "@chakra-ui/react";
+import { Box, Center, Flex, Icon } from "@chakra-ui/react";
 import Image from "next/image";
 import { useMemo, useRef } from "react";
 import { FieldPath, UseFormRegister } from "react-hook-form";
@@ -62,9 +63,11 @@ const UserFormFields = <T extends object>({
         </Center>
       </WithFormLabel>
       {fields.map((field) => (
-        <WithFormLabel key={field.toString()} label={toTitle(field.toString())}>
-          <Input {...register(field)} placeholder={toTitle(field.toString())} />
-        </WithFormLabel>
+        <FormField
+          key={field}
+          inputType={InputTypes.String}
+          {...register(field)}
+        />
       ))}
     </Flex>
   );

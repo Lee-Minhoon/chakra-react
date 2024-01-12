@@ -1,10 +1,10 @@
 import { Nullable } from "@/types";
-import { ComponentType, ReactNode } from "react";
+import { ReactNode } from "react";
 import { create } from "zustand";
 import { useShallow } from "./hooks";
 
 interface Modal<T> {
-  modal: ComponentType<T>;
+  modal: React.FC<T>;
   props: T;
 }
 
@@ -24,11 +24,11 @@ interface T {
   alert: Nullable<Alert>;
   confirm: Nullable<Confirm>;
 
-  openModal: <T>(modal: ComponentType<T>, props: Omit<T, "onClose">) => void;
+  openModal: <T>(modal: React.FC<T>, props: Omit<T, "onClose">) => void;
   openAlert: (alert: Alert) => void;
   openConfirm: (confirm: Confirm) => void;
 
-  closeModal: (modal: ComponentType) => void;
+  closeModal: (modal: React.FC) => void;
   closeAlert: () => void;
   closeConfirm: () => void;
 }

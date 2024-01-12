@@ -1,5 +1,5 @@
-export const toTitle = (str: string) => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+export const toTitle = (str?: string) => {
+  return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
 };
 
 export const fillZero = (num: number, len: number) => {
