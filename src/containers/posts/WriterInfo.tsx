@@ -1,11 +1,11 @@
-import { PostWithUser } from "@/apis";
+import { Post } from "@/apis";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
 import { formatISO, toUrl } from "@/utils";
 import { Avatar, Flex, Text } from "@chakra-ui/react";
 
 interface WriterInfoProps {
-  post?: PostWithUser;
+  post?: Post;
 }
 
 const WriterInfo = ({ post }: WriterInfoProps) => {

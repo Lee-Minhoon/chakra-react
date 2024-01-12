@@ -10,11 +10,12 @@ import {
   useLoadMore,
   usePost,
   useUpdate,
+  useUpdateInList,
 } from "./hooks";
 import {
   CursorQueryParams,
-  PageQueryResponse,
   PageQueryParams,
+  PageQueryResponse,
   Scheme,
 } from "./types";
 
@@ -28,12 +29,6 @@ export interface User extends Scheme {
 
 export const useGetUser = (id?: number) => {
   return useFetch<User>(toUrl(ApiRoutes.User, { id }));
-};
-
-export const useGetUsers = (
-  params: Pick<PageQueryParams, "sort" | "order">
-) => {
-  return useFetch<User[]>(toUrl(ApiRoutes.User), params);
 };
 
 export const useGetUsersByPage = (params: PageQueryParams) => {
@@ -65,19 +60,26 @@ const updateUser = (user: User, update: UserUpdate) => {
   };
 };
 
-export const useUpdateUser = (params?: object) => {
-  return useUpdate<PageQueryResponse<User[]>, UserUpdate>(
+export const useUpdateUser = (id: number) => {
+  return useUpdate<User, UserUpdate>(
+    toUrl(ApiRoutes.User, { id }),
+    undefined,
+    undefined,
+    (old, data) => updateUser(old, data)
+  );
+};
+
+export const useUpdateUserInList = (params?: object) => {
+  return useUpdateInList<PageQueryResponse<User[]>, UserUpdate>(
     toUrl(ApiRoutes.User),
     params,
     undefined,
-    (old, data) => {
-      return {
-        ...old,
-        data: cloneDeep(old.data).map((item) =>
-          item.id === data.id ? updateUser(item, data) : item
-        ),
-      };
-    }
+    (old, data) => ({
+      ...old,
+      data: cloneDeep(old.data).map((item) =>
+        item.id === data.id ? updateUser(item, data) : item
+      ),
+    })
   );
 };
 
@@ -86,12 +88,10 @@ export const useDeleteUser = (params?: object) => {
     toUrl(ApiRoutes.User),
     params,
     undefined,
-    (old, id) => {
-      return {
-        ...old,
-        data: old.data.filter((item) => item.id !== id),
-      };
-    }
+    (old, id) => ({
+      ...old,
+      data: old.data.filter((item) => item.id !== id),
+    })
   );
 };
 
@@ -101,7 +101,7 @@ export interface UserApprove {
 
 export const useApproveUser = (params?: object) => {
   return useCommand<PageQueryResponse<User[]>, UserApprove>(
-    ApiRoutes.ApproveUser,
+    (data) => toUrl(ApiRoutes.ApproveUser, data),
     [toUrl(ApiRoutes.User), params],
     undefined,
     (old, data) => {
@@ -125,9 +125,7 @@ export const useApproveUser = (params?: object) => {
 const useInvalidate = () => {
   const queryClient = useQueryClient();
 
-  return () => {
-    return queryClient.invalidateQueries([toUrl(ApiRoutes.User)]);
-  };
+  return () => queryClient.invalidateQueries([toUrl(ApiRoutes.User)]);
 };
 
 export const useCreateTestUsers = (count: number) => {

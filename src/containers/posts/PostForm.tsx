@@ -1,4 +1,4 @@
-import { Post, useCreatePost } from "@/apis";
+import { PostCreate, Post, useCreatePost } from "@/apis";
 import { useGetMe } from "@/apis/auth";
 import { Editor } from "@/components";
 import { PageRoutes } from "@/constants";
@@ -15,7 +15,7 @@ interface PostFormProps {
 const PostForm = ({ post }: PostFormProps) => {
   const { push } = useRouterPush();
   const { data: me } = useGetMe();
-  const { register, handleSubmit, control } = useForm<Post>({
+  const { register, handleSubmit, control } = useForm<PostCreate>({
     defaultValues: {
       userId: me?.id,
       ...post,

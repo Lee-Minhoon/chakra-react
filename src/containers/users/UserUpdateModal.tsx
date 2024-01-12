@@ -1,4 +1,4 @@
-import { User, UserUpdate, useUpdateUser } from "@/apis";
+import { User, UserUpdate, useUpdateUser, useUpdateUserInList } from "@/apis";
 import { useUpload } from "@/apis/upload";
 import { usePagination } from "@/hooks";
 import {
@@ -11,7 +11,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import UserFormFields from "./UserFormFields";
 
@@ -26,10 +26,16 @@ const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
   const { register, handleSubmit } = useForm<UserUpdate>({
     defaultValues: user,
   });
-  const { mutate: updateUser } = useUpdateUser(queryKey);
+  const { mutate: updateUser } = useUpdateUser(user.id);
+  const { mutate: updateUserInList } = useUpdateUserInList(queryKey);
   const { mutate: upload } = useUpload();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState(user.profile ?? "");
+
+  const mutate = useMemo(
+    () => (!queryKey ? updateUser : updateUserInList),
+    [queryKey, updateUser, updateUserInList]
+  );
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -48,14 +54,14 @@ const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
                   onSuccess: (res) => {
                     data.profile =
                       res.data["file"][0].filepath.split("public")[1];
-                    updateUser(data, { onSuccess: onClose });
+                    mutate(data, { onSuccess: onClose });
                   },
                 });
               } else {
-                updateUser(data, { onSuccess: onClose });
+                mutate(data, { onSuccess: onClose });
               }
             },
-            [file, onClose, updateUser, upload]
+            [file, mutate, onClose, upload]
           )
         )}
       >

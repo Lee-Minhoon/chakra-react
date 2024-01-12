@@ -55,24 +55,23 @@ export interface CursorQueryResponse<T, S> {
   data: T;
 }
 
-export type QueryKeyType = [string, Optional<object>];
+export type UrlBuilder<T> = string | ((data: T) => string);
 
-export type QueryOptions<T> = UseQueryOptions<T, ApiError, T, QueryKeyType>;
+export type QueryKey<T = void> = [UrlBuilder<T>, Optional<object>];
 
-export type PageQueryOptions<T> = UseQueryOptions<
-  PageQueryResponse<T>,
+export type QueryOptions<T> = UseQueryOptions<T, ApiError, T, QueryKey>;
+
+export type PageQueryOptions<T, S = PageQueryResponse<T>> = UseQueryOptions<
+  S,
   ApiError,
-  PageQueryResponse<T>,
-  QueryKeyType
+  S,
+  QueryKey
 >;
 
-export type InfiniteQueryOptions<T> = UseInfiniteQueryOptions<
-  CursorQueryResponse<T, number>,
-  ApiError,
-  CursorQueryResponse<T, number>,
-  CursorQueryResponse<T, number>,
-  QueryKeyType
->;
+export type InfiniteQueryOptions<
+  T,
+  S = CursorQueryResponse<T, number>,
+> = UseInfiniteQueryOptions<S, ApiError, S, S, QueryKey>;
 
 export type MutationOptions<T, S> = UseMutationOptions<
   ApiResponse<T>,

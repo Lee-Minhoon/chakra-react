@@ -1,11 +1,11 @@
-import { PostWithUser } from "@/apis";
+import { Post } from "@/apis";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
 import { toUrl } from "@/utils";
 import { Avatar, Box, Flex } from "@chakra-ui/react";
 
 interface PostWriterProps {
-  writer: PostWithUser["user"];
+  writer: Post["user"];
 }
 
 const PostWriter = ({ writer }: PostWriterProps) => {

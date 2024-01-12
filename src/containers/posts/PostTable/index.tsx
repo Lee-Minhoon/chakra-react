@@ -1,4 +1,4 @@
-import { PostWithUser } from "@/apis";
+import { Post } from "@/apis";
 import { DataTable } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
@@ -11,10 +11,10 @@ import {
 import { useMemo } from "react";
 import PostWriter from "./PostWriter";
 
-const columnHelper = createColumnHelper<PostWithUser>();
+const columnHelper = createColumnHelper<Post>();
 
 interface PostTableProps {
-  posts: PostWithUser[];
+  posts: Post[];
   isLoading?: boolean;
 }
 
@@ -49,7 +49,7 @@ const PostTable = ({ posts, isLoading }: PostTableProps) => {
   });
 
   return (
-    <DataTable<PostWithUser>
+    <DataTable<Post>
       table={table}
       isLoading={isLoading}
       onRowClick={(row) =>

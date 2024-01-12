@@ -1,4 +1,4 @@
-import { ApiError } from "./types";
+import { ApiError, QueryKey, UrlBuilder } from "./types";
 
 const protoc = process.env.NODE_ENV === "production" ? "https" : "http";
 const domain = process.env.NEXT_PUBLIC_SERVER_DOMAIN;
@@ -71,4 +71,13 @@ export const api: Api = {
       body,
     });
   },
+};
+
+export const buildUrl = <T>(url: UrlBuilder<T>, data: T) => {
+  return typeof url === "function" ? url(data) : url;
+};
+
+export const buildQueryKey = <T>(queryKey: QueryKey<T>, data: T) => {
+  const [url, params] = queryKey;
+  return [buildUrl(url, data), params];
 };

@@ -1,4 +1,4 @@
-import { PostWithUser, useDeletePost, useGetMe } from "@/apis";
+import { Post, useDeletePost, useGetMe } from "@/apis";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
 import { useModalStore } from "@/stores";
@@ -17,7 +17,7 @@ import { TbEdit } from "react-icons/tb";
 import WriterInfo from "./WriterInfo";
 
 interface PostCardProps {
-  data?: PostWithUser;
+  data?: Post;
 }
 
 const PostCard = ({ data: post }: PostCardProps) => {

@@ -1,4 +1,5 @@
 import { ApiRoutes } from "@/constants";
+import { Nullable } from "@/types";
 import { toUrl } from "@/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { CursorQueryParams, PageQueryParams, Scheme, User } from ".";
@@ -10,34 +11,24 @@ import {
   usePost,
   useUpdate,
 } from "./hooks";
-import { Nullable } from "@/types";
 
 export interface Post extends Scheme {
   userId: number;
+  user: Nullable<User>;
   title: string;
   content: string;
 }
 
-export interface PostWithUser extends Post {
-  user: Nullable<User>;
-}
-
 export const useGetPost = (id?: number) => {
-  return useFetch<PostWithUser>(toUrl(ApiRoutes.Post, { id }));
-};
-
-export const useGetPosts = (
-  params: Pick<PageQueryParams, "sort" | "order">
-) => {
-  return useFetch<PostWithUser[]>(toUrl(ApiRoutes.Post), params);
+  return useFetch<Post>(toUrl(ApiRoutes.Post, { id }));
 };
 
 export const useGetPostsByPage = (params: PageQueryParams) => {
-  return useGetPage<PostWithUser[]>(toUrl(ApiRoutes.Post), params);
+  return useGetPage<Post[]>(toUrl(ApiRoutes.Post), params);
 };
 
 export const useGetPostsByCursor = (params: CursorQueryParams) => {
-  return useLoadMore<PostWithUser[]>(toUrl(ApiRoutes.Post), params);
+  return useLoadMore<Post[]>(toUrl(ApiRoutes.Post), params);
 };
 
 export type PostCreate = Omit<Post, "id" | "createdAt" | "updatedAt">;
@@ -48,18 +39,12 @@ export const useCreatePost = (params?: PageQueryParams | CursorQueryParams) => {
 
 export type PostUpdate = Omit<Post, "createdAt" | "updatedAt">;
 
-export const useUpdatePost = () => {
-  return useUpdate<Post[], PostUpdate>(
-    toUrl(ApiRoutes.Post),
+export const useUpdatePost = (id: number) => {
+  return useUpdate<Post, PostUpdate>(
+    toUrl(ApiRoutes.Post, { id }),
     undefined,
     undefined,
-    (old, data) => {
-      const finded = old.find((item) => item.id === data.id);
-      if (!finded) return old;
-      finded.title = data.title;
-      finded.content = data.content;
-      return old.map((item) => (item.id === data.id ? finded : item));
-    }
+    (old, data) => ({ ...old, ...data })
   );
 };
 
@@ -68,18 +53,14 @@ export const useDeletePost = () => {
     toUrl(ApiRoutes.Post),
     undefined,
     undefined,
-    (old, id) => {
-      return old.filter((item) => item.id !== id);
-    }
+    (old, id) => old.filter((item) => item.id !== id)
   );
 };
 
 const useInvalidate = () => {
   const queryClient = useQueryClient();
 
-  return () => {
-    return queryClient.invalidateQueries([toUrl(ApiRoutes.Post)]);
-  };
+  return () => queryClient.invalidateQueries([toUrl(ApiRoutes.Post)]);
 };
 
 export const useCreateTestPosts = (count: number) => {

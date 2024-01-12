@@ -1,4 +1,4 @@
-import { PostWithUser } from "@/apis";
+import { Post } from "@/apis";
 import { PageRoutes } from "@/constants";
 import { useBgColor, useRouterPush } from "@/hooks";
 import { toUrl } from "@/utils";
@@ -14,7 +14,7 @@ import { useCallback } from "react";
 import WriterInfo from "./WriterInfo";
 
 interface PostListItemProps {
-  data: PostWithUser;
+  data: Post;
 }
 
 const PostListItem = ({ data: post }: PostListItemProps) => {
