@@ -3,15 +3,29 @@ import { getRandomEmail, getRandomPhoneNumber, getRandomString } from "@/utils";
 import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
+import { readSession } from "../auth";
 import { Order, User, readDB } from "../db";
 import { sleep } from "../utils";
-import { readSession } from "../auth";
 
-export const readUsers = (sort?: RequiredKeys<User>, order?: Order): User[] => {
+export const readUsers = (
+  sort?: RequiredKeys<User>,
+  order?: Order,
+  search?: string
+): User[] => {
   try {
     const db = readDB();
+    let users = db.users;
+    if (search && search.length > 0) {
+      users = users.filter((user) => {
+        return (
+          user.name.toLowerCase().includes(search.toLowerCase()) ||
+          user.email.toLowerCase().includes(search.toLowerCase()) ||
+          user.phone.toLowerCase().includes(search.toLowerCase())
+        );
+      });
+    }
     if (sort && order) {
-      return db.users.sort((a, b) => {
+      users = users.sort((a, b) => {
         if (order === "asc") {
           if (a[sort] < b[sort]) return -1;
           if (a[sort] > b[sort]) return 1;
@@ -22,7 +36,7 @@ export const readUsers = (sort?: RequiredKeys<User>, order?: Order): User[] => {
         return 0;
       });
     }
-    return db.users;
+    return users;
   } catch (err) {
     console.log("Failed to read db.json");
     throw err;
@@ -91,12 +105,16 @@ export const getUsers = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const getUsersByPage = (req: NextApiRequest, res: NextApiResponse) => {
-  const { page, limit, sort, order } = req.query;
+  const { page, limit, sort, order, search } = req.query;
 
   const offset = (Number(page) - 1) * Number(limit);
 
   try {
-    const users = readUsers(sort as RequiredKeys<User>, order as Order);
+    const users = readUsers(
+      sort as RequiredKeys<User>,
+      order as Order,
+      search as string
+    );
     const slicedUsers = users.slice(
       Number(offset),
       Number(offset) + Number(limit)

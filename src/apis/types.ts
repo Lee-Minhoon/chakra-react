@@ -36,6 +36,7 @@ export type PageQueryParams = {
   limit: number;
   sort?: string;
   order?: "asc" | "desc";
+  search?: string;
 };
 
 export type CursorQueryParams = {
