@@ -1,11 +1,14 @@
 import { InputProps, NumberInputProps } from "@chakra-ui/react";
 
-export enum InputTypes {
-  String = "string",
-  Number = "number",
-}
+export const FormFieldTypes = {
+  String: "string",
+  Number: "number",
+} as const;
+
+export type FormFieldTypes =
+  (typeof FormFieldTypes)[keyof typeof FormFieldTypes];
 
 export type InputPropTypes = {
-  [InputTypes.String]: InputProps;
-  [InputTypes.Number]: NumberInputProps;
+  [FormFieldTypes.String]: InputProps;
+  [FormFieldTypes.Number]: NumberInputProps;
 };

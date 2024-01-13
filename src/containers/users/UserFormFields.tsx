@@ -1,8 +1,8 @@
 import { FileInput, WithFormLabel } from "@/components";
 import FormField from "@/components/common/FormField";
-import { InputTypes } from "@/constants";
 import { useBgColor } from "@/hooks";
 import { Box, Center, Flex, Icon } from "@chakra-ui/react";
+import { capitalize } from "lodash-es";
 import Image from "next/image";
 import { useMemo, useRef } from "react";
 import { FieldPath, UseFormRegister } from "react-hook-form";
@@ -65,7 +65,9 @@ const UserFormFields = <T extends object>({
       {fields.map((field) => (
         <FormField
           key={field}
-          inputType={InputTypes.String}
+          label={capitalize(field)}
+          isRequired
+          fieldType={"string"}
           {...register(field)}
         />
       ))}

@@ -1,38 +1,41 @@
-import { InputPropTypes, InputTypes } from "@/constants";
-import { toTitle } from "@/utils";
+import { FormFieldTypes, InputPropTypes } from "@/constants";
 import { Input } from "@chakra-ui/react";
-import { forwardRef, useMemo } from "react";
+import { ForwardedRef, forwardRef, useMemo } from "react";
 import { WithFormLabel } from "..";
 
-type FormFieldProps<T extends InputTypes> = {
-  inputType: T;
+type FormFieldProps<T extends FormFieldTypes> = {
+  fieldType: T;
+  label?: string;
 } & InputPropTypes[T];
 
-interface GenericForwarded extends React.FC<FormFieldProps<InputTypes>> {
-  <T extends InputTypes>(
-    props: FormFieldProps<T>
-  ): ReturnType<React.FC<FormFieldProps<T>>>;
-}
+const FormFieldBase = <T extends FormFieldTypes>(
+  { fieldType, label, ...rest }: FormFieldProps<T>,
+  ref: ForwardedRef<unknown>
+) => {
+  const field = useMemo(() => {
+    switch (fieldType) {
+      case FormFieldTypes.String:
+        return <Input ref={ref} {...(rest as InputPropTypes["string"])} />;
+    }
+  }, [fieldType, ref, rest]);
 
-const FormField: GenericForwarded = forwardRef(
-  ({ inputType, ...rest }, ref) => {
-    const field = useMemo(() => {
-      switch (inputType) {
-        case InputTypes.String:
-          return (
-            <Input ref={ref} {...(rest as InputPropTypes[InputTypes.String])} />
-          );
-      }
-    }, [inputType, ref, rest]);
+  return (
+    <>
+      {label ? (
+        <WithFormLabel key={rest.name} label={label}>
+          {field}
+        </WithFormLabel>
+      ) : (
+        field
+      )}
+    </>
+  );
+};
 
-    return (
-      <WithFormLabel key={rest.name} label={toTitle(rest.name)}>
-        {field}
-      </WithFormLabel>
-    );
-  }
-);
-
-export default FormField;
+const FormField = forwardRef(FormFieldBase);
 
 FormField.displayName = "FormField";
+
+export default FormField as <T extends FormFieldTypes>(
+  props: FormFieldProps<T> & { ref?: ForwardedRef<unknown> }
+) => ReturnType<typeof FormFieldBase>;

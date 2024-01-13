@@ -1,4 +1,4 @@
-import { PostCreate, Post, useCreatePost } from "@/apis";
+import { Post, PostCreate, useCreatePost } from "@/apis";
 import { useGetMe } from "@/apis/auth";
 import { Editor } from "@/components";
 import { PageRoutes } from "@/constants";
@@ -39,7 +39,7 @@ const PostForm = ({ post }: PostFormProps) => {
         )
       )}
     >
-      <Input {...register("title")} placeholder="Title" />
+      <Input isRequired placeholder="Title" {...register("title")} />
       <Controller
         control={control}
         name="content"
