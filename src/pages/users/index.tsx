@@ -1,16 +1,15 @@
-import { PageOptions, ViewOptions } from "@/components";
+import { PageOptions, Search, ViewOptions } from "@/components";
 import { ViewQueries } from "@/constants";
 import { UserUtils, UsersByCursor, UsersByPage } from "@/containers";
-import { useLayout } from "@/hooks";
+import { useLayout, useRouterPush } from "@/hooks";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useMemo } from "react";
 
 const UsersPage = () => {
   const { Layout } = useLayout();
 
-  const router = useRouter();
+  const { router, push } = useRouterPush();
   const viewOption = router.query?.view as ViewQueries;
 
   const display = useMemo(() => {
@@ -39,8 +38,16 @@ const UsersPage = () => {
       </Head>
       <Layout>
         <Flex direction={"column"} gap={4} h={"100%"}>
+          <UserUtils />
           <Flex justifyContent={"space-between"}>
-            <UserUtils />
+            <Search
+              onSubmit={(search) =>
+                push({
+                  pathname: router.pathname,
+                  query: { ...router.query, search },
+                })
+              }
+            />
             <Flex gap={4}>
               <ViewOptions />
               <PageOptions />
