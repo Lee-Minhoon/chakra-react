@@ -1,5 +1,6 @@
 import { PageRoutes, findNavInHierarchy } from "@/constants";
 import { useRouterPush } from "@/hooks";
+import { toUrl } from "@/utils";
 import { Link } from "@chakra-ui/next-js";
 import { Flex, Icon, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -22,7 +23,7 @@ const Header = () => {
           <Flex gap={2} align={"center"}>
             <Icon
               as={MdHome}
-              onClick={() => push(PageRoutes.Home)}
+              onClick={() => push(toUrl(PageRoutes.Home))}
               cursor={"pointer"}
             />
             <Icon as={MdKeyboardArrowRight} />

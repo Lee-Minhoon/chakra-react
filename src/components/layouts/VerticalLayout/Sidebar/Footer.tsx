@@ -1,6 +1,7 @@
 import { useGetMe, useSignout } from "@/apis/auth";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
+import { toUrl } from "@/utils";
 import {
   Center,
   Flex,
@@ -48,7 +49,7 @@ const SidebarFooter = () => {
             <IconButton
               aria-label="signin"
               size={"sm"}
-              onClick={() => push(PageRoutes.Signin)}
+              onClick={() => push(toUrl(PageRoutes.Signin))}
             >
               <Icon as={RiLoginBoxLine} />
             </IconButton>

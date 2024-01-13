@@ -2,6 +2,7 @@ import { AuthSignin, useSignin } from "@/apis/auth";
 import { Logo, WithFormLabel } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
+import { toUrl } from "@/utils";
 import { Box, Button, Card, Input } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
@@ -24,7 +25,9 @@ const SigninForm = () => {
             (data) =>
               signin(data, {
                 onSuccess: () =>
-                  push(router.query.redirect?.toString() ?? PageRoutes.Home),
+                  push(
+                    router.query.redirect?.toString() ?? toUrl(PageRoutes.Home)
+                  ),
               }),
             [push, router.query.redirect, signin]
           )
