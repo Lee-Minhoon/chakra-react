@@ -7,7 +7,7 @@ import { Order, Post, readDB } from "../db";
 import { readUsers } from "../users";
 import { sleep } from "../utils";
 
-export const readPosts = (sort?: RequiredKeys<Post>, order?: Order) => {
+export const readPosts = () => {
   try {
     const db = readDB();
     return db.posts;
@@ -19,16 +19,25 @@ export const readPosts = (sort?: RequiredKeys<Post>, order?: Order) => {
 
 export const readPostsWithUser = (
   sort?: RequiredKeys<Post> & "user_name",
-  order?: Order
+  order?: Order,
+  search?: string
 ) => {
   try {
     const db = readDB();
-    const posts = db.posts.map((post) => ({
+    let posts = db.posts.map((post) => ({
       ...post,
       user: db.users.find((user) => user.id === post.userId) ?? null,
     }));
+    if (search && search.length > 0) {
+      posts = posts.filter((post) => {
+        return (
+          post.title.toLowerCase().includes(search.toLowerCase()) ||
+          post.user?.name.toLowerCase().includes(search.toLowerCase())
+        );
+      });
+    }
     if (sort && order) {
-      return posts.sort((a, b) => {
+      posts = posts.sort((a, b) => {
         if (order === "asc") {
           if (sort === "user_name") {
             if ((a.user?.name ?? "") < (b.user?.name ?? "")) return -1;
@@ -46,9 +55,8 @@ export const readPostsWithUser = (
         }
         return 0;
       });
-    } else {
-      return posts;
     }
+    return posts;
   } catch (err) {
     console.log("Failed to read db.json");
     throw err;
@@ -120,14 +128,15 @@ export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const getPostsByPage = (req: NextApiRequest, res: NextApiResponse) => {
-  const { page, limit, sort, order } = req.query;
+  const { page, limit, sort, order, search } = req.query;
 
   const offset = (Number(page) - 1) * Number(limit);
 
   try {
     const posts = readPostsWithUser(
       sort as RequiredKeys<Post> & "user_name",
-      order as Order
+      order as Order,
+      search as string
     );
     const slicedPosts = posts.slice(
       Number(offset),
