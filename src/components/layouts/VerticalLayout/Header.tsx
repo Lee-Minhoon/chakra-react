@@ -3,13 +3,11 @@ import { useRouterPush } from "@/hooks";
 import { toUrl } from "@/utils";
 import { Link } from "@chakra-ui/next-js";
 import { Flex, Icon, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { MdHome, MdKeyboardArrowRight } from "react-icons/md";
 
 const Header = () => {
-  const router = useRouter();
-  const { push } = useRouterPush();
+  const { router, push } = useRouterPush();
 
   const hierarchy = useMemo(
     () => findNavInHierarchy(router.pathname),
