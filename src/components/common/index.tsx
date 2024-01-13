@@ -9,3 +9,4 @@ export { default as PageOptions } from "./PageOptions";
 export { default as Pagination } from "./Pagination";
 export { default as ViewOptions } from "./ViewOptions";
 export { default as WithFormLabel } from "./WithFormLabel";
+export { default as WithLabel } from "./WithLabel";

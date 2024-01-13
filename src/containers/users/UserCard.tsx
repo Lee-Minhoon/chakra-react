@@ -1,5 +1,5 @@
 import { User } from "@/apis";
-import WithLabel from "@/components/common/WithTitle";
+import { WithLabel } from "@/components";
 import { useModalStore } from "@/stores";
 import { formatISO } from "@/utils";
 import {

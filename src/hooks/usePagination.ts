@@ -24,20 +24,16 @@ const usePagination = () => {
   }, [router.query]);
 
   const queryKey = useMemo(() => {
-    let queryKey = {};
-    if (router.query?.page) {
-      queryKey = { ...queryKey, page: Number(router.query.page) };
-    }
-    if (router.query?.limit) {
-      queryKey = { ...queryKey, limit: Number(router.query.limit) };
-    }
-    if (router.query?.sort) {
-      queryKey = { ...queryKey, sort: router.query.sort };
-    }
-    if (router.query?.order) {
-      queryKey = { ...queryKey, order: router.query.order };
-    }
-    return Object.keys(queryKey).length > 0 ? queryKey : undefined;
+    const { page, limit, sort, order } = router.query;
+
+    return page || limit || sort || order
+      ? {
+          ...(page && { page: Number(page) }),
+          ...(limit && { limit: Number(limit) }),
+          ...(sort && { sort }),
+          ...(order && { order }),
+        }
+      : undefined;
   }, [router.query]);
 
   const onPagination = useCallback(
