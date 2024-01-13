@@ -153,12 +153,13 @@ export const getPostsByPage = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const getPostsByCursor = (req: NextApiRequest, res: NextApiResponse) => {
-  const { cursor, limit, sort, order } = req.query;
+  const { cursor, limit, sort, order, search } = req.query;
 
   try {
     const posts = readPostsWithUser(
       sort as RequiredKeys<Post> & "user_name",
-      order as Order
+      order as Order,
+      search as string
     );
     const index = posts.findIndex((_, idx) => idx === Number(cursor));
     const slicedPosts = posts.slice(index, index + Number(limit));

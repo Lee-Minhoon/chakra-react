@@ -43,6 +43,7 @@ export type CursorQueryParams = {
   limit: number;
   sort?: string;
   order?: "asc" | "desc";
+  search?: string;
 };
 
 export interface PageQueryResponse<T> {

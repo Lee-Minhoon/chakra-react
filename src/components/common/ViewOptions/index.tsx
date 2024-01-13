@@ -1,6 +1,6 @@
 import { ViewQueries } from "@/constants";
+import { useRouterPush } from "@/hooks";
 import { Select } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useMemo } from "react";
 
 const options = [
@@ -35,7 +35,7 @@ const options = [
 ];
 
 const ViewOptions = () => {
-  const router = useRouter();
+  const { router, push } = useRouterPush();
 
   const selectedIdx = useMemo(() => {
     return options.findIndex(
@@ -48,7 +48,9 @@ const ViewOptions = () => {
       w={"fit-content"}
       value={selectedIdx}
       onChange={(e) =>
-        router.push({ query: options[Number(e.target.value)].query })
+        push({
+          query: { ...router.query, ...options[Number(e.target.value)].query },
+        })
       }
     >
       {options.map((option, idx) => (

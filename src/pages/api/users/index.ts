@@ -130,10 +130,14 @@ export const getUsersByPage = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export const getUsersByCursor = (req: NextApiRequest, res: NextApiResponse) => {
-  const { cursor, limit, sort, order } = req.query;
+  const { cursor, limit, sort, order, search } = req.query;
 
   try {
-    const users = readUsers(sort as RequiredKeys<User>, order as Order);
+    const users = readUsers(
+      sort as RequiredKeys<User>,
+      order as Order,
+      search as string
+    );
     const index = users.findIndex((_, idx) => idx === Number(cursor));
     const slicedUsers = users.slice(index, index + Number(limit));
 
