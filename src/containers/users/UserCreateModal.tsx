@@ -55,7 +55,13 @@ const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
         <ModalCloseButton />
         <ModalBody>
           <Flex direction={"column"} gap={4}>
-            <UserProfileInput preview={preview} onChange={setFile} />
+            <UserProfileInput
+              preview={preview}
+              onChange={(file) => {
+                setFile(file);
+                setPreview(URL.createObjectURL(file));
+              }}
+            />
             <UserFormFields
               fields={["name", "email", "phone"]}
               register={register}
