@@ -1,6 +1,8 @@
 import { User, UserUpdate, useUpdateUser, useUpdateUserInList } from "@/apis";
 import { useUpload } from "@/apis/upload";
-import { usePagination } from "@/hooks";
+import { ApiRoutes } from "@/constants";
+import { useQueryKeyParams } from "@/hooks";
+import { toUrl } from "@/utils";
 import {
   Button,
   Flex,
@@ -24,19 +26,19 @@ interface UserUpdateModalProps {
 
 const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
   const [isOpen, setIsOpen] = useState(true);
-  const { queryKey } = usePagination();
+  const queryKeyParams = useQueryKeyParams(toUrl(ApiRoutes.User));
   const { register, handleSubmit } = useForm<UserUpdate>({
     defaultValues: user,
   });
   const { mutate: updateUser } = useUpdateUser(user.id);
-  const { mutate: updateUserInList } = useUpdateUserInList(queryKey);
+  const { mutate: updateUserInList } = useUpdateUserInList(queryKeyParams);
   const { mutate: upload } = useUpload();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState(user.profile ?? "");
 
   const mutate = useMemo(
-    () => (!queryKey ? updateUser : updateUserInList),
-    [queryKey, updateUser, updateUserInList]
+    () => (!queryKeyParams ? updateUser : updateUserInList),
+    [queryKeyParams, updateUser, updateUserInList]
   );
 
   return (

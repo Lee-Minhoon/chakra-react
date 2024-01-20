@@ -39,7 +39,7 @@ export const useGetUsersByCursor = (params: CursorQueryParams) => {
   return useLoadMore<User[]>(toUrl(ApiRoutes.User), params);
 };
 
-export type UserCreate = Pick<User, "name" | "email" | "phone" | "profile">;
+export type UserCreate = Omit<User, "approved" | keyof Scheme>;
 
 export const useCreateUser = (params?: object) => {
   return usePost<User[] | PageQueryResponse<User[]>, UserCreate>(

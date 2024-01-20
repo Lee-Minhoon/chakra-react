@@ -23,19 +23,6 @@ const usePagination = () => {
     };
   }, [router.query]);
 
-  const queryKey = useMemo(() => {
-    const { page, limit, sort, order } = router.query;
-
-    return page || limit || sort || order
-      ? {
-          ...(page && { page: Number(page) }),
-          ...(limit && { limit: Number(limit) }),
-          ...(sort && { sort }),
-          ...(order && { order }),
-        }
-      : undefined;
-  }, [router.query]);
-
   const onPagination = useCallback(
     (params: OnPaginationParams) => {
       router.push({
@@ -46,7 +33,7 @@ const usePagination = () => {
     [router]
   );
 
-  return { ...params, queryKey, onPagination };
+  return { ...params, onPagination };
 };
 
 export default usePagination;

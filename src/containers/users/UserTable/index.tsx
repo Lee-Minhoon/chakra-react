@@ -1,8 +1,8 @@
 import { User, useApproveUser, useDeleteUser } from "@/apis";
 import { DataTable } from "@/components";
-import { PageRoutes } from "@/constants";
+import { ApiRoutes, PageRoutes } from "@/constants";
 import { UserUpdateModal } from "@/containers";
-import { usePagination, useRouterPush } from "@/hooks";
+import { useQueryKeyParams, useRouterPush } from "@/hooks";
 import { useModalStore } from "@/stores";
 import { formatISO, toUrl } from "@/utils";
 import {
@@ -26,9 +26,9 @@ const UserTable = ({ users, isLoading }: UsersTableProps) => {
   const { openModal } = useModalStore(["openModal"]);
   const { openConfirm } = useModalStore(["openConfirm"]);
   const { push } = useRouterPush();
-  const { queryKey } = usePagination();
-  const { mutate: deleteUser } = useDeleteUser(queryKey);
-  const { mutate: approveUser } = useApproveUser(queryKey);
+  const queryKeyParams = useQueryKeyParams(toUrl(ApiRoutes.User));
+  const { mutate: deleteUser } = useDeleteUser(queryKeyParams);
+  const { mutate: approveUser } = useApproveUser(queryKeyParams);
 
   const handleUpdate = useCallback<(user: User) => void>(
     (user) => {
