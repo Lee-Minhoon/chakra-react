@@ -1,4 +1,4 @@
-import FormField from "@/components/common/FormField";
+import { FormField } from "@/components";
 import { capitalize } from "lodash-es";
 import { FieldPath, UseFormRegister } from "react-hook-form";
 

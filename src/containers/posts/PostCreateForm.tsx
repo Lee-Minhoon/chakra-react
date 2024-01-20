@@ -1,24 +1,19 @@
-import { Post, PostCreate, useCreatePost } from "@/apis";
+import { PostCreate, useCreatePost } from "@/apis";
 import { useGetMe } from "@/apis/auth";
-import { Editor } from "@/components";
+import { Editor, FormField } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useRouterPush } from "@/hooks";
 import { toUrl } from "@/utils";
-import { Button, Flex, Input } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-interface PostFormProps {
-  post?: Post;
-}
-
-const PostForm = ({ post }: PostFormProps) => {
+const PostCreateForm = () => {
   const { push } = useRouterPush();
   const { data: me } = useGetMe();
   const { register, handleSubmit, control } = useForm<PostCreate>({
     defaultValues: {
       userId: me?.id,
-      ...post,
     },
   });
   const { mutate: createPost, isLoading } = useCreatePost();
@@ -39,7 +34,13 @@ const PostForm = ({ post }: PostFormProps) => {
         )
       )}
     >
-      <Input isRequired placeholder="Title" {...register("title")} />
+      <FormField
+        fieldType={"string"}
+        isRequired
+        label={"Title"}
+        placeholder="Title"
+        {...register("title")}
+      />
       <Controller
         control={control}
         name="content"
@@ -59,4 +60,4 @@ const PostForm = ({ post }: PostFormProps) => {
   );
 };
 
-export default PostForm;
+export default PostCreateForm;

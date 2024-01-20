@@ -1,4 +1,4 @@
-import { PostForm } from "@/containers";
+import { PostCreateForm } from "@/containers";
 import { useLayout } from "@/hooks";
 import Head from "next/head";
 
@@ -14,7 +14,7 @@ const WritePostPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <PostForm />
+        <PostCreateForm />
       </Layout>
     </>
   );

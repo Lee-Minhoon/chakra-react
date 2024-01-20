@@ -37,7 +37,7 @@ export const useCreatePost = (params?: PageQueryParams | CursorQueryParams) => {
   return usePost<Post[], PostCreate, number>(toUrl(ApiRoutes.Post), params);
 };
 
-export type PostUpdate = Omit<Post, "createdAt" | "updatedAt">;
+export type PostUpdate = Omit<Post, "user" | "createdAt" | "updatedAt">;
 
 export const useUpdatePost = (id: number) => {
   return useUpdate<Post, PostUpdate>(

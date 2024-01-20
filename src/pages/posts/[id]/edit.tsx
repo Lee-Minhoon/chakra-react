@@ -1,5 +1,5 @@
 import { useGetPost } from "@/apis";
-import { PostForm } from "@/containers";
+import { PostUpdateForm } from "@/containers";
 import { useLayout } from "@/hooks";
 import { queryParser } from "@/utils";
 import Head from "next/head";
@@ -19,7 +19,7 @@ const EditPostPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>{post && <PostForm post={post} />}</Layout>
+      <Layout>{post && <PostUpdateForm post={post} />}</Layout>
     </>
   );
 };

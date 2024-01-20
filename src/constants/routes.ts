@@ -86,6 +86,11 @@ export const navs: Nav[] = [
         pathname: PageRoutes.PostDetail,
         matcher: match(PageRoutes.PostDetail),
       },
+      {
+        label: "Edit Post",
+        pathname: PageRoutes.EditPost,
+        matcher: match(PageRoutes.EditPost),
+      },
     ],
   },
 ];
