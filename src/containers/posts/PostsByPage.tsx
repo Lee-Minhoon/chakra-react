@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 const PostsByPage = () => {
   const router = useRouter();
   const { page, limit, sort, order, onPagination } = usePagination();
-  const { data: postsByPage, isLoading: postsIsLoading } = useGetPostsByPage({
+  const { data: postsByPage, isFetching: postsIsLoading } = useGetPostsByPage({
     page,
     limit,
     sort,
