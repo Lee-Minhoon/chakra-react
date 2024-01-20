@@ -2,6 +2,7 @@ import { UserCreate, useCreateUser } from "@/apis";
 import { useUpload } from "@/apis/upload";
 import {
   Button,
+  Flex,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -13,6 +14,7 @@ import {
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import UserFormFields from "./UserFormFields";
+import UserProfileInput from "./UserProfileInput";
 
 interface UserCreateModalProps {
   onClose: () => void;
@@ -52,15 +54,13 @@ const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
         <ModalHeader>Create User</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <UserFormFields
-            fields={["name", "email", "phone"]}
-            register={register}
-            profilePreview={preview}
-            onProfileChange={(file) => {
-              setFile(file);
-              setPreview(URL.createObjectURL(file));
-            }}
-          />
+          <Flex direction={"column"} gap={4}>
+            <UserProfileInput preview={preview} onChange={setFile} />
+            <UserFormFields
+              fields={["name", "email", "phone"]}
+              register={register}
+            />
+          </Flex>
         </ModalBody>
         <ModalFooter>
           <Button mr={3} onClick={onClose}>
