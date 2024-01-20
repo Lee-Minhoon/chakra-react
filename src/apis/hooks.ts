@@ -160,10 +160,7 @@ export const usePost = <
   updater?: (old: TOld, data: TNew) => TOld
 ) => {
   return useMutation<TOld, TNew, ApiResponse<TRes>>(
-    (data) =>
-      data
-        ? api.post<ApiResponse<TRes>>(buildUrl(url, data), data)
-        : api.post<ApiResponse<TRes>>(buildUrl(url, data)),
+    (data) => api.post<ApiResponse<TRes>>(buildUrl(url, data), data ?? {}),
     options,
     [url, params],
     updater
