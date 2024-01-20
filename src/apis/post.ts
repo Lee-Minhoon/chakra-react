@@ -31,7 +31,7 @@ export const useGetPostsByCursor = (params: CursorQueryParams) => {
   return useLoadMore<Post[]>(toUrl(ApiRoutes.Post), params);
 };
 
-export type PostCreate = Omit<Post, "id" | "createdAt" | "updatedAt">;
+export type PostCreate = Omit<Post, "user" | keyof Scheme>;
 
 export const useCreatePost = (params?: PageQueryParams | CursorQueryParams) => {
   return usePost<Post[], PostCreate, number>(toUrl(ApiRoutes.Post), params);
