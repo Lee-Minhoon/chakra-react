@@ -1,14 +1,14 @@
 import { useGetMe, useSignout } from "@/apis/auth";
 import { ColorMode, LayoutMode, Logo } from "@/components";
 import { PageRoutes } from "@/constants";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { RiLoginBoxLine, RiLogoutBoxRLine } from "react-icons/ri";
 import Navbar from "./Navbar";
 
 const Header = () => {
-  const { push } = useRouterPush();
+  const { push } = useSafePush();
   const { data: me } = useGetMe();
   const { mutate: signout } = useSignout();
 

@@ -1,5 +1,5 @@
 import { PageRoutes, findNavInHierarchy } from "@/constants";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import { Link } from "@chakra-ui/next-js";
 import { Flex, Icon, Text } from "@chakra-ui/react";
@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import { MdHome, MdKeyboardArrowRight } from "react-icons/md";
 
 const Header = () => {
-  const { router, push } = useRouterPush();
+  const { router, push } = useSafePush();
 
   const hierarchy = useMemo(
     () => findNavInHierarchy(router.pathname),

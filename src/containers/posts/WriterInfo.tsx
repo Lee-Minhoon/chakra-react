@@ -1,6 +1,6 @@
 import { Post } from "@/apis";
 import { PageRoutes } from "@/constants";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { formatISO, toUrl } from "@/utils";
 import { Avatar, Flex, Text } from "@chakra-ui/react";
 
@@ -9,7 +9,7 @@ interface WriterInfoProps {
 }
 
 const WriterInfo = ({ post }: WriterInfoProps) => {
-  const { push } = useRouterPush();
+  const { push } = useSafePush();
 
   const user = post?.user;
 

@@ -2,14 +2,14 @@ import { PostCreate, useCreatePost } from "@/apis";
 import { useGetMe } from "@/apis/auth";
 import { Editor, FormField } from "@/components";
 import { PageRoutes } from "@/constants";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import { Button, Flex } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 const PostCreateForm = () => {
-  const { push } = useRouterPush();
+  const { push } = useSafePush();
   const { data: me } = useGetMe();
   const { register, handleSubmit, control } = useForm<PostCreate>({
     defaultValues: {

@@ -1,6 +1,6 @@
 import { useGetMe, useSignout } from "@/apis/auth";
 import { PageRoutes } from "@/constants";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import {
   Center,
@@ -13,7 +13,7 @@ import {
 import { RiLoginBoxLine, RiLogoutBoxRLine } from "react-icons/ri";
 
 const SidebarFooter = () => {
-  const { push } = useRouterPush();
+  const { push } = useSafePush();
   const { data: me } = useGetMe();
   const { mutate: signout } = useSignout();
 

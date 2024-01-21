@@ -5,7 +5,7 @@ import {
   useResetTestPosts,
 } from "@/apis";
 import { PageRoutes } from "@/constants";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { getRandomString } from "@/utils";
 import { Button, Flex, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
@@ -16,7 +16,7 @@ const count = 1000;
 
 const PostsUtils = () => {
   const { data: me } = useGetMe();
-  const { push } = useRouterPush();
+  const { push } = useSafePush();
   const { mutate: createPost } = useCreatePost();
   const { mutate: createTestPosts, isLoading: createTestPostsIsLoading } =
     useCreateTestPosts(count);

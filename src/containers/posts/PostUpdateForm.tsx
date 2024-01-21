@@ -1,7 +1,7 @@
 import { Post, PostUpdate, useUpdatePost } from "@/apis";
 import { Editor, FormField } from "@/components";
 import { PageRoutes } from "@/constants";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import { Button, Flex } from "@chakra-ui/react";
 import { useCallback } from "react";
@@ -12,7 +12,7 @@ interface PostUpdateFormProps {
 }
 
 const PostUpdateForm = ({ post }: PostUpdateFormProps) => {
-  const { push } = useRouterPush();
+  const { push } = useSafePush();
   const { register, handleSubmit, control } = useForm<PostUpdate>({
     defaultValues: {
       ...post,

@@ -1,12 +1,12 @@
 import { ColorMode, LayoutMode, Logo } from "@/components";
 import { PageRoutes } from "@/constants";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import { Box, Center, Flex, IconButton, Tooltip } from "@chakra-ui/react";
 import { AiOutlineHome } from "react-icons/ai";
 
 const SidebarHeader = () => {
-  const { push } = useRouterPush();
+  const { push } = useSafePush();
 
   return (
     <Center as={"header"} flexDirection={"column"} gap={4} py={4}>

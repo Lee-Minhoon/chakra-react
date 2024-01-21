@@ -1,7 +1,7 @@
 import { Post } from "@/apis";
 import { DataTable } from "@/components";
 import { PageRoutes } from "@/constants";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { formatISO, toUrl } from "@/utils";
 import {
   createColumnHelper,
@@ -19,7 +19,7 @@ interface PostTableProps {
 }
 
 const PostTable = ({ posts, isLoading }: PostTableProps) => {
-  const { push } = useRouterPush();
+  const { push } = useSafePush();
 
   const columns = useMemo(
     () => [

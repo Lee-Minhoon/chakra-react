@@ -1,36 +1,36 @@
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef } from "react";
 
-type RouterPushParams = Parameters<ReturnType<typeof useRouter>["push"]>;
+type PushParams = Parameters<ReturnType<typeof useRouter>["push"]>;
 
-const useRouterPush = () => {
+const useSafePush = () => {
   const router = useRouter();
-  const changing = useRef(false);
+  const isChanging = useRef(false);
 
   const push = useCallback(
-    (...params: RouterPushParams) => {
+    (...params: PushParams) => {
       // 만약 라우팅중이라면 아무것도 하지 않습니다.
       // if route is already changing, do nothing
-      if (changing.current) return;
-      changing.current = true;
+      if (isChanging.current) return;
+      isChanging.current = true;
       router.push(...params);
     },
     [router]
   );
 
-  useEffect(() => {
-    const handleRouteChange = () => {
-      changing.current = false;
-    };
+  const handleRouteChange = useCallback(() => {
+    isChanging.current = false;
+  }, []);
 
+  useEffect(() => {
     router.events.on("routeChangeComplete", handleRouteChange);
 
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
     };
-  }, [router]);
+  }, [handleRouteChange, router]);
 
   return { router, push };
 };
 
-export default useRouterPush;
+export default useSafePush;

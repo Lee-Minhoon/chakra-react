@@ -1,6 +1,6 @@
 import { User } from "@/apis";
 import { PageRoutes } from "@/constants";
-import { useBgColor, useRouterPush } from "@/hooks";
+import { useBgColor, useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import {
   Avatar,
@@ -22,7 +22,7 @@ interface UserListItemProps {
 
 const UserListItem = ({ data: user }: UserListItemProps) => {
   const bgColor = useBgColor();
-  const { push } = useRouterPush();
+  const { push } = useSafePush();
 
   const handleClick = useCallback(() => {
     push(toUrl(PageRoutes.UserDetail, { id: user.id }));

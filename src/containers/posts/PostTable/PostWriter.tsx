@@ -1,6 +1,6 @@
 import { Post } from "@/apis";
 import { PageRoutes } from "@/constants";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import { Avatar, Box, Flex } from "@chakra-ui/react";
 
@@ -9,7 +9,7 @@ interface PostWriterProps {
 }
 
 const PostWriter = ({ writer }: PostWriterProps) => {
-  const { push } = useRouterPush();
+  const { push } = useSafePush();
 
   return (
     <Flex gap={4} align={"center"}>

@@ -1,6 +1,6 @@
 import { Post, useDeletePost, useGetMe } from "@/apis";
 import { PageRoutes } from "@/constants";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { useModalStore } from "@/stores";
 import { toUrl } from "@/utils";
 import {
@@ -21,7 +21,7 @@ interface PostCardProps {
 }
 
 const PostCard = ({ data: post }: PostCardProps) => {
-  const { push } = useRouterPush();
+  const { push } = useSafePush();
   const { data: me } = useGetMe();
   const { mutate: deletePost } = useDeletePost();
   const { openConfirm } = useModalStore(["openConfirm"]);

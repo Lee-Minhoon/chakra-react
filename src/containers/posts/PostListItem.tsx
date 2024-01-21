@@ -1,6 +1,6 @@
 import { Post } from "@/apis";
 import { PageRoutes } from "@/constants";
-import { useBgColor, useRouterPush } from "@/hooks";
+import { useBgColor, useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import {
   Box,
@@ -19,7 +19,7 @@ interface PostListItemProps {
 
 const PostListItem = ({ data: post }: PostListItemProps) => {
   const bgColor = useBgColor();
-  const { push } = useRouterPush();
+  const { push } = useSafePush();
 
   const handleClick = useCallback(() => {
     push(toUrl(PageRoutes.PostDetail, { id: post.id }));

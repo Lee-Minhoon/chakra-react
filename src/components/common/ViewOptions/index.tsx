@@ -1,5 +1,5 @@
 import { ViewQueries } from "@/constants";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { Select } from "@chakra-ui/react";
 import { useMemo } from "react";
 
@@ -35,7 +35,7 @@ const options = [
 ];
 
 const ViewOptions = () => {
-  const { router, push } = useRouterPush();
+  const { router, push } = useSafePush();
 
   const selectedIdx = useMemo(() => {
     return options.findIndex(

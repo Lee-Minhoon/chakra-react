@@ -1,14 +1,14 @@
 import { AuthSignin, useSignin } from "@/apis/auth";
 import { Logo, WithFormLabel } from "@/components";
 import { PageRoutes } from "@/constants";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import { Box, Button, Card, Input } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 
 const SigninForm = () => {
-  const { router, push } = useRouterPush();
+  const { router, push } = useSafePush();
   const { register, handleSubmit } = useForm<AuthSignin>();
   const { mutate: signin } = useSignin();
 

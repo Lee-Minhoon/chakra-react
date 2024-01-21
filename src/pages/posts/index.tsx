@@ -1,7 +1,7 @@
 import { PageOptions, Search, ViewOptions } from "@/components";
 import { ViewQueries } from "@/constants";
 import { PostUtils, PostsByCursor, PostsByPage } from "@/containers";
-import { useRouterPush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import useLayout from "@/hooks/useLayout";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
@@ -10,7 +10,7 @@ import { useMemo } from "react";
 const PostsAllPage = () => {
   const { Layout } = useLayout();
 
-  const { router, push } = useRouterPush();
+  const { router, push } = useSafePush();
   const viewOption = router.query?.view as ViewQueries;
 
   const display = useMemo(() => {
