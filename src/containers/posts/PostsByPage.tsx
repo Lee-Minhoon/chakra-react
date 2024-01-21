@@ -2,7 +2,7 @@ import { useGetPostsByPage } from "@/apis";
 import { Pagination } from "@/components";
 import { PostTable } from "@/containers";
 import { usePagination } from "@/hooks";
-import { queryParser } from "@/utils";
+import { QueryParser } from "@/utils";
 import { TableContainer } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
@@ -14,7 +14,7 @@ const PostsByPage = () => {
     limit,
     sort,
     order,
-    search: queryParser.toString(router.query.search) ?? "",
+    search: QueryParser.toString(router.query.search) ?? "",
   });
 
   return (

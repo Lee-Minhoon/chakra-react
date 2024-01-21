@@ -1,7 +1,7 @@
 import { useGetPost } from "@/apis";
 import { PostUpdateForm } from "@/containers";
 import { useLayout } from "@/hooks";
-import { queryParser } from "@/utils";
+import { QueryParser } from "@/utils";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -9,7 +9,7 @@ const EditPostPage = () => {
   const { Layout } = useLayout();
 
   const router = useRouter();
-  const { data: post } = useGetPost(queryParser.toNumber(router.query.id));
+  const { data: post } = useGetPost(QueryParser.toNumber(router.query.id));
 
   return (
     <>

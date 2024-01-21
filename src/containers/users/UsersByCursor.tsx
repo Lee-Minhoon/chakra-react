@@ -1,7 +1,7 @@
 import { User, useGetUsersByCursor } from "@/apis";
 import { InfiniteList } from "@/components";
 import { usePagination } from "@/hooks";
-import { queryParser } from "@/utils";
+import { QueryParser } from "@/utils";
 import { useRouter } from "next/router";
 import { UserListItem } from ".";
 
@@ -19,7 +19,7 @@ const UsersByCursor = ({ usesObserver }: UsersByCursorProps) => {
         limit,
         sort,
         order,
-        search: queryParser.toString(router.query.search) ?? "",
+        search: QueryParser.toString(router.query.search) ?? "",
       })}
       renderItem={UserListItem}
       usesObserver={usesObserver}

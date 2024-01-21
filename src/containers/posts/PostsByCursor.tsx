@@ -2,7 +2,7 @@ import { Post, useGetPostsByCursor } from "@/apis";
 import { InfiniteList } from "@/components";
 import { usePagination } from "@/hooks";
 import { PostListItem } from ".";
-import { queryParser } from "@/utils";
+import { QueryParser } from "@/utils";
 import { useRouter } from "next/router";
 
 interface PostsByCursorProps {
@@ -19,7 +19,7 @@ const PostsByCursor = ({ usesObserver }: PostsByCursorProps) => {
         limit,
         sort,
         order,
-        search: queryParser.toString(router.query.search) ?? "",
+        search: QueryParser.toString(router.query.search) ?? "",
       })}
       renderItem={PostListItem}
       usesObserver={usesObserver}

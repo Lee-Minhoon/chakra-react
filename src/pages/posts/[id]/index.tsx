@@ -2,7 +2,7 @@ import { useGetPost } from "@/apis";
 import { PostCard } from "@/containers";
 import { useLayout } from "@/hooks";
 import useHasScroll from "@/hooks/useHasScroll";
-import { queryParser } from "@/utils";
+import { QueryParser } from "@/utils";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -12,7 +12,7 @@ const PostPage = () => {
   const { Layout } = useLayout();
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const { data: post } = useGetPost(queryParser.toNumber(router.query.id));
+  const { data: post } = useGetPost(QueryParser.toNumber(router.query.id));
   const hasScroll = useHasScroll(ref.current);
 
   return (

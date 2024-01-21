@@ -1,4 +1,4 @@
-import { queryParser } from "@/utils";
+import { QueryParser } from "@/utils";
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 
@@ -14,10 +14,10 @@ const usePagination = () => {
 
   const params = useMemo(() => {
     return {
-      page: queryParser.toNumber(router.query.page) ?? 1,
-      limit: queryParser.toNumber(router.query.limit) ?? 10,
-      sort: queryParser.toString(router.query.sort) ?? "",
-      order: (queryParser.toString(router.query.order) ?? "desc") as
+      page: QueryParser.toNumber(router.query.page) ?? 1,
+      limit: QueryParser.toNumber(router.query.limit) ?? 10,
+      sort: QueryParser.toString(router.query.sort) ?? "",
+      order: (QueryParser.toString(router.query.order) ?? "desc") as
         | "asc"
         | "desc",
     };
