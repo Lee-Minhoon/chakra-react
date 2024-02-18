@@ -6,7 +6,6 @@ import {
   ModalProvider,
 } from "@/components";
 import { modalStore } from "@/stores";
-import "@/styles/globals.css";
 import { createStandaloneToast } from "@chakra-ui/react";
 import {
   MutationCache,
