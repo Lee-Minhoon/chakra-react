@@ -1,14 +1,13 @@
 import { ApiError, ApiResponse } from "@/apis";
-import { Authenticator, LayoutProvider, ModalProvider } from "@/components";
+import {
+  Authenticator,
+  ChakraProvider,
+  LayoutProvider,
+  ModalProvider,
+} from "@/components";
 import { modalStore } from "@/stores";
 import "@/styles/globals.css";
-import {
-  ChakraProvider,
-  baseTheme,
-  createStandaloneToast,
-  extendTheme,
-  withDefaultColorScheme,
-} from "@chakra-ui/react";
+import { createStandaloneToast } from "@chakra-ui/react";
 import {
   MutationCache,
   QueryCache,
@@ -18,7 +17,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
 
-const { ToastContainer, toast } = createStandaloneToast();
+const { toast } = createStandaloneToast();
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -61,25 +60,13 @@ const queryClient = new QueryClient({
   }),
 });
 
-const theme = extendTheme(
-  {
-    colors: {
-      primary: baseTheme.colors.teal,
-    },
-  },
-  withDefaultColorScheme({
-    colorScheme: "primary",
-  })
-);
-
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
-      <ChakraProvider theme={theme}>
+      <ChakraProvider>
         <Authenticator />
         <ModalProvider />
-        <ToastContainer />
         <LayoutProvider>
           <Component {...pageProps} />
         </LayoutProvider>
