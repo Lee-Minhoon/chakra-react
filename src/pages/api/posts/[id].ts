@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { deletePost, getPost, updatePost } from ".";
 import { sleep } from "../utils";
 

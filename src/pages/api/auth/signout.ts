@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { writeSession } from ".";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {

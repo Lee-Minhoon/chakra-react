@@ -1,8 +1,8 @@
-import { RequiredKeys } from "@/types";
 import { getRandomString } from "@/utils";
 import fs from "fs";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
+import { RequiredKeysOf } from "type-fest";
 import { Order, Post, readDB } from "../db";
 import { readUsers } from "../users";
 import { sleep } from "../utils";
@@ -18,7 +18,7 @@ export const readPosts = () => {
 };
 
 export const readPostsWithUser = (
-  sort?: RequiredKeys<Post> & "user_name",
+  sort?: RequiredKeysOf<Post> & "user_name",
   order?: Order,
   search?: string
 ) => {
@@ -116,7 +116,7 @@ export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const posts = readPostsWithUser(
-      sort as RequiredKeys<Post> & "user_name",
+      sort as RequiredKeysOf<Post> & "user_name",
       order as Order
     );
     return res
@@ -134,7 +134,7 @@ export const getPostsByPage = (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const posts = readPostsWithUser(
-      sort as RequiredKeys<Post> & "user_name",
+      sort as RequiredKeysOf<Post> & "user_name",
       order as Order,
       search as string
     );
@@ -157,7 +157,7 @@ export const getPostsByCursor = (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const posts = readPostsWithUser(
-      sort as RequiredKeys<Post> & "user_name",
+      sort as RequiredKeysOf<Post> & "user_name",
       order as Order,
       search as string
     );

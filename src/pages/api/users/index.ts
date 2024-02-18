@@ -1,14 +1,14 @@
-import { RequiredKeys } from "@/types";
 import { getRandomEmail, getRandomPhoneNumber, getRandomString } from "@/utils";
 import fs from "fs";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
+import { RequiredKeysOf } from "type-fest";
 import { readSession } from "../auth";
 import { Order, User, readDB } from "../db";
 import { sleep } from "../utils";
 
 export const readUsers = (
-  sort?: RequiredKeys<User>,
+  sort?: RequiredKeysOf<User>,
   order?: Order,
   search?: string
 ): User[] => {
@@ -94,7 +94,7 @@ export const getUsers = (req: NextApiRequest, res: NextApiResponse) => {
   const { sort, order } = req.query;
 
   try {
-    const users = readUsers(sort as RequiredKeys<User>, order as Order);
+    const users = readUsers(sort as RequiredKeysOf<User>, order as Order);
 
     return res
       .status(200)
@@ -111,7 +111,7 @@ export const getUsersByPage = (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const users = readUsers(
-      sort as RequiredKeys<User>,
+      sort as RequiredKeysOf<User>,
       order as Order,
       search as string
     );
@@ -134,7 +134,7 @@ export const getUsersByCursor = (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const users = readUsers(
-      sort as RequiredKeys<User>,
+      sort as RequiredKeysOf<User>,
       order as Order,
       search as string
     );
