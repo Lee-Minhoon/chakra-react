@@ -1,4 +1,5 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, Icon, IconButton } from "@chakra-ui/react";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 interface PaginationProps {
   currentPage: number;
@@ -22,9 +23,13 @@ const Pagination = ({
 
   return (
     <Flex gap={4} justify={"center"}>
-      <Button isDisabled={start === 1} onClick={() => onChange(start - 1)}>
-        Prev
-      </Button>
+      <IconButton
+        aria-label={"prev"}
+        isDisabled={start === 1}
+        onClick={() => onChange(start - 1)}
+      >
+        <Icon as={MdKeyboardArrowLeft} w={"6"} h={"6"} />
+      </IconButton>
       {Array.from({ length: end - start + 1 }, (_, i) => i + start).map(
         (page) => (
           <Button
@@ -36,12 +41,13 @@ const Pagination = ({
           </Button>
         )
       )}
-      <Button
+      <IconButton
+        aria-label={"next"}
         isDisabled={total === 0 || end === totalPage}
         onClick={() => onChange(end + 1)}
       >
-        Next
-      </Button>
+        <Icon as={MdKeyboardArrowRight} w={"6"} h={"6"} />
+      </IconButton>
     </Flex>
   );
 };

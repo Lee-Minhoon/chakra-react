@@ -16,7 +16,7 @@ const SidebarHeader = () => {
       <Box display={{ base: "block", xl: "none" }}>
         <Tooltip hasArrow label={"Home"}>
           <IconButton
-            aria-label={"Home"}
+            aria-label={"home"}
             icon={<AiOutlineHome />}
             onClick={() => push(toUrl(PageRoutes.Home))}
           />
