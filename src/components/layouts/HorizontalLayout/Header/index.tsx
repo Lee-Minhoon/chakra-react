@@ -26,18 +26,13 @@ const Header = () => {
         <LayoutMode />
         <ColorMode />
         {me ? (
-          <Button
-            rightIcon={<RiLogoutBoxRLine />}
-            onClick={() => signout()}
-            size={"sm"}
-          >
+          <Button rightIcon={<RiLogoutBoxRLine />} onClick={() => signout()}>
             Sign Out
           </Button>
         ) : (
           <Button
             rightIcon={<RiLoginBoxLine />}
             onClick={() => push(toUrl(PageRoutes.Signin))}
-            size={"sm"}
           >
             Sign In
           </Button>

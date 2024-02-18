@@ -33,11 +33,7 @@ const SidebarFooter = () => {
             </Text>
           </Text>
           <Tooltip hasArrow label={"Sign Out"}>
-            <IconButton
-              aria-label="signout"
-              size={"sm"}
-              onClick={() => signout()}
-            >
+            <IconButton aria-label="signout" onClick={() => signout()}>
               <Icon as={RiLogoutBoxRLine} />
             </IconButton>
           </Tooltip>
@@ -48,7 +44,6 @@ const SidebarFooter = () => {
           <Tooltip hasArrow label={"Sign In"}>
             <IconButton
               aria-label="signin"
-              size={"sm"}
               onClick={() => push(toUrl(PageRoutes.Signin))}
             >
               <Icon as={RiLoginBoxLine} />

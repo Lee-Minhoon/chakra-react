@@ -35,7 +35,6 @@ const PostCard = ({ data: post }: PostCardProps) => {
             {me?.id === post?.userId && (
               <Flex gap={4}>
                 <Button
-                  size={"sm"}
                   rightIcon={<TbEdit />}
                   onClick={() =>
                     push(toUrl(PageRoutes.EditPost, { id: post?.id }))
@@ -44,7 +43,6 @@ const PostCard = ({ data: post }: PostCardProps) => {
                   Edit
                 </Button>
                 <Button
-                  size={"sm"}
                   rightIcon={<TbEdit />}
                   onClick={() => {
                     if (!post?.id) return;

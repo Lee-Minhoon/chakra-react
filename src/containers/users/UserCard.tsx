@@ -57,7 +57,6 @@ const UserCard = ({ data: user }: UserCardProps) => {
             <Flex justify={"space-between"}>
               <Heading size={"lg"}>{user?.name ?? "Name"}</Heading>
               <Button
-                size={"sm"}
                 rightIcon={<TbEdit />}
                 onClick={() => {
                   if (!user) return;

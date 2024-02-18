@@ -17,7 +17,6 @@ const UserApproved = ({ approved, onApprove }: UserApprovedProps) => {
         <Tooltip hasArrow label={"Approve User"}>
           <IconButton
             aria-label="approve"
-            size={"sm"}
             icon={<TbCheck />}
             onClick={onApprove}
           />

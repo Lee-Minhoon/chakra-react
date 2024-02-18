@@ -11,20 +11,10 @@ const UserActions = ({ onUpdate, onDelete }: UserActionsProps) => {
   return (
     <Flex gap={2}>
       <Tooltip hasArrow label={"Edit User"}>
-        <IconButton
-          aria-label="edit"
-          size={"sm"}
-          icon={<TbEdit />}
-          onClick={onUpdate}
-        />
+        <IconButton aria-label="edit" icon={<TbEdit />} onClick={onUpdate} />
       </Tooltip>
       <Tooltip hasArrow label={"Delete User"}>
-        <IconButton
-          aria-label="delete"
-          size={"sm"}
-          icon={<TbTrash />}
-          onClick={onDelete}
-        />
+        <IconButton aria-label="delete" icon={<TbTrash />} onClick={onDelete} />
       </Tooltip>
     </Flex>
   );

@@ -17,7 +17,6 @@ const SidebarHeader = () => {
         <Tooltip hasArrow label={"Home"}>
           <IconButton
             aria-label={"Home"}
-            size={"sm"}
             icon={<AiOutlineHome />}
             onClick={() => push(toUrl(PageRoutes.Home))}
           />
