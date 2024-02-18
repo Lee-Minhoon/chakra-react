@@ -28,7 +28,11 @@ export const libraries = [
   },
   {
     title: "React Table",
-    url: "https://npmjs.com/package/react-table",
+    url: "https://npmjs.com/package/@tanstack/react-table",
+  },
+  {
+    title: "React Virtual",
+    url: "https://npmjs.com/package/@tanstack/react-virtual",
   },
   {
     title: "React Icons",

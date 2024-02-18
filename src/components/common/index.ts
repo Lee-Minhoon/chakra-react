@@ -10,5 +10,6 @@ export { default as PageOptions } from "./PageOptions";
 export { default as Pagination } from "./Pagination";
 export { default as Search } from "./Search";
 export { default as ViewOptions } from "./ViewOptions";
+export { VirtualList, WindowVirtualList } from "./VirtualList";
 export { default as WithFormLabel } from "./WithFormLabel";
 export { default as WithLabel } from "./WithLabel";

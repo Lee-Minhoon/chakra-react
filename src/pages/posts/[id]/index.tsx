@@ -1,7 +1,6 @@
 import { useGetPost } from "@/apis";
 import { PostCard } from "@/containers";
-import { useLayout } from "@/hooks";
-import useHasScroll from "@/hooks/useHasScroll";
+import { useHasScroll, useLayout } from "@/hooks";
 import { QueryParser } from "@/utils";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";

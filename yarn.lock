@@ -1171,10 +1171,22 @@
   dependencies:
     "@tanstack/table-core" "8.10.7"
 
+"@tanstack/react-virtual@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-virtual/-/react-virtual-3.1.1.tgz#0f239bd0323344ebf045b6579d98018123e49a0e"
+  integrity sha512-9tW9xwEW7exSa/8bxu29IPCcB5c9Xlq+whETixIIgYZYKuUY4ZOr000q3oLpL4bkOkolQbB4WXM0MoQGgJXqDg==
+  dependencies:
+    "@tanstack/virtual-core" "3.1.1"
+
 "@tanstack/table-core@8.10.7":
   version "8.10.7"
   resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.10.7.tgz#577e8a635048875de4c9d6d6a3c21d26ff9f9d08"
   integrity sha512-KQk5OMg5OH6rmbHZxuNROvdI+hKDIUxANaHlV+dPlNN7ED3qYQ/WkpY2qlXww1SIdeMlkIhpN/2L00rof0fXFw==
+
+"@tanstack/virtual-core@3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.1.1.tgz#5d8d517fa60ec073a83a7a01e3041ad2d75657e8"
+  integrity sha512-I5lerX+RWxLM+zw35gwwQIoLvtkOm0ecuQUlEjNey+Ga6TnR66WKLBnSHre59onugxhpDLT2nofRYzxf+izDFQ==
 
 "@types/formidable@^3.4.5":
   version "3.4.5"
