@@ -15,7 +15,7 @@ const Tab = ({ nav, isActivated }: TabProps) => {
     <ListItem key={nav.label}>
       <Link key={nav.label} href={{ pathname: nav.pathname, query: nav.query }}>
         <Flex
-          bgColor={isActivated ? bgColor : "transparent"}
+          bgColor={isActivated ? bgColor(50) : "transparent"}
           align={"center"}
           p={4}
           gap={4}

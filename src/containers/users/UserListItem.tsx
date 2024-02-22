@@ -42,7 +42,7 @@ const UserListItem = ({ data: user }: UserListItemProps) => {
       direction={"row"}
       onClick={handleClick}
       cursor={"pointer"}
-      _hover={{ backgroundColor: bgColor }}
+      _hover={{ backgroundColor: bgColor(50) }}
     >
       <Flex flex={1} direction={"column"}>
         <CardHeader>

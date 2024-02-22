@@ -21,7 +21,7 @@ const UserProfileInput = ({ preview, onChange }: UserProfileInputProps) => {
         overflow: "hidden",
         width: 40,
         height: 40,
-        bgColor: bgColor,
+        bgColor: bgColor(50),
         borderRadius: "full",
         cursor: "pointer",
         _hover: { opacity: 0.5 },

@@ -18,7 +18,7 @@ const DataTableBody = <T,>({ table, onRowClick }: DataTableBodyProps<T>) => {
           onClick={() => onRowClick?.(row)}
           _hover={{
             cursor: onRowClick ? "pointer" : "default",
-            bgColor: onRowClick ? bgColor : undefined,
+            bgColor: onRowClick ? bgColor(50) : undefined,
           }}
         >
           {row.getVisibleCells().map((cell) => (

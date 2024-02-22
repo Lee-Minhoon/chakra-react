@@ -30,7 +30,7 @@ const PostListItem = ({ data: post }: PostListItemProps) => {
       direction={"row"}
       onClick={handleClick}
       cursor={"pointer"}
-      _hover={{ backgroundColor: bgColor }}
+      _hover={{ backgroundColor: bgColor(50) }}
     >
       <Flex flex={1} direction={"column"}>
         <CardHeader>

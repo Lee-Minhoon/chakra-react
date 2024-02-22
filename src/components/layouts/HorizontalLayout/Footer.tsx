@@ -14,7 +14,7 @@ const Footer = () => {
       mt={10}
       pt={10}
       pb={20}
-      bgColor={bgColor}
+      bgColor={bgColor(50)}
     >
       <Flex direction={"column"} w={1280} gap={4}>
         <Flex gap={4}>
