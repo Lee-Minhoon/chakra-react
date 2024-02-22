@@ -26,9 +26,8 @@ export enum PageRoutes {
 }
 
 export enum ViewQueries {
-  Page = "page",
-  CursorButton = "cursorButton",
-  CursorObserver = "cursorObserver",
+  Table = "table",
+  List = "list",
 }
 
 export interface Nav {
@@ -45,7 +44,7 @@ export const navs: Nav[] = [
     label: "Users",
     pathname: PageRoutes.Users,
     query: {
-      view: ViewQueries.Page,
+      view: ViewQueries.Table,
       page: 1,
       limit: 10,
       sort: "id",
@@ -66,7 +65,7 @@ export const navs: Nav[] = [
     label: "Posts",
     pathname: PageRoutes.Posts,
     query: {
-      view: ViewQueries.Page,
+      view: ViewQueries.Table,
       page: 1,
       limit: 10,
       sort: "id",

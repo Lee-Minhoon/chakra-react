@@ -1,13 +1,14 @@
 import { ViewQueries } from "@/constants";
 import { useSafePush } from "@/hooks";
+import { capitalize } from "@/utils";
 import { Select } from "@chakra-ui/react";
 import { useMemo } from "react";
 
 const options = [
   {
-    label: "Page",
+    label: capitalize(ViewQueries.Table),
     query: {
-      view: ViewQueries.Page,
+      view: ViewQueries.Table,
       page: 1,
       limit: 10,
       sort: "id",
@@ -15,18 +16,9 @@ const options = [
     },
   },
   {
-    label: "Cursor(Button)",
+    label: capitalize(ViewQueries.List),
     query: {
-      view: ViewQueries.CursorButton,
-      limit: 10,
-      sort: "id",
-      order: "desc",
-    },
-  },
-  {
-    label: "Cursor(Observer)",
-    query: {
-      view: ViewQueries.CursorObserver,
+      view: ViewQueries.List,
       limit: 10,
       sort: "id",
       order: "desc",

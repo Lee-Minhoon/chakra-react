@@ -14,15 +14,10 @@ const UsersPage = () => {
 
   const display = useMemo(() => {
     switch (viewOption) {
-      case ViewQueries.Page:
+      case ViewQueries.Table:
         return <UsersByPage />;
-      case ViewQueries.CursorButton:
-      case ViewQueries.CursorObserver:
-        return (
-          <UsersByCursor
-            usesObserver={viewOption === ViewQueries.CursorObserver}
-          />
-        );
+      case ViewQueries.List:
+        return <UsersByCursor usesObserver />;
       default:
         return null;
     }

@@ -57,14 +57,13 @@ const InfiniteList = <T extends Scheme>({
         renderItem={renderItem}
         onLastItemVisible={handleLastItemVisible}
       />
-      {!usesObserver && !isFetchingNextPage && (
+      {!isFetchingNextPage ? (
         <Center>
           <Button onClick={() => fetchNextPage()} isDisabled={!hasNextPage}>
             Load More
           </Button>
         </Center>
-      )}
-      {isFetchingNextPage && (
+      ) : (
         <Center minH={10}>
           <Spinner color={"primary.500"} />
         </Center>

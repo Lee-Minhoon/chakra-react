@@ -15,15 +15,10 @@ const PostsAllPage = () => {
 
   const display = useMemo(() => {
     switch (viewOption) {
-      case ViewQueries.Page:
+      case ViewQueries.Table:
         return <PostsByPage />;
-      case ViewQueries.CursorButton:
-      case ViewQueries.CursorObserver:
-        return (
-          <PostsByCursor
-            usesObserver={viewOption === ViewQueries.CursorObserver}
-          />
-        );
+      case ViewQueries.List:
+        return <PostsByCursor usesObserver />;
       default:
         return null;
     }
