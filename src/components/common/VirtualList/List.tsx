@@ -2,27 +2,19 @@ import { UnorderedList } from "@chakra-ui/react";
 
 interface VirtualListListProps {
   children: React.ReactNode;
-  height: React.CSSProperties["height"];
-  hasScroll?: boolean;
+  translateY: number;
 }
 
-const margin = 0.125;
-
-const VirtualListList = ({
-  children,
-  height,
-  hasScroll,
-}: VirtualListListProps) => {
+const VirtualListList = ({ children, translateY }: VirtualListListProps) => {
   return (
     <UnorderedList
-      pos={"relative"}
+      pos={"absolute"}
+      w={"100%"}
       display={"flex"}
       flexDirection={"column"}
       listStyleType={"none"}
-      minH={height}
-      m={`${margin}rem`}
-      mr={hasScroll ? 2 : 0.5}
-      gap={"1rem"}
+      m={0}
+      transform={`translateY(${translateY}px)`}
     >
       {children}
     </UnorderedList>
