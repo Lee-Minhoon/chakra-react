@@ -37,8 +37,10 @@ const VirtualListBase = <T extends Scheme>({
     }
   }, [items.length, lastItem, onLastItemVisible]);
 
-  const translateY =
-    virtualItems[0]?.start - rowVirtualizer.options.scrollMargin;
+  const translateY = useMemo(
+    () => virtualItems[0]?.start - rowVirtualizer.options.scrollMargin,
+    [virtualItems, rowVirtualizer.options.scrollMargin]
+  );
 
   return (
     <Flex
