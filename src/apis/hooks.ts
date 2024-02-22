@@ -190,7 +190,7 @@ export const useUpdateInList = <
   TNew extends object & { id?: ID },
   TRes = unknown,
 >(
-  url: string,
+  url: UrlBuilder<TNew>,
   params?: object,
   options?: MutationOptions<TRes, TNew>,
   updater?: (old: TOld, data: TNew) => TOld
@@ -198,7 +198,11 @@ export const useUpdateInList = <
   return useMutation<TOld, TNew, ApiResponse<TRes>>(
     (data) => {
       const { id, ...rest } = data;
-      return api.put<ApiResponse<TRes>>(id ? `${url}/${id}` : url, rest);
+      const builtUrl = buildUrl(url, data);
+      return api.put<ApiResponse<TRes>>(
+        id ? `${builtUrl}/${id}` : builtUrl,
+        rest
+      );
     },
     options,
     [url, params],
@@ -257,10 +261,7 @@ export const usePostForm = <TOld, TNew extends FormData, TRes = unknown>(
   updater?: (old: TOld, data: TNew) => TOld
 ) => {
   return useMutation<TOld, TNew, ApiResponse<TRes>>(
-    (data) =>
-      data
-        ? api.postForm<ApiResponse<TRes>>(buildUrl(url, data), data)
-        : api.postForm<ApiResponse<TRes>>(buildUrl(url, data)),
+    (data) => api.postForm<ApiResponse<TRes>>(buildUrl(url, data), data),
     options,
     [url, params],
     updater
