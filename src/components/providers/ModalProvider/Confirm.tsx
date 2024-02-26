@@ -10,9 +10,11 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 const Confirm = () => {
   const { confirm, closeConfirm } = useModalStore(["confirm", "closeConfirm"]);
+  const { t } = useTranslation();
 
   const handleConfirm = useCallback(() => {
     confirm?.onConfirm && confirm.onConfirm();
@@ -28,10 +30,10 @@ const Confirm = () => {
         <ModalBody>{confirm?.content}</ModalBody>
         <ModalFooter>
           <Button mr={3} onClick={closeConfirm}>
-            Close
+            {t("Close")}
           </Button>
           <Button variant="ghost" onClick={handleConfirm}>
-            Confirm
+            {t("Confirm")}
           </Button>
         </ModalFooter>
       </ModalContent>

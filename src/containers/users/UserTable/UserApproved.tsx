@@ -1,6 +1,7 @@
 import { User } from "@/apis";
 import { Flex, IconButton, Tooltip } from "@chakra-ui/react";
 import { MouseEventHandler } from "react";
+import { useTranslation } from "react-i18next";
 import { TbCheck } from "react-icons/tb";
 
 interface UserApprovedProps {
@@ -9,12 +10,14 @@ interface UserApprovedProps {
 }
 
 const UserApproved = ({ approved, onApprove }: UserApprovedProps) => {
+  const { t } = useTranslation();
+
   return (
     <Flex>
       {approved ? (
-        "Approved"
+        t("Approved")
       ) : (
-        <Tooltip hasArrow label={"Approve User"}>
+        <Tooltip hasArrow label={t("Approve User")}>
           <IconButton
             aria-label="approve"
             icon={<TbCheck />}

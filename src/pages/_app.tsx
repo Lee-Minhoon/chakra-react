@@ -4,6 +4,7 @@ import {
   ChakraProvider,
   LayoutProvider,
   ModalProvider,
+  Translator,
 } from "@/components";
 import { modalStore } from "@/stores";
 import { createStandaloneToast } from "@chakra-ui/react";
@@ -64,11 +65,13 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
       <ChakraProvider>
-        <Authenticator />
-        <ModalProvider />
-        <LayoutProvider>
-          <Component {...pageProps} />
-        </LayoutProvider>
+        <Translator>
+          <Authenticator />
+          <ModalProvider />
+          <LayoutProvider>
+            <Component {...pageProps} />
+          </LayoutProvider>
+        </Translator>
       </ChakraProvider>
     </QueryClientProvider>
   );

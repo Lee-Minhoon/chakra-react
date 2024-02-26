@@ -1,7 +1,7 @@
 import { User } from "@/apis";
 import { WithLabel } from "@/components";
+import { useFormatDate } from "@/hooks";
 import { useModalStore } from "@/stores";
-import { formatISO } from "@/utils";
 import {
   Avatar,
   Box,
@@ -17,6 +17,7 @@ import {
   StackDivider,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { TbEdit } from "react-icons/tb";
 import UserUpdateModal from "./UserUpdateModal";
 
@@ -26,22 +27,24 @@ interface UserCardProps {
 
 const UserCard = ({ data: user }: UserCardProps) => {
   const { openModal } = useModalStore(["openModal"]);
+  const { t } = useTranslation();
+  const formatDate = useFormatDate();
 
   const attributes = useMemo(
     () => [
-      { label: "Approved", value: user?.approved ? "Yes" : "No" },
-      { label: "Email", value: user?.email ?? "Email" },
-      { label: "Phone", value: user?.phone ?? "Phone" },
+      { label: t("Approval Status"), value: user?.approved ? "Yes" : "No" },
+      { label: t("Email"), value: user?.email ?? "Email" },
+      { label: t("Phone"), value: user?.phone ?? "Phone" },
       {
-        label: "Created At",
-        value: user?.createdAt ? formatISO(user.createdAt) : "Created At",
+        label: t("Created At"),
+        value: user?.createdAt ? formatDate(user.createdAt) : "Created At",
       },
       {
-        label: "Updated At",
-        value: user?.updatedAt ? formatISO(user.updatedAt) : "Updated At",
+        label: t("Updated At"),
+        value: user?.updatedAt ? formatDate(user.updatedAt) : "Updated At",
       },
     ],
-    [user]
+    [formatDate, t, user]
   );
 
   return (
@@ -63,7 +66,7 @@ const UserCard = ({ data: user }: UserCardProps) => {
                   openModal(UserUpdateModal, { user });
                 }}
               >
-                Edit
+                {t("Edit")}
               </Button>
             </Flex>
           </Skeleton>

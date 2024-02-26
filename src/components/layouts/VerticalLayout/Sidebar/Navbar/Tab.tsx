@@ -2,6 +2,7 @@ import { Nav } from "@/constants";
 import useBgColor from "@/hooks/useBgColor";
 import { Center, Flex, Icon, ListItem, Text, Tooltip } from "@chakra-ui/react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 interface TabProps {
   nav: Nav;
@@ -9,6 +10,7 @@ interface TabProps {
 }
 
 const Tab = ({ nav, isActivated }: TabProps) => {
+  const { t } = useTranslation();
   const bgColor = useBgColor();
 
   return (
@@ -23,7 +25,7 @@ const Tab = ({ nav, isActivated }: TabProps) => {
         >
           <Tooltip
             hasArrow
-            label={nav.label}
+            label={t(nav.label)}
             display={{ base: "block", xl: "none" }}
           >
             <Center
@@ -40,7 +42,7 @@ const Tab = ({ nav, isActivated }: TabProps) => {
               />
             </Center>
           </Tooltip>
-          <Text display={{ base: "none", xl: "initial" }}>{nav.label}</Text>
+          <Text display={{ base: "none", xl: "initial" }}>{t(nav.label)}</Text>
         </Flex>
       </Link>
     </ListItem>

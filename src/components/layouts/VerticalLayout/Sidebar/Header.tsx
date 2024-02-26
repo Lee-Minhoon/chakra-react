@@ -1,4 +1,9 @@
-import { ColorMode, LayoutMode, Logo } from "@/components";
+import {
+  ColorToggler,
+  LanguageToggler,
+  LayoutToggler,
+  Logo,
+} from "@/components";
 import { PageRoutes } from "@/constants";
 import { useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
@@ -23,8 +28,9 @@ const SidebarHeader = () => {
         </Tooltip>
       </Box>
       <Flex gap={4} direction={{ base: "column", xl: "row" }}>
-        <LayoutMode />
-        <ColorMode />
+        <LayoutToggler />
+        <ColorToggler />
+        <LanguageToggler />
       </Flex>
     </Center>
   );

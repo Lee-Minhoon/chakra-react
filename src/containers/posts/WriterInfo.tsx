@@ -1,8 +1,9 @@
 import { Post } from "@/apis";
 import { PageRoutes } from "@/constants";
-import { useSafePush } from "@/hooks";
-import { formatISO, toUrl } from "@/utils";
+import { useFormatDate, useSafePush } from "@/hooks";
+import { toUrl } from "@/utils";
 import { Avatar, Flex, Text } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 interface WriterInfoProps {
   post?: Post;
@@ -10,6 +11,8 @@ interface WriterInfoProps {
 
 const WriterInfo = ({ post }: WriterInfoProps) => {
   const { push } = useSafePush();
+  const formatDate = useFormatDate();
+  const { t } = useTranslation();
 
   const user = post?.user;
 
@@ -30,14 +33,14 @@ const WriterInfo = ({ post }: WriterInfoProps) => {
       />
       <Flex direction={"column"} gap={2}>
         {user ? (
-          <Text>{`${user.name ?? "User Name"} (${
-            user.email ?? "User Email"
+          <Text>{`${user.name ?? t("User Name")} (${
+            user.email ?? t("User Email")
           })`}</Text>
         ) : (
-          <Text>Deleted User</Text>
+          <Text>{t("Deleted User")}</Text>
         )}
         <Text>
-          {post?.createdAt ? formatISO(post?.createdAt) : "Created At"}
+          {post?.createdAt ? formatDate(post?.createdAt) : t("Created At")}
         </Text>
       </Flex>
     </Flex>

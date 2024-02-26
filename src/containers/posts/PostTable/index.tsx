@@ -1,14 +1,15 @@
 import { Post } from "@/apis";
 import { DataTable } from "@/components";
 import { PageRoutes } from "@/constants";
-import { useSafePush } from "@/hooks";
-import { formatISO, toUrl } from "@/utils";
+import { useFormatDate, useSafePush } from "@/hooks";
+import { toUrl } from "@/utils";
 import {
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import PostWriter from "./PostWriter";
 
 const columnHelper = createColumnHelper<Post>();
@@ -19,27 +20,37 @@ interface PostTableProps {
 }
 
 const PostTable = ({ posts, isLoading }: PostTableProps) => {
+  const { t } = useTranslation();
   const { push } = useSafePush();
+  const formatDate = useFormatDate();
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor("id", { meta: { sortable: true } }),
+      columnHelper.accessor("id", {
+        header: t("ID"),
+        meta: { sortable: true },
+      }),
       columnHelper.accessor("user", {
-        header: "writer",
+        header: t("Writer"),
         cell: (context) => <PostWriter writer={context.renderValue()!} />,
         meta: { sortable: true },
       }),
-      columnHelper.accessor("title", { meta: { sortable: true } }),
-      columnHelper.accessor("createdAt", {
+      columnHelper.accessor("title", {
+        header: t("Title"),
         meta: { sortable: true },
-        cell: (context) => formatISO(context.renderValue()!),
+      }),
+      columnHelper.accessor("createdAt", {
+        header: t("Created At"),
+        cell: (context) => formatDate(context.renderValue()!),
+        meta: { sortable: true },
       }),
       columnHelper.accessor("updatedAt", {
+        header: t("Updated At"),
+        cell: (context) => formatDate(context.renderValue()!),
         meta: { sortable: true },
-        cell: (context) => formatISO(context.renderValue()!),
       }),
     ],
-    []
+    [formatDate, t]
   );
 
   const table = useReactTable({

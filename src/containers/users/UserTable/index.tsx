@@ -2,15 +2,16 @@ import { User, useApproveUser, useDeleteUser } from "@/apis";
 import { DataTable } from "@/components";
 import { ApiRoutes, PageRoutes } from "@/constants";
 import { UserUpdateModal } from "@/containers";
-import { useQueryKeyParams, useSafePush } from "@/hooks";
+import { useFormatDate, useQueryKeyParams, useSafePush } from "@/hooks";
 import { useModalStore } from "@/stores";
-import { formatISO, toUrl } from "@/utils";
+import { toUrl } from "@/utils";
 import {
   createColumnHelper,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import UserActions from "./UserActions";
 import UserApproved from "./UserApproved";
 import UserName from "./UserName";
@@ -26,6 +27,8 @@ const UserTable = ({ users, isLoading }: UsersTableProps) => {
   const { openModal } = useModalStore(["openModal"]);
   const { openConfirm } = useModalStore(["openConfirm"]);
   const { push } = useSafePush();
+  const { t } = useTranslation();
+  const formatDate = useFormatDate();
   const queryKeyParams = useQueryKeyParams(toUrl(ApiRoutes.User));
   const { mutate: deleteUser } = useDeleteUser(queryKeyParams);
   const { mutate: approveUser } = useApproveUser(queryKeyParams);
@@ -62,8 +65,12 @@ const UserTable = ({ users, isLoading }: UsersTableProps) => {
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor("id", { meta: { sortable: true } }),
+      columnHelper.accessor("id", {
+        header: t("ID"),
+        meta: { sortable: true },
+      }),
       columnHelper.accessor("name", {
+        header: t("User Name"),
         cell: (context) => (
           <UserName
             name={context.row.original.name}
@@ -72,9 +79,18 @@ const UserTable = ({ users, isLoading }: UsersTableProps) => {
         ),
         meta: { sortable: true },
       }),
-      columnHelper.accessor("email", { meta: { sortable: true } }),
-      columnHelper.accessor("phone", { meta: { sortable: true } }),
+      columnHelper.accessor("email", {
+        header: t("Email"),
+        meta: {
+          sortable: true,
+        },
+      }),
+      columnHelper.accessor("phone", {
+        header: t("Phone"),
+        meta: { sortable: true },
+      }),
       columnHelper.accessor("approved", {
+        header: t("Approval Status"),
         cell: (context) => (
           <UserApproved
             approved={context.row.original.approved}
@@ -87,16 +103,18 @@ const UserTable = ({ users, isLoading }: UsersTableProps) => {
         meta: { sortable: true },
       }),
       columnHelper.accessor("createdAt", {
+        header: t("Created At"),
+        cell: (context) => formatDate(context.renderValue()!),
         meta: { sortable: true },
-        cell: (context) => formatISO(context.renderValue()!),
       }),
       columnHelper.accessor("updatedAt", {
+        header: t("Updated At"),
+        cell: (context) => formatDate(context.renderValue()!),
         meta: { sortable: true },
-        cell: (context) => formatISO(context.renderValue()!),
       }),
       columnHelper.display({
         id: "actions",
-        header: "Actions",
+        header: t("Actions"),
         cell: (context) => (
           <UserActions
             onUpdate={(e) => {
@@ -111,7 +129,7 @@ const UserTable = ({ users, isLoading }: UsersTableProps) => {
         ),
       }),
     ],
-    [handleApprove, handleDelete, handleUpdate]
+    [formatDate, handleApprove, handleDelete, handleUpdate, t]
   );
 
   const table = useReactTable({

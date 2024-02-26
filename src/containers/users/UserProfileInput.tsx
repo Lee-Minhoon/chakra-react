@@ -3,6 +3,7 @@ import { useBgColor } from "@/hooks";
 import { Box, Center, Icon } from "@chakra-ui/react";
 import Image from "next/image";
 import { useMemo, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { PiPlusThin } from "react-icons/pi";
 
 interface UserProfileInputProps {
@@ -12,6 +13,7 @@ interface UserProfileInputProps {
 
 const UserProfileInput = ({ preview, onChange }: UserProfileInputProps) => {
   const bgColor = useBgColor();
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const wrapperProps = useMemo(
@@ -31,7 +33,7 @@ const UserProfileInput = ({ preview, onChange }: UserProfileInputProps) => {
   );
 
   return (
-    <WithFormLabel label={"Profile"}>
+    <WithFormLabel label={t("Profile")}>
       <FileInput ref={inputRef} onChange={onChange} />
       <Center>
         {preview ? (

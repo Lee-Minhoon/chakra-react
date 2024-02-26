@@ -11,11 +11,13 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { RiLoginBoxLine, RiLogoutBoxRLine } from "react-icons/ri";
+import { useTranslation } from "react-i18next";
 
 const SidebarFooter = () => {
   const { push } = useSafePush();
   const { data: me } = useGetMe();
   const { mutate: signout } = useSignout();
+  const { t } = useTranslation();
 
   return (
     <Center as={"footer"} mt={"auto"} gap={4} py={4}>
@@ -27,12 +29,12 @@ const SidebarFooter = () => {
             overflow={"hidden"}
             textOverflow={"ellipsis"}
           >
-            {`Welcome `}
+            {`${t("Welcome")} `}
             <Text as={"b"} color={"primary.500"}>
               {me?.name}
             </Text>
           </Text>
-          <Tooltip hasArrow label={"Sign Out"}>
+          <Tooltip hasArrow label={t("Sign Out")}>
             <IconButton aria-label="signout" onClick={() => signout()}>
               <Icon as={RiLogoutBoxRLine} />
             </IconButton>
@@ -40,8 +42,10 @@ const SidebarFooter = () => {
         </Flex>
       ) : (
         <>
-          <Text display={{ base: "none", xl: "block" }}>Not Signed In</Text>
-          <Tooltip hasArrow label={"Sign In"}>
+          <Text display={{ base: "none", xl: "block" }}>
+            {t("Not Signed In")}
+          </Text>
+          <Tooltip hasArrow label={t("Sign In")}>
             <IconButton
               aria-label="signin"
               onClick={() => push(toUrl(PageRoutes.Signin))}

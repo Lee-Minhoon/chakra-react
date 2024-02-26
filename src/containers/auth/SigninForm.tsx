@@ -6,11 +6,13 @@ import { toUrl } from "@/utils";
 import { Box, Button, Card, Input } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 const SigninForm = () => {
   const { router, push } = useSafePush();
   const { register, handleSubmit } = useForm<AuthSignin>();
   const { mutate: signin } = useSignin();
+  const { t } = useTranslation();
 
   return (
     <Card direction={"column"} gap={4} p={8}>
@@ -33,10 +35,10 @@ const SigninForm = () => {
           )
         )}
       >
-        <WithFormLabel label={"Email"}>
+        <WithFormLabel label={t("Email")}>
           <Input {...register("email")} />
         </WithFormLabel>
-        <Button type={"submit"}>Sign In</Button>
+        <Button type={"submit"}>{t("Sign In")}</Button>
       </Box>
     </Card>
   );

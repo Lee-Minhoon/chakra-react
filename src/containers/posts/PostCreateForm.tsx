@@ -7,6 +7,7 @@ import { toUrl } from "@/utils";
 import { Button, Flex } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 const PostCreateForm = () => {
   const { push } = useSafePush();
@@ -17,6 +18,7 @@ const PostCreateForm = () => {
     },
   });
   const { mutate: createPost, isLoading } = useCreatePost();
+  const { t } = useTranslation();
 
   return (
     <Flex
@@ -38,12 +40,12 @@ const PostCreateForm = () => {
         fieldType={"string"}
         {...register("title")}
         isRequired
-        label={"Title"}
-        placeholder="Title"
+        label={t("Title")}
+        placeholder={t("Title")}
       />
       <FormField fieldType={"document"} name={"content"} control={control} />
       <Button type={"submit"} isDisabled={isLoading} alignSelf={"flex-end"}>
-        Submit
+        {t("Submit")}
       </Button>
     </Flex>
   );

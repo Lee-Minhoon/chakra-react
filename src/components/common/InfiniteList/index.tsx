@@ -11,6 +11,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { VirtualList, WindowVirtualList } from "../VirtualList";
 
 interface InfiniteListProps<T extends Scheme> {
@@ -29,6 +30,7 @@ const InfiniteList = <T extends Scheme>({
     infiniteQuery;
   const containerRef = useRef<HTMLDivElement>(null);
   const [container, setContainer] = useState<Nullable<HTMLDivElement>>(null);
+  const { t } = useTranslation();
 
   const items = useMemo(() => {
     return (data?.pages ?? []).map((page) => page.data).flat();
@@ -60,7 +62,7 @@ const InfiniteList = <T extends Scheme>({
       {!isFetchingNextPage ? (
         <Center>
           <Button onClick={() => fetchNextPage()} isDisabled={!hasNextPage}>
-            Load More
+            {t("Load More")}
           </Button>
         </Center>
       ) : (

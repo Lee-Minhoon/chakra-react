@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import UserFormFields from "./UserFormFields";
 import UserProfileInput from "./UserProfileInput";
 
@@ -35,6 +36,7 @@ const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
   const { mutate: upload } = useUpload();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState(user.profile ?? "");
+  const { t } = useTranslation();
 
   const mutate = useMemo(
     () => (!queryKeyParams ? updateUser : updateUserInList),
@@ -69,7 +71,7 @@ const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
           )
         )}
       >
-        <ModalHeader>Update User</ModalHeader>
+        <ModalHeader>{t("Update User")}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Flex direction={"column"} gap={4}>
@@ -88,10 +90,10 @@ const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
         </ModalBody>
         <ModalFooter>
           <Button mr={3} onClick={onClose}>
-            Close
+            {t("Close")}
           </Button>
           <Button variant="ghost" type={"submit"}>
-            Update User
+            {t("Update User")}
           </Button>
         </ModalFooter>
       </ModalContent>

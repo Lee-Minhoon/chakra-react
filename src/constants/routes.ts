@@ -25,6 +25,8 @@ export enum PageRoutes {
   EditPost = "/posts/:id/edit",
 }
 
+// t("Table")
+// t("List")
 export enum ViewQueries {
   Table = "table",
   List = "list",
@@ -39,6 +41,11 @@ export interface Nav {
   children?: Nav[];
 }
 
+// t("Users")
+// t("User Detail")
+// t("Posts")
+// t("Write Post")
+// t("Post Detail")
 export const navs: Nav[] = [
   {
     label: "Users",

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "i18n": "yarn i18next"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.2.0",
@@ -19,6 +20,8 @@
     "@tanstack/react-virtual": "^3.1.1",
     "formidable": "^3.5.1",
     "framer-motion": "^10.16.4",
+    "i18next": "^23.10.0",
+    "i18next-browser-languagedetector": "^7.2.0",
     "lodash-es": "^4.17.21",
     "next": "13.5.4",
     "path-to-regexp": "^6.2.1",
@@ -26,6 +29,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.47.0",
+    "react-i18next": "^14.0.5",
     "react-icons": "^4.12.0",
     "zustand": "^4.4.3"
   },
@@ -38,6 +42,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
+    "i18next-parser": "^8.12.0",
     "prettier": "^3.0.3",
     "type-fest": "^4.10.2",
     "typescript": "^5"

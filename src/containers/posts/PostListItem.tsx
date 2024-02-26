@@ -11,6 +11,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import WriterInfo from "./WriterInfo";
 
 interface PostListItemProps {
@@ -20,6 +21,7 @@ interface PostListItemProps {
 const PostListItem = ({ data: post }: PostListItemProps) => {
   const bgColor = useBgColor();
   const { push } = useSafePush();
+  const { t } = useTranslation();
 
   const handleClick = useCallback(() => {
     push(toUrl(PageRoutes.PostDetail, { id: post.id }));
@@ -38,7 +40,7 @@ const PostListItem = ({ data: post }: PostListItemProps) => {
         </CardHeader>
         <CardBody>
           <Heading mb={4} size={"md"}>
-            {post.title ?? "Name"}
+            {post.title ?? t("Title")}
           </Heading>
           <Box
             dangerouslySetInnerHTML={{ __html: post?.content ?? "Content" }}

@@ -3,6 +3,7 @@ import { useSafePush } from "@/hooks";
 import { capitalize } from "@/utils";
 import { Select } from "@chakra-ui/react";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 const options = [
   {
@@ -28,6 +29,7 @@ const options = [
 
 const ViewOptions = () => {
   const { router, push } = useSafePush();
+  const { t } = useTranslation();
 
   const selectedIdx = useMemo(() => {
     return options.findIndex(
@@ -47,7 +49,7 @@ const ViewOptions = () => {
     >
       {options.map((option, idx) => (
         <option key={option.label} value={idx}>
-          {option.label}
+          {t(option.label)}
         </option>
       ))}
     </Select>

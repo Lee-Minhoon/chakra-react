@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import UserFormFields from "./UserFormFields";
 import UserProfileInput from "./UserProfileInput";
 
@@ -26,6 +27,7 @@ const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
   const { mutate: upload } = useUpload();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState("");
+  const { t } = useTranslation();
 
   return (
     <Modal isOpen onClose={onClose}>
@@ -51,7 +53,7 @@ const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
           )
         )}
       >
-        <ModalHeader>Create User</ModalHeader>
+        <ModalHeader>{t("Create User")}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Flex direction={"column"} gap={4}>
@@ -70,10 +72,10 @@ const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
         </ModalBody>
         <ModalFooter>
           <Button mr={3} onClick={onClose}>
-            Close
+            {t("Close")}
           </Button>
           <Button variant="ghost" type={"submit"}>
-            Create User
+            {t("Create User")}
           </Button>
         </ModalFooter>
       </ModalContent>

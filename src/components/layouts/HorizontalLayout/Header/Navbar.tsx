@@ -3,9 +3,11 @@ import { Tab, TabList, Tabs } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const hierarchy = useMemo(
     () => findNavInHierarchy(router.pathname),
@@ -24,7 +26,7 @@ const Navbar = () => {
             key={nav.label}
             href={{ pathname: nav.pathname, query: nav.query }}
           >
-            <Tab>{nav.label}</Tab>
+            <Tab>{t(nav.label)}</Tab>
           </Link>
         ))}
       </TabList>

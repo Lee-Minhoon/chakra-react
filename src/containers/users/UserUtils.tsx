@@ -3,6 +3,7 @@ import { useModalStore } from "@/stores";
 import { getRandomPhoneNumber, getRandomString } from "@/utils";
 import { Button, Flex, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { GrPowerReset } from "react-icons/gr";
 import { TbPlus } from "react-icons/tb";
 import { UserCreateModal } from ".";
@@ -16,6 +17,7 @@ const UsersUtils = () => {
     useCreateTestUsers(count);
   const { mutate: resetTestUsers, isLoading: restTestUsersIsLoading } =
     useResetTestUsers();
+  const { t } = useTranslation();
 
   const handleCreateUser = useCallback(() => {
     openModal(UserCreateModal, {});
@@ -39,38 +41,38 @@ const UsersUtils = () => {
 
   return (
     <Flex gap={4}>
-      <Tooltip hasArrow label={"Create User"}>
+      <Tooltip hasArrow label={t("Create User")}>
         <Button leftIcon={<TbPlus />} onClick={handleCreateUser}>
-          User
+          {t("User")}
         </Button>
       </Tooltip>
-      <Tooltip hasArrow label={"Create Random User"}>
+      <Tooltip hasArrow label={t("Create Random User")}>
         <Button
           variant={"outline"}
           leftIcon={<TbPlus />}
           onClick={handleCreateRandomUser}
         >
-          Random User
+          {t("Random User")}
         </Button>
       </Tooltip>
-      <Tooltip hasArrow label={`Create ${count} Users for Test`}>
+      <Tooltip hasArrow label={t("Create Users for Test", { count })}>
         <Button
           variant={"outline"}
           leftIcon={<TbPlus />}
           onClick={handleCreateTestUsers}
           isDisabled={createTestUsersIsLoading}
         >
-          {`${count} Users`}
+          {`${count} ${t("Users")}`}
         </Button>
       </Tooltip>
-      <Tooltip hasArrow label={"Reset All Users"}>
+      <Tooltip hasArrow label={t("Reset All Users")}>
         <Button
           variant={"outline"}
           leftIcon={<GrPowerReset />}
           onClick={handleResetTestUsers}
           isDisabled={restTestUsersIsLoading}
         >
-          Users
+          {t("Users")}
         </Button>
       </Tooltip>
     </Flex>

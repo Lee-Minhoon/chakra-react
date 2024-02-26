@@ -1,10 +1,11 @@
-export { default as ColorMode } from "./ColorMode";
+export { default as ColorToggler } from "./ColorToggler";
 export { default as DataTable } from "./DataTable";
 export { default as Editor } from "./Editor";
 export { default as FileInput } from "./FileInput";
 export { default as FormField } from "./FormField";
 export { default as InfiniteList } from "./InfiniteList";
-export { default as LayoutMode } from "./LayoutMode";
+export { default as LanguageToggler } from "./LanguageToggler";
+export { default as LayoutToggler } from "./LayoutToggler";
 export { default as Logo } from "./Logo";
 export { default as PageOptions } from "./PageOptions";
 export { default as Pagination } from "./Pagination";

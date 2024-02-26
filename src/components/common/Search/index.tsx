@@ -7,6 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { IoSearchOutline } from "react-icons/io5";
 
 interface SearchProps {
@@ -16,6 +17,7 @@ interface SearchProps {
 
 const Search = ({ onSubmit, placeholder }: SearchProps) => {
   const { register, handleSubmit } = useForm<{ search: string }>();
+  const { t } = useTranslation();
 
   return (
     <Box
@@ -26,7 +28,7 @@ const Search = ({ onSubmit, placeholder }: SearchProps) => {
     >
       <InputGroup>
         <Input
-          placeholder={placeholder ?? "Search..."}
+          placeholder={placeholder ?? t("Search")}
           {...register("search")}
         />
         <InputRightElement>

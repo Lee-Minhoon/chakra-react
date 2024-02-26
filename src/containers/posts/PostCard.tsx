@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { TbEdit } from "react-icons/tb";
 import WriterInfo from "./WriterInfo";
+import { useTranslation } from "react-i18next";
 
 interface PostCardProps {
   data?: Post;
@@ -25,6 +26,7 @@ const PostCard = ({ data: post }: PostCardProps) => {
   const { data: me } = useGetMe();
   const { mutate: deletePost } = useDeletePost();
   const { openConfirm } = useModalStore(["openConfirm"]);
+  const { t } = useTranslation();
 
   return (
     <Card>
@@ -40,15 +42,15 @@ const PostCard = ({ data: post }: PostCardProps) => {
                     push(toUrl(PageRoutes.EditPost, { id: post?.id }))
                   }
                 >
-                  Edit
+                  {t("Edit")}
                 </Button>
                 <Button
                   rightIcon={<TbEdit />}
                   onClick={() => {
                     if (!post?.id) return;
                     openConfirm({
-                      title: "Delete Post",
-                      content: "Are you sure you want to delete this post?",
+                      title: t("Delete Post"),
+                      content: t("Are you sure you want to delete this post?"),
                       onConfirm: () =>
                         deletePost(post?.id, {
                           onSuccess: () => push(toUrl(PageRoutes.Home)),
@@ -56,7 +58,7 @@ const PostCard = ({ data: post }: PostCardProps) => {
                     });
                   }}
                 >
-                  Delete
+                  {t("Delete")}
                 </Button>
               </Flex>
             )}
@@ -66,12 +68,12 @@ const PostCard = ({ data: post }: PostCardProps) => {
       <CardBody>
         <Skeleton isLoaded={!!post}>
           <Heading mb={4} size={"md"}>
-            {post?.title ?? "Title"}
+            {post?.title ?? t("Title")}
           </Heading>
         </Skeleton>
         <Skeleton isLoaded={!!post}>
           <Box
-            dangerouslySetInnerHTML={{ __html: post?.content ?? "Content" }}
+            dangerouslySetInnerHTML={{ __html: post?.content ?? t("Content") }}
           />
         </Skeleton>
       </CardBody>

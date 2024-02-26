@@ -9,6 +9,7 @@ import { useSafePush } from "@/hooks";
 import { getRandomString } from "@/utils";
 import { Button, Flex, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { GrPowerReset } from "react-icons/gr";
 import { TbPlus } from "react-icons/tb";
 
@@ -22,6 +23,7 @@ const PostsUtils = () => {
     useCreateTestPosts(count);
   const { mutate: resetTestPosts, isLoading: restTestPostsIsLoading } =
     useResetTestPosts();
+  const { t } = useTranslation();
 
   const handleCreatePost = useCallback(() => {
     push(PageRoutes.WritePost);
@@ -46,38 +48,38 @@ const PostsUtils = () => {
 
   return (
     <Flex gap={4}>
-      <Tooltip hasArrow label={"Create Post"}>
+      <Tooltip hasArrow label={t("Create Post")}>
         <Button leftIcon={<TbPlus />} onClick={handleCreatePost}>
-          Post
+          {t("Post")}
         </Button>
       </Tooltip>
-      <Tooltip hasArrow label={"Create Random Post"}>
+      <Tooltip hasArrow label={t("Create Random Post")}>
         <Button
           variant={"outline"}
           leftIcon={<TbPlus />}
           onClick={handleCreateRandomPost}
         >
-          Random Post
+          {t("Random Post")}
         </Button>
       </Tooltip>
-      <Tooltip hasArrow label={`Create ${count} Posts for Test`}>
+      <Tooltip hasArrow label={t("Create Posts for Test", { count })}>
         <Button
           variant={"outline"}
           leftIcon={<TbPlus />}
           onClick={handleCreateTestPosts}
           isDisabled={createTestPostsIsLoading}
         >
-          {`${count} Posts`}
+          {`${count} ${t("Posts")}`}
         </Button>
       </Tooltip>
-      <Tooltip hasArrow label={"Reset All Posts"}>
+      <Tooltip hasArrow label={t("Reset All Posts")}>
         <Button
           variant={"outline"}
           leftIcon={<GrPowerReset />}
           onClick={handleResetTestPosts}
           isDisabled={restTestPostsIsLoading}
         >
-          Posts
+          {t("Posts")}
         </Button>
       </Tooltip>
     </Flex>
