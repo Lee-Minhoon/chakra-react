@@ -11,9 +11,9 @@ import { toUrl } from "@/utils";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { RiLoginBoxLine, RiLogoutBoxRLine } from "react-icons/ri";
-import HorizontalLayoutNavbar from "./HorizontalLayoutNavbar";
+import VerticalLayoutNavbar from "./VerticalLayoutNavbar";
 
-const HorizontalLayoutHeader = () => {
+const VerticalLayoutHeader = () => {
   const { push } = useSafePush();
   const { data: me } = useGetMe();
   const { mutate: signout } = useSignout();
@@ -59,9 +59,9 @@ const HorizontalLayoutHeader = () => {
       <Box p={12}>
         <Logo onClick={() => push(toUrl(PageRoutes.Home))} />
       </Box>
-      <HorizontalLayoutNavbar />
+      <VerticalLayoutNavbar />
     </Box>
   );
 };
 
-export default HorizontalLayoutHeader;
+export default VerticalLayoutHeader;

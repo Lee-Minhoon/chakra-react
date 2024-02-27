@@ -1,6 +1,6 @@
-import { Flex } from "@chakra-ui/react";
-import { VerticalLayoutSidebar } from "./Sidebar";
-import VerticalLayoutHeader from "./VerticalLayoutHeader";
+import { Box, Flex } from "@chakra-ui/react";
+import VerticalLayoutHeader from "./Header/VerticalLayoutHeader";
+import VerticalLayoutFooter from "./VerticalLayoutFooter";
 
 interface VerticalLayoutProps {
   children?: React.ReactNode;
@@ -8,21 +8,12 @@ interface VerticalLayoutProps {
 
 const VerticalLayout = ({ children }: VerticalLayoutProps) => {
   return (
-    <Flex>
-      <VerticalLayoutSidebar />
-      <Flex
-        flex={1}
-        direction={"column"}
-        p={8}
-        gap={4}
-        maxH={"100vh"}
-        overflow={"hidden"}
-      >
-        <VerticalLayoutHeader />
-        <Flex as={"main"} flex={1} direction={"column"} overflow={"hidden"}>
-          {children}
-        </Flex>
-      </Flex>
+    <Flex direction={"column"} align={"center"}>
+      <VerticalLayoutHeader />
+      <Box as={"main"} w={1280}>
+        {children}
+      </Box>
+      <VerticalLayoutFooter />
     </Flex>
   );
 };

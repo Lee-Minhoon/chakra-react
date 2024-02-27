@@ -4,15 +4,15 @@ import { Center, Flex, Icon, ListItem, Text, Tooltip } from "@chakra-ui/react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
-interface VerticalLayoutNavbarTabProps {
+interface HorizontalLayoutNavbarTabProps {
   nav: Nav;
   isActivated: boolean;
 }
 
-const VerticalLayoutNavbarTab = ({
+const HorizontalLayoutNavbarTab = ({
   nav,
   isActivated,
-}: VerticalLayoutNavbarTabProps) => {
+}: HorizontalLayoutNavbarTabProps) => {
   const { t } = useTranslation();
   const bgColor = useBgColor();
 
@@ -52,4 +52,4 @@ const VerticalLayoutNavbarTab = ({
   );
 };
 
-export default VerticalLayoutNavbarTab;
+export default HorizontalLayoutNavbarTab;

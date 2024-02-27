@@ -3,7 +3,7 @@ import useBgColor from "@/hooks/useBgColor";
 import { Divider, Flex, Link, Text, Tooltip } from "@chakra-ui/react";
 import { Fragment } from "react";
 
-const HorizontalLayoutFooter = () => {
+const VerticalLayoutFooter = () => {
   const bgColor = useBgColor();
 
   return (
@@ -48,4 +48,4 @@ const HorizontalLayoutFooter = () => {
   );
 };
 
-export default HorizontalLayoutFooter;
+export default VerticalLayoutFooter;

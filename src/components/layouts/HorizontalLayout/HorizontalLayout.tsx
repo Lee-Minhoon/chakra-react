@@ -1,6 +1,6 @@
-import { Box, Flex } from "@chakra-ui/react";
-import HorizontalLayoutFooter from "./HorizontalLayoutFooter";
-import HorizontalLayoutHeader from "./Header/HorizontalLayoutHeader";
+import { Flex } from "@chakra-ui/react";
+import HorizontalLayoutHeader from "./HorizontalLayoutHeader";
+import { HorizontalLayoutSidebar } from "./Sidebar";
 
 interface HorizontalLayoutProps {
   children?: React.ReactNode;
@@ -8,12 +8,21 @@ interface HorizontalLayoutProps {
 
 const HorizontalLayout = ({ children }: HorizontalLayoutProps) => {
   return (
-    <Flex direction={"column"} align={"center"}>
-      <HorizontalLayoutHeader />
-      <Box as={"main"} w={1280}>
-        {children}
-      </Box>
-      <HorizontalLayoutFooter />
+    <Flex>
+      <HorizontalLayoutSidebar />
+      <Flex
+        flex={1}
+        direction={"column"}
+        p={8}
+        gap={4}
+        maxH={"100vh"}
+        overflow={"hidden"}
+      >
+        <HorizontalLayoutHeader />
+        <Flex as={"main"} flex={1} direction={"column"} overflow={"hidden"}>
+          {children}
+        </Flex>
+      </Flex>
     </Flex>
   );
 };

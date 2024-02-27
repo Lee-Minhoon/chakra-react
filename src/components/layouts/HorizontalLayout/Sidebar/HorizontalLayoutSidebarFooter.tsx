@@ -13,7 +13,7 @@ import {
 import { RiLoginBoxLine, RiLogoutBoxRLine } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
 
-const VerticalLayoutSidebarFooter = () => {
+const HorizontalLayoutSidebarFooter = () => {
   const { push } = useSafePush();
   const { data: me } = useGetMe();
   const { mutate: signout } = useSignout();
@@ -59,4 +59,4 @@ const VerticalLayoutSidebarFooter = () => {
   );
 };
 
-export default VerticalLayoutSidebarFooter;
+export default HorizontalLayoutSidebarFooter;

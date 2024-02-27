@@ -1,10 +1,10 @@
 import useBgColor from "@/hooks/useBgColor";
 import { Box, Divider } from "@chakra-ui/react";
-import { VerticalLayoutNavbar } from "./Navbar";
-import VerticalLayoutSidebarFooter from "./VerticalLayoutSidebarFooter";
-import VerticalLayoutSidebarHeader from "./VerticalLayoutSidebarHeader";
+import HorizontalLayoutSidebarFooter from "./HorizontalLayoutSidebarFooter";
+import HorizontalLayoutSidebarHeader from "./HorizontalLayoutSidebarHeader";
+import { HorizontalLayoutNavbar } from "./Navbar";
 
-const VerticalLayoutSidebar = () => {
+const HorizontalLayoutSidebar = () => {
   const bgColor = useBgColor();
 
   return (
@@ -19,12 +19,12 @@ const VerticalLayoutSidebar = () => {
       ml={{ base: -24, lg: 0 }}
       transition={"margin-left 0.3s ease-in-out"}
     >
-      <VerticalLayoutSidebarHeader />
+      <HorizontalLayoutSidebarHeader />
       <Divider />
-      <VerticalLayoutNavbar />
-      <VerticalLayoutSidebarFooter />
+      <HorizontalLayoutNavbar />
+      <HorizontalLayoutSidebarFooter />
     </Box>
   );
 };
 
-export default VerticalLayoutSidebar;
+export default HorizontalLayoutSidebar;
