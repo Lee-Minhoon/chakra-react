@@ -1,20 +1,20 @@
-import { Icon, IconButton, Tooltip, useColorMode } from "@chakra-ui/react";
+import { Icon, useColorMode } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { FiMoon, FiSun } from "react-icons/fi";
+import TogglerBase from "./Toggler.base";
 
 const ColorToggler = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { t } = useTranslation();
 
   return (
-    <Tooltip
-      hasArrow
+    <TogglerBase
+      ariaLabel={"Toggle color mode"}
       label={colorMode === "light" ? t("Dark Mode") : t("Light Mode")}
+      onToggle={toggleColorMode}
     >
-      <IconButton aria-label={"color"} onClick={toggleColorMode} size={"sm"}>
-        <Icon as={colorMode === "light" ? FiMoon : FiSun} />
-      </IconButton>
-    </Tooltip>
+      <Icon as={colorMode === "light" ? FiMoon : FiSun} />
+    </TogglerBase>
   );
 };
 

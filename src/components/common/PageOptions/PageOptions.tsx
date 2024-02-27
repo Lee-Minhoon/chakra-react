@@ -1,10 +1,10 @@
+import { useSafePush } from "@/hooks";
 import { Select } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 const PageOptions = () => {
-  const router = useRouter();
+  const { router, push } = useSafePush();
   const { t } = useTranslation();
 
   const options = useMemo(() => {
@@ -19,7 +19,7 @@ const PageOptions = () => {
       w={"fit-content"}
       value={router.query?.limit}
       onChange={(e) =>
-        router.push({ query: { ...router.query, limit: e.target.value } })
+        push({ query: { ...router.query, limit: e.target.value } })
       }
     >
       {options.map((option) => (

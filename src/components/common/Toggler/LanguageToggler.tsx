@@ -1,7 +1,8 @@
-import { Icon, IconButton, Tooltip } from "@chakra-ui/react";
+import { Icon } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { TbCircleLetterE, TbCircleLetterK } from "react-icons/tb";
+import TogglerBase from "./Toggler.base";
 
 const LanguageToggler = () => {
   const { i18n, t } = useTranslation();
@@ -11,23 +12,22 @@ const LanguageToggler = () => {
     [i18n]
   );
 
-  const handleClick = useCallback(() => {
+  const handleToggle = useCallback(() => {
     changeLanguage(i18n.language === "ko" ? "en" : "ko");
   }, [changeLanguage, i18n.language]);
 
   return (
-    <Tooltip
-      hasArrow
+    <TogglerBase
+      ariaLabel={"Toggle language"}
       label={i18n.language === "ko" ? t("English") : t("Korean")}
+      onToggle={handleToggle}
     >
-      <IconButton aria-label={"layout"} onClick={handleClick} size={"sm"}>
-        <Icon
-          as={i18n.language === "ko" ? TbCircleLetterE : TbCircleLetterK}
-          w={"5"}
-          h={"5"}
-        />
-      </IconButton>
-    </Tooltip>
+      <Icon
+        as={i18n.language === "ko" ? TbCircleLetterE : TbCircleLetterK}
+        w={"5"}
+        h={"5"}
+      />
+    </TogglerBase>
   );
 };
 
