@@ -4,12 +4,15 @@ import { Center, Flex, Icon, ListItem, Text, Tooltip } from "@chakra-ui/react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
-interface TabProps {
+interface VerticalLayoutNavbarTabProps {
   nav: Nav;
   isActivated: boolean;
 }
 
-const Tab = ({ nav, isActivated }: TabProps) => {
+const VerticalLayoutNavbarTab = ({
+  nav,
+  isActivated,
+}: VerticalLayoutNavbarTabProps) => {
   const { t } = useTranslation();
   const bgColor = useBgColor();
 
@@ -49,4 +52,4 @@ const Tab = ({ nav, isActivated }: TabProps) => {
   );
 };
 
-export default Tab;
+export default VerticalLayoutNavbarTab;

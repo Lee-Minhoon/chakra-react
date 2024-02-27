@@ -10,7 +10,7 @@ import { toUrl } from "@/utils";
 import { Box, Center, Flex, IconButton, Tooltip } from "@chakra-ui/react";
 import { AiOutlineHome } from "react-icons/ai";
 
-const SidebarHeader = () => {
+const VerticalLayoutSidebarHeader = () => {
   const { push } = useSafePush();
 
   return (
@@ -36,4 +36,4 @@ const SidebarHeader = () => {
   );
 };
 
-export default SidebarHeader;
+export default VerticalLayoutSidebarHeader;

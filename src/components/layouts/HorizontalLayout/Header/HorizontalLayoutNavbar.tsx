@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-const Navbar = () => {
+const HorizontalLayoutNavbar = () => {
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -34,4 +34,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default HorizontalLayoutNavbar;
