@@ -10,6 +10,7 @@ interface VirtualListBaseProps<T extends Scheme> {
   items: T[];
   renderItem: ComponentType<{ data: T }>;
   onLastItemVisible?: () => void;
+  gap?: React.CSSProperties["gap"];
   hasScroll?: boolean;
 }
 
@@ -20,6 +21,7 @@ const VirtualListBase = <T extends Scheme>({
   items,
   renderItem: Item,
   onLastItemVisible,
+  gap,
   hasScroll,
 }: VirtualListBaseProps<T>) => {
   const virtualItems = rowVirtualizer.getVirtualItems();
@@ -68,7 +70,7 @@ const VirtualListBase = <T extends Scheme>({
               data-index={virtualItem.index}
             >
               <Item data={item} />
-              <Spacer h={"4"} />
+              <Spacer h={gap ?? "4"} />
             </ListItem>
           );
         })}

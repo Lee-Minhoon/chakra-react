@@ -15,15 +15,17 @@ import { useTranslation } from "react-i18next";
 import { VirtualList, WindowVirtualList } from "../VirtualList";
 
 interface InfiniteListProps<T extends Scheme> {
-  renderItem: ComponentType<{ data: T }>;
   infiniteQuery: UseInfiniteQueryResult<CursorQueryResponse<T[], number>>;
+  renderItem: ComponentType<{ data: T }>;
   usesObserver?: boolean;
+  gap?: React.CSSProperties["gap"];
 }
 
 const InfiniteList = <T extends Scheme>({
-  renderItem,
   infiniteQuery,
+  renderItem,
   usesObserver,
+  gap,
 }: InfiniteListProps<T>) => {
   const { layout } = useLayout();
   const { data, isFetchingNextPage, hasNextPage, fetchNextPage } =
@@ -54,10 +56,11 @@ const InfiniteList = <T extends Scheme>({
   return (
     <Flex ref={containerRef} direction={"column"} overflowY={"auto"}>
       <List
-        container={container ?? null}
+        container={container}
         items={items}
         renderItem={renderItem}
         onLastItemVisible={handleLastItemVisible}
+        gap={gap}
       />
       {!isFetchingNextPage ? (
         <Center>

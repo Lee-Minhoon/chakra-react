@@ -3,13 +3,14 @@ import { useHasScroll } from "@/hooks";
 import { Nullable } from "@/types";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { ComponentType } from "react";
-import VirtualListBase from "./Base";
+import VirtualListBase from "./VirtualList.base";
 
 interface VirtualListProps<T extends Scheme> {
   container: Nullable<HTMLElement>;
   items: T[];
   renderItem: ComponentType<{ data: T }>;
   onLastItemVisible?: () => void;
+  gap?: React.CSSProperties["gap"];
 }
 
 const VirtualList = <T extends Scheme>({
@@ -17,6 +18,7 @@ const VirtualList = <T extends Scheme>({
   items,
   renderItem,
   onLastItemVisible,
+  gap,
 }: VirtualListProps<T>) => {
   const hasScroll = useHasScroll(container);
 
@@ -24,12 +26,13 @@ const VirtualList = <T extends Scheme>({
     <VirtualListBase
       rowVirtualizer={useVirtualizer({
         count: items.length,
-        getScrollElement: () => container,
         estimateSize: () => 200,
+        getScrollElement: () => container,
       })}
       items={items}
       renderItem={renderItem}
       onLastItemVisible={onLastItemVisible}
+      gap={gap}
       hasScroll={hasScroll}
     />
   );

@@ -2,13 +2,14 @@ import { Scheme } from "@/apis";
 import { Nullable } from "@/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { ComponentType } from "react";
-import VirtualListBase from "./Base";
+import VirtualListBase from "./VirtualList.base";
 
 interface WindowVirtualListProps<T extends Scheme> {
   container: Nullable<HTMLElement>;
   items: T[];
   renderItem: ComponentType<{ data: T }>;
   onLastItemVisible?: () => void;
+  gap?: React.CSSProperties["gap"];
 }
 
 const WindowVirtualList = <T extends Scheme>({
@@ -16,6 +17,7 @@ const WindowVirtualList = <T extends Scheme>({
   items,
   renderItem,
   onLastItemVisible,
+  gap,
 }: WindowVirtualListProps<T>) => {
   return (
     <VirtualListBase
@@ -27,6 +29,7 @@ const WindowVirtualList = <T extends Scheme>({
       items={items}
       renderItem={renderItem}
       onLastItemVisible={onLastItemVisible}
+      gap={gap}
     />
   );
 };
