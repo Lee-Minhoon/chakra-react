@@ -2,7 +2,7 @@ import { Scheme } from "@/apis";
 import { Nullable } from "@/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { ComponentType } from "react";
-import VirtualListBase from "./VirtualList.base";
+import VirtualListBase from "./VirtualListBase";
 
 interface WindowVirtualListProps<T extends Scheme> {
   container: Nullable<HTMLElement>;

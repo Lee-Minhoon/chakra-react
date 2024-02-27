@@ -1,8 +1,8 @@
 import { Center, Spinner, Table } from "@chakra-ui/react";
 import { Table as ReactTable, Row } from "@tanstack/react-table";
-import DataTableBody from "./DataTable.body";
-import DataTableFooter from "./DataTable.footer";
-import DataTableHeader from "./DataTable.header";
+import DataTableBody from "./DataTableBody";
+import DataTableFooter from "./DataTableFooter";
+import DataTableHeader from "./DataTableHeader";
 
 interface DataTableProps<T> {
   table: ReactTable<T>;

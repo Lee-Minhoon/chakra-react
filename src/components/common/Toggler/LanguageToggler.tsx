@@ -2,7 +2,7 @@ import { Icon } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { TbCircleLetterE, TbCircleLetterK } from "react-icons/tb";
-import TogglerBase from "./Toggler.base";
+import TogglerBase from "./TogglerBase";
 
 const LanguageToggler = () => {
   const { i18n, t } = useTranslation();

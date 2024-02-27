@@ -1,7 +1,7 @@
 import { Icon, useColorMode } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { FiMoon, FiSun } from "react-icons/fi";
-import TogglerBase from "./Toggler.base";
+import TogglerBase from "./TogglerBase";
 
 const ColorToggler = () => {
   const { colorMode, toggleColorMode } = useColorMode();

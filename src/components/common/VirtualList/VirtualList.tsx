@@ -3,7 +3,7 @@ import { useHasScroll } from "@/hooks";
 import { Nullable } from "@/types";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { ComponentType } from "react";
-import VirtualListBase from "./VirtualList.base";
+import VirtualListBase from "./VirtualListBase";
 
 interface VirtualListProps<T extends Scheme> {
   container: Nullable<HTMLElement>;

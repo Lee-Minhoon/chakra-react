@@ -2,7 +2,7 @@ import { useLayout } from "@/hooks";
 import { Icon } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { BsLayoutSidebar } from "react-icons/bs";
-import TogglerBase from "./Toggler.base";
+import TogglerBase from "./TogglerBase";
 
 const LayoutToggler = () => {
   const { layout, toggleLayout } = useLayout();
