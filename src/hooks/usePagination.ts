@@ -1,6 +1,6 @@
 import { QueryParser } from "@/utils";
-import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
+import { useSafePush } from ".";
 
 export interface OnPaginationParams {
   page?: number;
@@ -10,7 +10,7 @@ export interface OnPaginationParams {
 }
 
 const usePagination = () => {
-  const router = useRouter();
+  const { router, push } = useSafePush();
 
   const params = useMemo(() => {
     return {
@@ -25,12 +25,12 @@ const usePagination = () => {
 
   const onPagination = useCallback(
     (params: OnPaginationParams) => {
-      router.push({
+      push({
         pathname: router.pathname,
         query: { ...router.query, ...params },
       });
     },
-    [router]
+    [push, router.pathname, router.query]
   );
 
   return { ...params, onPagination };

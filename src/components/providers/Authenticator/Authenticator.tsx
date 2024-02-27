@@ -1,7 +1,7 @@
 import { useGetMe } from "@/apis/auth";
 import { PageRoutes } from "@/constants";
+import { useSafePush } from "@/hooks";
 import { useModalStore } from "@/stores";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 const whiteList: string[] = [
@@ -11,7 +11,7 @@ const whiteList: string[] = [
 ];
 
 const Authenticator = () => {
-  const router = useRouter();
+  const { router, push } = useSafePush();
   const { data, isFetching } = useGetMe();
   const { openAlert } = useModalStore(["openAlert"]);
 
@@ -22,12 +22,12 @@ const Authenticator = () => {
         title: "Unauthorized",
         content: "You are not authorized to access this page",
       });
-      router.push({
+      push({
         pathname: PageRoutes.Signin,
         query: { redirect: router.asPath },
       });
     }
-  }, [router, data, openAlert, isFetching]);
+  }, [data, isFetching, openAlert, push, router.asPath, router.pathname]);
 
   return <></>;
 };
