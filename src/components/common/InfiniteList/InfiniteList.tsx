@@ -1,9 +1,10 @@
 import { CursorQueryResponse, Scheme } from "@/apis";
 import { useLayout } from "@/hooks";
 import { Nullable } from "@/types";
-import { Button, Center, Flex, Spinner } from "@chakra-ui/react";
+import { Button, Center, Flex, Spacer, Spinner } from "@chakra-ui/react";
 import { UseInfiniteQueryResult } from "@tanstack/react-query";
 import {
+  ComponentProps,
   ComponentType,
   useCallback,
   useEffect,
@@ -18,7 +19,7 @@ interface InfiniteListProps<T extends Scheme> {
   infiniteQuery: UseInfiniteQueryResult<CursorQueryResponse<T[], number>>;
   renderItem: ComponentType<{ data: T }>;
   usesObserver?: boolean;
-  gap?: React.CSSProperties["gap"];
+  gap?: ComponentProps<typeof Spacer>["h"];
 }
 
 const InfiniteList = <T extends Scheme>({

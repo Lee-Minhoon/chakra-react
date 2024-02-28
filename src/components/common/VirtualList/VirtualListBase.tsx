@@ -1,7 +1,7 @@
 import { Scheme } from "@/apis";
 import { Flex, ListItem, Spacer, UnorderedList } from "@chakra-ui/react";
 import { Virtualizer } from "@tanstack/react-virtual";
-import { ComponentType, useEffect, useMemo } from "react";
+import { ComponentProps, ComponentType, useEffect, useMemo } from "react";
 
 interface VirtualListBaseProps<T extends Scheme> {
   rowVirtualizer:
@@ -10,7 +10,7 @@ interface VirtualListBaseProps<T extends Scheme> {
   items: T[];
   renderItem: ComponentType<{ data: T }>;
   onLastItemVisible?: () => void;
-  gap?: React.CSSProperties["gap"];
+  gap?: ComponentProps<typeof Spacer>["h"];
   hasScroll?: boolean;
 }
 

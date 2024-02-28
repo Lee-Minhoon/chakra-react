@@ -1,7 +1,8 @@
 import { Scheme } from "@/apis";
 import { Nullable } from "@/types";
+import { Spacer } from "@chakra-ui/react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { ComponentType } from "react";
+import { ComponentProps, ComponentType } from "react";
 import VirtualListBase from "./VirtualListBase";
 
 interface WindowVirtualListProps<T extends Scheme> {
@@ -9,7 +10,7 @@ interface WindowVirtualListProps<T extends Scheme> {
   items: T[];
   renderItem: ComponentType<{ data: T }>;
   onLastItemVisible?: () => void;
-  gap?: React.CSSProperties["gap"];
+  gap?: ComponentProps<typeof Spacer>["h"];
 }
 
 const WindowVirtualList = <T extends Scheme>({
