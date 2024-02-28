@@ -18,7 +18,7 @@ const LayoutToggler = () => {
     >
       <Icon
         as={BsLayoutSidebar}
-        transform={layout === "horizontal" ? "none" : "rotate(90deg)"}
+        transform={layout === "horizontal" ? "rotate(90deg)" : "none"}
       />
     </TogglerBase>
   );
