@@ -12,7 +12,8 @@ const { ToastContainer } = createStandaloneToast();
 
 const ChakraProvider = ({ children }: ChakraProviderProps) => {
   return (
-    <_ChakraProvider theme={theme}>
+    // https://github.com/chakra-ui/chakra-ui-docs/issues/1586
+    <_ChakraProvider theme={theme} cssVarsRoot="body">
       <ToastContainer />
       {children}
     </_ChakraProvider>

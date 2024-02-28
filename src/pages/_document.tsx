@@ -1,8 +1,9 @@
-import { Html, Head, Main, NextScript } from "next/document";
+import { fonts } from "@/constants";
+import { Head, Html, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang="en" className={fonts.rubik.variable}>
       <Head />
       <body>
         <Main />

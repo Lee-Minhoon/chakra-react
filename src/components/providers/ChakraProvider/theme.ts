@@ -6,6 +6,10 @@ import {
 
 const theme = extendTheme(
   {
+    fonts: {
+      heading: "var(--font-rubik)",
+      body: "var(--font-rubik)",
+    },
     colors: {
       primary: baseTheme.colors.teal,
     },
