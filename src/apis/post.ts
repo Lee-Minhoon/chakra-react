@@ -19,26 +19,37 @@ export interface Post extends Scheme {
   content: string;
 }
 
+export type PostCreate = Omit<Post, "user" | keyof Scheme>;
+
+export type PostUpdate = Omit<Post, "user" | "createdAt" | "updatedAt">;
+
+const useInvalidatePost = (params?: object) => {
+  const queryClient = useQueryClient();
+
+  return () => queryClient.invalidateQueries([toUrl(ApiRoutes.Post), params]);
+};
+
+// [GET] /api/posts/{id}
 export const useGetPost = (id?: number) => {
   return useFetch<Post>(toUrl(ApiRoutes.Post, { id }));
 };
 
+// [GET] /api/posts?page=1&limit=10
 export const useGetPostsByPage = (params: PageQueryParams) => {
   return useGetPage<Post[]>(toUrl(ApiRoutes.Post), params);
 };
 
+// [GET] /api/posts?limit=10
 export const useGetPostsByCursor = (params: CursorQueryParams) => {
   return useLoadMore<Post[]>(toUrl(ApiRoutes.Post), params);
 };
 
-export type PostCreate = Omit<Post, "user" | keyof Scheme>;
-
+// [POST] /api/posts
 export const useCreatePost = (params?: PageQueryParams | CursorQueryParams) => {
   return usePost<Post[], PostCreate, number>(toUrl(ApiRoutes.Post), params);
 };
 
-export type PostUpdate = Omit<Post, "user" | "createdAt" | "updatedAt">;
-
+// [PUT] /api/posts/{id}
 export const useUpdatePost = (id: number) => {
   return useUpdate<Post, PostUpdate>(
     toUrl(ApiRoutes.Post, { id }),
@@ -48,6 +59,7 @@ export const useUpdatePost = (id: number) => {
   );
 };
 
+// [DELETE] /api/posts/{id}
 export const useDeletePost = () => {
   return useDelete<Post[], number>(
     toUrl(ApiRoutes.Post),
@@ -57,24 +69,16 @@ export const useDeletePost = () => {
   );
 };
 
-const useInvalidate = () => {
-  const queryClient = useQueryClient();
-
-  return () => queryClient.invalidateQueries([toUrl(ApiRoutes.Post)]);
-};
-
+// [POST] /api/posts/test/{count}
 export const useCreateTestPosts = (count: number) => {
-  const invalidate = useInvalidate();
-
   return usePost(`${toUrl(ApiRoutes.Post)}/test/${count}`, undefined, {
-    onSuccess: invalidate,
+    onSuccess: useInvalidatePost(),
   });
 };
 
+// [DELETE] /api/posts/test/reset
 export const useResetTestPosts = () => {
-  const invalidate = useInvalidate();
-
   return usePost(`${toUrl(ApiRoutes.Post)}/test/reset`, undefined, {
-    onSuccess: invalidate,
+    onSuccess: useInvalidatePost(),
   });
 };

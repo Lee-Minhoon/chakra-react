@@ -27,19 +27,36 @@ export interface User extends Scheme {
   approved: boolean;
 }
 
+export type UserCreate = Omit<User, "approved" | keyof Scheme>;
+
+export type UserUpdate = Omit<User, "approved" | "createdAt" | "updatedAt">;
+
+export interface UserApprove {
+  id: number;
+}
+
+const useInvalidateUser = (params?: object) => {
+  const queryClient = useQueryClient();
+
+  return () => queryClient.invalidateQueries([toUrl(ApiRoutes.User), params]);
+};
+
+// [GET] /api/users/{id}
 export const useGetUser = (id?: number) => {
   return useFetch<User>(toUrl(ApiRoutes.User, { id }));
 };
 
+// [GET] /api/users?page=1&limit=10
 export const useGetUsersByPage = (params: PageQueryParams) => {
   return useGetPage<User[]>(toUrl(ApiRoutes.User), params);
 };
 
+// [GET] /api/users?limit=10
 export const useGetUsersByCursor = (params: CursorQueryParams) => {
   return useLoadMore<User[]>(toUrl(ApiRoutes.User), params);
 };
 
-export type UserCreate = Omit<User, "approved" | keyof Scheme>;
+// [POST] /api/users
 
 export const useCreateUser = (params?: object) => {
   return usePost<User[] | PageQueryResponse<User[]>, UserCreate>(
@@ -47,8 +64,6 @@ export const useCreateUser = (params?: object) => {
     params
   );
 };
-
-export type UserUpdate = Omit<User, "approved" | "createdAt" | "updatedAt">;
 
 const updateUser = (user: User, update: UserUpdate) => {
   return {
@@ -60,6 +75,7 @@ const updateUser = (user: User, update: UserUpdate) => {
   };
 };
 
+// [PUT] /api/users/{id}
 export const useUpdateUser = (id: number) => {
   return useUpdate<User, UserUpdate>(
     toUrl(ApiRoutes.User, { id }),
@@ -69,6 +85,7 @@ export const useUpdateUser = (id: number) => {
   );
 };
 
+// [PUT] /api/users/{id}
 export const useUpdateUserInList = (params?: object) => {
   return useUpdateInList<PageQueryResponse<User[]>, UserUpdate>(
     toUrl(ApiRoutes.User),
@@ -83,6 +100,7 @@ export const useUpdateUserInList = (params?: object) => {
   );
 };
 
+// [DELETE] /api/users/{id}
 export const useDeleteUser = (params?: object) => {
   return useDelete<PageQueryResponse<User[]>, number>(
     toUrl(ApiRoutes.User),
@@ -95,10 +113,7 @@ export const useDeleteUser = (params?: object) => {
   );
 };
 
-export interface UserApprove {
-  id: number;
-}
-
+// [POST] /api/users/{id}/approve
 export const useApproveUser = (params?: object) => {
   return useCommand<PageQueryResponse<User[]>, UserApprove>(
     (data) => toUrl(ApiRoutes.ApproveUser, data),
@@ -122,24 +137,16 @@ export const useApproveUser = (params?: object) => {
   );
 };
 
-const useInvalidate = () => {
-  const queryClient = useQueryClient();
-
-  return () => queryClient.invalidateQueries([toUrl(ApiRoutes.User)]);
-};
-
+// [POST] /api/users/test/{count}
 export const useCreateTestUsers = (count: number) => {
-  const invalidate = useInvalidate();
-
   return usePost(`${toUrl(ApiRoutes.User)}/test/${count}`, undefined, {
-    onSuccess: invalidate,
+    onSuccess: useInvalidateUser(),
   });
 };
 
+// [POST] /api/users/test/reset
 export const useResetTestUsers = () => {
-  const invalidate = useInvalidate();
-
   return usePost(`${toUrl(ApiRoutes.User)}/test/reset`, undefined, {
-    onSuccess: invalidate,
+    onSuccess: useInvalidateUser(),
   });
 };

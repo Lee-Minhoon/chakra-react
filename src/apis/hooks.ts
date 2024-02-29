@@ -122,6 +122,18 @@ export const useMutation = <TOld, TNew, TRes>(
   });
 };
 
+/**
+ * @example
+ * url: "/api/users/1"
+ * params: undefined
+ * request: "/api/users/1"
+ * queryKey: ["/api/users/1", undefined]
+ * @description Fetch data
+ * @param url Request URL
+ * @param params Query parameters
+ * @param options Query options
+ * @returns Query result
+ */
 export const useFetch = <TRes>(
   url: string,
   params?: object,
@@ -130,6 +142,18 @@ export const useFetch = <TRes>(
   return useQuery<TRes>(url, params, options);
 };
 
+/**
+ * @example
+ * url: "/api/users"
+ * params: { page: 1, limit: 10, sort: "id", order: "desc", search: "" }
+ * request: "/api/users?page=1&limit=10&sort=id&order=desc&search="
+ * queryKey: ["/api/users", { page: 1, limit: 10, sort: "id", order: "desc", search: "" }]
+ * @description Fetch data by page
+ * @param url Request URL
+ * @param params Query parameters
+ * @param options Query options
+ * @returns Query result
+ */
 export const useGetPage = <TRes>(
   url: string,
   params?: object,
@@ -141,6 +165,18 @@ export const useGetPage = <TRes>(
   });
 };
 
+/**
+ * @example
+ * url: "/api/users"
+ * params: { limit: 10, sort: "id", order: "desc", search: "" }
+ * request: "/api/users?limit=10&sort=id&order=desc&search="
+ * queryKey: ["/api/users", { limit: 10, sort: "id", order: "desc", search: "" }]
+ * @description Fetch data by cursor
+ * @param url Request URL
+ * @param params Query parameters
+ * @param options Query options
+ * @returns Infinite query result
+ */
 export const useLoadMore = <TRes>(
   url: string,
   params?: object,
@@ -149,6 +185,19 @@ export const useLoadMore = <TRes>(
   return useInfiniteQuery<TRes>(url, params, options);
 };
 
+/**
+ * @example
+ * url: "/api/users"
+ * params: { page: 1, limit: 10, sort: "id", order: "desc", search: "" }
+ * request: "/api/users"
+ * invalidate queryKey: ["/api/users", { page: 1, limit: 10, sort: "id", order: "desc", search: "" }]
+ * @description Request to post data
+ * @param url Request URL
+ * @param params Parameters to be used when creating the query key to invalidate
+ * @param options Mutation options
+ * @param updater Updater function
+ * @returns Mutation result
+ */
 export const usePost = <
   TOld,
   TNew extends object | void = void,
@@ -167,6 +216,19 @@ export const usePost = <
   );
 };
 
+/**
+ * @example
+ * url: "/api/users/1"
+ * params: undefined
+ * request: "/api/users/1"
+ * invalidate queryKey: ["/api/users/1", undefined]
+ * @description Request to update data in the detail view
+ * @param url Request URL
+ * @param params Parameters to be used when creating the query key to invalidate
+ * @param options Mutation options
+ * @param updater Updater function
+ * @returns
+ */
 export const useUpdate = <
   TOld,
   TNew extends object & { id?: ID },
@@ -185,6 +247,19 @@ export const useUpdate = <
   );
 };
 
+/**
+ * @example
+ * url: "/api/users"
+ * params: { page: 1, limit: 10, sort: "id", order: "desc", search: "" }
+ * request: "/api/users/1"
+ * invalidate queryKey: ["/api/users", { page: 1, limit: 10, sort: "id", order: "desc", search: "" }]
+ * @description Request to update data in the list view
+ * @param url Request URL
+ * @param params Parameters to be used when creating the query key to invalidate
+ * @param options Mutation options
+ * @param updater Updater function
+ * @returns Mutation result
+ */
 export const useUpdateInList = <
   TOld,
   TNew extends object & { id?: ID },
@@ -210,6 +285,19 @@ export const useUpdateInList = <
   );
 };
 
+/**
+ * @example
+ * url: "/api/users"
+ * params: { page: 1, limit: 10, sort: "id", order: "desc", search: "" }
+ * request: "/api/users/1"
+ * invalidate queryKey: ["/api/users", { page: 1, limit: 10, sort: "id", order: "desc", search: "" }]
+ * @description Request to delete data
+ * @param url Request URL
+ * @param params Parameters to be used when creating the query key to invalidate
+ * @param options Mutation options
+ * @param updater Updater function
+ * @returns Mutation result
+ */
 export const useDelete = <TOld, TNew = ID | void, TRes = unknown>(
   url: string,
   params?: object,
@@ -224,6 +312,42 @@ export const useDelete = <TOld, TNew = ID | void, TRes = unknown>(
   );
 };
 
+/**
+ * @description Request to post form data
+ * @param url Request URL
+ * @param params Parameters to be used when creating the query key to invalidate
+ * @param options Mutation options
+ * @param updater Updater function
+ * @returns Mutation result
+ */
+export const usePostForm = <TOld, TNew extends FormData, TRes = unknown>(
+  url: UrlBuilder<TNew>,
+  params?: object,
+  options?: MutationOptions<TRes, TNew>,
+  updater?: (old: TOld, data: TNew) => TOld
+) => {
+  return useMutation<TOld, TNew, ApiResponse<TRes>>(
+    (data) => api.postForm<ApiResponse<TRes>>(buildUrl(url, data), data),
+    options,
+    [url, params],
+    updater
+  );
+};
+
+/**
+ * @example
+ * url: "/api/users/1/approve"
+ * queryKey: ["/api/users", undefined]
+ * request: "/api/users/1/approve"
+ * invalidate queryKey: ["/api/users", undefined]
+ * @description Send a command to the server
+ * @param url Request URL
+ * @param queryKey Query key to invalidate
+ * @param options Mutation options
+ * @param updater Updater function
+ * @param method Request method
+ * @returns Mutation result
+ */
 export const useCommand = <
   TOld,
   TNew extends object & { id: ID },
@@ -250,20 +374,6 @@ export const useCommand = <
     },
     options,
     queryKey,
-    updater
-  );
-};
-
-export const usePostForm = <TOld, TNew extends FormData, TRes = unknown>(
-  url: UrlBuilder<TNew>,
-  params?: object,
-  options?: MutationOptions<TRes, TNew>,
-  updater?: (old: TOld, data: TNew) => TOld
-) => {
-  return useMutation<TOld, TNew, ApiResponse<TRes>>(
-    (data) => api.postForm<ApiResponse<TRes>>(buildUrl(url, data), data),
-    options,
-    [url, params],
     updater
   );
 };

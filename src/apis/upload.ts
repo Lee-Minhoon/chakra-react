@@ -11,6 +11,7 @@ interface UploadResponse {
   size: number;
 }
 
+// [POST] /api/upload
 export const useUpload = () => {
   return usePostForm<unknown, FormData, { [key: string]: UploadResponse[] }>(
     toUrl(ApiRoutes.Upload)
