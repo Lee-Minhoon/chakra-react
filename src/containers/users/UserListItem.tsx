@@ -15,6 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 interface UserListItemProps {
   data: User;
@@ -23,6 +24,7 @@ interface UserListItemProps {
 const UserListItem = ({ data: user }: UserListItemProps) => {
   const bgColor = useBgColor();
   const { push } = useSafePush();
+  const { t } = useTranslation();
 
   const handleClick = useCallback(() => {
     push(toUrl(PageRoutes.UserDetail, { id: user.id }));
@@ -30,11 +32,11 @@ const UserListItem = ({ data: user }: UserListItemProps) => {
 
   const attributes = useMemo(
     () => [
-      { label: "Approved", value: user.approved ? "Yes" : "No" },
-      { label: "Email", value: user.email },
-      { label: "Phone", value: user.phone },
+      { label: t("Approval Status"), value: user.approved ? "Yes" : "No" },
+      { label: t("Email"), value: user.email },
+      { label: t("Phone"), value: user.phone },
     ],
-    [user]
+    [t, user.approved, user.email, user.phone]
   );
 
   return (
