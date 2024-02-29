@@ -7,7 +7,7 @@ import {
 const theme = extendTheme(
   {
     fonts: {
-      heading: "var(--font-rubik)",
+      heading: "var(--font-inter)",
       body: "var(--font-rubik)",
     },
     colors: {
