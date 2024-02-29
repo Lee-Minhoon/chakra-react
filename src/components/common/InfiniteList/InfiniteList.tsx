@@ -50,7 +50,7 @@ const InfiniteList = <T extends Scheme>({
   }, [fetchNextPage, hasNextPage, isFetchingNextPage, usesObserver]);
 
   const List = useMemo(
-    () => (layout === "horizontal" ? WindowVirtualList : VirtualList),
+    () => (layout === "horizontal" ? VirtualList : WindowVirtualList),
     [layout]
   );
 
