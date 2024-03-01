@@ -1,14 +1,8 @@
 import { useGetMe } from "@/apis/auth";
-import { PageRoutes } from "@/constants";
+import { PageRoutes, whiteList } from "@/constants";
 import { useSafePush } from "@/hooks";
 import { useModalStore } from "@/stores";
 import { useEffect } from "react";
-
-const whiteList: string[] = [
-  PageRoutes.Home,
-  PageRoutes.Signin,
-  PageRoutes.Users,
-];
 
 const Authenticator = () => {
   const { router, push } = useSafePush();

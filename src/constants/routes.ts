@@ -25,6 +25,12 @@ export enum PageRoutes {
   EditPost = "/posts/:id/edit",
 }
 
+export const whiteList: string[] = [
+  PageRoutes.Home,
+  PageRoutes.Signin,
+  PageRoutes.Users,
+];
+
 // t("Table")
 // t("List")
 export enum ViewQueries {

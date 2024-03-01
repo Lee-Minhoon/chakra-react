@@ -11,12 +11,12 @@ import { useTranslation } from "react-i18next";
 const SigninForm = () => {
   const { router, push } = useSafePush();
   const { register, handleSubmit } = useForm<AuthSignin>();
-  const { mutate: signin } = useSignin();
+  const { mutate: signin, isIdle } = useSignin();
   const { t } = useTranslation();
 
   return (
     <Card direction={"column"} gap={4} p={8}>
-      <Logo />
+      <Logo onClick={() => push(toUrl(PageRoutes.Home))} />
       <Box
         as={"form"}
         display={"flex"}
@@ -27,18 +27,20 @@ const SigninForm = () => {
             (data) =>
               signin(data, {
                 onSuccess: () =>
-                  push(
+                  router.push(
                     router.query.redirect?.toString() ?? toUrl(PageRoutes.Home)
                   ),
               }),
-            [push, router.query.redirect, signin]
+            [router, signin]
           )
         )}
       >
         <WithFormLabel label={t("Email")}>
           <Input {...register("email")} />
         </WithFormLabel>
-        <Button type={"submit"}>{t("Sign In")}</Button>
+        <Button type={"submit"} isLoading={!isIdle} isDisabled={!isIdle}>
+          {t("Sign In")}
+        </Button>
       </Box>
     </Card>
   );
