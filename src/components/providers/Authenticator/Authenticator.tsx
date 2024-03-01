@@ -1,5 +1,5 @@
 import { useGetMe } from "@/apis/auth";
-import { PageRoutes, whiteList } from "@/constants";
+import { PageRoutes, isExistPage, whiteList } from "@/constants";
 import { useSafePush } from "@/hooks";
 import { useModalStore } from "@/stores";
 import { useEffect } from "react";
@@ -12,7 +12,12 @@ const Authenticator = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (whiteList.includes(router.pathname) || isFetching) return;
+    if (
+      !isExistPage(router.pathname) ||
+      whiteList.includes(router.pathname) ||
+      isFetching
+    )
+      return;
     if (!data) {
       openAlert({
         title: t("Unauthorized"),

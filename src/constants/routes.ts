@@ -1,3 +1,4 @@
+import { toUrl } from "@/utils";
 import { MatchFunction, match } from "path-to-regexp";
 import { IconType } from "react-icons";
 import { BsFillPostcardFill } from "react-icons/bs";
@@ -25,10 +26,14 @@ export enum PageRoutes {
   EditPost = "/posts/:id/edit",
 }
 
+export const isExistPage = (pathname: string) => {
+  return Object.values(PageRoutes).some((route) => match(route)(pathname));
+};
+
 export const whiteList: string[] = [
-  PageRoutes.Home,
-  PageRoutes.Signin,
-  PageRoutes.Users,
+  toUrl(PageRoutes.Home),
+  toUrl(PageRoutes.Signin),
+  toUrl(PageRoutes.Users),
 ];
 
 // t("Table")
