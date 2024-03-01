@@ -52,6 +52,7 @@
   "Submit": "확인",
   "Table": "테이블",
   "Title": "제목",
+  "Unauthorized": "권한 없음",
   "Update User": "유저 수정",
   "Updated At": "수정일",
   "User": "유저",
@@ -62,5 +63,6 @@
   "Vertical Layout": "수직 레이아웃",
   "Welcome": "환영합니다!",
   "Write Post": "게시글 작성",
-  "Writer": "작성자"
+  "Writer": "작성자",
+  "You are not authorized to access this page": "이 페이지에 접근할 권한이 없습니다"
 }

@@ -52,6 +52,7 @@
   "Submit": "Submit",
   "Table": "Table",
   "Title": "Title",
+  "Unauthorized": "Unauthorized",
   "Update User": "Update User",
   "Updated At": "Updated At",
   "User": "User",
@@ -62,5 +63,6 @@
   "Vertical Layout": "Vertical Layout",
   "Welcome": "Welcome",
   "Write Post": "Write Post",
-  "Writer": "Writer"
+  "Writer": "Writer",
+  "You are not authorized to access this page": "You are not authorized to access this page"
 }
