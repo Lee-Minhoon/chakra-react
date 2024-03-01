@@ -12,7 +12,7 @@ const PostWriter = ({ writer }: PostWriterProps) => {
   const { push } = useSafePush();
 
   return (
-    <Flex gap={4} align={"center"}>
+    <Flex gap={"4"} align={"center"}>
       <Box
         cursor={"pointer"}
         _hover={{ opacity: 0.5 }}
@@ -22,7 +22,7 @@ const PostWriter = ({ writer }: PostWriterProps) => {
           push(toUrl(PageRoutes.UserDetail, { id: writer.id }));
         }}
       >
-        <Avatar name={writer?.name} src={writer?.profile} w={10} h={10} />
+        <Avatar name={writer?.name} src={writer?.profile} w={"10"} h={"10"} />
       </Box>
       {writer?.name}
     </Flex>

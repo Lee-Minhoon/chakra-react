@@ -19,7 +19,7 @@ const DataTable = <T,>({ table, isLoading, onRowClick }: DataTableProps<T>) => {
         <DataTableFooter table={table} />
       </Table>
       {isLoading && (
-        <Center my={4}>
+        <Center my={"4"}>
           <Spinner color={"primary.500"} />
         </Center>
       )}

@@ -33,7 +33,7 @@ const PostsAllPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <Flex direction={"column"} gap={4} h={"100%"}>
+        <Flex direction={"column"} gap={"4"} h={"100%"}>
           <PostUtils />
           <Flex justifyContent={"space-between"}>
             <Search
@@ -44,7 +44,7 @@ const PostsAllPage = () => {
                 })
               }
             />
-            <Flex gap={4}>
+            <Flex gap={"4"}>
               <ViewOptions />
               <PageOptions />
             </Flex>

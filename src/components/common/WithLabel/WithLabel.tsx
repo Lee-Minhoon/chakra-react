@@ -7,7 +7,7 @@ interface WithLabelProps {
 
 const WithLabel = ({ label, value }: WithLabelProps) => {
   return (
-    <Flex direction={"column"} gap={2}>
+    <Flex direction={"column"} gap={"2"}>
       <Heading size="xs" textTransform="uppercase">
         {label}
       </Heading>

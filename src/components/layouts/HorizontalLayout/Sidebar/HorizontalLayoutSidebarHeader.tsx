@@ -14,7 +14,7 @@ const HorizontalLayoutSidebarHeader = () => {
   const { push } = useSafePush();
 
   return (
-    <Center as={"header"} flexDirection={"column"} gap={4} py={4}>
+    <Center as={"header"} flexDirection={"column"} gap={"4"} py={"4"}>
       <Box display={{ base: "none", xl: "block" }}>
         <Logo onClick={() => push(toUrl(PageRoutes.Home))} />
       </Box>
@@ -27,7 +27,7 @@ const HorizontalLayoutSidebarHeader = () => {
           />
         </Tooltip>
       </Box>
-      <Flex gap={4} direction={{ base: "column", xl: "row" }}>
+      <Flex gap={"4"} direction={{ base: "column", xl: "row" }}>
         <LayoutToggler />
         <ColorToggler />
         <LanguageToggler />

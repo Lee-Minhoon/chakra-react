@@ -1,6 +1,6 @@
 import { Post } from "@/apis";
 import { PageRoutes } from "@/constants";
-import { useBgColor, useSafePush } from "@/hooks";
+import { useAlphaColor, useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import {
   Box,
@@ -19,7 +19,7 @@ interface PostListItemProps {
 }
 
 const PostListItem = ({ data: post }: PostListItemProps) => {
-  const bgColor = useBgColor();
+  const alphaColor = useAlphaColor();
   const { push } = useSafePush();
   const { t } = useTranslation();
 
@@ -32,14 +32,14 @@ const PostListItem = ({ data: post }: PostListItemProps) => {
       direction={"row"}
       onClick={handleClick}
       cursor={"pointer"}
-      _hover={{ backgroundColor: bgColor(50) }}
+      _hover={{ backgroundColor: alphaColor(50) }}
     >
       <Flex flex={1} direction={"column"}>
         <CardHeader>
           <PostWriter post={post} />
         </CardHeader>
         <CardBody>
-          <Heading mb={4} size={"md"}>
+          <Heading mb={"4"} size={"md"}>
             {post.title ?? t("Title")}
           </Heading>
           <Box

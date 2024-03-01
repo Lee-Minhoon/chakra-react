@@ -49,9 +49,9 @@ const UserCard = ({ data: user }: UserCardProps) => {
 
   return (
     <Card direction={"row"}>
-      <Box p={5}>
+      <Box p={"5"}>
         <SkeletonCircle isLoaded={!!user} size={"40"}>
-          <Avatar name={user?.name} src={user?.profile} w={40} h={40} />
+          <Avatar name={user?.name} src={user?.profile} w={"40"} h={"40"} />
         </SkeletonCircle>
       </Box>
       <Flex flex={1} direction={"column"}>

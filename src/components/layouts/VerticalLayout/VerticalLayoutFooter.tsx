@@ -11,13 +11,13 @@ const VerticalLayoutFooter = () => {
       as={"footer"}
       w={"100%"}
       justify={"center"}
-      mt={10}
-      pt={10}
-      pb={20}
+      mt={"10"}
+      pt={"10"}
+      pb={"20"}
       bgColor={alphaColor(50)}
     >
-      <Flex direction={"column"} w={1280} gap={4}>
-        <Flex gap={4}>
+      <Flex direction={"column"} w={1280} gap={"4"}>
+        <Flex gap={"4"}>
           {links.map((link, idx) => (
             <Fragment key={idx}>
               <Link href={link.url} target={"_blank"}>
@@ -27,7 +27,7 @@ const VerticalLayoutFooter = () => {
             </Fragment>
           ))}
         </Flex>
-        <Flex gap={4}>
+        <Flex gap={"4"}>
           {libraries.map((link, idx) => (
             <Fragment key={idx}>
               <Link href={link.url} target={"_blank"} fontSize={"sm"}>

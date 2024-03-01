@@ -8,8 +8,8 @@ interface UserNameProps {
 
 const UserName = ({ name, profile }: UserNameProps) => {
   return (
-    <Flex gap={4} align={"center"}>
-      <Avatar name={name} src={profile} w={10} h={10} />
+    <Flex gap={"4"} align={"center"}>
+      <Avatar name={name} src={profile} w={"10"} h={"10"} />
       {name}
     </Flex>
   );

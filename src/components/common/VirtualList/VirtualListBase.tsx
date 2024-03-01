@@ -49,7 +49,7 @@ const VirtualListBase = <T extends Scheme>({
       pos={"relative"}
       minH={rowVirtualizer.getTotalSize()}
       m={`${margin}rem`}
-      mr={hasScroll ? 2 : 0.5}
+      mr={hasScroll ? "2" : "0.5"}
     >
       <UnorderedList
         pos={"absolute"}
@@ -57,7 +57,7 @@ const VirtualListBase = <T extends Scheme>({
         display={"flex"}
         flexDirection={"column"}
         listStyleType={"none"}
-        m={0}
+        m={"0"}
         transform={`translateY(${translateY}px)`}
       >
         {virtualItems.map((virtualItem) => {

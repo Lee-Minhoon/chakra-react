@@ -1,5 +1,5 @@
 import { FileInput, WithFormLabel } from "@/components";
-import { useBgColor } from "@/hooks";
+import { useAlphaColor } from "@/hooks";
 import { Box, Center, Icon } from "@chakra-ui/react";
 import Image from "next/image";
 import { useMemo, useRef } from "react";
@@ -12,7 +12,7 @@ interface UserProfileInputProps {
 }
 
 const UserProfileInput = ({ preview, onChange }: UserProfileInputProps) => {
-  const bgColor = useBgColor();
+  const alphaColor = useAlphaColor();
   const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -23,13 +23,13 @@ const UserProfileInput = ({ preview, onChange }: UserProfileInputProps) => {
         overflow: "hidden",
         width: 40,
         height: 40,
-        bgColor: bgColor(50),
+        bgColor: alphaColor(50),
         borderRadius: "full",
         cursor: "pointer",
         _hover: { opacity: 0.5 },
         onClick: () => inputRef.current?.click(),
       }) as const,
-    [bgColor]
+    [alphaColor]
   );
 
   return (
@@ -48,7 +48,7 @@ const UserProfileInput = ({ preview, onChange }: UserProfileInputProps) => {
           </Box>
         ) : (
           <Center {...wrapperProps}>
-            <Icon as={PiPlusThin} w={12} h={12} />
+            <Icon as={PiPlusThin} w={"12"} h={"12"} />
           </Center>
         )}
       </Center>

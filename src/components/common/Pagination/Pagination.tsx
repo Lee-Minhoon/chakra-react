@@ -22,7 +22,7 @@ const Pagination = ({
   const end = Math.min(start + blockSize - 1, totalPage);
 
   return (
-    <Flex gap={4} justify={"center"}>
+    <Flex gap={"4"} justify={"center"}>
       <IconButton
         aria-label={"prev"}
         isDisabled={start === 1}

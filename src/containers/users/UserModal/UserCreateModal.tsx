@@ -56,7 +56,7 @@ const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
         <ModalHeader>{t("Create User")}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Flex direction={"column"} gap={4}>
+          <Flex direction={"column"} gap={"4"}>
             <UserProfileInput
               preview={preview}
               onChange={(file) => {
@@ -71,7 +71,7 @@ const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
           </Flex>
         </ModalBody>
         <ModalFooter>
-          <Button mr={3} onClick={onClose}>
+          <Button mr={"3"} onClick={onClose}>
             {t("Close")}
           </Button>
           <Button variant="ghost" type={"submit"}>

@@ -1,6 +1,6 @@
 import { User } from "@/apis";
 import { PageRoutes } from "@/constants";
-import { useBgColor, useSafePush } from "@/hooks";
+import { useAlphaColor, useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import {
   Avatar,
@@ -22,7 +22,7 @@ interface UserListItemProps {
 }
 
 const UserListItem = ({ data: user }: UserListItemProps) => {
-  const bgColor = useBgColor();
+  const alphaColor = useAlphaColor();
   const { push } = useSafePush();
   const { t } = useTranslation();
 
@@ -44,12 +44,12 @@ const UserListItem = ({ data: user }: UserListItemProps) => {
       direction={"row"}
       onClick={handleClick}
       cursor={"pointer"}
-      _hover={{ backgroundColor: bgColor(50) }}
+      _hover={{ backgroundColor: alphaColor(50) }}
     >
       <Flex flex={1} direction={"column"}>
         <CardHeader>
-          <Flex gap={4}>
-            <Avatar name={user.name} src={user.profile} w={10} h={10} />
+          <Flex gap={"4"}>
+            <Avatar name={user.name} src={user.profile} w={"10"} h={"10"} />
             <Heading size={"lg"}>{user.name}</Heading>
           </Flex>
         </CardHeader>

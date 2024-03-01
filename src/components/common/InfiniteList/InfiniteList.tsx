@@ -70,7 +70,7 @@ const InfiniteList = <T extends Scheme>({
           </Button>
         </Center>
       ) : (
-        <Center minH={10}>
+        <Center minH={"10"}>
           <Spinner color={"primary.500"} />
         </Center>
       )}

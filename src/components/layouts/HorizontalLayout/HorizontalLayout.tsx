@@ -13,8 +13,8 @@ const HorizontalLayout = ({ children }: HorizontalLayoutProps) => {
       <Flex
         flex={1}
         direction={"column"}
-        p={8}
-        gap={4}
+        p={"8"}
+        gap={"4"}
         maxH={"100vh"}
         overflow={"hidden"}
       >

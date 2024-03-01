@@ -26,7 +26,7 @@ const PostUpdateForm = ({ post }: PostUpdateFormProps) => {
     <Flex
       as={"form"}
       direction="column"
-      gap={4}
+      gap={"4"}
       onSubmit={handleSubmit(
         useCallback(
           (data) =>

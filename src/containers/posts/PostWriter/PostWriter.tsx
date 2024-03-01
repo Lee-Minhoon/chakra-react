@@ -17,12 +17,12 @@ const PostWriter = ({ post }: PostWriterProps) => {
   const user = post?.user;
 
   return (
-    <Flex gap={4} align={"center"}>
+    <Flex gap={"4"} align={"center"}>
       <Avatar
         name={user?.name}
         src={user?.profile}
-        w={10}
-        h={10}
+        w={"10"}
+        h={"10"}
         cursor={"pointer"}
         _hover={{ opacity: 0.5 }}
         onClick={(e) => {
@@ -31,7 +31,7 @@ const PostWriter = ({ post }: PostWriterProps) => {
           push(toUrl(PageRoutes.UserDetail, { id: user.id }));
         }}
       />
-      <Flex direction={"column"} gap={2}>
+      <Flex direction={"column"} gap={"2"}>
         {user ? (
           <Text>{`${user.name ?? t("User Name")} (${
             user.email ?? t("User Email")

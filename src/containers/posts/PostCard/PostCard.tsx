@@ -35,7 +35,7 @@ const PostCard = ({ data: post }: PostCardProps) => {
           <Flex justify={"space-between"}>
             <PostWriter post={post} />
             {me?.id === post?.userId && (
-              <Flex gap={4}>
+              <Flex gap={"4"}>
                 <Button
                   rightIcon={<TbEdit />}
                   onClick={() =>
@@ -67,7 +67,7 @@ const PostCard = ({ data: post }: PostCardProps) => {
       </CardHeader>
       <CardBody>
         <Skeleton isLoaded={!!post}>
-          <Heading mb={4} size={"md"}>
+          <Heading mb={"4"} size={"md"}>
             {post?.title ?? t("Title")}
           </Heading>
         </Skeleton>

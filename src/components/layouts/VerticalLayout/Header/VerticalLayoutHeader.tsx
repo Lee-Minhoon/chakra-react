@@ -24,12 +24,12 @@ const VerticalLayoutHeader = () => {
       as={"header"}
       display={"flex"}
       flexDirection={"column"}
-      gap={4}
-      mb={4}
-      pt={10}
+      gap={"4"}
+      mb={"4"}
+      pt={"10"}
       w={1280}
     >
-      <Flex justify={"flex-end"} gap={4}>
+      <Flex justify={"flex-end"} gap={"4"}>
         <LayoutToggler />
         <ColorToggler />
         <LanguageToggler />
@@ -56,7 +56,7 @@ const VerticalLayoutHeader = () => {
           </Text>
         </Flex>
       )}
-      <Box p={12}>
+      <Box p={"12"}>
         <Logo onClick={() => push(toUrl(PageRoutes.Home))} />
       </Box>
       <VerticalLayoutNavbar />

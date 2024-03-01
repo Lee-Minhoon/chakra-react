@@ -24,7 +24,7 @@ const PostCreateForm = () => {
     <Flex
       as={"form"}
       direction="column"
-      gap={4}
+      gap={"4"}
       onSubmit={handleSubmit(
         useCallback(
           (data) =>

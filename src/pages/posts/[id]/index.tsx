@@ -28,8 +28,8 @@ const PostPage = () => {
           flex={1}
           direction={"column"}
           overflowY={"auto"}
-          p={0.5}
-          pr={hasScroll ? 2 : 0.5}
+          p={"0.5"}
+          pr={hasScroll ? "2" : "0.5"}
         >
           <PostCard data={post} />
         </Flex>

@@ -17,9 +17,9 @@ const HorizontalLayoutNavbar = () => {
       display={"flex"}
       flexDirection={"column"}
       listStyleType={"none"}
-      m={0}
-      py={4}
-      gap={4}
+      m={"0"}
+      py={"4"}
+      gap={"4"}
     >
       {navs.map((nav) => (
         <HorizontalLayoutNavbarTab

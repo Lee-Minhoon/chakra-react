@@ -21,8 +21,8 @@ const HorizontalLayoutNavbarTab = ({
       <Flex
         bgColor={isActivated ? alphaColor(100) : "transparent"}
         align={"center"}
-        p={4}
-        gap={4}
+        p={"4"}
+        gap={"4"}
         borderRadius={"md"}
         cursor={"pointer"}
         _hover={{ bgColor: alphaColor(50) }}
@@ -34,8 +34,8 @@ const HorizontalLayoutNavbarTab = ({
           display={{ base: "block", xl: "none" }}
         >
           <Center
-            w={8}
-            h={8}
+            w={"8"}
+            h={"8"}
             bgColor={isActivated ? "primary.500" : "transparent"}
             border={"1px solid"}
             borderColor={isActivated ? "transparent" : "primary.500"}

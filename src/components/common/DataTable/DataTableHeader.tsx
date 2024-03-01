@@ -22,8 +22,8 @@ const DataTableHeader = <T,>({ table }: DataTableHeaderProps<T>) => {
             const isSorted = sort === header.id;
 
             return (
-              <Th key={header.id} px={4}>
-                <Flex align={"center"} gap={2}>
+              <Th key={header.id} px={"4"}>
+                <Flex align={"center"} gap={"2"}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(

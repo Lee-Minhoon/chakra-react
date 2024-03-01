@@ -10,8 +10,8 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
-import { RiLoginBoxLine, RiLogoutBoxRLine } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
+import { RiLoginBoxLine, RiLogoutBoxRLine } from "react-icons/ri";
 
 const HorizontalLayoutSidebarFooter = () => {
   const { push } = useSafePush();
@@ -20,9 +20,9 @@ const HorizontalLayoutSidebarFooter = () => {
   const { t } = useTranslation();
 
   return (
-    <Center as={"footer"} mt={"auto"} gap={4} py={4}>
+    <Center as={"footer"} mt={"auto"} gap={"4"} py={"4"}>
       {me ? (
-        <Flex gap={4} align={"center"} overflow={"hidden"}>
+        <Flex gap={"4"} align={"center"} overflow={"hidden"}>
           <Text
             display={{ base: "none", xl: "block" }}
             whiteSpace={"nowrap"}

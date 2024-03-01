@@ -22,7 +22,7 @@ const DataTableBody = <T,>({ table, onRowClick }: DataTableBodyProps<T>) => {
           }}
         >
           {row.getVisibleCells().map((cell) => (
-            <Td key={cell.id} py={2} px={4}>
+            <Td key={cell.id} py={"2"} px={"4"}>
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
             </Td>
           ))}

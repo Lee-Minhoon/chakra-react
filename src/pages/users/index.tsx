@@ -32,7 +32,7 @@ const UsersPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <Flex direction={"column"} gap={4} h={"100%"}>
+        <Flex direction={"column"} gap={"4"} h={"100%"}>
           <UserUtils />
           <Flex justifyContent={"space-between"}>
             <Search
@@ -43,7 +43,7 @@ const UsersPage = () => {
                 })
               }
             />
-            <Flex gap={4}>
+            <Flex gap={"4"}>
               <ViewOptions />
               <PageOptions />
             </Flex>

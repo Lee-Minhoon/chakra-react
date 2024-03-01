@@ -12,7 +12,7 @@ const UserActions = ({ onUpdate, onDelete }: UserActionsProps) => {
   const { t } = useTranslation();
 
   return (
-    <Flex gap={2}>
+    <Flex gap={"2"}>
       <Tooltip hasArrow label={t("Edit User")}>
         <IconButton aria-label="edit" icon={<TbEdit />} onClick={onUpdate} />
       </Tooltip>

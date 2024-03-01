@@ -13,8 +13,14 @@ const NotFoundPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Center flexDirection={"column"} w={"100vw"} h={"100vh"} gap={8} pb={20}>
-        <Flex direction={"column"} gap={2} align={"center"}>
+      <Center
+        flexDirection={"column"}
+        w={"100vw"}
+        h={"100vh"}
+        gap={"8"}
+        pb={"20"}
+      >
+        <Flex direction={"column"} gap={"2"} align={"center"}>
           <Heading>404</Heading>
           <Text fontSize={"lg"}>This page could not be found.</Text>
         </Flex>

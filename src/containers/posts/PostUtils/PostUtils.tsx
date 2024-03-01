@@ -47,7 +47,7 @@ const PostsUtils = () => {
   }, [resetTestPosts]);
 
   return (
-    <Flex gap={4}>
+    <Flex gap={"4"}>
       <Tooltip hasArrow label={t("Create Post")}>
         <Button leftIcon={<TbPlus />} onClick={handleCreatePost}>
           {t("Post")}

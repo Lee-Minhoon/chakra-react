@@ -29,7 +29,7 @@ const Confirm = () => {
         <ModalCloseButton />
         <ModalBody>{confirm?.content}</ModalBody>
         <ModalFooter>
-          <Button mr={3} onClick={closeConfirm}>
+          <Button mr={"3"} onClick={closeConfirm}>
             {t("Close")}
           </Button>
           <Button variant="ghost" onClick={handleConfirm}>

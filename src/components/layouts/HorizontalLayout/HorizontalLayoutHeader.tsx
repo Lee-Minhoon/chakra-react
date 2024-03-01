@@ -19,8 +19,8 @@ const HorizontalLayoutHeader = () => {
   return (
     <>
       {hierarchy.length > 0 && (
-        <Flex gap={2}>
-          <Flex gap={2} align={"center"}>
+        <Flex gap={"2"}>
+          <Flex gap={"2"} align={"center"}>
             <Icon
               as={MdHome}
               onClick={() => push(toUrl(PageRoutes.Home))}
@@ -29,7 +29,7 @@ const HorizontalLayoutHeader = () => {
             <Icon as={MdKeyboardArrowRight} />
           </Flex>
           {hierarchy.map((nav, idx) => (
-            <Flex key={nav.label} gap={2} align={"center"}>
+            <Flex key={nav.label} gap={"2"} align={"center"}>
               {idx !== hierarchy.length - 1 ? (
                 <>
                   <Link

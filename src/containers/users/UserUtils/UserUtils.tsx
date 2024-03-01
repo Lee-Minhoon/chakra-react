@@ -40,7 +40,7 @@ const UsersUtils = () => {
   }, [resetTestUsers]);
 
   return (
-    <Flex gap={4}>
+    <Flex gap={"4"}>
       <Tooltip hasArrow label={t("Create User")}>
         <Button leftIcon={<TbPlus />} onClick={handleCreateUser}>
           {t("User")}
