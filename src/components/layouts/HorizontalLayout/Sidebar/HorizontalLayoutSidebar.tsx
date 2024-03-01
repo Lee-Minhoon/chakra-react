@@ -1,18 +1,18 @@
-import useBgColor from "@/hooks/useBgColor";
+import { useAlphaColor } from "@/hooks";
 import { Box, Divider } from "@chakra-ui/react";
 import HorizontalLayoutSidebarFooter from "./HorizontalLayoutSidebarFooter";
 import HorizontalLayoutSidebarHeader from "./HorizontalLayoutSidebarHeader";
 import { HorizontalLayoutNavbar } from "./Navbar";
 
 const HorizontalLayoutSidebar = () => {
-  const bgColor = useBgColor();
+  const alphaColor = useAlphaColor();
 
   return (
     <Box
       as={"aside"}
       display={"flex"}
       flexDirection={"column"}
-      bgColor={bgColor(50)}
+      bgColor={alphaColor(50)}
       w={{ base: 24, xl: 64 }}
       p={4}
       h={"100vh"}

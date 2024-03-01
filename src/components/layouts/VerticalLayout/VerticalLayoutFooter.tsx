@@ -1,10 +1,10 @@
 import { libraries, links } from "@/constants";
-import useBgColor from "@/hooks/useBgColor";
+import { useAlphaColor } from "@/hooks";
 import { Divider, Flex, Link, Text, Tooltip } from "@chakra-ui/react";
 import { Fragment } from "react";
 
 const VerticalLayoutFooter = () => {
-  const bgColor = useBgColor();
+  const alphaColor = useAlphaColor();
 
   return (
     <Flex
@@ -14,7 +14,7 @@ const VerticalLayoutFooter = () => {
       mt={10}
       pt={10}
       pb={20}
-      bgColor={bgColor(50)}
+      bgColor={alphaColor(50)}
     >
       <Flex direction={"column"} w={1280} gap={4}>
         <Flex gap={4}>

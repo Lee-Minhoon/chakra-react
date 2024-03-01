@@ -1,4 +1,4 @@
-export { default as useBgColor } from "./useBgColor";
+export { default as useAlphaColor } from "./useAlphaColor";
 export { default as useFormatDate } from "./useFormatDate";
 export { default as useHasScroll } from "./useHasScroll";
 export { default as useLayout } from "./useLayout";

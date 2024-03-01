@@ -1,4 +1,4 @@
-import useBgColor from "@/hooks/useBgColor";
+import { useAlphaColor } from "@/hooks";
 import { Tbody, Td, Tr } from "@chakra-ui/react";
 import { Table as ReactTable, Row, flexRender } from "@tanstack/react-table";
 
@@ -8,7 +8,7 @@ interface DataTableBodyProps<T> {
 }
 
 const DataTableBody = <T,>({ table, onRowClick }: DataTableBodyProps<T>) => {
-  const bgColor = useBgColor();
+  const alphaColor = useAlphaColor();
 
   return (
     <Tbody>
@@ -18,7 +18,7 @@ const DataTableBody = <T,>({ table, onRowClick }: DataTableBodyProps<T>) => {
           onClick={() => onRowClick?.(row)}
           _hover={{
             cursor: onRowClick ? "pointer" : "default",
-            bgColor: onRowClick ? bgColor(50) : undefined,
+            bgColor: onRowClick ? alphaColor(50) : undefined,
           }}
         >
           {row.getVisibleCells().map((cell) => (

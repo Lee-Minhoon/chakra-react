@@ -1,6 +1,5 @@
 import { Nav } from "@/constants";
-import { useSafePush } from "@/hooks";
-import useBgColor from "@/hooks/useBgColor";
+import { useAlphaColor, useSafePush } from "@/hooks";
 import { Center, Flex, Icon, ListItem, Text, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 
@@ -14,17 +13,19 @@ const HorizontalLayoutNavbarTab = ({
   isActivated,
 }: HorizontalLayoutNavbarTabProps) => {
   const { t } = useTranslation();
-  const bgColor = useBgColor();
+  const alphaColor = useAlphaColor();
   const { push } = useSafePush();
 
   return (
     <ListItem key={nav.label}>
       <Flex
-        bgColor={isActivated ? bgColor(50) : "transparent"}
+        bgColor={isActivated ? alphaColor(100) : "transparent"}
         align={"center"}
         p={4}
         gap={4}
         borderRadius={"md"}
+        cursor={"pointer"}
+        _hover={{ bgColor: alphaColor(50) }}
         onClick={() => push({ pathname: nav.pathname, query: nav.query })}
       >
         <Tooltip
