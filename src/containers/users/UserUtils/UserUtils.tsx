@@ -6,7 +6,7 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { GrPowerReset } from "react-icons/gr";
 import { TbPlus } from "react-icons/tb";
-import { UserCreateModal } from ".";
+import { UserCreateModal } from "../UserModal";
 
 const count = 1000;
 

@@ -13,9 +13,9 @@ import {
   Heading,
   Skeleton,
 } from "@chakra-ui/react";
-import { TbEdit } from "react-icons/tb";
-import WriterInfo from "./WriterInfo";
 import { useTranslation } from "react-i18next";
+import { TbEdit } from "react-icons/tb";
+import { PostWriter } from "../PostWriter";
 
 interface PostCardProps {
   data?: Post;
@@ -33,7 +33,7 @@ const PostCard = ({ data: post }: PostCardProps) => {
       <CardHeader>
         <Skeleton isLoaded={!!post}>
           <Flex justify={"space-between"}>
-            <WriterInfo post={post} />
+            <PostWriter post={post} />
             {me?.id === post?.userId && (
               <Flex gap={4}>
                 <Button

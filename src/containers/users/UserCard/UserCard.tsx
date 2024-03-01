@@ -19,7 +19,7 @@ import {
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { TbEdit } from "react-icons/tb";
-import UserUpdateModal from "./UserUpdateModal";
+import { UserUpdateModal } from "../UserModal";
 
 interface UserCardProps {
   data?: User;

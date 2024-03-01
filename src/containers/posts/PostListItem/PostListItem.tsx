@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import WriterInfo from "./WriterInfo";
+import { PostWriter } from "../PostWriter";
 
 interface PostListItemProps {
   data: Post;
@@ -36,7 +36,7 @@ const PostListItem = ({ data: post }: PostListItemProps) => {
     >
       <Flex flex={1} direction={"column"}>
         <CardHeader>
-          <WriterInfo post={post} />
+          <PostWriter post={post} />
         </CardHeader>
         <CardBody>
           <Heading mb={4} size={"md"}>

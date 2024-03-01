@@ -5,11 +5,11 @@ import { toUrl } from "@/utils";
 import { Avatar, Flex, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 
-interface WriterInfoProps {
+interface PostWriterProps {
   post?: Post;
 }
 
-const WriterInfo = ({ post }: WriterInfoProps) => {
+const PostWriter = ({ post }: PostWriterProps) => {
   const { push } = useSafePush();
   const formatDate = useFormatDate();
   const { t } = useTranslation();
@@ -47,4 +47,4 @@ const WriterInfo = ({ post }: WriterInfoProps) => {
   );
 };
 
-export default WriterInfo;
+export default PostWriter;
