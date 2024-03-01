@@ -94,12 +94,14 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
+// [GET] /api/posts/:id
 export const getPost = (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   try {
     const posts = readPostsWithUser();
     const post = posts.find((user) => user.id === Number(id));
+
     return res.status(200).json({
       data: post ?? null,
       message: `Successfully retrieved post ${id}`,
@@ -111,6 +113,7 @@ export const getPost = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [GET] /api/posts
 export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
   const { sort, order } = req.query;
 
@@ -119,6 +122,7 @@ export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
       sort as RequiredKeysOf<Post> & "user_name",
       order as Order
     );
+
     return res
       .status(200)
       .json({ data: posts, message: "Successfully retrieved posts" });
@@ -127,6 +131,7 @@ export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [GET] /api/posts
 export const getPostsByPage = (req: NextApiRequest, res: NextApiResponse) => {
   const { page, limit, sort, order, search } = req.query;
 
@@ -152,6 +157,7 @@ export const getPostsByPage = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [GET] /api/posts
 export const getPostsByCursor = (req: NextApiRequest, res: NextApiResponse) => {
   const { cursor, limit, sort, order, search } = req.query;
 
@@ -180,6 +186,7 @@ export const getPostsByCursor = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [POST] /api/posts
 export const createPost = (req: NextApiRequest, res: NextApiResponse) => {
   const { userId, title, content } = req.body;
 
@@ -196,6 +203,7 @@ export const createPost = (req: NextApiRequest, res: NextApiResponse) => {
     posts.push(newPost);
 
     writePosts(posts);
+
     return res
       .status(200)
       .json({ data: newPost.id, message: `Post ${newPost.id} created` });
@@ -206,6 +214,7 @@ export const createPost = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [PUT] /api/posts/:id
 export const updatePost = (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
   const { title, content } = req.body;
@@ -220,6 +229,7 @@ export const updatePost = (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     writePosts(posts);
+
     return res.status(200).json({ data: id, message: `Post ${id} updated` });
   } catch {
     return res
@@ -228,6 +238,7 @@ export const updatePost = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [DELETE] /api/posts/:id
 export const deletePost = (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
@@ -236,6 +247,7 @@ export const deletePost = (req: NextApiRequest, res: NextApiResponse) => {
     posts = posts.filter((user) => user.id !== Number(id));
 
     writePosts(posts);
+
     return res.status(200).json({ data: id, message: `Post ${id} deleted` });
   } catch {
     return res
@@ -244,6 +256,7 @@ export const deletePost = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [POST] /api/posts/test/:count
 export const createTestPosts = (req: NextApiRequest, res: NextApiResponse) => {
   const { count } = req.query;
 
@@ -264,6 +277,7 @@ export const createTestPosts = (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     writePosts(posts);
+
     return res
       .status(200)
       .json({ data: posts, message: "Successfully created test posts" });
@@ -274,6 +288,7 @@ export const createTestPosts = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [DELETE] /api/posts/test/reset
 export const resetTestPosts = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     writePosts([]);

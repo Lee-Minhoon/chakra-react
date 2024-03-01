@@ -72,6 +72,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
+// [GET] /api/users/:id
 export const getUser = (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
@@ -90,6 +91,7 @@ export const getUser = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [GET] /api/users
 export const getUsers = (req: NextApiRequest, res: NextApiResponse) => {
   const { sort, order } = req.query;
 
@@ -104,6 +106,7 @@ export const getUsers = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [GET] /api/users
 export const getUsersByPage = (req: NextApiRequest, res: NextApiResponse) => {
   const { page, limit, sort, order, search } = req.query;
 
@@ -129,6 +132,7 @@ export const getUsersByPage = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [GET] /api/users
 export const getUsersByCursor = (req: NextApiRequest, res: NextApiResponse) => {
   const { cursor, limit, sort, order, search } = req.query;
 
@@ -157,6 +161,7 @@ export const getUsersByCursor = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [POST] /api/users
 export const createUser = (req: NextApiRequest, res: NextApiResponse) => {
   const { name, email, phone, profile } = req.body;
 
@@ -192,6 +197,7 @@ export const createUser = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [PUT] /api/users/:id
 export const updateUser = (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
   const { name, email, phone, profile } = req.body;
@@ -222,6 +228,7 @@ export const updateUser = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [DELETE] /api/users/:id
 export const deleteUser = (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
@@ -247,6 +254,7 @@ export const deleteUser = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [PUT] /api/users/:id/approve
 export const approveUser = (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
@@ -263,13 +271,13 @@ export const approveUser = (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(200).json({ data: id, message: `User ${id} approved` });
   } catch (err) {
-    console.log(err);
     return res
       .status(500)
       .json({ data: null, message: `User ${id} approval failed` });
   }
 };
 
+// [PUT] /api/users/test/:count
 export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
   const { count } = req.query;
 
@@ -301,6 +309,7 @@ export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+// [DELETE] /api/users/test/reset
 export const resetTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const session = readSession();
