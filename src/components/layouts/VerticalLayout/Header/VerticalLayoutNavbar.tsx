@@ -1,12 +1,11 @@
 import { findNavInHierarchy, navs } from "@/constants";
+import { useSafePush } from "@/hooks";
 import { Tab, TabList, Tabs } from "@chakra-ui/react";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 const VerticalLayoutNavbar = () => {
-  const router = useRouter();
+  const { router, push } = useSafePush();
   const { t } = useTranslation();
 
   const hierarchy = useMemo(
@@ -22,12 +21,12 @@ const VerticalLayoutNavbar = () => {
     <Tabs variant="enclosed" index={selectedIndex}>
       <TabList>
         {navs.map((nav) => (
-          <Link
+          <Tab
             key={nav.label}
-            href={{ pathname: nav.pathname, query: nav.query }}
+            onClick={() => push({ pathname: nav.pathname, query: nav.query })}
           >
-            <Tab>{t(nav.label)}</Tab>
-          </Link>
+            {t(nav.label)}
+          </Tab>
         ))}
       </TabList>
     </Tabs>
