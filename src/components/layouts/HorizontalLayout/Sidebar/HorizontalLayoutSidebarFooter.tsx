@@ -1,5 +1,5 @@
 import { useGetMe, useSignout } from "@/apis/auth";
-import { PageRoutes } from "@/constants";
+import { PageRoutes, styles } from "@/constants";
 import { useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import {
@@ -23,12 +23,7 @@ const HorizontalLayoutSidebarFooter = () => {
     <Center as={"footer"} mt={"auto"} gap={"4"} py={"4"}>
       {me ? (
         <Flex gap={"4"} align={"center"} overflow={"hidden"}>
-          <Text
-            display={{ base: "none", xl: "block" }}
-            whiteSpace={"nowrap"}
-            overflow={"hidden"}
-            textOverflow={"ellipsis"}
-          >
+          <Text display={{ base: "none", xl: "block" }} {...styles.ellipsis}>
             {`${t("Welcome")} `}
             <Text as={"b"} color={"primary.500"}>
               {me?.name}
