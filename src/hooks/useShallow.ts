@@ -2,7 +2,7 @@ import { StoreApi, UseBoundStore } from "zustand";
 import { shallow } from "zustand/shallow";
 import { useStoreWithEqualityFn } from "zustand/traditional";
 
-export const useShallow = <T, K extends keyof T>(
+const useShallow = <T, K extends keyof T>(
   store: UseBoundStore<StoreApi<T>>,
   keys: K[]
 ): Pick<T, K> => {
@@ -19,3 +19,5 @@ export const useShallow = <T, K extends keyof T>(
     shallow
   );
 };
+
+export default useShallow;
