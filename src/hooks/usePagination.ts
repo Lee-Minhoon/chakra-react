@@ -1,3 +1,4 @@
+import { Order } from "@/apis";
 import { QueryParser } from "@/utils";
 import { useCallback, useMemo } from "react";
 import { useSafePush } from ".";
@@ -17,9 +18,7 @@ const usePagination = () => {
       page: QueryParser.toNumber(router.query.page) ?? 1,
       limit: QueryParser.toNumber(router.query.limit) ?? 10,
       sort: QueryParser.toString(router.query.sort) ?? "",
-      order: (QueryParser.toString(router.query.order) ?? "desc") as
-        | "asc"
-        | "desc",
+      order: (QueryParser.toString(router.query.order) ?? "desc") as Order,
     };
   }, [router.query]);
 

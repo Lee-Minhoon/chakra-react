@@ -31,18 +31,20 @@ export interface Scheme {
   updatedAt: string;
 }
 
+export type Order = "asc" | "desc";
+
 export type PageQueryParams = {
   page: number;
   limit: number;
   sort?: string;
-  order?: "asc" | "desc";
+  order?: Order;
   search?: string;
 };
 
 export type CursorQueryParams = {
   limit: number;
   sort?: string;
-  order?: "asc" | "desc";
+  order?: Order;
   search?: string;
 };
 
