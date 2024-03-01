@@ -23,29 +23,25 @@ import {
 } from "./types";
 import { api, buildQueryKey, buildUrl } from "./utils";
 
-// TOldData: Data type of previous data (이전 데이터 타입)
-// TNewData: Data type of request (요청 데이터 타입)
-// TResponse: Data type of response (응답 데이터 타입)
-
-const fetcher = async <TRes>(context: QueryFunctionContext<QueryKey>) => {
+const fetcher = async <TResponse>(context: QueryFunctionContext<QueryKey>) => {
   const { queryKey, pageParam } = context;
   const [url, params] = queryKey;
   return api
-    .get<ApiResponse<TRes>>(
+    .get<ApiResponse<TResponse>>(
       buildUrl(url, undefined)!,
       pageParam !== undefined ? { ...params, cursor: pageParam } : { ...params }
     )
     .then((res) => res.data);
 };
 
-const useQuery = <TRes>(
+const useQuery = <TResponse>(
   url: Nullable<string>,
   params?: object,
-  options?: QueryOptions<TRes>
+  options?: QueryOptions<TResponse>
 ) => {
-  return _useQuery<TRes, ApiError, TRes, QueryKey>(
+  return _useQuery<TResponse, ApiError, TResponse, QueryKey>(
     [url!, params],
-    (context) => fetcher<TRes>(context),
+    (context) => fetcher<TResponse>(context),
     {
       enabled: !!url,
       ...options,
@@ -53,20 +49,20 @@ const useQuery = <TRes>(
   );
 };
 
-const useInfiniteQuery = <TRes>(
+const useInfiniteQuery = <TResponse>(
   url: Nullable<string>,
   params?: object,
-  options?: InfiniteQueryOptions<TRes>
+  options?: InfiniteQueryOptions<TResponse>
 ) => {
   return _useInfiniteQuery<
-    CursorQueryResponse<TRes, number>,
+    CursorQueryResponse<TResponse, number>,
     ApiError,
-    CursorQueryResponse<TRes, number>,
+    CursorQueryResponse<TResponse, number>,
     QueryKey
   >(
     [url!, params],
     ({ pageParam = 0, ...rest }) =>
-      fetcher<CursorQueryResponse<TRes, number>>({ pageParam, ...rest }),
+      fetcher<CursorQueryResponse<TResponse, number>>({ pageParam, ...rest }),
     {
       ...options,
       getPreviousPageParam: (firstPage) => firstPage.previous,
@@ -75,15 +71,15 @@ const useInfiniteQuery = <TRes>(
   );
 };
 
-export const useMutation = <TOld, TNew, TRes>(
-  mutationFn: MutationFunction<TRes, TNew>,
-  options?: UseMutationOptions<TRes, ApiError, TNew>,
-  queryKey?: QueryKey<TNew>,
-  updater?: (old: TOld, data: TNew) => Optional<TOld>
+export const useMutation = <TCached, TRequest, TResponse>(
+  mutationFn: MutationFunction<TResponse, TRequest>,
+  options?: UseMutationOptions<TResponse, ApiError, TRequest>,
+  queryKey?: QueryKey<TRequest>,
+  updater?: (old: TCached, data: TRequest) => Optional<TCached>
 ) => {
   const queryClient = useQueryClient();
 
-  return _useMutation<TRes, ApiError, TNew>(mutationFn, {
+  return _useMutation<TResponse, ApiError, TRequest>(mutationFn, {
     ...options,
     onMutate: async (variables) => {
       options?.onMutate?.(variables);
@@ -95,7 +91,7 @@ export const useMutation = <TOld, TNew, TRes>(
       // Optimistic update(does not run if query key is not present)
       await queryClient.cancelQueries(builtQueryKey);
       const previousData = queryClient.getQueryData(builtQueryKey);
-      queryClient.setQueryData<TOld>(queryKey, (old) => {
+      queryClient.setQueryData<TCached>(queryKey, (old) => {
         old && updater && console.log("Optimistic updates are run.", queryKey);
         return old && updater ? updater(old, variables) : old;
       });
@@ -134,12 +130,12 @@ export const useMutation = <TOld, TNew, TRes>(
  * @param options Query options
  * @returns Query result
  */
-export const useFetch = <TRes>(
+export const useFetch = <TResponse>(
   url: string,
   params?: object,
-  options?: QueryOptions<TRes>
+  options?: QueryOptions<TResponse>
 ) => {
-  return useQuery<TRes>(url, params, options);
+  return useQuery<TResponse>(url, params, options);
 };
 
 /**
@@ -154,12 +150,12 @@ export const useFetch = <TRes>(
  * @param options Query options
  * @returns Query result
  */
-export const useGetPage = <TRes>(
+export const useGetPage = <TResponse>(
   url: string,
   params?: object,
-  options?: PageQueryOptions<TRes>
+  options?: PageQueryOptions<TResponse>
 ) => {
-  return useQuery<PageQueryResponse<TRes>>(url, params, {
+  return useQuery<PageQueryResponse<TResponse>>(url, params, {
     ...options,
     keepPreviousData: true,
   });
@@ -177,12 +173,12 @@ export const useGetPage = <TRes>(
  * @param options Query options
  * @returns Infinite query result
  */
-export const useLoadMore = <TRes>(
+export const useLoadMore = <TResponse>(
   url: string,
   params?: object,
-  options?: InfiniteQueryOptions<TRes>
+  options?: InfiniteQueryOptions<TResponse>
 ) => {
-  return useInfiniteQuery<TRes>(url, params, options);
+  return useInfiniteQuery<TResponse>(url, params, options);
 };
 
 /**
@@ -199,17 +195,17 @@ export const useLoadMore = <TRes>(
  * @returns Mutation result
  */
 export const usePost = <
-  TOld,
-  TNew extends object | void = void,
-  TRes = unknown,
+  TCached,
+  TRequest extends object | void = void,
+  TResponse = unknown,
 >(
-  url: UrlBuilder<TNew>,
+  url: UrlBuilder<TRequest>,
   params?: object,
-  options?: MutationOptions<TRes, TNew>,
-  updater?: (old: TOld, data: TNew) => TOld
+  options?: MutationOptions<TResponse, TRequest>,
+  updater?: (old: TCached, data: TRequest) => TCached
 ) => {
-  return useMutation<TOld, TNew, ApiResponse<TRes>>(
-    (data) => api.post<ApiResponse<TRes>>(buildUrl(url, data), data ?? {}),
+  return useMutation<TCached, TRequest, ApiResponse<TResponse>>(
+    (data) => api.post<ApiResponse<TResponse>>(buildUrl(url, data), data ?? {}),
     options,
     [url, params],
     updater
@@ -230,17 +226,17 @@ export const usePost = <
  * @returns
  */
 export const useUpdate = <
-  TOld,
-  TNew extends object & { id?: ID },
-  TRes = unknown,
+  TCached,
+  TRequest extends object & { id?: ID },
+  TResponse = unknown,
 >(
-  url: UrlBuilder<TNew>,
+  url: UrlBuilder<TRequest>,
   params?: object,
-  options?: MutationOptions<TRes, TNew>,
-  updater?: (old: TOld, data: TNew) => TOld
+  options?: MutationOptions<TResponse, TRequest>,
+  updater?: (old: TCached, data: TRequest) => TCached
 ) => {
-  return useMutation<TOld, TNew, ApiResponse<TRes>>(
-    (data) => api.put<ApiResponse<TRes>>(buildUrl(url, data), data),
+  return useMutation<TCached, TRequest, ApiResponse<TResponse>>(
+    (data) => api.put<ApiResponse<TResponse>>(buildUrl(url, data), data),
     options,
     [url, params],
     updater
@@ -261,20 +257,20 @@ export const useUpdate = <
  * @returns Mutation result
  */
 export const useUpdateInList = <
-  TOld,
-  TNew extends object & { id?: ID },
-  TRes = unknown,
+  TCached,
+  TRequest extends object & { id?: ID },
+  TResponse = unknown,
 >(
-  url: UrlBuilder<TNew>,
+  url: UrlBuilder<TRequest>,
   params?: object,
-  options?: MutationOptions<TRes, TNew>,
-  updater?: (old: TOld, data: TNew) => TOld
+  options?: MutationOptions<TResponse, TRequest>,
+  updater?: (old: TCached, data: TRequest) => TCached
 ) => {
-  return useMutation<TOld, TNew, ApiResponse<TRes>>(
+  return useMutation<TCached, TRequest, ApiResponse<TResponse>>(
     (data) => {
       const { id, ...rest } = data;
       const builtUrl = buildUrl(url, data);
-      return api.put<ApiResponse<TRes>>(
+      return api.put<ApiResponse<TResponse>>(
         id ? `${builtUrl}/${id}` : builtUrl,
         rest
       );
@@ -298,14 +294,14 @@ export const useUpdateInList = <
  * @param updater Updater function
  * @returns Mutation result
  */
-export const useDelete = <TOld, TNew = ID | void, TRes = unknown>(
+export const useDelete = <TCached, TRequest = ID | void, TResponse = unknown>(
   url: string,
   params?: object,
-  options?: MutationOptions<TRes, TNew>,
-  updater?: (old: TOld, id: TNew) => TOld
+  options?: MutationOptions<TResponse, TRequest>,
+  updater?: (old: TCached, id: TRequest) => TCached
 ) => {
-  return useMutation<TOld, TNew, ApiResponse<TRes>>(
-    (id) => api.delete<ApiResponse<TRes>>(id ? `${url}/${id}` : url),
+  return useMutation<TCached, TRequest, ApiResponse<TResponse>>(
+    (id) => api.delete<ApiResponse<TResponse>>(id ? `${url}/${id}` : url),
     options,
     [url, params],
     updater
@@ -320,14 +316,18 @@ export const useDelete = <TOld, TNew = ID | void, TRes = unknown>(
  * @param updater Updater function
  * @returns Mutation result
  */
-export const usePostForm = <TOld, TNew extends FormData, TRes = unknown>(
-  url: UrlBuilder<TNew>,
+export const usePostForm = <
+  TCached,
+  TRequest extends FormData,
+  TResponse = unknown,
+>(
+  url: UrlBuilder<TRequest>,
   params?: object,
-  options?: MutationOptions<TRes, TNew>,
-  updater?: (old: TOld, data: TNew) => TOld
+  options?: MutationOptions<TResponse, TRequest>,
+  updater?: (old: TCached, data: TRequest) => TCached
 ) => {
-  return useMutation<TOld, TNew, ApiResponse<TRes>>(
-    (data) => api.postForm<ApiResponse<TRes>>(buildUrl(url, data), data),
+  return useMutation<TCached, TRequest, ApiResponse<TResponse>>(
+    (data) => api.postForm<ApiResponse<TResponse>>(buildUrl(url, data), data),
     options,
     [url, params],
     updater
@@ -349,25 +349,25 @@ export const usePostForm = <TOld, TNew extends FormData, TRes = unknown>(
  * @returns Mutation result
  */
 export const useCommand = <
-  TOld,
-  TNew extends object & { id: ID },
-  TRes = unknown,
+  TCached,
+  TRequest extends object & { id: ID },
+  TResponse = unknown,
 >(
-  url: UrlBuilder<TNew>,
-  queryKey?: QueryKey<TNew>,
-  options?: MutationOptions<TRes, TNew>,
-  updater?: (old: TOld, data: TNew) => TOld,
+  url: UrlBuilder<TRequest>,
+  queryKey?: QueryKey<TRequest>,
+  options?: MutationOptions<TResponse, TRequest>,
+  updater?: (old: TCached, data: TRequest) => TCached,
   method: "POST" | "PUT" | "PATCH" = "POST"
 ) => {
-  return useMutation<TOld, TNew, ApiResponse<TRes>>(
+  return useMutation<TCached, TRequest, ApiResponse<TResponse>>(
     (data) => {
       switch (method) {
         case "POST":
-          return api.post<ApiResponse<TRes>>(buildUrl(url, data), data);
+          return api.post<ApiResponse<TResponse>>(buildUrl(url, data), data);
         case "PUT":
-          return api.put<ApiResponse<TRes>>(buildUrl(url, data), data);
+          return api.put<ApiResponse<TResponse>>(buildUrl(url, data), data);
         case "PATCH":
-          return api.patch<ApiResponse<TRes>>(buildUrl(url, data), data);
+          return api.patch<ApiResponse<TResponse>>(buildUrl(url, data), data);
         default:
           throw new Error("Invalid method");
       }
