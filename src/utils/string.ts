@@ -6,9 +6,8 @@ export const fillZero = (num: number, len: number) => {
   return num.toString().padStart(len, "0");
 };
 
-export const getRandomString = (len: number) => {
-  return Array(len)
-    .fill(0)
+export const getRandomString = (length: number) => {
+  return Array.from({ length })
     .map(() => Math.random().toString(36)[2])
     .join("");
 };
