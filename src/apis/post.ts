@@ -25,8 +25,14 @@ export type PostUpdate = Omit<Post, "user" | "createdAt" | "updatedAt">;
 
 const useInvalidatePost = (params?: object) => {
   const queryClient = useQueryClient();
+  const queryKeyToInvalidate = params
+    ? [toUrl(ApiRoutes.Post), params]
+    : [toUrl(ApiRoutes.Post)];
 
-  return () => queryClient.invalidateQueries([toUrl(ApiRoutes.Post), params]);
+  return () => {
+    console.log("The query has been invalidated.", queryKeyToInvalidate);
+    queryClient.invalidateQueries(queryKeyToInvalidate);
+  };
 };
 
 // [GET] /api/posts/{id}

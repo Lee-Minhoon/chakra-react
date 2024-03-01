@@ -37,8 +37,14 @@ export interface UserApprove {
 
 const useInvalidateUser = (params?: object) => {
   const queryClient = useQueryClient();
+  const queryKeyToInvalidate = params
+    ? [toUrl(ApiRoutes.User), params]
+    : [toUrl(ApiRoutes.User)];
 
-  return () => queryClient.invalidateQueries([toUrl(ApiRoutes.User), params]);
+  return () => {
+    console.log("The query has been invalidated.", queryKeyToInvalidate);
+    queryClient.invalidateQueries(queryKeyToInvalidate);
+  };
 };
 
 // [GET] /api/users/{id}
