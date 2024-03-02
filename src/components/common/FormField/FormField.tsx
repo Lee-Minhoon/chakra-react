@@ -28,6 +28,7 @@ const FormFieldBase = <T extends FieldValues, S extends FormFieldTypes>(
         return (
           <Input
             ref={ref}
+            name={name}
             {...(rest as FormFieldPropsTypeMap[typeof FormFieldTypes.String])}
           />
         );
