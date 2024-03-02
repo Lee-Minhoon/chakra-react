@@ -22,8 +22,8 @@ const usePagination = () => {
     };
   }, [router.query]);
 
-  const onPagination = useCallback(
-    (params: OnPaginationParams) => {
+  const onPagination = useCallback<(params: OnPaginationParams) => void>(
+    (params) => {
       push({
         pathname: router.pathname,
         query: { ...router.query, ...params },
