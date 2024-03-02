@@ -58,7 +58,7 @@ const UserCard = ({ data: user }: UserCardProps) => {
         <CardHeader>
           <Skeleton isLoaded={!!user}>
             <Flex justify={"space-between"}>
-              <Heading size={"lg"}>{user?.name ?? "Name"}</Heading>
+              <Heading size={"lg"}>{user?.name ?? t("Name")}</Heading>
               <Button
                 rightIcon={<TbEdit />}
                 onClick={() => {
