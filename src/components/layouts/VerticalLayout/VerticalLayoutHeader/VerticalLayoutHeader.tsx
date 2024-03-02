@@ -4,6 +4,7 @@ import {
   LanguageToggler,
   LayoutToggler,
   Logo,
+  PrimaryColorChanger,
 } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useSafePush } from "@/hooks";
@@ -32,6 +33,7 @@ const VerticalLayoutHeader = () => {
       <Flex justify={"flex-end"} gap={"4"}>
         <LayoutToggler />
         <ColorToggler />
+        <PrimaryColorChanger />
         <LanguageToggler />
         {me ? (
           <Button rightIcon={<RiLogoutBoxRLine />} onClick={() => signout()}>

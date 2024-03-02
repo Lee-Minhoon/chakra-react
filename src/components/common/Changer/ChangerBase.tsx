@@ -1,18 +1,18 @@
 import { IconButton, Tooltip } from "@chakra-ui/react";
 
-interface TogglerBaseProps {
+interface ChangerBaseProps {
   ariaLabel: string;
   label?: string;
   children?: React.ReactNode;
   onToggle?: () => void;
 }
 
-const TogglerBase = ({
+const ChangerBase = ({
   ariaLabel,
   label,
   children,
   onToggle,
-}: TogglerBaseProps) => {
+}: ChangerBaseProps) => {
   return (
     <Tooltip hasArrow label={label}>
       <IconButton aria-label={ariaLabel} onClick={onToggle}>
@@ -22,4 +22,4 @@ const TogglerBase = ({
   );
 };
 
-export default TogglerBase;
+export default ChangerBase;

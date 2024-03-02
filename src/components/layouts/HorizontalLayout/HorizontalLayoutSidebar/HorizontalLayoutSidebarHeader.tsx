@@ -3,6 +3,7 @@ import {
   LanguageToggler,
   LayoutToggler,
   Logo,
+  PrimaryColorChanger,
 } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useSafePush } from "@/hooks";
@@ -30,6 +31,7 @@ const HorizontalLayoutSidebarHeader = () => {
       <Flex gap={"4"} direction={{ base: "column", xl: "row" }}>
         <LayoutToggler />
         <ColorToggler />
+        <PrimaryColorChanger placement={"right"} />
         <LanguageToggler />
       </Flex>
     </Center>
