@@ -39,14 +39,14 @@ export const readPostsWithUser = (
     if (sort && order) {
       posts = posts.sort((a, b) => {
         if (order === "asc") {
-          if (sort === "user_name") {
+          if (sort === "user") {
             if ((a.user?.name ?? "") < (b.user?.name ?? "")) return -1;
             if ((a.user?.name ?? "") > (b.user?.name ?? "")) return 1;
           }
           if (a[sort] < b[sort]) return -1;
           if (a[sort] > b[sort]) return 1;
         } else {
-          if (sort === "user_name") {
+          if (sort === "user") {
             if ((a.user?.name ?? "") > (b.user?.name ?? "")) return -1;
             if ((a.user?.name ?? "") < (b.user?.name ?? "")) return 1;
           }
