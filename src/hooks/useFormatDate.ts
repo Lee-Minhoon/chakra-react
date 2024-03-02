@@ -18,7 +18,7 @@ const useFormatDate = () => {
     const diff = now.getTime() - date.getTime();
 
     if (diff < MINUTE) {
-      return "Just now";
+      return t("Just now");
     } else if (diff < HOUR) {
       return `${Math.floor(diff / MINUTE)} ${t("minutes ago")}`;
     } else if (diff < DAY) {
