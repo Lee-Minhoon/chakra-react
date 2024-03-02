@@ -1,8 +1,9 @@
 import { HorizontalLayout, VerticalLayout } from "@/components";
+import { Layout } from "@/types";
 import { createContext, useContext, useMemo } from "react";
 
 const LayoutContext = createContext<{
-  layout: "horizontal" | "vertical";
+  layout: Layout;
   toggleLayout: () => void;
 }>({
   layout: "vertical",

@@ -1,11 +1,10 @@
 import { useLayout } from "@/hooks";
+import { Layout } from "@/types";
 import { useCallback, useEffect, useState } from "react";
 
 interface LayoutProviderProps {
   children: React.ReactNode;
 }
-
-type Layout = "horizontal" | "vertical";
 
 const LayoutProvider = ({ children }: LayoutProviderProps) => {
   const { Provider } = useLayout();
