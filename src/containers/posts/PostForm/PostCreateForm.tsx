@@ -38,10 +38,10 @@ const PostCreateForm = () => {
     >
       <FormField
         fieldType={"string"}
-        {...register("title")}
         isRequired
         label={t("Title")}
         placeholder={t("Title")}
+        {...register("title")}
       />
       <FormField fieldType={"document"} name={"content"} control={control} />
       <Button type={"submit"} isDisabled={isLoading} alignSelf={"flex-end"}>

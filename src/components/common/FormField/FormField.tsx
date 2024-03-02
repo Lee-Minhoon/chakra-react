@@ -39,22 +39,6 @@ const FormFieldBase = <T extends FieldValues, S extends FormFieldTypes>(
             control={control}
             render={({ field: { value, onChange } }) => {
               return (
-                <Editor
-                  defaultValue={value ?? "Hello, World!"}
-                  onChange={onChange}
-                  {...(rest as FormFieldPropsTypeMap[typeof FormFieldTypes.Document])}
-                />
-              );
-            }}
-          />
-        );
-      case FormFieldTypes.Document:
-        return (
-          <Controller
-            name={name}
-            control={control}
-            render={({ field: { value, onChange } }) => {
-              return (
                 <NumberInput
                   value={value}
                   onChange={onChange}
@@ -66,6 +50,22 @@ const FormFieldBase = <T extends FieldValues, S extends FormFieldTypes>(
                     <NumberDecrementStepper />
                   </NumberInputStepper>
                 </NumberInput>
+              );
+            }}
+          />
+        );
+      case FormFieldTypes.Document:
+        return (
+          <Controller
+            name={name}
+            control={control}
+            render={({ field: { value, onChange } }) => {
+              return (
+                <Editor
+                  defaultValue={value ?? "Hello, World!"}
+                  onChange={onChange}
+                  {...(rest as FormFieldPropsTypeMap[typeof FormFieldTypes.Document])}
+                />
               );
             }}
           />
