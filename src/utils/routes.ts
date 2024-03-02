@@ -16,7 +16,7 @@ export class NextURL {
     if (typeof this.url === "string") {
       return this.url.split("?")[0];
     }
-    return this.url.pathname ?? "";
+    return this.url.pathname;
   }
 
   get query() {
@@ -24,7 +24,7 @@ export class NextURL {
       const queryString = this.url.split("?")[1];
       return Object.fromEntries(new URLSearchParams(queryString).entries());
     }
-    return this.url.query ?? {};
+    return this.url.query;
   }
 
   toString() {
