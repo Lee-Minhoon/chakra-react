@@ -1,5 +1,8 @@
 import { UserCreate, useCreateUser } from "@/apis";
 import { useUpload } from "@/apis/upload";
+import { ApiRoutes } from "@/constants";
+import { useQueryKeyParams } from "@/hooks";
+import { toUrl } from "@/utils";
 import {
   Button,
   Flex,
@@ -23,7 +26,8 @@ interface UserCreateModalProps {
 
 const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
   const { register, handleSubmit } = useForm<UserCreate>();
-  const { mutate: createUser } = useCreateUser();
+  const queryKeyParams = useQueryKeyParams(toUrl(ApiRoutes.User));
+  const { mutate: createUser } = useCreateUser(queryKeyParams);
   const { mutate: upload } = useUpload();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState("");

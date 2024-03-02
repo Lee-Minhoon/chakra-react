@@ -63,7 +63,6 @@ export const useGetUsersByCursor = (params: CursorQueryParams) => {
 };
 
 // [POST] /api/users
-
 export const useCreateUser = (params?: object) => {
   return usePost<User[] | PageQueryResponse<User[]>, UserCreate>(
     toUrl(ApiRoutes.User),
