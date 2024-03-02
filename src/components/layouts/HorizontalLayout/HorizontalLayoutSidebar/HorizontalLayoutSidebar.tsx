@@ -1,8 +1,8 @@
 import { useAlphaColor } from "@/hooks";
 import { Box, Divider } from "@chakra-ui/react";
+import { HorizontalLayoutNavbar } from "./HorizontalLayoutNavbar";
 import HorizontalLayoutSidebarFooter from "./HorizontalLayoutSidebarFooter";
 import HorizontalLayoutSidebarHeader from "./HorizontalLayoutSidebarHeader";
-import { HorizontalLayoutNavbar } from "./Navbar";
 
 const HorizontalLayoutSidebar = () => {
   const alphaColor = useAlphaColor();

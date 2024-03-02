@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import VerticalLayoutHeader from "./Header/VerticalLayoutHeader";
 import VerticalLayoutFooter from "./VerticalLayoutFooter";
+import { VerticalLayoutHeader } from "./VerticalLayoutHeader";
 
 interface VerticalLayoutProps {
   children?: React.ReactNode;

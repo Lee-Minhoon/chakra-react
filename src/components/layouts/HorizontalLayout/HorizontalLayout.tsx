@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import HorizontalLayoutHeader from "./HorizontalLayoutHeader";
-import { HorizontalLayoutSidebar } from "./Sidebar";
+import { HorizontalLayoutSidebar } from "./HorizontalLayoutSidebar";
 
 interface HorizontalLayoutProps {
   children?: React.ReactNode;
