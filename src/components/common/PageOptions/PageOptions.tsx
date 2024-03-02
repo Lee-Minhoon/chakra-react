@@ -8,7 +8,7 @@ const PageOptions = () => {
   const { t } = useTranslation();
 
   const options = useMemo(() => {
-    return Array.from({ length: 100 }).map((_, idx) => ({
+    return Array.from({ length: 10 }).map((_, idx) => ({
       label: t("Show per page", { count: (idx + 1) * 10 }),
       value: (idx + 1) * 10,
     }));
