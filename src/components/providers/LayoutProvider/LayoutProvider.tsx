@@ -9,12 +9,10 @@ interface LayoutProviderProps {
 const LayoutProvider = ({ children }: LayoutProviderProps) => {
   const { Provider } = useLayout();
   const [layout, setLayout] = useState<Layout>("vertical");
-  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
     const layout = localStorage.getItem("layout") as Layout;
     if (layout) setLayout(layout);
-    setIsHydrated(true);
   }, []);
 
   const toggleLayout = useCallback(() => {
@@ -25,11 +23,7 @@ const LayoutProvider = ({ children }: LayoutProviderProps) => {
     });
   }, []);
 
-  return (
-    <Provider value={{ layout, toggleLayout }}>
-      {isHydrated && children}
-    </Provider>
-  );
+  return <Provider value={{ layout, toggleLayout }}>{children}</Provider>;
 };
 
 export default LayoutProvider;

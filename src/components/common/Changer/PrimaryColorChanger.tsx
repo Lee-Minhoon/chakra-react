@@ -1,3 +1,4 @@
+import usePrimaryColor from "@/hooks/usePrimaryColor";
 import {
   Box,
   Flex,
@@ -33,7 +34,7 @@ const colors = [
   "whatsapp",
   "twitter",
   "telegram",
-];
+] as const;
 
 interface PrimaryColorChangerProps {
   placement?: PlacementWithLogical;
@@ -42,6 +43,7 @@ interface PrimaryColorChangerProps {
 const size = "calc(((20rem - 1.5rem - 2px) - 1rem * 7) / 8)";
 
 const PrimaryColorChanger = ({ placement }: PrimaryColorChangerProps) => {
+  const { changePrimaryColor } = usePrimaryColor();
   const { t } = useTranslation();
 
   return (
@@ -68,9 +70,7 @@ const PrimaryColorChanger = ({ placement }: PrimaryColorChangerProps) => {
                   borderRadius={"full"}
                   cursor={"pointer"}
                   _hover={{ bg: `${color}.600` }}
-                  onClick={() => {
-                    console.log(color);
-                  }}
+                  onClick={() => changePrimaryColor(color)}
                 />
               </Tooltip>
             ))}

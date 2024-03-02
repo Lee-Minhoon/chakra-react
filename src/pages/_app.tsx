@@ -16,6 +16,7 @@ import {
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
+import { useEffect, useState } from "react";
 
 const { toast } = createStandaloneToast();
 
@@ -61,6 +62,13 @@ const queryClient = new QueryClient({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    console.log("Hydrated");
+    setIsHydrated(true);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
@@ -69,7 +77,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Authenticator />
           <ModalProvider />
           <LayoutProvider>
-            <Component {...pageProps} />
+            {isHydrated && <Component {...pageProps} />}
           </LayoutProvider>
         </Translator>
       </ChakraProvider>
