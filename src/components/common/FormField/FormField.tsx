@@ -43,6 +43,8 @@ const FormFieldBase = <T extends FieldValues, S extends FormFieldTypes>(
             {...(rest as FormFieldPropsTypeMap[typeof FormFieldTypes.Document])}
           />
         );
+      default:
+        throw new Error("Invalid field type");
     }
   }, [control, fieldType, name, ref, rest]);
 
