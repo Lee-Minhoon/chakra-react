@@ -1,15 +1,10 @@
 import { FormFieldPropsTypeMap, FormFieldTypes } from "@/constants";
-import {
-  Input,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-} from "@chakra-ui/react";
+import { Input } from "@chakra-ui/react";
 import { ForwardedRef, forwardRef, useMemo } from "react";
-import { Control, Controller, FieldPath, FieldValues } from "react-hook-form";
-import { Editor, WithFormLabel } from "..";
+import { Control, FieldPath, FieldValues } from "react-hook-form";
+import { WithFormLabel } from "..";
+import FormFieldEditor from "./FormFieldEditor";
+import FormFieldNumberInput from "./FormFieldNumberInput";
 
 type FormFieldProps<T extends FieldValues, S extends FormFieldTypes> = {
   fieldType: S;
@@ -34,40 +29,18 @@ const FormFieldBase = <T extends FieldValues, S extends FormFieldTypes>(
         );
       case FormFieldTypes.Number:
         return (
-          <Controller
+          <FormFieldNumberInput
             name={name}
             control={control}
-            render={({ field: { value, onChange } }) => {
-              return (
-                <NumberInput
-                  value={value}
-                  onChange={onChange}
-                  {...(rest as FormFieldPropsTypeMap[typeof FormFieldTypes.Number])}
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              );
-            }}
+            {...(rest as FormFieldPropsTypeMap[typeof FormFieldTypes.Number])}
           />
         );
       case FormFieldTypes.Document:
         return (
-          <Controller
+          <FormFieldEditor
             name={name}
             control={control}
-            render={({ field: { value, onChange } }) => {
-              return (
-                <Editor
-                  defaultValue={value ?? "Hello, World!"}
-                  onChange={onChange}
-                  {...(rest as FormFieldPropsTypeMap[typeof FormFieldTypes.Document])}
-                />
-              );
-            }}
+            {...(rest as FormFieldPropsTypeMap[typeof FormFieldTypes.Document])}
           />
         );
     }
