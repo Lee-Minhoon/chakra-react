@@ -99,7 +99,7 @@ const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const posts = await readPosts();
 
-    if (posts.length > 10000) {
+    if (posts.length > 999) {
       return res
         .status(400)
         .json({ data: null, message: "Post creation limit exceeded" });

@@ -96,7 +96,7 @@ const createUser = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const users = await readUsers();
 
-    if (users.length > 10000) {
+    if (users.length > 999) {
       return res
         .status(409)
         .json({ data: null, message: "Maximum number of users reached" });
