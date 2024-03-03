@@ -19,10 +19,6 @@ export const me = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const session = await readMySession(ip);
 
-        if (!session) {
-          return res.status(401).json({ data: null, message: "Unauthorized" });
-        }
-
         const user = users.find((user) => user.id === session);
 
         return res.status(200).json({ data: user ?? null, message: "Success" });
