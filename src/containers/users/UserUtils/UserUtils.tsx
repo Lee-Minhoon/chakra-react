@@ -12,10 +12,11 @@ const count = 1000;
 
 const UsersUtils = () => {
   const { openModal } = useModalStore(["openModal"]);
-  const { mutate: createUser } = useCreateUser();
+  const { mutate: createUser, isLoading: createUserIsLoading } =
+    useCreateUser();
   const { mutate: createTestUsers, isLoading: createTestUsersIsLoading } =
     useCreateTestUsers(count);
-  const { mutate: resetTestUsers, isLoading: restTestUsersIsLoading } =
+  const { mutate: resetTestUsers, isLoading: resetTestUsersIsLoading } =
     useResetTestUsers();
   const { t } = useTranslation();
 
@@ -51,6 +52,8 @@ const UsersUtils = () => {
           variant={"outline"}
           leftIcon={<TbPlus />}
           onClick={handleCreateRandomUser}
+          isLoading={createUserIsLoading}
+          isDisabled={createUserIsLoading}
         >
           {t("Random User")}
         </Button>
@@ -60,6 +63,7 @@ const UsersUtils = () => {
           variant={"outline"}
           leftIcon={<TbPlus />}
           onClick={handleCreateTestUsers}
+          isLoading={createTestUsersIsLoading}
           isDisabled={createTestUsersIsLoading}
         >
           {`${count} ${t("Users")}`}
@@ -70,7 +74,8 @@ const UsersUtils = () => {
           variant={"outline"}
           leftIcon={<GrPowerReset />}
           onClick={handleResetTestUsers}
-          isDisabled={restTestUsersIsLoading}
+          isLoading={resetTestUsersIsLoading}
+          isDisabled={resetTestUsersIsLoading}
         >
           {t("Users")}
         </Button>

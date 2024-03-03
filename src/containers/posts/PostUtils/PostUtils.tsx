@@ -18,10 +18,11 @@ const count = 1000;
 const PostsUtils = () => {
   const { data: me } = useGetMe();
   const { push } = useSafePush();
-  const { mutate: createPost } = useCreatePost();
+  const { mutate: createPost, isLoading: createPostIsLoading } =
+    useCreatePost();
   const { mutate: createTestPosts, isLoading: createTestPostsIsLoading } =
     useCreateTestPosts(count);
-  const { mutate: resetTestPosts, isLoading: restTestPostsIsLoading } =
+  const { mutate: resetTestPosts, isLoading: resetTestPostsIsLoading } =
     useResetTestPosts();
   const { t } = useTranslation();
 
@@ -58,6 +59,8 @@ const PostsUtils = () => {
           variant={"outline"}
           leftIcon={<TbPlus />}
           onClick={handleCreateRandomPost}
+          isLoading={createPostIsLoading}
+          isDisabled={createPostIsLoading}
         >
           {t("Random Post")}
         </Button>
@@ -67,6 +70,7 @@ const PostsUtils = () => {
           variant={"outline"}
           leftIcon={<TbPlus />}
           onClick={handleCreateTestPosts}
+          isLoading={createTestPostsIsLoading}
           isDisabled={createTestPostsIsLoading}
         >
           {`${count} ${t("Posts")}`}
@@ -77,7 +81,8 @@ const PostsUtils = () => {
           variant={"outline"}
           leftIcon={<GrPowerReset />}
           onClick={handleResetTestPosts}
-          isDisabled={restTestPostsIsLoading}
+          isLoading={resetTestPostsIsLoading}
+          isDisabled={resetTestPostsIsLoading}
         >
           {t("Posts")}
         </Button>
