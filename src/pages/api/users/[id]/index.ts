@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { readSession } from "../../auth/db";
+import { parseIP, readMySession } from "../../auth/db";
 import { sleep } from "../../utils";
 import { readUsers, writeUsers } from "../db";
 
@@ -69,26 +69,37 @@ const updateUser = async (req: NextApiRequest, res: NextApiResponse) => {
 
 // [DELETE] /api/users/:id
 const deleteUser = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query;
+  parseIP(req)
+    .then(async (ip) => {
+      const { id } = req.query;
 
-  try {
-    const session = await readSession();
+      try {
+        const session = await readMySession(ip);
 
-    if (session === Number(id)) {
+        if (session === Number(id)) {
+          return res.status(409).json({
+            data: null,
+            message: "Please sign out before deleting user",
+          });
+        }
+
+        let users = await readUsers();
+        users = users.filter((user) => user.id !== Number(id));
+
+        await writeUsers(users);
+
+        return res
+          .status(200)
+          .json({ data: id, message: `User ${id} deleted` });
+      } catch {
+        return res
+          .status(500)
+          .json({ data: null, message: `User ${id} deletion failed` });
+      }
+    })
+    .catch(() => {
       return res
-        .status(409)
-        .json({ data: null, message: "Please sign out before deleting user" });
-    }
-
-    let users = await readUsers();
-    users = users.filter((user) => user.id !== Number(id));
-
-    await writeUsers(users);
-
-    return res.status(200).json({ data: id, message: `User ${id} deleted` });
-  } catch {
-    return res
-      .status(500)
-      .json({ data: null, message: `User ${id} deletion failed` });
-  }
+        .status(400)
+        .json({ data: null, message: "Failed to parse IP" });
+    });
 };

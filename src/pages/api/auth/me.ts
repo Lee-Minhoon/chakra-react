@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { readUsers } from "../users/db";
-import { parseIP, readSession } from "./db";
+import { parseIP, readMySession } from "./db";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -16,15 +16,14 @@ export const me = async (req: NextApiRequest, res: NextApiResponse) => {
     .then(async (ip) => {
       try {
         const users = await readUsers();
-        const session = await readSession();
 
-        const mySession = session[ip.toString()];
+        const session = await readMySession(ip);
 
-        if (!mySession) {
+        if (!session) {
           return res.status(401).json({ data: null, message: "Unauthorized" });
         }
 
-        const user = users.find((user) => user.id === mySession);
+        const user = users.find((user) => user.id === session);
 
         return res.status(200).json({ data: user ?? null, message: "Success" });
       } catch {
