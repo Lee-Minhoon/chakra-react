@@ -19,7 +19,7 @@ const PostUpdateForm = ({ post }: PostUpdateFormProps) => {
       ...post,
     },
   });
-  const { mutate: updatePost, isLoading } = useUpdatePost(post.id);
+  const { mutate: updatePost, isLoading, isSuccess } = useUpdatePost(post.id);
   const { t } = useTranslation();
 
   return (
@@ -46,7 +46,12 @@ const PostUpdateForm = ({ post }: PostUpdateFormProps) => {
         {...register("title")}
       />
       <FormField fieldType={"document"} name={"content"} control={control} />
-      <Button type={"submit"} isDisabled={isLoading} alignSelf={"flex-end"}>
+      <Button
+        type={"submit"}
+        isLoading={isLoading || isSuccess}
+        isDisabled={isLoading || isSuccess}
+        alignSelf={"flex-end"}
+      >
         {t("Submit")}
       </Button>
     </Flex>

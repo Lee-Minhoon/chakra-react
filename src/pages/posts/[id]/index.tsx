@@ -2,17 +2,15 @@ import { useGetPost } from "@/apis";
 import { PostCard } from "@/containers";
 import { useHasScroll, useLayout } from "@/hooks";
 import { QueryParser } from "@/utils";
-import { Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useRef } from "react";
 
 const PostPage = () => {
   const { Layout } = useLayout();
-  const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { data: post } = useGetPost(QueryParser.toNumber(router.query.id));
-  const hasScroll = useHasScroll(ref.current);
+  const { ref, hasScroll } = useHasScroll();
 
   return (
     <>
@@ -23,16 +21,14 @@ const PostPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <Flex
+        <Box
           ref={ref}
-          flex={1}
-          direction={"column"}
           overflowY={"auto"}
           p={"0.5"}
           pr={hasScroll ? "2" : "0.5"}
         >
           <PostCard data={post} />
-        </Flex>
+        </Box>
       </Layout>
     </>
   );

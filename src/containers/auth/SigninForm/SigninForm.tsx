@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 const SigninForm = () => {
   const { router, push } = useSafePush();
   const { register, handleSubmit } = useForm<AuthSignin>();
-  const { mutate: signin, isIdle } = useSignin();
+  const { mutate: signin, isLoading, isSuccess } = useSignin();
   const { t } = useTranslation();
 
   return (
@@ -38,7 +38,11 @@ const SigninForm = () => {
         <WithFormLabel label={t("Email")}>
           <Input {...register("email")} />
         </WithFormLabel>
-        <Button type={"submit"} isLoading={!isIdle} isDisabled={!isIdle}>
+        <Button
+          type={"submit"}
+          isLoading={isLoading || isSuccess}
+          isDisabled={isLoading || isSuccess}
+        >
           {t("Sign In")}
         </Button>
       </Box>

@@ -1,7 +1,7 @@
 import { Nullable } from "@/types";
 import { useEffect, useState } from "react";
 
-const useHasScroll = (elem: Nullable<HTMLElement>) => {
+const useHasScroll = (elem?: Nullable<HTMLElement>) => {
   const [hasScroll, setHasScroll] = useState(false);
 
   useEffect(() => {
@@ -16,7 +16,13 @@ const useHasScroll = (elem: Nullable<HTMLElement>) => {
     return () => resizeObserver.disconnect();
   }, [elem]);
 
-  return hasScroll;
+  const ref = (elem: Nullable<HTMLElement>) => {
+    if (elem) {
+      setHasScroll(elem.scrollHeight > elem.clientHeight);
+    }
+  };
+
+  return { ref, hasScroll };
 };
 
 export default useHasScroll;

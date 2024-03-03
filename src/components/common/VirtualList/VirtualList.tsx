@@ -21,7 +21,7 @@ const VirtualList = <T extends Scheme>({
   onLastItemVisible,
   gap,
 }: VirtualListProps<T>) => {
-  const hasScroll = useHasScroll(container);
+  const { hasScroll } = useHasScroll(container);
 
   return (
     <VirtualListBase

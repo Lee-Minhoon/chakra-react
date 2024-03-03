@@ -27,8 +27,12 @@ interface UserCreateModalProps {
 const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
   const { register, handleSubmit } = useForm<UserCreate>();
   const queryKeyParams = useQueryKeyParams(toUrl(ApiRoutes.User));
-  const { mutate: createUser } = useCreateUser(queryKeyParams);
-  const { mutate: upload } = useUpload();
+  const {
+    mutate: createUser,
+    isLoading: createUserIsLoading,
+    isSuccess: createUserIsSuccess,
+  } = useCreateUser(queryKeyParams);
+  const { mutate: upload, isLoading: uploadIsLoading } = useUpload();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState("");
   const { t } = useTranslation();
@@ -78,7 +82,16 @@ const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
           <Button mr={"3"} onClick={onClose}>
             {t("Close")}
           </Button>
-          <Button variant="ghost" type={"submit"}>
+          <Button
+            variant="ghost"
+            type={"submit"}
+            isLoading={
+              uploadIsLoading || createUserIsLoading || createUserIsSuccess
+            }
+            isDisabled={
+              uploadIsLoading || createUserIsLoading || createUserIsSuccess
+            }
+          >
             {t("Create User")}
           </Button>
         </ModalFooter>

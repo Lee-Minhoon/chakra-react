@@ -31,9 +31,17 @@ const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
   const { register, handleSubmit } = useForm<UserUpdate>({
     defaultValues: user,
   });
-  const { mutate: updateUser } = useUpdateUser(user.id);
-  const { mutate: updateUserInList } = useUpdateUserInList(queryKeyParams);
-  const { mutate: upload } = useUpload();
+  const {
+    mutate: updateUser,
+    isLoading: updateUserIsLoading,
+    isSuccess: updateUserIsSuccess,
+  } = useUpdateUser(user.id);
+  const {
+    mutate: updateUserInList,
+    isLoading: updateUserInListIsLoading,
+    isSuccess: updateUserInListIsSuccess,
+  } = useUpdateUserInList(queryKeyParams);
+  const { mutate: upload, isLoading: uploadIsLoading } = useUpload();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState(user.profile ?? "");
   const { t } = useTranslation();
@@ -92,7 +100,24 @@ const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
           <Button mr={"3"} onClick={onClose}>
             {t("Close")}
           </Button>
-          <Button variant="ghost" type={"submit"}>
+          <Button
+            variant="ghost"
+            type={"submit"}
+            isLoading={
+              uploadIsLoading ||
+              updateUserIsLoading ||
+              updateUserIsSuccess ||
+              updateUserInListIsLoading ||
+              updateUserInListIsSuccess
+            }
+            isDisabled={
+              uploadIsLoading ||
+              updateUserIsLoading ||
+              updateUserIsSuccess ||
+              updateUserInListIsLoading ||
+              updateUserInListIsSuccess
+            }
+          >
             {t("Update User")}
           </Button>
         </ModalFooter>

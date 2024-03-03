@@ -19,7 +19,13 @@ const HorizontalLayout = ({ children }: HorizontalLayoutProps) => {
         overflow={"hidden"}
       >
         <HorizontalLayoutHeader />
-        <Flex as={"main"} flex={1} direction={"column"} overflow={"hidden"}>
+        <Flex
+          as={"main"}
+          flex={1}
+          direction={"column"}
+          overflow={"hidden"}
+          p={"0.5"}
+        >
           {children}
         </Flex>
       </Flex>

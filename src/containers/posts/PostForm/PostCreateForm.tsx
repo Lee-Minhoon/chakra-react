@@ -17,7 +17,7 @@ const PostCreateForm = () => {
       userId: me?.id,
     },
   });
-  const { mutate: createPost, isLoading } = useCreatePost();
+  const { mutate: createPost, isLoading, isSuccess } = useCreatePost();
   const { t } = useTranslation();
 
   return (
@@ -44,7 +44,12 @@ const PostCreateForm = () => {
         {...register("title")}
       />
       <FormField fieldType={"document"} name={"content"} control={control} />
-      <Button type={"submit"} isDisabled={isLoading} alignSelf={"flex-end"}>
+      <Button
+        type={"submit"}
+        isLoading={isLoading || isSuccess}
+        isDisabled={isLoading || isSuccess}
+        alignSelf={"flex-end"}
+      >
         {t("Submit")}
       </Button>
     </Flex>
