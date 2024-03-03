@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { writeSession } from "./db";
+import { parseIP, readSession, writeSession } from "./db";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -11,11 +11,22 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 const signout = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    await writeSession(null);
+  parseIP(req)
+    .then(async (ip) => {
+      const session = await readSession();
+      delete session[ip.toString()];
 
-    return res.status(200).json({ data: null, message: "Success" });
-  } catch {
-    return res.status(500).json({ data: null, message: "Failed" });
-  }
+      try {
+        await writeSession(session);
+
+        return res.status(200).json({ data: null, message: "Success" });
+      } catch {
+        return res.status(500).json({ data: null, message: "Failed" });
+      }
+    })
+    .catch(() => {
+      return res
+        .status(400)
+        .json({ data: null, message: "Failed to parse IP" });
+    });
 };

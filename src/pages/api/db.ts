@@ -44,7 +44,7 @@ export const fileUpload = (req: NextApiRequest) => {
 };
 
 const makeJson = (db?: DB) =>
-  JSON.stringify(db ?? { session: null, users: [], posts: [] }, null, 2);
+  JSON.stringify(db ?? { session: {}, users: [], posts: [] }, null, 2);
 
 const readLocalDB = () => {
   return new Promise<DB>((resolve, reject) => {

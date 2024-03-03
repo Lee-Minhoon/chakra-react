@@ -1,8 +1,6 @@
-import { Nullable } from "@/types";
-
 export type ID = number;
 
-export type Session = Nullable<ID>;
+export type Session = { [key: string]: number };
 
 export type Order = "asc" | "desc";
 
