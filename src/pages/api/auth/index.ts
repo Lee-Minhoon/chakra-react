@@ -7,7 +7,7 @@ export const readSession = (): Session => {
     const db = readDB();
     return db.session;
   } catch (err) {
-    console.log("failed to read db.json");
+    console.log("Failed to read db.json");
     throw err;
   }
 };
@@ -21,7 +21,7 @@ export const writeSession = (session: Session) => {
       "utf8"
     );
   } catch (err) {
-    console.log("failed to write db.json");
+    console.log("Failed to write db.json");
     throw err;
   }
 };

@@ -22,6 +22,7 @@ export const uploadFormData = (req: NextApiRequest) => {
 
     const form = formidable({
       uploadDir,
+      maxFileSize: 5 * 1024 * 1024,
       filename: (name, ext, part, form) =>
         `${new Date().getTime()}-${part.originalFilename}`,
     });

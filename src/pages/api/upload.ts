@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { readUploads } from "./db";
 import { uploadFormData } from "./utils";
 
 export const config = {
@@ -17,11 +18,23 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 export const upload = async (req: NextApiRequest, res: NextApiResponse) => {
-  const data = await uploadFormData(req).catch(() => null);
+  const uploads = readUploads();
 
-  if (!data) {
-    res.status(500).json({ data: null, message: "failed" });
+  if (uploads.length > 20) {
+    res.status(400).json({ data: null, message: "Already uploaded 20 files" });
   }
 
-  res.status(200).json({ data: data?.files, message: "success" });
+  const data = await uploadFormData(req).catch((err) => {
+    if (err.code === 1009) {
+      res
+        .status(400)
+        .json({ data: null, message: "File size too large, max 5MB" });
+    }
+  });
+
+  if (!data) {
+    res.status(500).json({ data: null, message: "Failed to upload" });
+  }
+
+  res.status(200).json({ data: data?.files, message: "Successfully uploaded" });
 };

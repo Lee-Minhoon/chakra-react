@@ -38,3 +38,7 @@ export const readDB = (): DB => {
   const data = fs.readFileSync(path.join(process.cwd(), "/db.json"), "utf8");
   return JSON.parse(data);
 };
+
+export const readUploads = () => {
+  return fs.readdirSync("./public/uploads");
+};

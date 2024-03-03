@@ -167,6 +167,13 @@ export const createUser = (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const users = readUsers();
+
+    if (users.length > 10000) {
+      return res
+        .status(409)
+        .json({ data: null, message: "Maximum number of users reached" });
+    }
+
     if (users.some((user) => user.email === email)) {
       return res
         .status(409)
@@ -283,6 +290,13 @@ export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const users = readUsers();
+
+    if (users.length > 10000) {
+      return res
+        .status(409)
+        .json({ data: null, message: "Maximum number of users reached" });
+    }
+
     const lastId = users[users.length - 1]?.id ?? 0;
     for (let i = 0; i < +(count ?? 10); i++) {
       const currentId = lastId + i + 1;

@@ -72,7 +72,7 @@ export const writePosts = (posts: Post[]) => {
       "utf8"
     );
   } catch (err) {
-    console.log("failed to write db.json");
+    console.log("Failed to write db.json");
     throw err;
   }
 };
@@ -192,6 +192,13 @@ export const createPost = (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const posts = readPosts();
+
+    if (posts.length > 10000) {
+      return res
+        .status(400)
+        .json({ data: null, message: "Post creation limit exceeded" });
+    }
+
     const newPost: Post = {
       id: (posts[posts.length - 1]?.id ?? 0) + 1,
       userId,
@@ -263,6 +270,13 @@ export const createTestPosts = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const users = readUsers();
     const posts = readPosts();
+
+    if (posts.length > 10000) {
+      return res
+        .status(400)
+        .json({ data: null, message: "Post creation limit exceeded" });
+    }
+
     const lastId = posts[posts.length - 1]?.id ?? 0;
     for (let i = 0; i < +(count ?? 10); i++) {
       const currentId = lastId + i + 1;
