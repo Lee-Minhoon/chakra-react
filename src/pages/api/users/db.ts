@@ -21,14 +21,11 @@ export const readUsers = async (
     }
     if (sort && order) {
       users = users.sort((a, b) => {
-        if (order === "asc") {
-          if (a[sort] < b[sort]) return -1;
-          if (a[sort] > b[sort]) return 1;
-        } else {
-          if (a[sort] > b[sort]) return -1;
-          if (a[sort] < b[sort]) return 1;
-        }
-        return 0;
+        const ac = a[sort];
+        const bc = b[sort];
+        if (ac > bc) return order === "desc" ? -1 : 1;
+        else if (ac < bc) return order === "desc" ? 1 : -1;
+        else return 0;
       });
     }
     return users;

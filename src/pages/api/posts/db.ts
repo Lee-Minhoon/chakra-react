@@ -33,22 +33,11 @@ export const readPostsWithUser = async (
     }
     if (sort && order) {
       posts = posts.sort((a, b) => {
-        if (order === "asc") {
-          if (sort === "user") {
-            if ((a.user?.name ?? "") < (b.user?.name ?? "")) return -1;
-            if ((a.user?.name ?? "") > (b.user?.name ?? "")) return 1;
-          }
-          if (a[sort] < b[sort]) return -1;
-          if (a[sort] > b[sort]) return 1;
-        } else {
-          if (sort === "user") {
-            if ((a.user?.name ?? "") > (b.user?.name ?? "")) return -1;
-            if ((a.user?.name ?? "") < (b.user?.name ?? "")) return 1;
-          }
-          if (a[sort] > b[sort]) return -1;
-          if (a[sort] < b[sort]) return 1;
-        }
-        return 0;
+        const ac = sort === "user" ? a.user?.name ?? "" : a[sort];
+        const bc = sort === "user" ? b.user?.name ?? "" : b[sort];
+        if (ac > bc) return order === "desc" ? -1 : 1;
+        else if (ac < bc) return order === "desc" ? 1 : -1;
+        else return 0;
       });
     }
     return posts;
