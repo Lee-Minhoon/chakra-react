@@ -1,7 +1,18 @@
 import { ApiError, QueryKey, UrlBuilder } from "./types";
 
 const protoc = process.env.NODE_ENV === "production" ? "https" : "http";
-const domain = process.env.NEXT_PUBLIC_SERVER_DOMAIN;
+
+const getDomain = () => {
+  return process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_SERVER_DOMAIN
+    : window.location.host;
+};
+
+const getUrl = (url: string, searchParams?: URLSearchParams) => {
+  return `${protoc}://${getDomain()}/${url}${
+    searchParams ? `?${searchParams}` : ""
+  }`;
+};
 
 const extendedFetch = async (input: RequestInfo, init?: RequestInit) => {
   return fetch(input, init).then(async (res) => {
@@ -22,8 +33,8 @@ type Api = {
 
 export const api: Api = {
   get: (url, params) => {
-    const queryString = new URLSearchParams(params as Record<string, string>);
-    return extendedFetch(`${protoc}://${domain}/${url}?${queryString}`, {
+    const searchParams = new URLSearchParams(params as Record<string, string>);
+    return extendedFetch(getUrl(url, searchParams), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -31,7 +42,7 @@ export const api: Api = {
     });
   },
   post: (url, body) => {
-    return extendedFetch(`${protoc}://${domain}/${url}`, {
+    return extendedFetch(getUrl(url), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +51,7 @@ export const api: Api = {
     });
   },
   put: (url, body) => {
-    return extendedFetch(`${protoc}://${domain}/${url}`, {
+    return extendedFetch(getUrl(url), {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +60,7 @@ export const api: Api = {
     });
   },
   patch: (url, body) => {
-    return extendedFetch(`${protoc}://${domain}/${url}`, {
+    return extendedFetch(getUrl(url), {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +69,7 @@ export const api: Api = {
     });
   },
   delete: (url) => {
-    return extendedFetch(`${protoc}://${domain}/${url}`, {
+    return extendedFetch(getUrl(url), {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +77,7 @@ export const api: Api = {
     });
   },
   postForm: (url, body) => {
-    return extendedFetch(`${protoc}://${domain}/${url}`, {
+    return extendedFetch(getUrl(url), {
       method: "POST",
       body,
     });
