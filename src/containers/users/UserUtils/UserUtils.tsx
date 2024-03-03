@@ -10,7 +10,7 @@ import { GrPowerReset } from "react-icons/gr";
 import { TbPlus } from "react-icons/tb";
 import { UserCreateModal } from "../UserModal";
 
-const count = 1000;
+const count = 100;
 
 const UsersUtils = () => {
   const { openModal } = useModalStore(["openModal"]);

@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { GrPowerReset } from "react-icons/gr";
 import { TbPlus } from "react-icons/tb";
 
-const count = 1000;
+const count = 100;
 
 const PostsUtils = () => {
   const { data: me } = useGetMe();
