@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { RequiredKeysOf } from "type-fest";
 import { Order, User } from "../types";
-import { sleep } from "../utils";
+import { delayForDev } from "../utils";
 import { readUsers, writeUsers } from "./db";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  sleep(500);
+  delayForDev(500);
   switch (req.method) {
     case "GET":
       const { page, cursor, limit } = req.query;

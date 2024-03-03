@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { parseIP, readMySession } from "../../auth/db";
-import { sleep } from "../../utils";
+import { delayForDev } from "../../utils";
 import { readUsers, writeUsers } from "../db";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  sleep(500);
+  delayForDev(500);
   switch (req.method) {
     case "GET":
       return getUser(req, res);

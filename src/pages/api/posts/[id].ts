@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { sleep } from "../utils";
+import { delayForDev } from "../utils";
 import { readPosts, readPostsWithUser, writePosts } from "./db";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  sleep(500);
+  delayForDev(500);
   switch (req.method) {
     case "GET":
       return getPost(req, res);

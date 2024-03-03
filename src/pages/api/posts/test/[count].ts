@@ -1,11 +1,11 @@
 import { getRandomString } from "@/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 import { readUsers } from "../../users/db";
-import { sleep } from "../../utils";
+import { delayForDev } from "../../utils";
 import { readPosts, writePosts } from "../db";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  sleep(500);
+  delayForDev(500);
   switch (req.method) {
     case "POST":
       return createTestPosts(req, res);

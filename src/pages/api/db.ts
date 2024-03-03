@@ -6,7 +6,7 @@ import { NextApiRequest } from "next";
 import path from "path";
 import { Post, Session, User } from "./types";
 
-const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
+export const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
 const dbFileName = "db.json";
 
 // local
