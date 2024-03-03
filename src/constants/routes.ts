@@ -52,6 +52,15 @@ export interface Nav {
   children?: Nav[];
 }
 
+export const defaultQuery = {
+  view: ViewQueries.Table,
+  page: 1,
+  limit: 10,
+  sort: "id",
+  order: "desc",
+  search: "",
+};
+
 // t("Users")
 // t("User Detail")
 // t("Posts")
@@ -61,14 +70,7 @@ export const navs: Nav[] = [
   {
     label: "Users",
     pathname: PageRoutes.Users,
-    query: {
-      view: ViewQueries.Table,
-      page: 1,
-      limit: 10,
-      sort: "id",
-      order: "desc",
-      search: "",
-    },
+    query: defaultQuery,
     icon: FaUser,
     matcher: match(PageRoutes.Users),
     children: [
@@ -82,14 +84,7 @@ export const navs: Nav[] = [
   {
     label: "Posts",
     pathname: PageRoutes.Posts,
-    query: {
-      view: ViewQueries.Table,
-      page: 1,
-      limit: 10,
-      sort: "id",
-      order: "desc",
-      search: "",
-    },
+    query: defaultQuery,
     icon: BsFillPostcardFill,
     matcher: match(PageRoutes.Posts),
     children: [

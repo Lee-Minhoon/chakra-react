@@ -1,5 +1,5 @@
 import { Post, useDeletePost, useGetMe } from "@/apis";
-import { PageRoutes } from "@/constants";
+import { PageRoutes, defaultQuery } from "@/constants";
 import { useSafePush } from "@/hooks";
 import { useModalStore } from "@/stores";
 import { toUrl } from "@/utils";
@@ -53,7 +53,11 @@ const PostCard = ({ data: post }: PostCardProps) => {
                       content: t("Are you sure you want to delete this post?"),
                       onConfirm: () =>
                         deletePost(post?.id, {
-                          onSuccess: () => push(toUrl(PageRoutes.Home)),
+                          onSuccess: () =>
+                            push({
+                              pathname: toUrl(PageRoutes.Posts),
+                              query: defaultQuery,
+                            }),
                         }),
                     });
                   }}
