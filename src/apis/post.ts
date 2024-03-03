@@ -51,7 +51,7 @@ export const useGetPostsByCursor = (params: CursorQueryParams) => {
 };
 
 // [POST] /api/posts
-export const useCreatePost = (params?: PageQueryParams | CursorQueryParams) => {
+export const useCreatePost = (params?: object) => {
   return usePost<Post[], PostCreate, number>(toUrl(ApiRoutes.Post), params);
 };
 

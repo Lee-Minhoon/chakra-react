@@ -4,9 +4,9 @@ import {
   useGetMe,
   useResetTestPosts,
 } from "@/apis";
-import { PageRoutes } from "@/constants";
-import { useSafePush } from "@/hooks";
-import { getRandomString } from "@/utils";
+import { ApiRoutes, PageRoutes } from "@/constants";
+import { useQueryKeyParams, useSafePush } from "@/hooks";
+import { getRandomString, toUrl } from "@/utils";
 import { Button, Flex, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -18,8 +18,9 @@ const count = 1000;
 const PostsUtils = () => {
   const { data: me } = useGetMe();
   const { push } = useSafePush();
+  const queryKeyParams = useQueryKeyParams(toUrl(ApiRoutes.Post));
   const { mutate: createPost, isLoading: createPostIsLoading } =
-    useCreatePost();
+    useCreatePost(queryKeyParams);
   const { mutate: createTestPosts, isLoading: createTestPostsIsLoading } =
     useCreateTestPosts(count);
   const { mutate: resetTestPosts, isLoading: resetTestPostsIsLoading } =

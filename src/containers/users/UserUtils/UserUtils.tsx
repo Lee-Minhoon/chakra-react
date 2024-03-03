@@ -1,6 +1,8 @@
 import { useCreateTestUsers, useCreateUser, useResetTestUsers } from "@/apis";
+import { ApiRoutes } from "@/constants";
+import { useQueryKeyParams } from "@/hooks";
 import { useModalStore } from "@/stores";
-import { getRandomPhoneNumber, getRandomString } from "@/utils";
+import { getRandomPhoneNumber, getRandomString, toUrl } from "@/utils";
 import { Button, Flex, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -12,8 +14,9 @@ const count = 1000;
 
 const UsersUtils = () => {
   const { openModal } = useModalStore(["openModal"]);
+  const queryKeyParams = useQueryKeyParams(toUrl(ApiRoutes.User));
   const { mutate: createUser, isLoading: createUserIsLoading } =
-    useCreateUser();
+    useCreateUser(queryKeyParams);
   const { mutate: createTestUsers, isLoading: createTestUsersIsLoading } =
     useCreateTestUsers(count);
   const { mutate: resetTestUsers, isLoading: resetTestUsersIsLoading } =
