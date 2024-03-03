@@ -1,6 +1,7 @@
 import { ApiError, QueryKey, UrlBuilder } from "./types";
 
 console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+console.log("process.env.VERCEL_ENV", process.env.VERCEL_ENV);
 
 const protoc = process.env.VERCEL_ENV === "production" ? "https" : "http";
 
