@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { writeSession } from ".";
+import { writeSession } from "./db";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {

@@ -1,44 +1,19 @@
-import { Nullable } from "@/types";
 import AWS from "aws-sdk";
 import formidable from "formidable";
 import fs from "fs";
 import fsPromises from "fs/promises";
 import { NextApiRequest } from "next";
 import path from "path";
+import { Post, Session, User } from "./types";
 
-interface DB {
-  session: Session;
-  users: User[];
-  posts: Post[];
-}
+const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
+const dbFileName = "db.json";
 
-export type ID = number;
+// local
+const dbDir = path.join(process.cwd(), dbFileName);
+const storageDir = "./public/uploads";
 
-export type Session = Nullable<ID>;
-
-export interface Scheme {
-  id: ID;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface User extends Scheme {
-  name: string;
-  email: string;
-  phone: string;
-  profile?: string;
-  approved: boolean;
-}
-
-export interface Post extends Scheme {
-  userId: number;
-  title: string;
-  content: string;
-}
-
-export type Order = "asc" | "desc";
-
-const uploadDir = "./public/uploads";
+// cloud
 const bucket = "nextjs-boilerplate";
 const endpoint = new AWS.Endpoint("https://kr.object.ncloudstorage.com");
 const cloudStorage = new AWS.S3({
@@ -50,108 +25,109 @@ const cloudStorage = new AWS.S3({
   },
 });
 
-// const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
-const isProd = true;
+interface DB {
+  session: Session;
+  users: User[];
+  posts: Post[];
+}
 
-export const readDB = async (): Promise<DB> => {
-  if (isProd) {
-    return await readCloudDB();
-  }
-  return readLocalDB();
+export const readDB = () => {
+  return isProd ? readCloudDB() : readLocalDB();
 };
 
-export const writeDB = async (
-  session: Session,
-  users: User[],
-  posts: Post[]
-) => {
-  if (isProd) {
-    await writeCloubDB(session, users, posts);
-  }
-  writeLocalDB(session, users, posts);
-};
-
-const readLocalDB = (): DB => {
-  let data: string;
-  try {
-    data = fs.readFileSync(path.join(process.cwd(), "/db.json"), "utf8");
-  } catch (err) {
-    try {
-      fs.writeFileSync(
-        path.join(process.cwd(), "/db.json"),
-        JSON.stringify({ session: null, users: [], posts: [] }, null, 2),
-        "utf8"
-      );
-    } catch (err) {
-      throw err;
-    }
-    data = fs.readFileSync(path.join(process.cwd(), "/db.json"), "utf8");
-  }
-  return JSON.parse(data);
-};
-
-const readCloudDB = async (): Promise<DB> => {
-  const db = await cloudStorage
-    .getObject({
-      Bucket: bucket,
-      Key: "db.json",
-    })
-    .promise()
-    .then((data) => {
-      if (!data.Body) {
-        throw "No data";
-      }
-
-      return JSON.parse(data.Body.toString());
-    })
-    .catch((err) => {
-      throw err;
-    });
-
-  return db;
-};
-
-const writeLocalDB = (session: Session, users: User[], posts: Post[]) => {
-  try {
-    fs.writeFileSync(
-      path.join(process.cwd(), "/db.json"),
-      JSON.stringify({ session, users, posts }, null, 2),
-      "utf8"
-    );
-  } catch (err) {
-    throw err;
-  }
-};
-
-const writeCloubDB = async (session: Session, users: User[], posts: Post[]) => {
-  try {
-    await cloudStorage
-      .putObject({
-        Bucket: bucket,
-        Key: "db.json",
-        Body: JSON.stringify({ session, users, posts }),
-      })
-      .promise();
-  } catch (err) {
-    throw err;
-  }
+export const writeDB = (db: DB) => {
+  return isProd ? writeCloubDB(db) : writeLocalDB(db);
 };
 
 export const fileUpload = (req: NextApiRequest) => {
-  if (isProd) {
-    return fileUploadToCloud(req);
-  }
-  return fileUploadToLocal(req);
+  return isProd ? fileUploadToCloud(req) : fileUploadToLocal(req);
 };
 
-const fileUploadToCloud = (req: NextApiRequest) => {
-  return new Promise<string>(async (resolve, reject) => {
-    const form = formidable({
-      uploadDir,
-      maxFileSize: 5 * 1024 * 1024,
-      filename: (name, ext, part, form) =>
-        `${new Date().getTime()}-${part.originalFilename}`,
+const makeJson = (db?: DB) =>
+  JSON.stringify(db ?? { session: null, users: [], posts: [] }, null, 2);
+
+const readLocalDB = () => {
+  return new Promise<DB>((resolve, reject) => {
+    fs.readFile(dbDir, "utf8", (err, data) => {
+      if (err) {
+        fs.writeFile(dbDir, makeJson(), "utf8", (err) => {
+          if (err) {
+            reject(err);
+          }
+        });
+      }
+      resolve(JSON.parse(data));
     });
+  });
+};
+
+const readCloudDB = async (): Promise<DB> => {
+  return new Promise<DB>(async (resolve, reject) => {
+    cloudStorage
+      .getObject({ Bucket: bucket, Key: dbFileName })
+      .promise()
+      .then(
+        (data) => {
+          if (!data.Body) {
+            throw new Error("No data");
+          }
+          resolve(JSON.parse(data.Body.toString()));
+        },
+        (err) => {
+          reject(err);
+        }
+      )
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+const writeLocalDB = (db: DB) => {
+  return new Promise<void>((resolve, reject) => {
+    fs.writeFile(dbDir, makeJson(db), "utf8", (err) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
+};
+
+const writeCloubDB = async (db: DB) => {
+  return new Promise<void>(async (resolve, reject) => {
+    await cloudStorage
+      .putObject({
+        Bucket: bucket,
+        Key: dbFileName,
+        Body: makeJson(db),
+      })
+      .promise()
+      .then(() => {
+        resolve();
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+const options: formidable.Options = {
+  uploadDir: storageDir,
+  maxFileSize: 5 * 1024 * 1024,
+  filename: (name, ext, part, form) =>
+    `${new Date().getTime()}-${part.originalFilename}`,
+};
+
+const fileUploadToLocal = (req: NextApiRequest) => {
+  return new Promise<string>(async (resolve, reject) => {
+    await fsPromises.readdir(storageDir).catch(() => {
+      fsPromises.mkdir(storageDir).catch(() => {
+        reject();
+      });
+    });
+
+    const form = formidable(options);
 
     form.parse(req, (err, fields, files) => {
       if (err) {
@@ -161,64 +137,52 @@ const fileUploadToCloud = (req: NextApiRequest) => {
       const file = files.file;
 
       if (!file || file.length === 0) {
-        reject("No file");
-        return;
+        throw new Error("No file");
       }
 
-      const fileKey = `images/${Date.now()}.jpg`;
-
-      fsPromises
-        .readFile(file[0].filepath)
-        .then((buffer) => {
-          cloudStorage
-            .putObject({
-              Bucket: bucket,
-              Key: fileKey,
-              ACL: "public-read",
-              Body: buffer,
-              ContentType: "image/jpeg",
-            })
-            .promise()
-            .then(() => {
-              resolve(`${endpoint.href}${bucket}/${fileKey}`);
-            })
-            .catch((err) => {
-              reject(err);
-            });
-        })
-        .catch((err) => {
-          reject(err);
-        });
+      resolve(`uploads/${file[0].newFilename}`);
     });
   });
 };
 
-const fileUploadToLocal = (req: NextApiRequest) => {
+const fileUploadToCloud = (req: NextApiRequest) => {
   return new Promise<string>(async (resolve, reject) => {
-    await fsPromises.readdir(uploadDir).catch(() => {
-      fsPromises.mkdir(uploadDir).catch(() => {
-        reject();
-      });
-    });
-
-    const form = formidable({
-      uploadDir,
-      maxFileSize: 5 * 1024 * 1024,
-      filename: (name, ext, part, form) =>
-        `${new Date().getTime()}-${part.originalFilename}`,
-    });
+    const form = formidable(options);
 
     form.parse(req, (err, fields, files) => {
       if (err) {
         reject(err);
       }
 
-      if (!files.file || files.file.length === 0) {
-        reject("No file");
-        return;
+      const file = files.file;
+
+      if (!file || file.length === 0) {
+        throw new Error("No file");
       }
 
-      resolve(`uploads/${files.file[0].newFilename}`);
+      const fileKey = `images/${Date.now()}.jpg`;
+
+      fs.readFile(file[0].filepath, (err, data) => {
+        if (err) {
+          reject(err);
+        }
+
+        cloudStorage
+          .putObject({
+            Bucket: bucket,
+            Key: fileKey,
+            ACL: "public-read",
+            Body: data,
+            ContentType: "image/jpeg",
+          })
+          .promise()
+          .then(() => {
+            resolve(`${endpoint.href}${bucket}/${fileKey}`);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
     });
   });
 };

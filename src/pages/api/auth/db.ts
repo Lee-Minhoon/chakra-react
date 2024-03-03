@@ -1,4 +1,5 @@
-import { Session, readDB, writeDB } from "../db";
+import { readDB, writeDB } from "../db";
+import { Session } from "../types";
 
 export const readSession = async (): Promise<Session> => {
   try {
@@ -13,7 +14,7 @@ export const readSession = async (): Promise<Session> => {
 export const writeSession = async (session: Session) => {
   try {
     const db = await readDB();
-    writeDB(session, db.users, db.posts);
+    writeDB({ ...db, session });
   } catch (err) {
     console.log("Failed to write db.json");
     throw err;

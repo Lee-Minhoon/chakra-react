@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { writeSession } from ".";
-import { readUsers } from "../users";
+import { readUsers } from "../users/db";
+import { writeSession } from "./db";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {

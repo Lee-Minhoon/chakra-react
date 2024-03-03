@@ -1,12 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { fileUpload } from "./db";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
     case "POST":
