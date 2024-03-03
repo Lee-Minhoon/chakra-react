@@ -35,7 +35,21 @@ export interface Post extends Scheme {
 export type Order = "asc" | "desc";
 
 export const readDB = (): DB => {
-  const data = fs.readFileSync(path.join(process.cwd(), "/db.json"), "utf8");
+  let data: string;
+  try {
+    data = fs.readFileSync(path.join(process.cwd(), "/db.json"), "utf8");
+  } catch (err) {
+    try {
+      fs.writeFileSync(
+        path.join(process.cwd(), "/db.json"),
+        JSON.stringify({ session: null, users: [], posts: [] }, null, 2),
+        "utf8"
+      );
+    } catch (err) {
+      throw err;
+    }
+    data = fs.readFileSync(path.join(process.cwd(), "/db.json"), "utf8");
+  }
   return JSON.parse(data);
 };
 
