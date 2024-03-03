@@ -6,8 +6,8 @@ const protoc = process.env.NODE_ENV === "production" ? "https" : "http";
 
 const getDomain = () => {
   return process.env.NODE_ENV === "production"
-    ? process.env.NEXT_PUBLIC_SERVER_DOMAIN
-    : window.location.host;
+    ? window.location.host
+    : process.env.NEXT_PUBLIC_SERVER_DOMAIN;
 };
 
 const getUrl = (url: string, searchParams?: URLSearchParams) => {
