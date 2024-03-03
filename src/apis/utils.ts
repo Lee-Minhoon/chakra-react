@@ -1,9 +1,7 @@
 import { ApiError, QueryKey, UrlBuilder } from "./types";
 
-console.log("process.env.NODE_ENV", process.env.NODE_ENV);
-console.log("process.env.DEPLOY_ENV", process.env.DEPLOY_ENV);
-
-const protoc = process.env.DEPLOY_ENV === "production" ? "https" : "http";
+const protoc =
+  process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? "https" : "http";
 
 const getDomain = () => {
   return process.env.NODE_ENV === "production"
