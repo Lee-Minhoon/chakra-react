@@ -31,8 +31,9 @@ const PostUpdateForm = ({ post }: PostUpdateFormProps) => {
         useCallback(
           (data) =>
             updatePost(data, {
-              onSuccess: (res) =>
-                push(toUrl(PageRoutes.PostDetail, { id: res.data })),
+              onSuccess: (res) => {
+                push(toUrl(PageRoutes.PostDetail, { id: res.data }));
+              },
             }),
           [updatePost, push]
         )

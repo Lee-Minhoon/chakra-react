@@ -26,10 +26,11 @@ const SigninForm = () => {
           useCallback(
             (data) =>
               signin(data, {
-                onSuccess: () =>
+                onSuccess: () => {
                   router.push(
                     router.query.redirect?.toString() ?? toUrl(PageRoutes.Home)
-                  ),
+                  );
+                },
               }),
             [router, signin]
           )

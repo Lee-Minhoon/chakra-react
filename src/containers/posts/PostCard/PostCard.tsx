@@ -53,11 +53,12 @@ const PostCard = ({ data: post }: PostCardProps) => {
                       content: t("Are you sure you want to delete this post?"),
                       onConfirm: () =>
                         deletePost(post?.id, {
-                          onSuccess: () =>
+                          onSuccess: () => {
                             push({
                               pathname: toUrl(PageRoutes.Posts),
                               query: defaultQuery,
-                            }),
+                            });
+                          },
                         }),
                     });
                   }}
