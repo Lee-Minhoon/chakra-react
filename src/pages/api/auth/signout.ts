@@ -10,9 +10,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-const signout = (req: NextApiRequest, res: NextApiResponse) => {
+const signout = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    writeSession(null);
+    await writeSession(null);
 
     return res.status(200).json({ data: null, message: "Success" });
   } catch {

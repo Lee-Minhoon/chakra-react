@@ -1,15 +1,13 @@
 import { getRandomString } from "@/utils";
-import fs from "fs";
 import { NextApiRequest, NextApiResponse } from "next";
-import path from "path";
 import { RequiredKeysOf } from "type-fest";
-import { Order, Post, readDB } from "../db";
+import { Order, Post, readDB, writeDB } from "../db";
 import { readUsers } from "../users";
 import { sleep } from "../utils";
 
-export const readPosts = () => {
+export const readPosts = async () => {
   try {
-    const db = readDB();
+    const db = await readDB();
     return db.posts;
   } catch (err) {
     console.log("Failed to read db.json");
@@ -17,13 +15,13 @@ export const readPosts = () => {
   }
 };
 
-export const readPostsWithUser = (
+export const readPostsWithUser = async (
   sort?: RequiredKeysOf<Post> & "user_name",
   order?: Order,
   search?: string
 ) => {
   try {
-    const db = readDB();
+    const db = await readDB();
     let posts = db.posts.map((post) => ({
       ...post,
       user: db.users.find((user) => user.id === post.userId) ?? null,
@@ -63,14 +61,10 @@ export const readPostsWithUser = (
   }
 };
 
-export const writePosts = (posts: Post[]) => {
+export const writePosts = async (posts: Post[]) => {
   try {
-    const db = readDB();
-    fs.writeFileSync(
-      path.join(process.cwd(), "/db.json"),
-      JSON.stringify({ ...db, posts }, null, 2),
-      "utf8"
-    );
+    const db = await readDB();
+    await writeDB(db.session, db.users, posts);
   } catch (err) {
     console.log("Failed to write db.json");
     throw err;
@@ -95,11 +89,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 // [GET] /api/posts/:id
-export const getPost = (req: NextApiRequest, res: NextApiResponse) => {
+export const getPost = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   try {
-    const posts = readPostsWithUser();
+    const posts = await readPostsWithUser();
     const post = posts.find((user) => user.id === Number(id));
 
     return res.status(200).json({
@@ -114,11 +108,11 @@ export const getPost = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [GET] /api/posts
-export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
+export const getPosts = async (req: NextApiRequest, res: NextApiResponse) => {
   const { sort, order } = req.query;
 
   try {
-    const posts = readPostsWithUser(
+    const posts = await readPostsWithUser(
       sort as RequiredKeysOf<Post> & "user_name",
       order as Order
     );
@@ -132,13 +126,16 @@ export const getPosts = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [GET] /api/posts
-export const getPostsByPage = (req: NextApiRequest, res: NextApiResponse) => {
+export const getPostsByPage = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   const { page, limit, sort, order, search } = req.query;
 
   const offset = (Number(page) - 1) * Number(limit);
 
   try {
-    const posts = readPostsWithUser(
+    const posts = await readPostsWithUser(
       sort as RequiredKeysOf<Post> & "user_name",
       order as Order,
       search as string
@@ -158,11 +155,14 @@ export const getPostsByPage = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [GET] /api/posts
-export const getPostsByCursor = (req: NextApiRequest, res: NextApiResponse) => {
+export const getPostsByCursor = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   const { cursor, limit, sort, order, search } = req.query;
 
   try {
-    const posts = readPostsWithUser(
+    const posts = await readPostsWithUser(
       sort as RequiredKeysOf<Post> & "user_name",
       order as Order,
       search as string
@@ -187,11 +187,11 @@ export const getPostsByCursor = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [POST] /api/posts
-export const createPost = (req: NextApiRequest, res: NextApiResponse) => {
+export const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId, title, content } = req.body;
 
   try {
-    const posts = readPosts();
+    const posts = await readPosts();
 
     if (posts.length > 10000) {
       return res
@@ -209,7 +209,7 @@ export const createPost = (req: NextApiRequest, res: NextApiResponse) => {
     };
     posts.push(newPost);
 
-    writePosts(posts);
+    await writePosts(posts);
 
     return res
       .status(200)
@@ -222,12 +222,12 @@ export const createPost = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [PUT] /api/posts/:id
-export const updatePost = (req: NextApiRequest, res: NextApiResponse) => {
+export const updatePost = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
   const { title, content } = req.body;
 
   try {
-    let posts = readPosts();
+    let posts = await readPosts();
     posts = posts.map((post) => {
       if (post.id === Number(id)) {
         return { ...post, title, content, updatedAt: new Date().toISOString() };
@@ -235,7 +235,7 @@ export const updatePost = (req: NextApiRequest, res: NextApiResponse) => {
       return post;
     });
 
-    writePosts(posts);
+    await writePosts(posts);
 
     return res.status(200).json({ data: id, message: `Post ${id} updated` });
   } catch {
@@ -246,14 +246,14 @@ export const updatePost = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [DELETE] /api/posts/:id
-export const deletePost = (req: NextApiRequest, res: NextApiResponse) => {
+export const deletePost = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   try {
-    let posts = readPosts();
+    let posts = await readPosts();
     posts = posts.filter((user) => user.id !== Number(id));
 
-    writePosts(posts);
+    await writePosts(posts);
 
     return res.status(200).json({ data: id, message: `Post ${id} deleted` });
   } catch {
@@ -264,12 +264,15 @@ export const deletePost = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [POST] /api/posts/test/:count
-export const createTestPosts = (req: NextApiRequest, res: NextApiResponse) => {
+export const createTestPosts = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   const { count } = req.query;
 
   try {
-    const users = readUsers();
-    const posts = readPosts();
+    const users = await readUsers();
+    const posts = await readPosts();
 
     if (posts.length > 10000) {
       return res
@@ -290,7 +293,7 @@ export const createTestPosts = (req: NextApiRequest, res: NextApiResponse) => {
       });
     }
 
-    writePosts(posts);
+    await writePosts(posts);
 
     return res
       .status(200)
@@ -303,9 +306,12 @@ export const createTestPosts = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [DELETE] /api/posts/test/reset
-export const resetTestPosts = (req: NextApiRequest, res: NextApiResponse) => {
+export const resetTestPosts = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    writePosts([]);
+    await writePosts([]);
   } catch {
     return res
       .status(500)

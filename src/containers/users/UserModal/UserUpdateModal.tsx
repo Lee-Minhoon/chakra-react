@@ -66,8 +66,7 @@ const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
 
                 upload(formData, {
                   onSuccess: (res) => {
-                    data.profile =
-                      res.data["file"][0].filepath.split("public")[1];
+                    data.profile = res.data;
                     mutate(data, { onSuccess: onClose });
                   },
                 });

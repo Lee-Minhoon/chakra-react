@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { readUploads } from "./db";
-import { uploadFormData } from "./utils";
+import { fileUpload } from "./db";
 
 export const config = {
   api: {
@@ -18,13 +17,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 export const upload = async (req: NextApiRequest, res: NextApiResponse) => {
-  const uploads = readUploads();
-
-  if (uploads.length > 20) {
-    res.status(400).json({ data: null, message: "Already uploaded 20 files" });
-  }
-
-  const data = await uploadFormData(req).catch((err) => {
+  const data = await fileUpload(req).catch((err) => {
     if (err.code === 1009) {
       res
         .status(400)
@@ -36,5 +29,5 @@ export const upload = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(500).json({ data: null, message: "Failed to upload" });
   }
 
-  res.status(200).json({ data: data?.files, message: "Successfully uploaded" });
+  res.status(200).json({ data, message: "Successfully uploaded" });
 };

@@ -11,18 +11,18 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-const signin = (req: NextApiRequest, res: NextApiResponse) => {
+const signin = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email } = req.body;
 
   try {
-    const users = readUsers();
+    const users = await readUsers();
     const user = users.find((user) => user.email === email);
 
     if (!user) {
       return res.status(401).json({ message: "Email is not registered" });
     }
 
-    writeSession(user.id);
+    await writeSession(user.id);
 
     return res.status(200).json({ data: user, message: "Success" });
   } catch {

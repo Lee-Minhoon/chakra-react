@@ -11,10 +11,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export const me = (req: NextApiRequest, res: NextApiResponse) => {
+export const me = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const users = readUsers();
-    const session = readSession();
+    const users = await readUsers();
+    const session = await readSession();
 
     const user = users.find((user) => user.id === session);
 

@@ -1,10 +1,8 @@
-import fs from "fs";
-import path from "path";
-import { Session, readDB } from "../db";
+import { Session, readDB, writeDB } from "../db";
 
-export const readSession = (): Session => {
+export const readSession = async (): Promise<Session> => {
   try {
-    const db = readDB();
+    const db = await readDB();
     return db.session;
   } catch (err) {
     console.log("Failed to read db.json");
@@ -12,14 +10,10 @@ export const readSession = (): Session => {
   }
 };
 
-export const writeSession = (session: Session) => {
+export const writeSession = async (session: Session) => {
   try {
-    const db = readDB();
-    fs.writeFileSync(
-      path.join(process.cwd(), "/db.json"),
-      JSON.stringify({ ...db, session }, null, 2),
-      "utf8"
-    );
+    const db = await readDB();
+    writeDB(session, db.users, db.posts);
   } catch (err) {
     console.log("Failed to write db.json");
     throw err;

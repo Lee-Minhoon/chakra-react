@@ -1,19 +1,17 @@
 import { getRandomEmail, getRandomPhoneNumber, getRandomString } from "@/utils";
-import fs from "fs";
 import { NextApiRequest, NextApiResponse } from "next";
-import path from "path";
 import { RequiredKeysOf } from "type-fest";
 import { readSession } from "../auth";
-import { Order, User, readDB } from "../db";
+import { Order, User, readDB, writeDB } from "../db";
 import { sleep } from "../utils";
 
-export const readUsers = (
+export const readUsers = async (
   sort?: RequiredKeysOf<User>,
   order?: Order,
   search?: string
-): User[] => {
+): Promise<User[]> => {
   try {
-    const db = readDB();
+    const db = await readDB();
     let users = db.users;
     if (search && search.length > 0) {
       users = users.filter((user) => {
@@ -43,14 +41,10 @@ export const readUsers = (
   }
 };
 
-export const writeUsers = (users: User[]) => {
+export const writeUsers = async (users: User[]) => {
   try {
-    const db = readDB();
-    fs.writeFileSync(
-      path.join(process.cwd(), "/db.json"),
-      JSON.stringify({ ...db, users }, null, 2),
-      "utf8"
-    );
+    const db = await readDB();
+    await writeDB(db.session, users, db.posts);
   } catch (err) {
     console.log("Failed to write db.json");
     throw err;
@@ -73,11 +67,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 // [GET] /api/users/:id
-export const getUser = (req: NextApiRequest, res: NextApiResponse) => {
+export const getUser = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   try {
-    const users = readUsers();
+    const users = await readUsers();
     const user = users.find((user) => user.id === Number(id));
 
     return res.status(200).json({
@@ -92,11 +86,11 @@ export const getUser = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [GET] /api/users
-export const getUsers = (req: NextApiRequest, res: NextApiResponse) => {
+export const getUsers = async (req: NextApiRequest, res: NextApiResponse) => {
   const { sort, order } = req.query;
 
   try {
-    const users = readUsers(sort as RequiredKeysOf<User>, order as Order);
+    const users = await readUsers(sort as RequiredKeysOf<User>, order as Order);
 
     return res
       .status(200)
@@ -107,13 +101,16 @@ export const getUsers = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [GET] /api/users
-export const getUsersByPage = (req: NextApiRequest, res: NextApiResponse) => {
+export const getUsersByPage = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   const { page, limit, sort, order, search } = req.query;
 
   const offset = (Number(page) - 1) * Number(limit);
 
   try {
-    const users = readUsers(
+    const users = await readUsers(
       sort as RequiredKeysOf<User>,
       order as Order,
       search as string
@@ -133,11 +130,14 @@ export const getUsersByPage = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [GET] /api/users
-export const getUsersByCursor = (req: NextApiRequest, res: NextApiResponse) => {
+export const getUsersByCursor = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   const { cursor, limit, sort, order, search } = req.query;
 
   try {
-    const users = readUsers(
+    const users = await readUsers(
       sort as RequiredKeysOf<User>,
       order as Order,
       search as string
@@ -162,11 +162,11 @@ export const getUsersByCursor = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [POST] /api/users
-export const createUser = (req: NextApiRequest, res: NextApiResponse) => {
+export const createUser = async (req: NextApiRequest, res: NextApiResponse) => {
   const { name, email, phone, profile } = req.body;
 
   try {
-    const users = readUsers();
+    const users = await readUsers();
 
     if (users.length > 10000) {
       return res
@@ -192,7 +192,7 @@ export const createUser = (req: NextApiRequest, res: NextApiResponse) => {
     };
     users.push(newUser);
 
-    writeUsers(users);
+    await writeUsers(users);
 
     return res
       .status(200)
@@ -205,12 +205,12 @@ export const createUser = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [PUT] /api/users/:id
-export const updateUser = (req: NextApiRequest, res: NextApiResponse) => {
+export const updateUser = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
   const { name, email, phone, profile } = req.body;
 
   try {
-    let users = readUsers();
+    let users = await readUsers();
     users = users.map((user) => {
       if (user.id === Number(id)) {
         return {
@@ -225,7 +225,7 @@ export const updateUser = (req: NextApiRequest, res: NextApiResponse) => {
       return user;
     });
 
-    writeUsers(users);
+    await writeUsers(users);
 
     return res.status(200).json({ data: id, message: `User ${id} updated` });
   } catch {
@@ -236,11 +236,11 @@ export const updateUser = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [DELETE] /api/users/:id
-export const deleteUser = (req: NextApiRequest, res: NextApiResponse) => {
+export const deleteUser = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   try {
-    const session = readSession();
+    const session = await readSession();
 
     if (session === Number(id)) {
       return res
@@ -248,10 +248,10 @@ export const deleteUser = (req: NextApiRequest, res: NextApiResponse) => {
         .json({ data: null, message: "Please sign out before deleting user" });
     }
 
-    let users = readUsers();
+    let users = await readUsers();
     users = users.filter((user) => user.id !== Number(id));
 
-    writeUsers(users);
+    await writeUsers(users);
 
     return res.status(200).json({ data: id, message: `User ${id} deleted` });
   } catch {
@@ -262,11 +262,14 @@ export const deleteUser = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [PUT] /api/users/:id/approve
-export const approveUser = (req: NextApiRequest, res: NextApiResponse) => {
+export const approveUser = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   const { id } = req.query;
 
   try {
-    let users = readUsers();
+    let users = await readUsers();
     users = users.map((user) => {
       if (user.id === Number(id)) {
         return { ...user, approved: true, updatedAt: new Date().toISOString() };
@@ -274,7 +277,7 @@ export const approveUser = (req: NextApiRequest, res: NextApiResponse) => {
       return user;
     });
 
-    writeUsers(users);
+    await writeUsers(users);
 
     return res.status(200).json({ data: id, message: `User ${id} approved` });
   } catch (err) {
@@ -285,11 +288,14 @@ export const approveUser = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [PUT] /api/users/test/:count
-export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
+export const createTestUsers = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   const { count } = req.query;
 
   try {
-    const users = readUsers();
+    const users = await readUsers();
 
     if (users.length > 10000) {
       return res
@@ -311,7 +317,7 @@ export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
       });
     }
 
-    writeUsers(users);
+    await writeUsers(users);
 
     return res
       .status(200)
@@ -324,9 +330,12 @@ export const createTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // [DELETE] /api/users/test/reset
-export const resetTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
+export const resetTestUsers = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    const session = readSession();
+    const session = await readSession();
 
     if (session) {
       return res.status(409).json({
@@ -335,7 +344,7 @@ export const resetTestUsers = (req: NextApiRequest, res: NextApiResponse) => {
       });
     }
 
-    writeUsers([]);
+    await writeUsers([]);
 
     return res
       .status(200)
