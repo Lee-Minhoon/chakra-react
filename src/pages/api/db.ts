@@ -23,6 +23,7 @@ const cloudStorage = new AWS.S3({
     secretAccessKey: process.env.NCLOUD_SECRET_KEY!,
   },
 });
+const nextTmpDir = "/tmp";
 
 interface DB {
   session: Session;
@@ -114,7 +115,7 @@ const writeCloubDB = async (db: DB) => {
 };
 
 const options: formidable.Options = {
-  uploadDir: storageDir,
+  uploadDir: isProd ? nextTmpDir : storageDir,
   maxFileSize: 5 * 1024 * 1024,
   filename: (name, ext, part, form) =>
     `${new Date().getTime()}-${part.originalFilename}`,
@@ -132,12 +133,7 @@ const fileUploadToLocal = (req: NextApiRequest) => {
         });
       }
 
-      const form = formidable({
-        uploadDir: "./public/uploads",
-        maxFileSize: 5 * 1024 * 1024,
-        filename: (name, ext, part, form) =>
-          `${new Date().getTime()}-${part.originalFilename}`,
-      });
+      const form = formidable(options);
 
       form.parse(req, (err, fields, files) => {
         if (err) {
