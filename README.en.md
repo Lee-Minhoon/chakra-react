@@ -1,24 +1,24 @@
 <h1 align="center">NextJS Boilerplate</h1>
 
-프론트엔드를 위한 Next.js boilerplate입니다.
+This is Next.js boilerplate for front-end.
 
-많은 코드가 [Charka UI](https://npmjs.com/package/@chakra-ui/react)와 [React Query](https://npmjs.com/package/@tanstack/react-query)가 결합한 형태입니다.
+There is a lot of code integrated with [Charka UI](https://npmjs.com/package/@chakra-ui/react) and [React Query](https://npmjs.com/package/@tanstack/react-query).
 
-마음대로 클론을 하셔도 되고, 필요한 부분만 복사해 가셔도 됩니다.
+You can take and modify the code as you wish, and copy any parts you need.
 
 ## Demo
 
-데모사이트의 데이터는 임의로 삭제될 수 있습니다. [link](https://nextjs-boilerplate-dusky-phi.vercel.app/)
+Data on the demo site may be deleted arbitrarily. [link](https://nextjs-boilerplate-dusky-phi.vercel.app/)
 
 ## Getting Started
 
-의존성 설치 후
+Install dependencies.
 
 ```bash
 yarn
 ```
 
-Next.js 서버를 시작합니다.
+Then, start the Next.js server.
 
 ```bash
 yarn dev
@@ -35,7 +35,7 @@ yarn dev
 - [Virtual List](https://github.com/Lee-Minhoon/nextjs-boilerplate/blob/main/src/components/common/VirtualList/VirtualListBase.tsx) (React Virtual)
 - Translation (React I18next)
 
-## 라이브러리
+## Features
 
 ### Core
 
@@ -67,11 +67,11 @@ yarn dev
 
 ## Attention
 
-- 이 프로젝트는 풀 스택 개발을 위해 개발되지 않았습니다. 프론트엔드 개발에만 초점이 맞춰져 있습니다.
+- This project is not for intended for full-stack development. The focus is only on front-end development.
 
-- 서버 사이드 렌더링은 사용되지 않았습니다. 모든 것이 클라이언트 사이드 렌더링으로만 작동합니다. 라우터만 변경한다면 리액트와 쉽게 통합이 가능합니다.
+- No server-side rendering is used, everything is rendered on the client. So, as long as you change the router, there is no difficulty in integrating with React.
 
-- 서버 사이드에 작성된 코드들은 오로지 예시를 위해 개발되었으므로, 사용하지 않는다면 삭제해 주셔야 합니다. 서버 사이드 코드를 삭제할 시 아래 라이브러리들을 추가로 제거해 주셔야 합니다.
+- Server-side code is for demonstration purposes only and should be removed if not used. If the server code has been removed, the libraries that need to be removed are as follows.
 
-  - formidable (폼 파싱을 위해 사용)
-  - aws-sdk (파일 업로드를 위해 사용)
+  - formidable (for form parsing)
+  - aws-sdk (for file upload)
