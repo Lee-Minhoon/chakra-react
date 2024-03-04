@@ -38,7 +38,7 @@ const VerticalLayoutFooter = () => {
           ))}
           <Tooltip
             hasArrow
-            label={"React, NextJS, Typescript, Emotion, ETC..."}
+            label={"NextJS, React, Typescript, ESLint, Prettier, ETC..."}
           >
             <Text fontSize={"sm"}>and more...</Text>
           </Tooltip>
