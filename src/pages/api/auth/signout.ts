@@ -14,6 +14,7 @@ const signout = async (req: NextApiRequest, res: NextApiResponse) => {
   await parseIP(req)
     .then(async (ip) => {
       const session = await readSession();
+
       delete session[ip.toString()];
 
       try {

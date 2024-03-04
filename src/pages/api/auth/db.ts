@@ -36,7 +36,7 @@ export const readMySession = async (ip: string): Promise<Nullable<number>> => {
 export const writeSession = async (session: Session) => {
   try {
     const db = await readDB();
-    writeDB({ ...db, session: { ...db.session, ...session } });
+    await writeDB({ ...db, session });
   } catch (err) {
     console.log("Failed to write db.json");
     throw err;

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { readUsers } from "../users/db";
-import { parseIP, writeSession } from "./db";
+import { parseIP, readSession, writeSession } from "./db";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -24,7 +24,9 @@ const signin = async (req: NextApiRequest, res: NextApiResponse) => {
           return res.status(401).json({ message: "Email is not registered" });
         }
 
-        await writeSession({ [ip.toString()]: user.id });
+        const session = await readSession();
+
+        await writeSession({ ...session, [ip.toString()]: user.id });
 
         return res.status(200).json({ data: user, message: "Success" });
       } catch {
