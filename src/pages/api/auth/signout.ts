@@ -11,7 +11,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 const signout = async (req: NextApiRequest, res: NextApiResponse) => {
-  parseIP(req)
+  await parseIP(req)
     .then(async (ip) => {
       const session = await readSession();
       delete session[ip.toString()];

@@ -12,7 +12,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 export const me = async (req: NextApiRequest, res: NextApiResponse) => {
-  parseIP(req)
+  await parseIP(req)
     .then(async (ip) => {
       try {
         const users = await readUsers();

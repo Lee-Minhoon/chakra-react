@@ -1,7 +1,6 @@
 import AWS from "aws-sdk";
 import formidable from "formidable";
 import fs from "fs";
-import fsPromises from "fs/promises";
 import { NextApiRequest } from "next";
 import path from "path";
 import { Post, Session, User } from "./types";
@@ -69,7 +68,8 @@ const readCloudDB = async (): Promise<DB> => {
       .then(
         (data) => {
           if (!data.Body) {
-            throw new Error("No data");
+            reject(new Error("No data"));
+            return;
           }
           resolve(JSON.parse(data.Body.toString()));
         },
@@ -88,6 +88,7 @@ const writeLocalDB = (db: DB) => {
     fs.writeFile(dbDir, makeJson(db), "utf8", (err) => {
       if (err) {
         reject(err);
+        return;
       }
       resolve();
     });
@@ -120,27 +121,39 @@ const options: formidable.Options = {
 };
 
 const fileUploadToLocal = (req: NextApiRequest) => {
-  return new Promise<string>(async (resolve, reject) => {
-    await fsPromises.readdir(storageDir).catch(() => {
-      fsPromises.mkdir(storageDir).catch(() => {
-        reject();
-      });
-    });
-
-    const form = formidable(options);
-
-    form.parse(req, (err, fields, files) => {
+  return new Promise<string>((resolve, reject) => {
+    fs.readdir(storageDir, (err) => {
       if (err) {
-        reject(err);
+        fs.mkdir(storageDir, (err) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+        });
       }
 
-      const file = files.file;
+      const form = formidable({
+        uploadDir: "./public/uploads",
+        maxFileSize: 5 * 1024 * 1024,
+        filename: (name, ext, part, form) =>
+          `${new Date().getTime()}-${part.originalFilename}`,
+      });
 
-      if (!file || file.length === 0) {
-        throw new Error("No file");
-      }
+      form.parse(req, (err, fields, files) => {
+        if (err) {
+          reject(err);
+          return;
+        }
 
-      resolve(`uploads/${file[0].newFilename}`);
+        const file = files.file;
+
+        if (!file || file.length === 0) {
+          reject(new Error("No file"));
+          return;
+        }
+
+        resolve(`/uploads/${file[0].newFilename}`);
+      });
     });
   });
 };
@@ -152,12 +165,14 @@ const fileUploadToCloud = (req: NextApiRequest) => {
     form.parse(req, (err, fields, files) => {
       if (err) {
         reject(err);
+        return;
       }
 
       const file = files.file;
 
       if (!file || file.length === 0) {
-        throw new Error("No file");
+        reject(new Error("No file"));
+        return;
       }
 
       const fileKey = `images/${Date.now()}.jpg`;
@@ -165,6 +180,7 @@ const fileUploadToCloud = (req: NextApiRequest) => {
       fs.readFile(file[0].filepath, (err, data) => {
         if (err) {
           reject(err);
+          return;
         }
 
         cloudStorage
