@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import { QueryKey, UrlBuilder } from "./types";
 
 const protoc =
@@ -11,12 +11,16 @@ const getDomain = () => {
 };
 
 export class Api {
-  static instance = axios.create({
-    baseURL: `${protoc}://${getDomain()}`,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  static instance: AxiosInstance;
+
+  static init = () => {
+    Api.instance = axios.create({
+      baseURL: `${protoc}://${getDomain()}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
 
   static addToken = (token: string) => {
     Api.instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;

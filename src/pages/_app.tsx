@@ -1,4 +1,4 @@
-import { ApiError, ApiResponse } from "@/apis";
+import { Api, ApiError, ApiResponse } from "@/apis";
 import {
   Authenticator,
   ChakraProvider,
@@ -17,6 +17,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { isAxiosError } from "axios";
 import type { AppProps } from "next/app";
+import { useEffect } from "react";
 
 const { toast } = createStandaloneToast();
 
@@ -62,6 +63,10 @@ const queryClient = new QueryClient({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    Api.init();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
