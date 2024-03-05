@@ -8,7 +8,10 @@ const LanguageToggler = () => {
   const { i18n, t } = useTranslation();
 
   const changeLanguage = useCallback<(language: string) => void>(
-    (language) => i18n.changeLanguage(language),
+    (language) => {
+      i18n.changeLanguage(language);
+      localStorage.setItem("language", language);
+    },
     [i18n]
   );
 

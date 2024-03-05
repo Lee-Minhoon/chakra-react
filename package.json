@@ -23,7 +23,6 @@
     "formidable": "^3.5.1",
     "framer-motion": "^10.16.4",
     "i18next": "^23.10.0",
-    "i18next-browser-languagedetector": "^7.2.0",
     "lodash-es": "^4.17.21",
     "next": "13.5.4",
     "path-to-regexp": "^6.2.1",
