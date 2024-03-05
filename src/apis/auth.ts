@@ -2,7 +2,7 @@ import { ApiRoutes } from "@/constants";
 import { Nullable } from "@/types";
 import { toUrl } from "@/utils";
 import { useQueryClient } from "@tanstack/react-query";
-import { User, useFetch, usePost } from ".";
+import { Api, User, useFetch, usePost } from ".";
 
 export interface AuthSignin {
   email: User["email"];
@@ -11,17 +11,27 @@ export interface AuthSignin {
 export const useSignin = () => {
   const queryClient = useQueryClient();
 
-  return usePost<undefined, AuthSignin>(toUrl(ApiRoutes.Signin), undefined, {
-    onSuccess: () => queryClient.invalidateQueries([toUrl(ApiRoutes.Me)]),
-    meta: { successMessage: "Signin successfully" },
-  });
+  return usePost<unknown, AuthSignin, User>(
+    toUrl(ApiRoutes.Signin),
+    undefined,
+    {
+      onSuccess: (res) => {
+        Api.addToken(res.data.id.toString());
+        queryClient.invalidateQueries([toUrl(ApiRoutes.Me)]);
+      },
+      meta: { successMessage: "Signin successfully" },
+    }
+  );
 };
 
 export const useSignout = () => {
   const queryClient = useQueryClient();
 
-  return usePost<undefined>(toUrl(ApiRoutes.Signout), undefined, {
-    onSuccess: () => queryClient.invalidateQueries([toUrl(ApiRoutes.Me)]),
+  return usePost<unknown>(toUrl(ApiRoutes.Signout), undefined, {
+    onSuccess: () => {
+      Api.removeToken();
+      queryClient.invalidateQueries([toUrl(ApiRoutes.Me)]);
+    },
     meta: { successMessage: "Signout successfully" },
   });
 };

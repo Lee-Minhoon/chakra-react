@@ -1,6 +1,6 @@
 import { useGetMe } from "@/apis/auth";
 import { Unauthorized } from "@/components";
-import { PageRoutes, isExistPage, whiteList } from "@/constants";
+import { PageRoutes, isExistPage, isWhiteList } from "@/constants";
 import { useSafePush } from "@/hooks";
 import { useModalStore } from "@/stores";
 import { useEffect } from "react";
@@ -15,7 +15,7 @@ const Authenticator = () => {
   useEffect(() => {
     if (
       !isExistPage(router.pathname) ||
-      whiteList.includes(router.pathname) ||
+      isWhiteList(router.pathname) ||
       isFetching
     )
       return;

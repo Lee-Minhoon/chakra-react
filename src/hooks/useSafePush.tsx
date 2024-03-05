@@ -1,6 +1,6 @@
 import { useGetMe } from "@/apis";
 import { Unauthorized } from "@/components";
-import { PageRoutes, whiteList } from "@/constants";
+import { PageRoutes, isWhiteList } from "@/constants";
 import { useModalStore } from "@/stores";
 import { NextURL } from "@/utils";
 import { useRouter } from "next/router";
@@ -29,7 +29,7 @@ const useSafePush = () => {
 
       // 만약 라우팅이 허용되지 않은 페이지로 이동하려고 한다면
       // If the user tries to navigate to a page that is not allowed
-      if (!whiteList.includes(nextURL?.pathname ?? router.pathname) && !data) {
+      if (!isWhiteList(nextURL?.pathname ?? router.pathname) && !data) {
         return router
           .push({
             pathname: PageRoutes.Signin,

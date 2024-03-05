@@ -18,6 +18,14 @@ export class Api {
     },
   });
 
+  static addToken = (token: string) => {
+    this.instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  };
+
+  static removeToken = () => {
+    delete this.instance.defaults.headers.common["Authorization"];
+  };
+
   static get = async <T>(url: string, params?: object) => {
     return this.instance.get<T>(url, { params }).then((res) => res.data);
   };
