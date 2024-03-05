@@ -50,6 +50,7 @@ yarn dev
 
 ### Data
 
+- [Axios](https://www.npmjs.com/package/axios)
 - [Zustand](https://npmjs.com/package/zustand)
 - [React Query](https://npmjs.com/package/@tanstack/react-query)
 - [React Hook Form](https://npmjs.com/package/react-hook-form)
@@ -75,3 +76,25 @@ yarn dev
 
   - formidable (폼 파싱을 위해 사용)
   - aws-sdk (파일 업로드를 위해 사용)
+
+## Previews
+
+![n1](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/8e964648-8c99-459a-9f83-3e104321dfba)
+
+![n2](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/c43e107e-a37b-4d8e-9491-58f5a9c8d34f)
+
+![n3](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/41d14720-c2d5-4d50-9fea-1fb45fa00a61)
+
+![n4](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/06be1540-443d-4bb3-b44b-38a5fc8f5848)
+
+![n5](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/4f14e0d3-8c86-4342-a703-1831297314cd)
+
+![n6](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/6b764c66-3356-466d-bb8b-329b9e370ef3)
+
+![n7](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/7360fee4-afa6-44b9-a938-31b8e95fbc79)
+
+![n8](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/dc2b318f-0c27-4651-8b86-1ca19da3d72a)
+
+![n9](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/33bf740f-8cba-4968-8917-04bd08d36db9)
+
+![n10](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/34bb3002-43d5-4150-9e7f-f20578be3a03)
