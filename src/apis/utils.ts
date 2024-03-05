@@ -19,35 +19,35 @@ export class Api {
   });
 
   static addToken = (token: string) => {
-    this.instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    Api.instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
 
   static removeToken = () => {
-    delete this.instance.defaults.headers.common["Authorization"];
+    delete Api.instance.defaults.headers.common["Authorization"];
   };
 
   static get = async <T>(url: string, params?: object) => {
-    return this.instance.get<T>(url, { params }).then((res) => res.data);
+    return Api.instance.get<T>(url, { params }).then((res) => res.data);
   };
 
   static post = async <T>(url: string, body?: object) => {
-    return this.instance.post<T>(url, body).then((res) => res.data);
+    return Api.instance.post<T>(url, body).then((res) => res.data);
   };
 
   static put = async <T>(url: string, body?: object) => {
-    return this.instance.put<T>(url, body).then((res) => res.data);
+    return Api.instance.put<T>(url, body).then((res) => res.data);
   };
 
   static patch = async <T>(url: string, body?: object) => {
-    return this.instance.patch<T>(url, body).then((res) => res.data);
+    return Api.instance.patch<T>(url, body).then((res) => res.data);
   };
 
   static delete = async <T>(url: string) => {
-    return this.instance.delete<T>(url).then((res) => res.data);
+    return Api.instance.delete<T>(url).then((res) => res.data);
   };
 
   static postForm = async <T>(url: string, body?: FormData) => {
-    return this.instance.postForm<T>(url, body).then((res) => res.data);
+    return Api.instance.postForm<T>(url, body).then((res) => res.data);
   };
 }
 
