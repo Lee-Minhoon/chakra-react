@@ -1,3 +1,4 @@
+import { Api } from "@/apis";
 import { useGetMe } from "@/apis/auth";
 import { Unauthorized } from "@/components";
 import { PageRoutes, isExistPage, isWhiteList } from "@/constants";
@@ -11,6 +12,15 @@ const Authenticator = () => {
   const { data, isFetching } = useGetMe();
   const { openAlert, closeAlert } = useModalStore(["openAlert", "closeAlert"]);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (isFetching) return;
+    if (data) {
+      Api.addToken(data.id.toString());
+    } else {
+      Api.removeToken();
+    }
+  }, [data, isFetching]);
 
   useEffect(() => {
     if (
