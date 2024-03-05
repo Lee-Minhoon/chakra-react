@@ -62,7 +62,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <Center h={"xl"}>
+        <Center h={"100%"} mb={"10%"}>
           <Flex direction={"column"} align={"center"} gap={"8"}>
             {["NextJS", "ChakraUI", "ReactQuery"].map((text, idx) => (
               <Heading
