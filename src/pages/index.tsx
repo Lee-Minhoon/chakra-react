@@ -37,7 +37,7 @@ const opacityKeyframes = [
 
 export default function Home() {
   const { primaryColor } = usePrimaryColor();
-  const { Layout } = useLayout();
+  const { layout, Layout } = useLayout();
 
   const colors = [
     `${primaryColor}.100`,
@@ -62,7 +62,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <Center h={"100%"} mb={"10%"}>
+        <Center minH={"md"} h={"100%"} mb={layout === "horizontal" ? "10%" : 0}>
           <Flex direction={"column"} align={"center"} gap={"8"}>
             {["NextJS", "ChakraUI", "ReactQuery"].map((text, idx) => (
               <Heading
