@@ -44,23 +44,23 @@ const UserTable = ({ users, isLoading }: UsersTableProps) => {
   const handleApprove = useCallback<(id: number) => void>(
     (id) => {
       openConfirm({
-        title: "Approve User",
-        content: "Are you sure you want to approve this user?",
+        title: t("Approve User"),
+        content: t("Are you sure you want to approve this user?"),
         onConfirm: () => approveUser({ id }),
       });
     },
-    [approveUser, openConfirm]
+    [approveUser, openConfirm, t]
   );
 
   const handleDelete = useCallback<(id: number) => void>(
     (id) => {
       openConfirm({
-        title: "Delete User",
-        content: "Are you sure you want to delete this user?",
+        title: t("Delete User"),
+        content: t("Are you sure you want to delete this user?"),
         onConfirm: () => deleteUser(id),
       });
     },
-    [deleteUser, openConfirm]
+    [deleteUser, openConfirm, t]
   );
 
   const columns = useMemo(
