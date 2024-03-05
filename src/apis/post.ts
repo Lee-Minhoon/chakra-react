@@ -1,16 +1,19 @@
 import { ApiRoutes } from "@/constants";
 import { Nullable } from "@/types";
 import { toUrl } from "@/utils";
-import { useQueryClient } from "@tanstack/react-query";
-import { CursorQueryParams, PageQueryParams, Scheme, User } from ".";
 import {
+  CursorQueryParams,
+  PageQueryParams,
+  Scheme,
+  User,
   useDelete,
   useFetch,
   useGetPage,
+  useInvalidate,
   useLoadMore,
   usePost,
   useUpdate,
-} from "./hooks";
+} from ".";
 
 export interface Post extends Scheme {
   userId: number;
@@ -22,18 +25,6 @@ export interface Post extends Scheme {
 export type PostCreate = Omit<Post, "user" | keyof Scheme>;
 
 export type PostUpdate = Omit<Post, "user" | "createdAt" | "updatedAt">;
-
-const useInvalidatePost = (params?: object) => {
-  const queryClient = useQueryClient();
-  const queryKeyToInvalidate = params
-    ? [toUrl(ApiRoutes.Post), params]
-    : [toUrl(ApiRoutes.Post)];
-
-  return () => {
-    console.log("The query has been invalidated.", queryKeyToInvalidate);
-    queryClient.invalidateQueries(queryKeyToInvalidate);
-  };
-};
 
 // [GET] /api/posts/{id}
 export const useGetPost = (id?: number) => {
@@ -78,13 +69,13 @@ export const useDeletePost = () => {
 // [POST] /api/posts/test/{count}
 export const useCreateTestPosts = (count: number) => {
   return usePost(`${toUrl(ApiRoutes.Post)}/test/${count}`, undefined, {
-    onSuccess: useInvalidatePost(),
+    onSuccess: useInvalidate(toUrl(ApiRoutes.Post)),
   });
 };
 
 // [DELETE] /api/posts/test/reset
 export const useResetTestPosts = () => {
   return usePost(`${toUrl(ApiRoutes.Post)}/test/reset`, undefined, {
-    onSuccess: useInvalidatePost(),
+    onSuccess: useInvalidate(toUrl(ApiRoutes.Post)),
   });
 };

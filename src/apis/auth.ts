@@ -1,30 +1,18 @@
 import { ApiRoutes } from "@/constants";
 import { Nullable } from "@/types";
 import { toUrl } from "@/utils";
-import { useQueryClient } from "@tanstack/react-query";
-import { User, useFetch, usePost } from ".";
+import { User, useFetch, useInvalidate, usePost } from ".";
 
 export interface AuthSignin {
   email: User["email"];
 }
-
-const useInvalidateMe = (params?: object) => {
-  const queryClient = useQueryClient();
-  const queryKeyToInvalidate = params
-    ? [toUrl(ApiRoutes.Me), params]
-    : [toUrl(ApiRoutes.Me)];
-
-  return () => {
-    queryClient.invalidateQueries(queryKeyToInvalidate);
-  };
-};
 
 export const useSignin = () => {
   return usePost<unknown, AuthSignin, User>(
     toUrl(ApiRoutes.Signin),
     undefined,
     {
-      onSuccess: useInvalidateMe,
+      onSuccess: useInvalidate(toUrl(ApiRoutes.Me)),
       meta: { successMessage: "Signin successfully" },
     }
   );
@@ -32,7 +20,7 @@ export const useSignin = () => {
 
 export const useSignout = () => {
   return usePost<unknown>(toUrl(ApiRoutes.Signout), undefined, {
-    onSuccess: useInvalidateMe,
+    onSuccess: useInvalidate(toUrl(ApiRoutes.Me)),
     meta: { successMessage: "Signout successfully" },
   });
 };

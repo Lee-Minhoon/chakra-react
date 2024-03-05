@@ -376,3 +376,13 @@ export const useCommand = <
     updater
   );
 };
+
+export const useInvalidate = (url: string, params?: object) => {
+  const queryClient = useQueryClient();
+  const queryKeyToInvalidate = params ? [url, params] : [url];
+
+  return () => {
+    console.log("The query has been invalidated.", queryKeyToInvalidate);
+    queryClient.invalidateQueries(queryKeyToInvalidate);
+  };
+};

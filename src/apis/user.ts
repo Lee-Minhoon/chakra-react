@@ -1,23 +1,21 @@
 import { ApiRoutes } from "@/constants";
 import { toUrl } from "@/utils";
-import { useQueryClient } from "@tanstack/react-query";
 import { cloneDeep } from "lodash-es";
-import {
-  useCommand,
-  useDelete,
-  useFetch,
-  useGetPage,
-  useLoadMore,
-  usePost,
-  useUpdate,
-  useUpdateInList,
-} from "./hooks";
 import {
   CursorQueryParams,
   PageQueryParams,
   PageQueryResponse,
   Scheme,
-} from "./types";
+  useCommand,
+  useDelete,
+  useFetch,
+  useGetPage,
+  useInvalidate,
+  useLoadMore,
+  usePost,
+  useUpdate,
+  useUpdateInList,
+} from ".";
 
 export interface User extends Scheme {
   name: string;
@@ -34,18 +32,6 @@ export type UserUpdate = Omit<User, "approved" | "createdAt" | "updatedAt">;
 export interface UserApprove {
   id: number;
 }
-
-const useInvalidateUser = (params?: object) => {
-  const queryClient = useQueryClient();
-  const queryKeyToInvalidate = params
-    ? [toUrl(ApiRoutes.User), params]
-    : [toUrl(ApiRoutes.User)];
-
-  return () => {
-    console.log("The query has been invalidated.", queryKeyToInvalidate);
-    queryClient.invalidateQueries(queryKeyToInvalidate);
-  };
-};
 
 // [GET] /api/users/{id}
 export const useGetUser = (id?: number) => {
@@ -145,13 +131,13 @@ export const useApproveUser = (params?: object) => {
 // [POST] /api/users/test/{count}
 export const useCreateTestUsers = (count: number) => {
   return usePost(`${toUrl(ApiRoutes.User)}/test/${count}`, undefined, {
-    onSuccess: useInvalidateUser(),
+    onSuccess: useInvalidate(toUrl(ApiRoutes.User)),
   });
 };
 
 // [POST] /api/users/test/reset
 export const useResetTestUsers = () => {
   return usePost(`${toUrl(ApiRoutes.User)}/test/reset`, undefined, {
-    onSuccess: useInvalidateUser(),
+    onSuccess: useInvalidate(toUrl(ApiRoutes.User)),
   });
 };
