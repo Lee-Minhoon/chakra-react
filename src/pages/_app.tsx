@@ -15,6 +15,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { isAxiosError } from "axios";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 
@@ -29,10 +30,10 @@ const queryClient = new QueryClient({
   },
   queryCache: new QueryCache({
     onError: (error, query) => {
-      if (!(error instanceof ApiError) || query.meta?.ignoreError) return;
+      if (!isAxiosError<ApiError>(error) || query.meta?.ignoreError) return;
       modalStore.getState().openAlert({
         title: "Error",
-        content: error.message,
+        content: error.response?.data.message || error.message,
       });
     },
   }),
@@ -49,10 +50,10 @@ const queryClient = new QueryClient({
       });
     },
     onError: (error, variables, context, mutation) => {
-      if (!(error instanceof ApiError) || mutation.meta?.ignoreError) return;
+      if (!isAxiosError<ApiError>(error) || mutation.meta?.ignoreError) return;
       toast({
         title: "Failed",
-        description: error.message,
+        description: error.response?.data.message || error.message,
         status: "error",
         duration: 2000,
         isClosable: true,

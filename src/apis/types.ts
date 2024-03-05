@@ -4,23 +4,16 @@ import {
   UseMutationOptions,
   UseQueryOptions,
 } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 export interface ApiResponse<T> {
   data: T;
   message: string;
 }
 
-export class ApiError extends Error {
-  private _status: number;
-
-  constructor(status: number, message: string) {
-    super(message);
-    this._status = status;
-  }
-
-  get status() {
-    return this._status;
-  }
+export interface ApiError<T = null> extends Error {
+  data: T;
+  message: string;
 }
 
 export type ID = number;
@@ -63,11 +56,16 @@ export type UrlBuilder<T> = string | ((data: T) => string);
 
 export type QueryKey<T = void> = [UrlBuilder<T>, Optional<object>];
 
-export type QueryOptions<T> = UseQueryOptions<T, ApiError, T, QueryKey>;
+export type QueryOptions<T> = UseQueryOptions<
+  T,
+  AxiosError<ApiError>,
+  T,
+  QueryKey
+>;
 
 export type PageQueryOptions<T, S = PageQueryResponse<T>> = UseQueryOptions<
   S,
-  ApiError,
+  AxiosError<ApiError>,
   S,
   QueryKey
 >;
@@ -75,10 +73,10 @@ export type PageQueryOptions<T, S = PageQueryResponse<T>> = UseQueryOptions<
 export type InfiniteQueryOptions<
   T,
   S = CursorQueryResponse<T, number>,
-> = UseInfiniteQueryOptions<S, ApiError, S, S, QueryKey>;
+> = UseInfiniteQueryOptions<S, AxiosError<ApiError>, S, S, QueryKey>;
 
 export type MutationOptions<T, S> = UseMutationOptions<
   ApiResponse<T>,
-  ApiError,
+  AxiosError<ApiError>,
   S
 >;

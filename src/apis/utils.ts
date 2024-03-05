@@ -1,4 +1,5 @@
-import { ApiError, QueryKey, UrlBuilder } from "./types";
+import axios from "axios";
+import { QueryKey, UrlBuilder } from "./types";
 
 const protoc =
   process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? "https" : "http";
@@ -9,81 +10,38 @@ const getDomain = () => {
     : process.env.NEXT_PUBLIC_SERVER_DOMAIN;
 };
 
-const getUrl = (url: string, searchParams?: URLSearchParams) => {
-  return `${protoc}://${getDomain()}/${url}${
-    searchParams ? `?${searchParams}` : ""
-  }`;
-};
-
-const extendedFetch = async (input: RequestInfo, init?: RequestInit) => {
-  return fetch(input, init).then(async (res) => {
-    const data = await res.json();
-    if (!res.ok) throw new ApiError(res.status, data.message);
-    return data;
+export class Api {
+  static instance = axios.create({
+    baseURL: `${protoc}://${getDomain()}`,
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
-};
 
-type Api = {
-  get: <T>(url: string, params?: object) => Promise<T>;
-  post: <T>(url: string, body?: object) => Promise<T>;
-  put: <T>(url: string, body?: object) => Promise<T>;
-  patch: <T>(url: string, body?: object) => Promise<T>;
-  delete: <T>(url: string) => Promise<T>;
-  postForm: <T>(url: string, body?: FormData) => Promise<T>;
-};
+  static get = async <T>(url: string, params?: object) => {
+    return this.instance.get<T>(url, { params }).then((res) => res.data);
+  };
 
-export const api: Api = {
-  get: (url, params) => {
-    const searchParams = new URLSearchParams(params as Record<string, string>);
-    return extendedFetch(getUrl(url, searchParams), {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  },
-  post: (url, body) => {
-    return extendedFetch(getUrl(url), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-  },
-  put: (url, body) => {
-    return extendedFetch(getUrl(url), {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-  },
-  patch: (url, body) => {
-    return extendedFetch(getUrl(url), {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-  },
-  delete: (url) => {
-    return extendedFetch(getUrl(url), {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  },
-  postForm: (url, body) => {
-    return extendedFetch(getUrl(url), {
-      method: "POST",
-      body,
-    });
-  },
-};
+  static post = async <T>(url: string, body?: object) => {
+    return this.instance.post<T>(url, body).then((res) => res.data);
+  };
+
+  static put = async <T>(url: string, body?: object) => {
+    return this.instance.put<T>(url, body).then((res) => res.data);
+  };
+
+  static patch = async <T>(url: string, body?: object) => {
+    return this.instance.patch<T>(url, body).then((res) => res.data);
+  };
+
+  static delete = async <T>(url: string) => {
+    return this.instance.delete<T>(url).then((res) => res.data);
+  };
+
+  static postForm = async <T>(url: string, body?: FormData) => {
+    return this.instance.postForm<T>(url, body).then((res) => res.data);
+  };
+}
 
 export const buildUrl = <T>(url: UrlBuilder<T>, data: T) => {
   return typeof url === "function" ? url(data) : url;

@@ -8,6 +8,7 @@ import {
   useQuery as _useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import {
   ApiError,
   ApiResponse,
@@ -21,17 +22,15 @@ import {
   QueryOptions,
   UrlBuilder,
 } from "./types";
-import { api, buildQueryKey, buildUrl } from "./utils";
+import { Api, buildQueryKey, buildUrl } from "./utils";
 
 const fetcher = async <TResponse>(context: QueryFunctionContext<QueryKey>) => {
   const { queryKey, pageParam } = context;
   const [url, params] = queryKey;
-  return api
-    .get<ApiResponse<TResponse>>(
-      buildUrl(url, undefined)!,
-      pageParam !== undefined ? { ...params, cursor: pageParam } : { ...params }
-    )
-    .then((res) => res.data);
+  return Api.get<ApiResponse<TResponse>>(
+    buildUrl(url, undefined)!,
+    pageParam !== undefined ? { ...params, cursor: pageParam } : { ...params }
+  ).then((res) => res.data);
 };
 
 const useQuery = <TResponse>(
@@ -39,7 +38,7 @@ const useQuery = <TResponse>(
   params?: object,
   options?: QueryOptions<TResponse>
 ) => {
-  return _useQuery<TResponse, ApiError, TResponse, QueryKey>(
+  return _useQuery<TResponse, AxiosError<ApiError>, TResponse, QueryKey>(
     [url!, params],
     (context) => fetcher<TResponse>(context),
     {
@@ -56,7 +55,7 @@ const useInfiniteQuery = <TResponse>(
 ) => {
   return _useInfiniteQuery<
     CursorQueryResponse<TResponse, number>,
-    ApiError,
+    AxiosError<ApiError>,
     CursorQueryResponse<TResponse, number>,
     QueryKey
   >(
@@ -73,13 +72,13 @@ const useInfiniteQuery = <TResponse>(
 
 export const useMutation = <TCached, TRequest, TResponse>(
   mutationFn: MutationFunction<TResponse, TRequest>,
-  options?: UseMutationOptions<TResponse, ApiError, TRequest>,
+  options?: UseMutationOptions<TResponse, AxiosError<ApiError>, TRequest>,
   queryKey?: QueryKey<TRequest>,
   updater?: (old: TCached, data: TRequest) => Optional<TCached>
 ) => {
   const queryClient = useQueryClient();
 
-  return _useMutation<TResponse, ApiError, TRequest>(mutationFn, {
+  return _useMutation<TResponse, AxiosError<ApiError>, TRequest>(mutationFn, {
     ...options,
     onMutate: async (variables) => {
       options?.onMutate?.(variables);
@@ -205,7 +204,7 @@ export const usePost = <
   updater?: (old: TCached, data: TRequest) => TCached
 ) => {
   return useMutation<TCached, TRequest, ApiResponse<TResponse>>(
-    (data) => api.post<ApiResponse<TResponse>>(buildUrl(url, data), data ?? {}),
+    (data) => Api.post<ApiResponse<TResponse>>(buildUrl(url, data), data ?? {}),
     options,
     [url, params],
     updater
@@ -236,7 +235,7 @@ export const useUpdate = <
   updater?: (old: TCached, data: TRequest) => TCached
 ) => {
   return useMutation<TCached, TRequest, ApiResponse<TResponse>>(
-    (data) => api.put<ApiResponse<TResponse>>(buildUrl(url, data), data),
+    (data) => Api.put<ApiResponse<TResponse>>(buildUrl(url, data), data),
     options,
     [url, params],
     updater
@@ -270,7 +269,7 @@ export const useUpdateInList = <
     (data) => {
       const { id, ...rest } = data;
       const builtUrl = buildUrl(url, data);
-      return api.put<ApiResponse<TResponse>>(
+      return Api.put<ApiResponse<TResponse>>(
         id ? `${builtUrl}/${id}` : builtUrl,
         rest
       );
@@ -301,7 +300,7 @@ export const useDelete = <TCached, TRequest = ID | void, TResponse = unknown>(
   updater?: (old: TCached, id: TRequest) => TCached
 ) => {
   return useMutation<TCached, TRequest, ApiResponse<TResponse>>(
-    (id) => api.delete<ApiResponse<TResponse>>(id ? `${url}/${id}` : url),
+    (id) => Api.delete<ApiResponse<TResponse>>(id ? `${url}/${id}` : url),
     options,
     [url, params],
     updater
@@ -327,7 +326,7 @@ export const usePostForm = <
   updater?: (old: TCached, data: TRequest) => TCached
 ) => {
   return useMutation<TCached, TRequest, ApiResponse<TResponse>>(
-    (data) => api.postForm<ApiResponse<TResponse>>(buildUrl(url, data), data),
+    (data) => Api.postForm<ApiResponse<TResponse>>(buildUrl(url, data), data),
     options,
     [url, params],
     updater
@@ -363,11 +362,11 @@ export const useCommand = <
     (data) => {
       switch (method) {
         case "POST":
-          return api.post<ApiResponse<TResponse>>(buildUrl(url, data), data);
+          return Api.post<ApiResponse<TResponse>>(buildUrl(url, data), data);
         case "PUT":
-          return api.put<ApiResponse<TResponse>>(buildUrl(url, data), data);
+          return Api.put<ApiResponse<TResponse>>(buildUrl(url, data), data);
         case "PATCH":
-          return api.patch<ApiResponse<TResponse>>(buildUrl(url, data), data);
+          return Api.patch<ApiResponse<TResponse>>(buildUrl(url, data), data);
         default:
           throw new Error("Invalid method");
       }
