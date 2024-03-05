@@ -11,15 +11,14 @@ const getDomain = () => {
 };
 
 export class Api {
-  static instance: AxiosInstance;
+  static instance: AxiosInstance = axios.create({
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   static init = () => {
-    Api.instance = axios.create({
-      baseURL: `${protoc}://${getDomain()}`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    Api.instance.defaults.baseURL = `${protoc}://${getDomain()}`;
   };
 
   static addToken = (token: string) => {
