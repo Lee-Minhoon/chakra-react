@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { useEffect, useRef } from "react";
-import makeCSS from "./css";
+import editorCSS from "./css";
 
 const toolbarOptions = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -45,7 +45,7 @@ const Editor = ({ defaultValue = "", onChange }: EditorProps) => {
   }, [onChange]);
 
   return (
-    <Box css={makeCSS()}>
+    <Box css={editorCSS}>
       <Box id="editor" h={"lg"} />
     </Box>
   );
