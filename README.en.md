@@ -79,22 +79,22 @@ yarn dev
 
 ## Previews
 
-![n1](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/8e964648-8c99-459a-9f83-3e104321dfba)
+![next1](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/9aef2746-0c03-4eb6-b084-ce9afa3f6680)
 
-![n2](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/c43e107e-a37b-4d8e-9491-58f5a9c8d34f)
+![next2](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/0438fd08-32c6-416a-a3b2-50fa03eb5fd0)
 
-![n3](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/41d14720-c2d5-4d50-9fea-1fb45fa00a61)
+![next3](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/07d0e2ea-7e14-48b6-a958-c1fbd7491ca9)
 
-![n4](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/06be1540-443d-4bb3-b44b-38a5fc8f5848)
+![next4](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/ff5dd7a2-b332-4744-a71e-2563b65b6024)
 
-![n5](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/4f14e0d3-8c86-4342-a703-1831297314cd)
+![next5](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/8ab59c2f-4049-4aae-aedf-b78d517ef2d5)
 
-![n6](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/6b764c66-3356-466d-bb8b-329b9e370ef3)
+![next6](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/eb52239b-f874-4cc9-bec4-4fc955c3fb48)
 
-![n7](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/7360fee4-afa6-44b9-a938-31b8e95fbc79)
+![next7](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/ddb1e728-f474-4ef7-829e-985f86243d29)
 
-![n8](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/dc2b318f-0c27-4651-8b86-1ca19da3d72a)
+![next8](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/862d76b5-1655-483f-804b-9399c77b0189)
 
-![n9](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/33bf740f-8cba-4968-8917-04bd08d36db9)
+![next9](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/e413e8a9-1668-4765-89ef-e655327b9490)
 
-![n10](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/34bb3002-43d5-4150-9e7f-f20578be3a03)
+![next10](https://github.com/Lee-Minhoon/nextjs-boilerplate/assets/59780565/81c32aa1-183e-4428-a927-541fdbb6bcf8)
