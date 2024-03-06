@@ -27,6 +27,7 @@ yarn dev
 ## Main Features
 
 - [Global Modal Provider](https://github.com/Lee-Minhoon/nextjs-boilerplate/blob/main/src/components/providers/ModalProvider/ModalProvider.tsx) (Zustand)
+- [Global Toast Message](https://github.com/Lee-Minhoon/nextjs-boilerplate/blob/main/src/components/providers/ReactQueryProvider/ReactQueryProvider.tsx) (React Query)
 - [Optimistic Update](https://github.com/Lee-Minhoon/nextjs-boilerplate/blob/main/src/apis/hooks.ts) (React Query, refer to [github](https://github.com/horprogs/react-query))
 - [WYSIWYG Editor](https://github.com/Lee-Minhoon/nextjs-boilerplate/blob/main/src/components/common/Editor/Editor.tsx) (Quill)
 - Forms (React Hook Form)
