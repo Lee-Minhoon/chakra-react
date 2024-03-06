@@ -1,5 +1,6 @@
-export { default as Authenticator } from "./Authenticator";
-export { default as ChakraProvider } from "./ChakraProvider";
-export { default as LayoutProvider } from "./LayoutProvider";
-export { default as ModalProvider } from "./ModalProvider";
-export { default as Translator } from "./Translator";
+export { Authenticator } from "./Authenticator";
+export { ChakraProvider } from "./ChakraProvider";
+export { LayoutProvider } from "./LayoutProvider";
+export { ModalProvider } from "./ModalProvider";
+export { ReactQueryProvider } from "./ReactQueryProvider";
+export { Translator } from "./Translator";

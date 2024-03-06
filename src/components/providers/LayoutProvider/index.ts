@@ -1,1 +1,1 @@
-export { default } from "./LayoutProvider";
+export { default as LayoutProvider } from "./LayoutProvider";

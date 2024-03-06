@@ -1,1 +1,1 @@
-export { default } from "./ChakraProvider";
+export { default as ChakraProvider } from "./ChakraProvider";
