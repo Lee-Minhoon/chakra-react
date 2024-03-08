@@ -1,14 +1,17 @@
-import { PageOptions, Search, ViewOptions } from "@/components";
+import {
+  PageOptions,
+  ResponsiveLayout,
+  Search,
+  ViewOptions,
+} from "@/components";
 import { ViewQueries } from "@/constants";
 import { UserUtils, UsersByCursor, UsersByPage } from "@/containers";
-import { useLayout, useSafePush } from "@/hooks";
+import { useSafePush } from "@/hooks";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
 import { useMemo } from "react";
 
 const UsersPage = () => {
-  const { Layout } = useLayout();
-
   const { router, push } = useSafePush();
   const viewOption = router.query?.view as ViewQueries;
 
@@ -31,7 +34,7 @@ const UsersPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>
+      <ResponsiveLayout>
         <Flex direction={"column"} gap={"4"} h={"100%"}>
           <UserUtils />
           <Flex justifyContent={"space-between"}>
@@ -50,7 +53,7 @@ const UsersPage = () => {
           </Flex>
           {display}
         </Flex>
-      </Layout>
+      </ResponsiveLayout>
     </>
   );
 };

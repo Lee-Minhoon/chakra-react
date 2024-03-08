@@ -5,6 +5,15 @@ import {
   withDefaultColorScheme,
 } from "@chakra-ui/react";
 
+const breakpoints = {
+  base: "0em",
+  sm: "30em",
+  md: "48em",
+  lg: "62em",
+  xl: "80em",
+  "2xl": "96em",
+};
+
 const getTheme = (primaryColor: PrimaryColor = "teal") =>
   extendTheme(
     {
@@ -39,6 +48,7 @@ const getTheme = (primaryColor: PrimaryColor = "teal") =>
           },
         },
       },
+      breakpoints,
     },
     withDefaultColorScheme({
       colorScheme: "primary",

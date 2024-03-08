@@ -11,15 +11,15 @@ import { toUrl } from "@/utils";
 import { Box, Center, Flex, IconButton, Tooltip } from "@chakra-ui/react";
 import { AiOutlineHome } from "react-icons/ai";
 
-const HorizontalLayoutSidebarHeader = () => {
+const SidebarHeader = () => {
   const { push } = useSafePush();
 
   return (
     <Center as={"header"} flexDirection={"column"} gap={"4"} py={"4"}>
-      <Box display={{ base: "none", xl: "block" }}>
+      <Box display={{ base: "block", lg: "none", xl: "block" }}>
         <Logo onClick={() => push(toUrl(PageRoutes.Home))} />
       </Box>
-      <Box display={{ base: "block", xl: "none" }}>
+      <Box display={{ base: "none", lg: "block", xl: "none" }}>
         <Tooltip hasArrow label={"Home"}>
           <IconButton
             aria-label={"home"}
@@ -28,7 +28,7 @@ const HorizontalLayoutSidebarHeader = () => {
           />
         </Tooltip>
       </Box>
-      <Flex gap={"4"} direction={{ base: "column", xl: "row" }}>
+      <Flex gap={"4"} direction={{ base: "row", lg: "column", xl: "row" }}>
         <LayoutToggler />
         <ColorToggler />
         <PrimaryColorChanger placement={"right"} />
@@ -38,4 +38,4 @@ const HorizontalLayoutSidebarHeader = () => {
   );
 };
 
-export default HorizontalLayoutSidebarHeader;
+export default SidebarHeader;

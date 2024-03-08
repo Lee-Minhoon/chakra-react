@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { MdHome, MdKeyboardArrowRight } from "react-icons/md";
 
-const HorizontalLayoutHeader = () => {
+const SubHeader = () => {
   const { router, push } = useSafePush();
   const { t } = useTranslation();
 
@@ -55,4 +55,4 @@ const HorizontalLayoutHeader = () => {
   );
 };
 
-export default HorizontalLayoutHeader;
+export default SubHeader;

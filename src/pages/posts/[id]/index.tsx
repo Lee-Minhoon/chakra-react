@@ -1,13 +1,13 @@
 import { useGetPost } from "@/apis";
+import { ResponsiveLayout } from "@/components";
 import { PostCard } from "@/containers";
-import { useHasScroll, useLayout } from "@/hooks";
+import { useHasScroll } from "@/hooks";
 import { QueryParser } from "@/utils";
 import { Box } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
 const PostPage = () => {
-  const { Layout } = useLayout();
   const router = useRouter();
   const { data: post } = useGetPost(QueryParser.toNumber(router.query.id));
   const { ref, hasScroll } = useHasScroll();
@@ -20,7 +20,7 @@ const PostPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>
+      <ResponsiveLayout>
         <Box
           ref={ref}
           overflowY={"auto"}
@@ -29,7 +29,7 @@ const PostPage = () => {
         >
           <PostCard data={post} />
         </Box>
-      </Layout>
+      </ResponsiveLayout>
     </>
   );
 };

@@ -1,13 +1,11 @@
 import { useGetUser } from "@/apis";
+import { ResponsiveLayout } from "@/components";
 import { UserCard } from "@/containers";
-import { useLayout } from "@/hooks";
 import { QueryParser } from "@/utils";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
 const UserPage = () => {
-  const { Layout } = useLayout();
-
   const router = useRouter();
   const { data: user } = useGetUser(QueryParser.toNumber(router.query.id));
 
@@ -19,9 +17,9 @@ const UserPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>
+      <ResponsiveLayout>
         <UserCard data={user} />
-      </Layout>
+      </ResponsiveLayout>
     </>
   );
 };

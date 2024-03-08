@@ -3,7 +3,7 @@ import { useAlphaColor } from "@/hooks";
 import { Divider, Flex, Link, Text, Tooltip } from "@chakra-ui/react";
 import { Fragment } from "react";
 
-const VerticalLayoutFooter = () => {
+const Footer = () => {
   const alphaColor = useAlphaColor();
 
   return (
@@ -16,24 +16,31 @@ const VerticalLayoutFooter = () => {
       pb={"20"}
       bgColor={alphaColor(50)}
     >
-      <Flex direction={"column"} w={1280} gap={"4"}>
+      <Flex
+        direction={"column"}
+        w={{ base: "100%", xl: "container.xl" }}
+        gap={"4"}
+        px={{ base: "4", xl: "0" }}
+      >
         <Flex gap={"4"}>
           {links.map((link, idx) => (
             <Fragment key={idx}>
               <Link href={link.url} target={"_blank"}>
                 {link.title}
               </Link>
-              {idx !== links.length - 1 && <Divider orientation={"vertical"} />}
+              {idx !== links.length - 1 && (
+                <Divider orientation={"vertical"} h={"4"} />
+              )}
             </Fragment>
           ))}
         </Flex>
-        <Flex gap={"4"}>
+        <Flex gap={"4"} wrap={"wrap"} align={"center"}>
           {libraries.map((link, idx) => (
             <Fragment key={idx}>
               <Link href={link.url} target={"_blank"} fontSize={"sm"}>
                 {link.title}
               </Link>
-              <Divider orientation={"vertical"} />
+              <Divider orientation={"vertical"} h={"4"} />
             </Fragment>
           ))}
           <Tooltip
@@ -48,4 +55,4 @@ const VerticalLayoutFooter = () => {
   );
 };
 
-export default VerticalLayoutFooter;
+export default Footer;

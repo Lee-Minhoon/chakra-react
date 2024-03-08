@@ -1,5 +1,6 @@
 import { useLayout } from "@/hooks";
 import { Layout } from "@/types";
+import { useBreakpointValue } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 
 interface LayoutProviderProps {
@@ -9,6 +10,11 @@ interface LayoutProviderProps {
 const LayoutProvider = ({ children }: LayoutProviderProps) => {
   const { Provider } = useLayout();
   const [layout, setLayout] = useState<Layout>("vertical");
+
+  const isMobile = useBreakpointValue({
+    base: true,
+    lg: false,
+  })!;
 
   useEffect(() => {
     const layout = localStorage.getItem("layout") as Layout;
@@ -23,7 +29,11 @@ const LayoutProvider = ({ children }: LayoutProviderProps) => {
     });
   }, []);
 
-  return <Provider value={{ layout, toggleLayout }}>{children}</Provider>;
+  return (
+    <Provider value={{ layout: isMobile ? "mobile" : layout, toggleLayout }}>
+      {children}
+    </Provider>
+  );
 };
 
 export default LayoutProvider;

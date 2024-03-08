@@ -28,9 +28,9 @@ const VerticalLayoutHeader = () => {
       gap={"4"}
       mb={"4"}
       pt={"10"}
-      w={1280}
+      w={{ base: "100%", xl: "container.xl" }}
     >
-      <Flex justify={"flex-end"} gap={"4"}>
+      <Flex justify={"flex-end"} gap={"4"} px={{ base: "4", xl: "0" }}>
         <LayoutToggler />
         <ColorToggler />
         <PrimaryColorChanger />
@@ -49,7 +49,7 @@ const VerticalLayoutHeader = () => {
         )}
       </Flex>
       {me && (
-        <Flex justify={"flex-end"}>
+        <Flex justify={"flex-end"} px={{ base: "4", xl: "0" }}>
           <Text>
             {`${t("Welcome")} `}
             <Text as={"b"} color={"primary.500"}>

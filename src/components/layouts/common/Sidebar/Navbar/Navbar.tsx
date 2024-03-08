@@ -2,9 +2,9 @@ import { findNavInHierarchy, navs } from "@/constants";
 import { UnorderedList } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
-import HorizontalLayoutNavbarTab from "./HorizontalLayoutNavbarTab";
+import NavbarTab from "./NavbarTab";
 
-const HorizontalLayoutNavbar = () => {
+const Navbar = () => {
   const router = useRouter();
 
   const hierarchy = useMemo(
@@ -22,7 +22,7 @@ const HorizontalLayoutNavbar = () => {
       gap={"4"}
     >
       {navs.map((nav) => (
-        <HorizontalLayoutNavbarTab
+        <NavbarTab
           key={nav.label}
           nav={nav}
           isActivated={hierarchy.includes(nav)}
@@ -32,4 +32,4 @@ const HorizontalLayoutNavbar = () => {
   );
 };
 
-export default HorizontalLayoutNavbar;
+export default Navbar;

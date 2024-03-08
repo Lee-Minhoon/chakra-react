@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import VerticalLayoutFooter from "./VerticalLayoutFooter";
+import { Footer } from "../common";
 import { VerticalLayoutHeader } from "./VerticalLayoutHeader";
 
 interface VerticalLayoutProps {
@@ -10,10 +10,10 @@ const VerticalLayout = ({ children }: VerticalLayoutProps) => {
   return (
     <Flex direction={"column"} align={"center"}>
       <VerticalLayoutHeader />
-      <Box as={"main"} w={1280}>
+      <Box as={"main"} w={{ base: "100%", xl: "container.xl" }}>
         {children}
       </Box>
-      <VerticalLayoutFooter />
+      <Footer />
     </Flex>
   );
 };

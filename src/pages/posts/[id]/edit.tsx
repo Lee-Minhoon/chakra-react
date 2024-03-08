@@ -1,13 +1,11 @@
 import { useGetPost } from "@/apis";
+import { ResponsiveLayout } from "@/components";
 import { PostUpdateForm } from "@/containers";
-import { useLayout } from "@/hooks";
 import { QueryParser } from "@/utils";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
 const EditPostPage = () => {
-  const { Layout } = useLayout();
-
   const router = useRouter();
   const { data: post } = useGetPost(QueryParser.toNumber(router.query.id));
 
@@ -19,7 +17,9 @@ const EditPostPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>{post && <PostUpdateForm post={post} />}</Layout>
+      <ResponsiveLayout>
+        {post && <PostUpdateForm post={post} />}
+      </ResponsiveLayout>
     </>
   );
 };

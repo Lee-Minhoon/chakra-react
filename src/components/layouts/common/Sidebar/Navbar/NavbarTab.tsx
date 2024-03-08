@@ -3,15 +3,12 @@ import { useAlphaColor, useSafePush } from "@/hooks";
 import { Center, Flex, Icon, ListItem, Text, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 
-interface HorizontalLayoutNavbarTabProps {
+interface NavbarTabProps {
   nav: Nav;
   isActivated: boolean;
 }
 
-const HorizontalLayoutNavbarTab = ({
-  nav,
-  isActivated,
-}: HorizontalLayoutNavbarTabProps) => {
+const NavbarTab = ({ nav, isActivated }: NavbarTabProps) => {
   const { t } = useTranslation();
   const alphaColor = useAlphaColor();
   const { push } = useSafePush();
@@ -31,7 +28,7 @@ const HorizontalLayoutNavbarTab = ({
         <Tooltip
           hasArrow
           label={t(nav.label)}
-          display={{ base: "block", xl: "none" }}
+          display={{ base: "none", lg: "block", xl: "none" }}
         >
           <Center
             w={"8"}
@@ -44,10 +41,12 @@ const HorizontalLayoutNavbarTab = ({
             <Icon as={nav.icon} color={isActivated ? "white" : "primary.500"} />
           </Center>
         </Tooltip>
-        <Text display={{ base: "none", xl: "initial" }}>{t(nav.label)}</Text>
+        <Text display={{ base: "initial", lg: "none", xl: "initial" }}>
+          {t(nav.label)}
+        </Text>
       </Flex>
     </ListItem>
   );
 };
 
-export default HorizontalLayoutNavbarTab;
+export default NavbarTab;

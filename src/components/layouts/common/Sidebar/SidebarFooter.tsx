@@ -13,7 +13,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { RiLoginBoxLine, RiLogoutBoxRLine } from "react-icons/ri";
 
-const HorizontalLayoutSidebarFooter = () => {
+const SidebarFooter = () => {
   const { push } = useSafePush();
   const { data: me } = useGetMe();
   const { mutate: signout } = useSignout();
@@ -23,7 +23,10 @@ const HorizontalLayoutSidebarFooter = () => {
     <Center as={"footer"} mt={"auto"} gap={"4"} py={"4"}>
       {me ? (
         <Flex gap={"4"} align={"center"} overflow={"hidden"}>
-          <Text display={{ base: "none", xl: "block" }} {...styles.ellipsis}>
+          <Text
+            display={{ base: "block", lg: "none", xl: "block" }}
+            {...styles.ellipsis}
+          >
             {`${t("Welcome")} `}
             <Text as={"b"} color={"primary.500"}>
               {me?.name}
@@ -37,7 +40,7 @@ const HorizontalLayoutSidebarFooter = () => {
         </Flex>
       ) : (
         <>
-          <Text display={{ base: "none", xl: "block" }}>
+          <Text display={{ base: "block", lg: "none", xl: "block" }}>
             {t("Not Signed In")}
           </Text>
           <Tooltip hasArrow label={t("Sign In")}>
@@ -54,4 +57,4 @@ const HorizontalLayoutSidebarFooter = () => {
   );
 };
 
-export default HorizontalLayoutSidebarFooter;
+export default SidebarFooter;

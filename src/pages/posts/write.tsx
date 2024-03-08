@@ -1,10 +1,8 @@
+import { ResponsiveLayout } from "@/components";
 import { PostCreateForm } from "@/containers";
-import { useLayout } from "@/hooks";
 import Head from "next/head";
 
 const WritePostPage = () => {
-  const { Layout } = useLayout();
-
   return (
     <>
       <Head>
@@ -13,9 +11,9 @@ const WritePostPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>
+      <ResponsiveLayout>
         <PostCreateForm />
-      </Layout>
+      </ResponsiveLayout>
     </>
   );
 };

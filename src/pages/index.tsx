@@ -1,3 +1,4 @@
+import { ResponsiveLayout } from "@/components";
 import useLayout from "@/hooks/useLayout";
 import usePrimaryColor from "@/hooks/usePrimaryColor";
 import { Center, Flex, Heading, keyframes } from "@chakra-ui/react";
@@ -37,7 +38,7 @@ const opacityKeyframes = [
 
 export default function Home() {
   const { primaryColor } = usePrimaryColor();
-  const { layout, Layout } = useLayout();
+  const { layout } = useLayout();
 
   const colors = [
     `${primaryColor}.100`,
@@ -61,7 +62,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>
+      <ResponsiveLayout>
         <Center minH={"md"} h={"100%"} mb={layout === "horizontal" ? "10%" : 0}>
           <Flex direction={"column"} align={"center"} gap={"8"}>
             {["NextJS", "ChakraUI", "ReactQuery"].map((text, idx) => (
@@ -89,7 +90,7 @@ export default function Home() {
             ))}
           </Flex>
         </Center>
-      </Layout>
+      </ResponsiveLayout>
     </>
   );
 }
