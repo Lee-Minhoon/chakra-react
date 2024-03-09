@@ -18,14 +18,20 @@ export class Api {
   });
 
   static init = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      Api.addToken(token);
+    }
     Api.instance.defaults.baseURL = `${protoc}://${getDomain()}`;
   };
 
   static addToken = (token: string) => {
+    localStorage.setItem("token", token);
     Api.instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
 
   static removeToken = () => {
+    localStorage.removeItem("token");
     delete Api.instance.defaults.headers.common["Authorization"];
   };
 
