@@ -22,7 +22,7 @@ const MobileLayout = ({ children }: MobileLayoutProps) => {
       <Flex
         flex={1}
         direction={"column"}
-        p={"8"}
+        p={"4"}
         gap={"4"}
         maxH={{ base: "initial", lg: "100vh" }}
         overflow={"hidden"}
