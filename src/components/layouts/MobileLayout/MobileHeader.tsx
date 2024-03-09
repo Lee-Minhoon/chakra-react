@@ -1,5 +1,5 @@
 import { Logo } from "@/components";
-import { PageRoutes } from "@/constants";
+import { PageRoutes, styles } from "@/constants";
 import { useAlphaColor, useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
 import { Flex, Icon, IconButton } from "@chakra-ui/react";
@@ -18,7 +18,13 @@ const MobileHeader = ({ onClick }: MobileHeaderProps) => {
       as={"header"}
       pos={"sticky"}
       align={"center"}
-      bgColor={alphaColor(50)}
+      bgColor={"bg"}
+      _before={{
+        ...styles.pseudo,
+        bg: alphaColor(50),
+        zIndex: "-1",
+      }}
+      zIndex={1}
       top={"0"}
       gap={"4"}
       p={"4"}
