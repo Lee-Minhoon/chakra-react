@@ -1,5 +1,5 @@
 import { useCreateTestUsers, useCreateUser, useResetTestUsers } from "@/apis";
-import { ApiRoutes } from "@/constants";
+import { ApiRoutes, styles } from "@/constants";
 import { useQueryKeyParams } from "@/hooks";
 import { useModalStore } from "@/stores";
 import { getRandomPhoneNumber, getRandomString, toUrl } from "@/utils";
@@ -44,7 +44,7 @@ const UsersUtils = () => {
   }, [resetTestUsers]);
 
   return (
-    <Flex gap={"4"}>
+    <Flex gap={"4"} wrap={"wrap"}>
       <Tooltip hasArrow label={t("Create User")}>
         <Button leftIcon={<TbPlus />} onClick={handleCreateUser}>
           {t("User")}

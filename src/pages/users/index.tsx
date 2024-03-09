@@ -37,7 +37,7 @@ const UsersPage = () => {
       <ResponsiveLayout>
         <Flex direction={"column"} gap={"4"} h={"100%"}>
           <UserUtils />
-          <Flex justifyContent={"space-between"}>
+          <Flex justifyContent={"space-between"} gap={"4"} wrap={"wrap"}>
             <Search
               onSubmit={(search) =>
                 push({
