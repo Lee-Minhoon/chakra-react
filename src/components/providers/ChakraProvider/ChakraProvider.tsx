@@ -1,4 +1,4 @@
-import usePrimaryColor from "@/hooks/usePrimaryColor";
+import { usePrimaryColor } from "@/hooks";
 import { PrimaryColor } from "@/types";
 import {
   ChakraProvider as _ChakraProvider,

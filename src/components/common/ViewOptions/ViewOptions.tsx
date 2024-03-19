@@ -1,7 +1,7 @@
 import { ViewQueries } from "@/constants";
 import { useSafePush } from "@/hooks";
-import { capitalize } from "@/utils";
 import { Select } from "@chakra-ui/react";
+import { capitalize } from "lodash-es";
 import { useTranslation } from "react-i18next";
 
 const options = [

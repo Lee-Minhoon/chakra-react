@@ -1,7 +1,3 @@
-export const capitalize = (str?: string) => {
-  return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
-};
-
 export const fillZero = (num: number, len: number) => {
   return num.toString().padStart(len, "0");
 };

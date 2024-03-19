@@ -28,7 +28,7 @@ const fetcher = async <TResponse>(context: QueryFunctionContext<QueryKey>) => {
   const { queryKey, pageParam } = context;
   const [url, params] = queryKey;
   return Api.get<ApiResponse<TResponse>>(
-    buildUrl(url, undefined)!,
+    buildUrl(url, undefined),
     pageParam !== undefined ? { ...params, cursor: pageParam } : { ...params }
   ).then((res) => res.data);
 };

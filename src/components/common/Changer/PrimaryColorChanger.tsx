@@ -1,4 +1,4 @@
-import usePrimaryColor from "@/hooks/usePrimaryColor";
+import { usePrimaryColor } from "@/hooks";
 import {
   Box,
   Flex,

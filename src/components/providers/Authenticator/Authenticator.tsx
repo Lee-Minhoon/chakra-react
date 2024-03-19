@@ -1,5 +1,4 @@
-import { Api } from "@/apis";
-import { useGetMe } from "@/apis/auth";
+import { Api, useGetMe } from "@/apis";
 import { Unauthorized } from "@/components";
 import { PageRoutes, isExistPage, isWhiteList } from "@/constants";
 import { useSafePush } from "@/hooks";

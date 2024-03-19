@@ -49,7 +49,7 @@ export enum ViewQueries {
 
 export interface Nav {
   label: string;
-  pathname: string;
+  pathname: PageRoutes;
   query?: Record<string, number | string>;
   icon?: IconType;
   matcher: MatchFunction;
