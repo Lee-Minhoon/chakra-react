@@ -1,5 +1,6 @@
 import { Nullable } from "@/types";
-import { useEffect, useState } from "react";
+import { DomUtils } from "@/utils";
+import { useCallback, useEffect, useState } from "react";
 
 const useHasScroll = (elem?: Nullable<HTMLElement>) => {
   const [hasScroll, setHasScroll] = useState(false);
@@ -8,19 +9,19 @@ const useHasScroll = (elem?: Nullable<HTMLElement>) => {
     if (!elem) return;
 
     const resizeObserver = new ResizeObserver((entries) => {
-      const { scrollHeight, clientHeight } = entries[0].target;
-      setHasScroll(scrollHeight > clientHeight);
+      const elem = entries[0].target;
+      setHasScroll(DomUtils.hasScroll(elem));
     });
     resizeObserver.observe(elem);
 
     return () => resizeObserver.disconnect();
   }, [elem]);
 
-  const ref = (elem: Nullable<HTMLElement>) => {
+  const ref = useCallback((elem: Nullable<HTMLElement>) => {
     if (elem) {
-      setHasScroll(elem.scrollHeight > elem.clientHeight);
+      setHasScroll(DomUtils.hasScroll(elem));
     }
-  };
+  }, []);
 
   return { ref, hasScroll };
 };
