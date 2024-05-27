@@ -1,6 +1,7 @@
 import { ApiRoutes, PageRoutes } from "@/constants";
-import { Url } from "next/dist/shared/lib/router/router";
+import { NextRouter, Url } from "next/dist/shared/lib/router/router";
 import { compile } from "path-to-regexp";
+import { ValueOf } from "type-fest";
 
 export const toUrl = (path: PageRoutes | ApiRoutes, params?: object) =>
   compile(path, { encode: encodeURIComponent })(params);
@@ -38,18 +39,17 @@ export class NextURL {
   }
 }
 
+type QueryValue = ValueOf<NextRouter["query"]>;
+
 export class QueryParser {
-  static toNumber = (query: string | string[] | undefined) => {
+  static toNumber = (query: QueryValue) => {
     const num = Number(query);
     if (isNaN(num)) {
       return undefined;
     }
     return num;
   };
-  static toString = (query: string | string[] | undefined) => {
-    if (!query) {
-      return undefined;
-    }
-    return query.toString();
+  static toString = (query: QueryValue) => {
+    return query?.toString();
   };
 }
