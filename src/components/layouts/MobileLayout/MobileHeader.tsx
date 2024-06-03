@@ -22,7 +22,7 @@ const MobileHeader = ({ onClick }: MobileHeaderProps) => {
       _before={{
         ...styles.pseudo,
         bg: alphaColor(50),
-        zIndex: "-1",
+        zIndex: -1,
       }}
       zIndex={1}
       top={"0"}
