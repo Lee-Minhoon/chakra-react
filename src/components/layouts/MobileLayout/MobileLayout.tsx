@@ -28,13 +28,7 @@ const MobileLayout = ({ children }: MobileLayoutProps) => {
         overflow={"hidden"}
       >
         <SubHeader />
-        <Flex
-          as={"main"}
-          flex={1}
-          direction={"column"}
-          overflow={"hidden"}
-          p={"0.5"}
-        >
+        <Flex as={"main"} flex={1} direction={"column"} overflow={"hidden"}>
           {children}
         </Flex>
       </Flex>

@@ -21,12 +21,7 @@ const PostPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ResponsiveLayout>
-        <Box
-          ref={ref}
-          overflowY={"auto"}
-          p={"0.5"}
-          pr={hasScroll ? "2" : "0.5"}
-        >
+        <Box ref={ref} overflowY={"auto"} pr={hasScroll ? "2" : "0.5"}>
           <PostCard data={post} />
         </Box>
       </ResponsiveLayout>

@@ -1,9 +1,14 @@
 import { PrimaryColor } from "@/types";
+import { cardAnatomy } from "@chakra-ui/anatomy";
 import {
   baseTheme,
+  createMultiStyleConfigHelpers,
   extendTheme,
   withDefaultColorScheme,
 } from "@chakra-ui/react";
+
+const { definePartsStyle, defineMultiStyleConfig } =
+  createMultiStyleConfigHelpers(cardAnatomy.keys);
 
 const breakpoints = {
   base: "0em",
@@ -32,6 +37,14 @@ const getTheme = (primaryColor: PrimaryColor = "teal") =>
         border: "var(--chakra-colors-chakra-border-color)",
       },
       components: {
+        // prevent box shadow from being obscured when parent has overflow hidden
+        Card: defineMultiStyleConfig({
+          baseStyle: definePartsStyle({
+            container: {
+              margin: "0.5",
+            },
+          }),
+        }),
         Input: {
           defaultProps: {
             size: "sm",
