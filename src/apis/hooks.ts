@@ -86,7 +86,6 @@ export const useMutation = <TCached, TRequest, TResponse>(
       const builtQueryKey = buildQueryKey(queryKey, variables);
       console.log("The mutation has been executed.", builtQueryKey);
 
-      // 낙관적 업데이트(쿼리 키가 없으면 실행되지 않음)
       // Optimistic update(does not run if query key is not present)
       await queryClient.cancelQueries(builtQueryKey);
       const previousData = queryClient.getQueryData(builtQueryKey);
@@ -100,7 +99,6 @@ export const useMutation = <TCached, TRequest, TResponse>(
       options?.onError?.(error, variables, context);
       if (!queryKey) return;
 
-      // 에러가 발생할 경우 이전 데이터로 되돌립니다.
       // If an error occurs, it returns to old data.
       queryClient.setQueryData(buildQueryKey(queryKey, variables), context);
     },
@@ -108,7 +106,6 @@ export const useMutation = <TCached, TRequest, TResponse>(
       options?.onSettled?.(data, err, variables, context);
       if (!queryKey) return;
 
-      // 쿼리를 무효화 합니다.
       // Invalidates the query.
       const queryKeyToInvalidate = buildQueryKey(queryKey, variables);
       console.log("The query has been invalidated.", queryKeyToInvalidate);
