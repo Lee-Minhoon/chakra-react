@@ -24,6 +24,15 @@ const options = [
       order: "desc",
     },
   },
+  {
+    label: capitalize(ViewQueries.Grid),
+    query: {
+      view: ViewQueries.Grid,
+      limit: 10,
+      sort: "id",
+      order: "desc",
+    },
+  },
 ];
 
 const ViewOptions = () => {

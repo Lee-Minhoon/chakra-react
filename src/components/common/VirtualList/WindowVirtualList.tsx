@@ -7,10 +7,11 @@ import VirtualListBase from "./VirtualListBase";
 
 interface WindowVirtualListProps<T extends Scheme> {
   container: Nullable<HTMLElement>;
-  items: T[];
+  items: T[] | T[][];
   renderItem: ComponentType<{ data: T }>;
   onLastItemVisible?: () => void;
-  gap?: ComponentProps<typeof Spacer>["h"];
+  rowGap?: ComponentProps<typeof Spacer>["gap"];
+  columnGap?: ComponentProps<typeof Spacer>["gap"];
 }
 
 const WindowVirtualList = <T extends Scheme>({
@@ -18,7 +19,8 @@ const WindowVirtualList = <T extends Scheme>({
   items,
   renderItem,
   onLastItemVisible,
-  gap,
+  rowGap,
+  columnGap,
 }: WindowVirtualListProps<T>) => {
   return (
     <VirtualListBase
@@ -30,7 +32,8 @@ const WindowVirtualList = <T extends Scheme>({
       items={items}
       renderItem={renderItem}
       onLastItemVisible={onLastItemVisible}
-      gap={gap}
+      rowGap={rowGap}
+      columnGap={columnGap}
     />
   );
 };

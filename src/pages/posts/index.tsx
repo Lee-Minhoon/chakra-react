@@ -5,7 +5,12 @@ import {
   ViewOptions,
 } from "@/components";
 import { ViewQueries } from "@/constants";
-import { PostUtils, PostsByCursor, PostsByPage } from "@/containers";
+import {
+  PostGridView,
+  PostListView,
+  PostTableView,
+  PostUtils,
+} from "@/containers";
 import { useSafePush } from "@/hooks";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
@@ -18,9 +23,11 @@ const PostsAllPage = () => {
   const display = useMemo(() => {
     switch (viewOption) {
       case ViewQueries.Table:
-        return <PostsByPage />;
+        return <PostTableView />;
       case ViewQueries.List:
-        return <PostsByCursor usesObserver />;
+        return <PostListView />;
+      case ViewQueries.Grid:
+        return <PostGridView />;
       default:
         return null;
     }

@@ -8,10 +8,11 @@ import VirtualListBase from "./VirtualListBase";
 
 interface VirtualListProps<T extends Scheme> {
   container: Nullable<HTMLElement>;
-  items: T[];
+  items: T[] | T[][];
   renderItem: ComponentType<{ data: T }>;
   onLastItemVisible?: () => void;
-  gap?: ComponentProps<typeof Spacer>["h"];
+  rowGap?: ComponentProps<typeof Spacer>["gap"];
+  columnGap?: ComponentProps<typeof Spacer>["gap"];
 }
 
 const VirtualList = <T extends Scheme>({
@@ -19,7 +20,8 @@ const VirtualList = <T extends Scheme>({
   items,
   renderItem,
   onLastItemVisible,
-  gap,
+  rowGap,
+  columnGap,
 }: VirtualListProps<T>) => {
   const { hasScroll } = useHasScroll(container);
 
@@ -33,7 +35,8 @@ const VirtualList = <T extends Scheme>({
       items={items}
       renderItem={renderItem}
       onLastItemVisible={onLastItemVisible}
-      gap={gap}
+      rowGap={rowGap}
+      columnGap={columnGap}
       hasScroll={hasScroll}
     />
   );

@@ -1,30 +1,26 @@
-import { Post, useGetPostsByCursor } from "@/apis";
+import { User, useGetUsersByCursor } from "@/apis";
 import { InfiniteList } from "@/components";
 import { usePagination } from "@/hooks";
-import { PostListItem } from ".";
 import { QueryParser } from "@/utils";
 import { useRouter } from "next/router";
+import { UserListItem } from ".";
 
-interface PostsByCursorProps {
-  usesObserver?: boolean;
-}
-
-const PostsByCursor = ({ usesObserver }: PostsByCursorProps) => {
+const UserListView = () => {
   const router = useRouter();
   const { limit, sort, order } = usePagination();
 
   return (
-    <InfiniteList<Post>
-      infiniteQuery={useGetPostsByCursor({
+    <InfiniteList<User>
+      infiniteQuery={useGetUsersByCursor({
         limit,
         sort,
         order,
         search: QueryParser.toString(router.query.search) ?? "",
       })}
-      renderItem={PostListItem}
-      usesObserver={usesObserver}
+      renderItem={UserListItem}
+      useObserver
     />
   );
 };
 
-export default PostsByCursor;
+export default UserListView;

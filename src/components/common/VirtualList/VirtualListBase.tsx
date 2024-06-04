@@ -1,16 +1,20 @@
 import { Scheme } from "@/apis";
-import { Flex, ListItem, Spacer, UnorderedList } from "@chakra-ui/react";
+import { styles } from "@/constants";
+import { Flex, Grid, ListItem, Spacer, UnorderedList } from "@chakra-ui/react";
 import { Virtualizer } from "@tanstack/react-virtual";
 import { ComponentProps, ComponentType, useEffect, useMemo } from "react";
 
+type UnknownVirtualizer =
+  | Virtualizer<HTMLElement, HTMLElement>
+  | Virtualizer<Window, HTMLElement>;
+
 interface VirtualListBaseProps<T extends Scheme> {
-  rowVirtualizer:
-    | Virtualizer<HTMLElement, HTMLElement>
-    | Virtualizer<Window, HTMLElement>;
-  items: T[];
+  rowVirtualizer: UnknownVirtualizer;
+  items: T[] | T[][];
   renderItem: ComponentType<{ data: T }>;
   onLastItemVisible?: () => void;
-  gap?: ComponentProps<typeof Spacer>["h"];
+  rowGap?: ComponentProps<typeof Spacer>["gap"];
+  columnGap?: ComponentProps<typeof Spacer>["gap"];
   hasScroll?: boolean;
 }
 
@@ -21,14 +25,15 @@ const VirtualListBase = <T extends Scheme>({
   items,
   renderItem: Item,
   onLastItemVisible,
-  gap,
+  rowGap,
+  columnGap,
   hasScroll,
 }: VirtualListBaseProps<T>) => {
-  const virtualItems = rowVirtualizer.getVirtualItems();
+  const rowVirtualItems = rowVirtualizer.getVirtualItems();
 
   const lastItem = useMemo(
-    () => virtualItems[virtualItems.length - 1],
-    [virtualItems]
+    () => rowVirtualItems[rowVirtualItems.length - 1],
+    [rowVirtualItems]
   );
 
   useEffect(() => {
@@ -39,9 +44,14 @@ const VirtualListBase = <T extends Scheme>({
     }
   }, [items.length, lastItem, onLastItemVisible]);
 
+  const countPerRow = useMemo(() => {
+    if (!Array.isArray(items[0])) return 1;
+    return items[0].length;
+  }, [items]);
+
   const translateY = useMemo(
-    () => virtualItems[0]?.start - rowVirtualizer.options.scrollMargin,
-    [virtualItems, rowVirtualizer.options.scrollMargin]
+    () => rowVirtualItems[0]?.start - rowVirtualizer.options.scrollMargin,
+    [rowVirtualItems, rowVirtualizer.options.scrollMargin]
   );
 
   return (
@@ -56,23 +66,49 @@ const VirtualListBase = <T extends Scheme>({
         w={"100%"}
         display={"flex"}
         flexDirection={"column"}
-        listStyleType={"none"}
-        m={"0"}
         transform={`translateY(${translateY}px)`}
+        {...styles.unstyledList}
       >
-        {virtualItems.map((virtualItem) => {
-          const item = items[virtualItem.index];
+        {rowVirtualItems.map((virtualRow) => {
+          const row = items[virtualRow.index];
 
-          return (
-            <ListItem
-              key={virtualItem.index}
-              ref={rowVirtualizer.measureElement}
-              data-index={virtualItem.index}
-            >
-              <Item data={item} />
-              <Spacer h={gap ?? "4"} />
-            </ListItem>
-          );
+          // If the row is not an array, it is a single column.
+          if (!Array.isArray(row)) {
+            return (
+              <ListItem
+                key={virtualRow.index}
+                ref={rowVirtualizer.measureElement}
+                data-index={virtualRow.index}
+              >
+                <Item data={row} />
+                <Spacer minH={rowGap ?? "4"} />
+              </ListItem>
+            );
+          } else {
+            return (
+              <UnorderedList
+                key={virtualRow.index}
+                ref={rowVirtualizer.measureElement}
+                data-index={virtualRow.index}
+                display={"flex"}
+                flexDirection={"column"}
+                {...styles.unstyledList}
+              >
+                <Grid
+                  gap={columnGap ?? "4"}
+                  templateColumns={`repeat(${countPerRow}, 1fr)`}
+                  alignItems={""}
+                >
+                  {row.map((item, index) => (
+                    <ListItem key={index} overflow={"hidden"}>
+                      <Item data={item} />
+                    </ListItem>
+                  ))}
+                </Grid>
+                <Spacer minH={rowGap ?? "4"} />
+              </UnorderedList>
+            );
+          }
         })}
       </UnorderedList>
     </Flex>

@@ -1,5 +1,5 @@
 import { CursorQueryResponse, Scheme } from "@/apis";
-import { useLayout } from "@/hooks";
+import { useHasScroll } from "@/hooks";
 import { Nullable } from "@/types";
 import { Button, Center, Flex, Spacer, Spinner } from "@chakra-ui/react";
 import { UseInfiniteQueryResult } from "@tanstack/react-query";
@@ -7,10 +7,8 @@ import {
   ComponentProps,
   ComponentType,
   useCallback,
-  useEffect,
   useMemo,
   useRef,
-  useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { VirtualList, WindowVirtualList } from "../VirtualList";
@@ -18,51 +16,59 @@ import { VirtualList, WindowVirtualList } from "../VirtualList";
 interface InfiniteListProps<T extends Scheme> {
   infiniteQuery: UseInfiniteQueryResult<CursorQueryResponse<T[], number>>;
   renderItem: ComponentType<{ data: T }>;
-  usesObserver?: boolean;
-  gap?: ComponentProps<typeof Spacer>["h"];
+  countPerRow?: number;
+  useObserver?: boolean;
+  rowGap?: ComponentProps<typeof Spacer>["gap"];
+  columnGap?: ComponentProps<typeof Spacer>["gap"];
 }
 
 const InfiniteList = <T extends Scheme>({
   infiniteQuery,
   renderItem,
-  usesObserver,
-  gap,
+  countPerRow,
+  useObserver,
+  rowGap,
+  columnGap,
 }: InfiniteListProps<T>) => {
-  const { layout } = useLayout();
   const { data, isFetchingNextPage, hasNextPage, fetchNextPage } =
     infiniteQuery;
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [container, setContainer] = useState<Nullable<HTMLDivElement>>(null);
+  const containerRef = useRef<Nullable<HTMLDivElement>>(null);
   const { t } = useTranslation();
 
-  const items = useMemo(() => {
-    return (data?.pages ?? []).map((page) => page.data).flat();
-  }, [data?.pages]);
+  const { hasScroll } = useHasScroll(containerRef.current);
 
-  useEffect(() => {
-    setContainer(containerRef.current);
-  }, []);
+  const List = useMemo(() => {
+    return hasScroll ? VirtualList : WindowVirtualList;
+  }, [hasScroll]);
+
+  const items = useMemo(() => {
+    const flatten = (data?.pages ?? []).flatMap((page) => page.data);
+    if (!countPerRow) return flatten;
+    const result: T[][] = [];
+    for (let i = 0; i < flatten.length; i += countPerRow) {
+      result.push(flatten.slice(i, i + countPerRow));
+    }
+    return result;
+  }, [countPerRow, data?.pages]);
 
   const handleLastItemVisible = useCallback(() => {
-    if (usesObserver && hasNextPage && !isFetchingNextPage) {
+    if (useObserver && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage, usesObserver]);
-
-  const List = useMemo(
-    () => (layout === "horizontal" ? VirtualList : WindowVirtualList),
-    [layout]
-  );
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage, useObserver]);
 
   return (
     <Flex ref={containerRef} direction={"column"} overflowY={"auto"}>
-      <List
-        container={container}
-        items={items}
-        renderItem={renderItem}
-        onLastItemVisible={handleLastItemVisible}
-        gap={gap}
-      />
+      {List && (
+        <List
+          container={containerRef.current}
+          items={items}
+          renderItem={renderItem}
+          onLastItemVisible={handleLastItemVisible}
+          rowGap={rowGap}
+          columnGap={columnGap}
+        />
+      )}
       {!isFetchingNextPage ? (
         <Center>
           <Button onClick={() => fetchNextPage()} isDisabled={!hasNextPage}>

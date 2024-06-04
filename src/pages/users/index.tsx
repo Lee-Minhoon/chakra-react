@@ -5,7 +5,12 @@ import {
   ViewOptions,
 } from "@/components";
 import { ViewQueries } from "@/constants";
-import { UserUtils, UsersByCursor, UsersByPage } from "@/containers";
+import {
+  UserGridView,
+  UserListView,
+  UserTableView,
+  UserUtils,
+} from "@/containers";
 import { useSafePush } from "@/hooks";
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
@@ -18,9 +23,11 @@ const UsersPage = () => {
   const display = useMemo(() => {
     switch (viewOption) {
       case ViewQueries.Table:
-        return <UsersByPage />;
+        return <UserTableView />;
       case ViewQueries.List:
-        return <UsersByCursor usesObserver />;
+        return <UserListView />;
+      case ViewQueries.Grid:
+        return <UserGridView />;
       default:
         return null;
     }

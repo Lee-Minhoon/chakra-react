@@ -45,6 +45,7 @@ export const isWhiteList = (pathname: string) => {
 export enum ViewQueries {
   Table = "table",
   List = "list",
+  Grid = "grid",
 }
 
 export interface Nav {
