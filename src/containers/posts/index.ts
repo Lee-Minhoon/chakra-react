@@ -1,8 +1,6 @@
-export { PostCard } from "./PostCard";
-export { PostCreateForm, PostUpdateForm } from "./PostForm";
-export { default as PostGridView } from "./PostGridView";
-export { PostListItem } from "./PostListItem";
-export { default as PostListView } from "./PostListView";
-export { PostTable } from "./PostTable";
-export { default as PostTableView } from "./PostTableView";
-export { PostUtils } from "./PostUtils";
+export { PostCard } from "./post-card";
+export { PostCreateForm, PostUpdateForm } from "./post-form";
+export { PostListItem } from "./post-list-item";
+export { PostTable } from "./post-table";
+export { PostUtils } from "./post-utils";
+export { PostGridView, PostListView, PostTableView } from "./post-view";

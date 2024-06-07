@@ -3,18 +3,18 @@ export {
   LanguageToggler,
   LayoutToggler,
   PrimaryColorChanger,
-} from "./Changer";
-export { DataTable } from "./DataTable";
-export { Editor } from "./Editor";
-export { FileInput } from "./FileInput";
-export { FormField } from "./FormField";
-export { InfiniteList } from "./InfiniteList";
-export { Logo } from "./Logo";
-export { PageOptions } from "./PageOptions";
-export { Pagination } from "./Pagination";
-export { Search } from "./Search";
-export { Unauthorized } from "./Unauthorized";
-export { ViewOptions } from "./ViewOptions";
-export { VirtualList, WindowVirtualList } from "./VirtualList";
-export { WithFormLabel } from "./WithFormLabel";
-export { WithLabel } from "./WithLabel";
+} from "./changer";
+export { DataTable } from "./data-table";
+export { Editor } from "./editor";
+export { FileInput } from "./file-input";
+export { FormField } from "./form-field";
+export { InfiniteList } from "./infinite-list";
+export { Logo } from "./logo";
+export { PageOptions } from "./page-options";
+export { Pagination } from "./pagination";
+export { Search } from "./search";
+export { Unauthorized } from "./unauthorized";
+export { ViewOptions } from "./view-options";
+export { VirtualListDefault, VirtualListWindow } from "./virtual-list";
+export { WithFormLabel } from "./with-form-label";
+export { WithLabel } from "./with-label";

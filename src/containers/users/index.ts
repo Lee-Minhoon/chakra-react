@@ -1,8 +1,6 @@
-export { UserCard } from "./UserCard";
-export { default as UserGridView } from "./UserGridView";
-export { UserListItem } from "./UserListItem";
-export { default as UserListView } from "./UserListView";
-export { UserCreateModal, UserUpdateModal } from "./UserModal";
-export { UserTable } from "./UserTable";
-export { default as UserTableView } from "./UserTableView";
-export { UserUtils } from "./UserUtils";
+export { UserCard } from "./user-card";
+export { UserListItem } from "./user-list-item";
+export { UserCreateModal, UserUpdateModal } from "./user-modal";
+export { UserTable } from "./user-table";
+export { UserUtils } from "./user-utils";
+export { UserGridView, UserListView, UserTableView } from "./user-view";

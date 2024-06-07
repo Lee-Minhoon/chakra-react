@@ -1,2 +1,2 @@
-export { CenteredLayout } from "./CenteredLayout";
-export { ResponsiveLayout } from "./ResponsiveLayout";
+export { CenteredLayout } from "./centered-layout";
+export { ResponsiveLayout } from "./responsive-layout";

@@ -1,3 +1,3 @@
-export { Sidebar } from "./Sidebar";
-export { SubHeader } from "./SubHeader";
-export { Footer } from "./Footer";
+export { Footer } from "./footer";
+export { Sidebar } from "./sidebar";
+export { SubHeader } from "./sub-header";

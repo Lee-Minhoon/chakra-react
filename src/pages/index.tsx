@@ -1,6 +1,6 @@
 import { ResponsiveLayout } from "@/components";
 import { usePrimaryColor } from "@/hooks";
-import useLayout from "@/hooks/useLayout";
+import useLayout from "@/hooks/use-layout";
 import { Center, Flex, Heading, keyframes } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import Head from "next/head";
