@@ -1,16 +1,16 @@
 import { AuthSignin, useSignin } from "@/apis/auth";
-import { Logo, WithFormLabel } from "@/components";
+import { FormField, Logo } from "@/components";
 import { PageRoutes } from "@/constants";
 import { useSafePush } from "@/hooks";
 import { toUrl } from "@/utils";
-import { Box, Button, Card, Input } from "@chakra-ui/react";
+import { Box, Button, Card } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 const SigninForm = () => {
   const { router, push } = useSafePush();
-  const { register, handleSubmit } = useForm<AuthSignin>();
+  const { control, handleSubmit } = useForm<AuthSignin>();
   const { mutate: signin, isLoading, isSuccess } = useSignin();
   const { t } = useTranslation();
 
@@ -36,9 +36,12 @@ const SigninForm = () => {
           )
         )}
       >
-        <WithFormLabel label={t("Email")}>
-          <Input {...register("email")} />
-        </WithFormLabel>
+        <FormField
+          label={t("Email")}
+          fieldType={"string"}
+          control={control}
+          name={"email"}
+        />
         <Button
           type={"submit"}
           isLoading={isLoading || isSuccess}

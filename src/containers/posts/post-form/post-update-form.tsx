@@ -14,7 +14,7 @@ interface PostUpdateFormProps {
 
 const PostUpdateForm = ({ post }: PostUpdateFormProps) => {
   const { push } = useSafePush();
-  const { register, handleSubmit, control } = useForm<PostUpdate>({
+  const { control, handleSubmit } = useForm<PostUpdate>({
     defaultValues: {
       ...post,
     },
@@ -40,13 +40,14 @@ const PostUpdateForm = ({ post }: PostUpdateFormProps) => {
       )}
     >
       <FormField
-        fieldType={"string"}
-        isRequired
         label={t("Title")}
+        fieldType={"string"}
+        control={control}
+        name={"title"}
+        isRequired
         placeholder={t("Title")}
-        {...register("title")}
       />
-      <FormField fieldType={"document"} name={"content"} control={control} />
+      <FormField fieldType={"document"} control={control} name={"content"} />
       <Button
         type={"submit"}
         isLoading={isLoading || isSuccess}

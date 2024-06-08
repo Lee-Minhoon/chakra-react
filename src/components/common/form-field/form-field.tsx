@@ -1,62 +1,67 @@
-import { FormFieldPropsTypeMap, FormFieldTypes } from "@/constants";
-import { Input } from "@chakra-ui/react";
-import { ForwardedRef, forwardRef, useMemo } from "react";
-import { Control, FieldPath, FieldValues } from "react-hook-form";
-import { WithFormLabel } from "..";
+import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/react";
+import { ComponentProps, useMemo } from "react";
+import { FieldValues } from "react-hook-form";
+import { ValueOf } from "type-fest";
+import FormFieldController, {
+  FormFieldControllerProps,
+} from "./form-field.controller";
 import FormFieldEditor from "./form-field.editor";
 import FormFieldNumber from "./form-field.number";
+import FormFieldString from "./form-field.string";
 
-type FormFieldProps<T extends FieldValues, S extends FormFieldTypes> = {
-  fieldType: S;
-  name: FieldPath<T>;
-  control?: Control<T, any>;
+const fieldTypes = {
+  String: "string",
+  Number: "number",
+  Document: "document",
+} as const;
+
+type FieldType = ValueOf<typeof fieldTypes>;
+
+const fieldComponentMap = {
+  [fieldTypes.String]: FormFieldString,
+  [fieldTypes.Number]: FormFieldNumber,
+  [fieldTypes.Document]: FormFieldEditor,
+} as const;
+
+type FormFieldProps<T extends FieldType, S extends FieldValues> = {
+  fieldType: T;
   label?: string;
-} & Omit<FormFieldPropsTypeMap[S], "name">;
+  error?: string;
+} & Omit<FormFieldControllerProps<S>, "render"> &
+  Omit<ComponentProps<(typeof fieldComponentMap)[T]>, "name">;
 
-const FormFieldBase = <T extends FieldValues, S extends FormFieldTypes>(
-  { fieldType, name, label, control, ...rest }: FormFieldProps<T, S>,
-  ref: ForwardedRef<unknown>
-) => {
+const FormField = <T extends FieldType, S extends FieldValues>({
+  fieldType,
+  label,
+  control,
+  name,
+  error,
+  ...rest
+}: FormFieldProps<T, S>) => {
   const field = useMemo(() => {
-    switch (fieldType) {
-      case FormFieldTypes.String:
-        return (
-          <Input
-            ref={ref}
-            name={name}
-            {...(rest as FormFieldPropsTypeMap[typeof FormFieldTypes.String])}
-          />
-        );
-      case FormFieldTypes.Number:
-        return (
-          <FormFieldNumber
-            name={name}
-            control={control}
-            {...(rest as FormFieldPropsTypeMap[typeof FormFieldTypes.Number])}
-          />
-        );
-      case FormFieldTypes.Document:
-        return (
-          <FormFieldEditor
-            name={name}
-            control={control}
-            {...(rest as FormFieldPropsTypeMap[typeof FormFieldTypes.Document])}
-          />
-        );
-      default:
-        throw new Error("Invalid field type");
+    const FieldComponent = fieldComponentMap?.[fieldType];
+
+    if (!FieldComponent) {
+      throw new Error("Invalid field type");
     }
-  }, [control, fieldType, name, ref, rest]);
+
+    return (
+      <FormFieldController
+        control={control}
+        name={name}
+        render={FieldComponent}
+        {...rest}
+      />
+    );
+  }, [control, fieldType, name, rest]);
 
   return (
-    <>{label ? <WithFormLabel label={label}>{field}</WithFormLabel> : field}</>
+    <FormControl isInvalid={!!error}>
+      {label && <FormLabel>{label}</FormLabel>}
+      {field}
+      <FormErrorMessage>{error}</FormErrorMessage>
+    </FormControl>
   );
 };
 
-const FormField = forwardRef(FormFieldBase);
-
-FormField.displayName = "FormField";
-
-export default FormField as <T extends FieldValues, S extends FormFieldTypes>(
-  props: FormFieldProps<T, S> & { ref?: ForwardedRef<unknown> }
-) => ReturnType<typeof FormFieldBase>;
+export default FormField;

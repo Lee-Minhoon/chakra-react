@@ -1,5 +1,6 @@
 import { User, UserUpdate, useUpdateUser, useUpdateUserInList } from "@/apis";
 import { useUpload } from "@/apis/upload";
+import { FormField } from "@/components";
 import { ApiRoutes } from "@/constants";
 import { useQueryKeyParams } from "@/hooks";
 import { toUrl } from "@/utils";
@@ -14,10 +15,10 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
+import { capitalize } from "lodash-es";
 import { useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import UserFormFields from "./user-form-fields";
 import UserProfileInput from "./user-profile-input";
 
 interface UserUpdateModalProps {
@@ -28,7 +29,7 @@ interface UserUpdateModalProps {
 const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const queryKeyParams = useQueryKeyParams(toUrl(ApiRoutes.User));
-  const { register, handleSubmit } = useForm<UserUpdate>({
+  const { control, handleSubmit } = useForm<UserUpdate>({
     defaultValues: user,
   });
   const {
@@ -89,9 +90,26 @@ const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
                 setPreview(URL.createObjectURL(file));
               }}
             />
-            <UserFormFields
-              fields={["name", "email", "phone"]}
-              register={register}
+            <FormField
+              label={t(capitalize("name"))}
+              fieldType={"string"}
+              control={control}
+              name={"name"}
+              isRequired
+            />
+            <FormField
+              label={t(capitalize("email"))}
+              fieldType={"string"}
+              control={control}
+              name={"email"}
+              isRequired
+            />
+            <FormField
+              label={t(capitalize("phone"))}
+              fieldType={"string"}
+              control={control}
+              name={"phone"}
+              isRequired
             />
           </Flex>
         </ModalBody>

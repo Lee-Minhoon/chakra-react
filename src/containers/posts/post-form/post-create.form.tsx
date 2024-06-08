@@ -38,13 +38,14 @@ const PostCreateForm = () => {
       )}
     >
       <FormField
-        fieldType={"string"}
-        isRequired
         label={t("Title")}
+        fieldType={"string"}
+        control={control}
+        name={"title"}
+        isRequired
         placeholder={t("Title")}
-        {...register("title")}
       />
-      <FormField fieldType={"document"} name={"content"} control={control} />
+      <FormField fieldType={"document"} control={control} name={"content"} />
       <Button
         type={"submit"}
         isLoading={isLoading || isSuccess}
