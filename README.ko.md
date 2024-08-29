@@ -1,10 +1,10 @@
-<h1 align="center">NextJS Boilerplate</h1>
+<h1 align="center">Chakra React</h1>
 
-This is a React Boilerplate using client-side rendering.
+클라이언트 사이드 렌더링을 사용하는 React Boilerplate입니다.
 
-There is a lot of code integrated with [Charka UI](https://npmjs.com/package/@chakra-ui/react) and [React Query](https://npmjs.com/package/@tanstack/react-query).
+많은 코드가 [Charka UI](https://npmjs.com/package/@chakra-ui/react)와 [React Query](https://npmjs.com/package/@tanstack/react-query)가 결합한 형태입니다.
 
-Feel free to clone the entire project or just copy the parts you need.
+마음대로 클론을 하셔도 되고, 필요한 부분만 복사해 가셔도 됩니다.
 
 ## Demo
 
@@ -12,13 +12,13 @@ Feel free to clone the entire project or just copy the parts you need.
 
 ## Getting Started
 
-Install dependencies.
+의존성 설치 후
 
 ```bash
 yarn
 ```
 
-Then, start the React server.
+React 서버를 시작합니다.
 
 ```bash
 yarn dev
@@ -36,11 +36,11 @@ yarn dev
 - [Virtual List](https://github.com/Lee-Minhoon/nextjs-boilerplate/blob/main/src/components/common/VirtualList/VirtualListBase.tsx) (React Virtual)
 - Translation (React I18next)
 
-## Features
+## 라이브러리
 
 ### Core
 
-- [Next.js](https://www.npmjs.com/package/next)
+- [React](https://www.npmjs.com/package/react)
 
 ### UI
 
@@ -69,11 +69,11 @@ yarn dev
 
 ## Attention
 
-- The NextJS version has been archived due to structural issues with using Chakra UI in NextJS.
+- Chakra UI를 NextJS에서 사용하기에는 구조적인 문제가 있어 NextJS 버전은 아카이브 되었습니다.
 
   - https://github.com/Lee-Minhoon/nextjs-boilerplate
 
-- Since API mocking is done with msw, you can delete the 'mocks' folder and the following library if you don't need it:
+- msw를 사용해 API를 mocking하였으므로, 사용하지 않는다면 mocks 폴더와 아래 라이브러리를 삭제해도 무방합니다.
 
   - msw
 
