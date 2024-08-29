@@ -14,7 +14,7 @@ const Logo = ({ onClick }: LogoProps) => {
         onClick={onClick}
         _hover={{ color: onClick ? "primary.600" : "primary.500" }}
       >
-        NextJS Boilerplate
+        Chakra React
       </Heading>
     </Center>
   );
