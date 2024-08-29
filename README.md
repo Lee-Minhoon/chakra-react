@@ -1,4 +1,4 @@
-<h1 align="center">NextJS Boilerplate</h1>
+<h1 align="center">Chakra React</h1>
 
 This is a React Boilerplate using client-side rendering.
 
