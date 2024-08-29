@@ -1,7 +1,6 @@
 import { FileInput, WithFormLabel } from "@/components";
 import { useAlphaColor } from "@/hooks";
-import { Box, Center, Icon } from "@chakra-ui/react";
-import Image from "next/image";
+import { Box, Center, Icon, Image } from "@chakra-ui/react";
 import { useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { PiPlusThin } from "react-icons/pi";
@@ -39,7 +38,7 @@ const UserProfileInput = ({ preview, onChange }: UserProfileInputProps) => {
         {preview ? (
           <Box {...wrapperProps}>
             <Image
-              fill
+              // fill
               sizes={"100%"}
               src={preview}
               alt={"profile"}

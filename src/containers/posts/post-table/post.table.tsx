@@ -1,8 +1,8 @@
 import { Post } from "@/apis";
 import { DataTable } from "@/components";
 import { PageRoutes } from "@/constants";
-import { useFormatDate, useSafePush } from "@/hooks";
-import { toUrl } from "@/utils";
+import { useFormatDate, useRoute } from "@/hooks";
+import { toPath } from "@/utils";
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -21,7 +21,7 @@ interface PostTableProps {
 
 const PostTable = ({ posts, isLoading }: PostTableProps) => {
   const { t } = useTranslation();
-  const { push } = useSafePush();
+  const { route } = useRoute();
   const formatDate = useFormatDate();
 
   const columns = useMemo(
@@ -63,9 +63,11 @@ const PostTable = ({ posts, isLoading }: PostTableProps) => {
     <DataTable<Post>
       table={table}
       isLoading={isLoading}
-      onRowClick={(row) =>
-        push(toUrl(PageRoutes.PostDetail, { id: row.original.id }))
-      }
+      onRowClick={(row) => {
+        route({
+          pathname: toPath(PageRoutes.PostDetail, { id: row.original.id }),
+        });
+      }}
     />
   );
 };

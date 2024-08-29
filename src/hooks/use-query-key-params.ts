@@ -1,10 +1,10 @@
 import { QueryKey } from "@/apis";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/router";
+import { useSearchParams } from "react-router-dom";
 
 const useQueryKeyParams = (queryKey: QueryKey[0]) => {
   const queryClient = useQueryClient();
-  const router = useRouter();
+  const [searchParams] = useSearchParams();
 
   return queryClient
     .getQueryCache()
@@ -13,7 +13,7 @@ const useQueryKeyParams = (queryKey: QueryKey[0]) => {
       if (!query.queryKey[1]) return false;
       return Object.entries(query.queryKey[1]).reduce(
         (isMatch, [key, value]) => {
-          return isMatch && router.query[key] === value.toString();
+          return isMatch && searchParams.get(key) === value.toString();
         },
         true
       );

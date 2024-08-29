@@ -1,22 +1,16 @@
 import { PostCreate, useCreatePost } from "@/apis";
-import { useGetMe } from "@/apis/auth";
 import { FormField } from "@/components";
 import { PageRoutes } from "@/constants";
-import { useSafePush } from "@/hooks";
-import { toUrl } from "@/utils";
+import { useRoute } from "@/hooks";
+import { toPath } from "@/utils";
 import { Button, Flex } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 const PostCreateForm = () => {
-  const { push } = useSafePush();
-  const { data: me } = useGetMe();
-  const { register, handleSubmit, control } = useForm<PostCreate>({
-    defaultValues: {
-      userId: me?.id,
-    },
-  });
+  const { route } = useRoute();
+  const { handleSubmit, control } = useForm<PostCreate>();
   const { mutate: createPost, isLoading, isSuccess } = useCreatePost();
   const { t } = useTranslation();
 
@@ -30,10 +24,12 @@ const PostCreateForm = () => {
           (data) =>
             createPost(data, {
               onSuccess: (res) => {
-                push(toUrl(PageRoutes.PostDetail, { id: res.data }));
+                route({
+                  pathname: toPath(PageRoutes.PostDetail, { id: res.data }),
+                });
               },
             }),
-          [createPost, push]
+          [createPost, route]
         )
       )}
     >

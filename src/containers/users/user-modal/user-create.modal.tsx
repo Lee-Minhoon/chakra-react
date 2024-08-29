@@ -1,9 +1,8 @@
-import { UserCreate, useCreateUser } from "@/apis";
-import { useUpload } from "@/apis/upload";
+import { UserCreate, useCreateUser, useUploadFile } from "@/apis";
 import { FormField } from "@/components";
 import { ApiRoutes } from "@/constants";
 import { useQueryKeyParams } from "@/hooks";
-import { toUrl } from "@/utils";
+import { toPath } from "@/utils";
 import {
   Button,
   Flex,
@@ -27,13 +26,13 @@ interface UserCreateModalProps {
 
 const UserCreateModal = ({ onClose }: UserCreateModalProps) => {
   const { control, handleSubmit } = useForm<UserCreate>();
-  const queryKeyParams = useQueryKeyParams(toUrl(ApiRoutes.User));
+  const queryKeyParams = useQueryKeyParams(toPath(ApiRoutes.User));
   const {
     mutate: createUser,
     isLoading: createUserIsLoading,
     isSuccess: createUserIsSuccess,
   } = useCreateUser(queryKeyParams);
-  const { mutate: upload, isLoading: uploadIsLoading } = useUpload();
+  const { mutate: upload, isLoading: uploadIsLoading } = useUploadFile();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState("");
   const { t } = useTranslation();

@@ -1,4 +1,4 @@
-import { Optional } from "@/types";
+import { Nullable, Optional } from "@/types";
 import {
   UseInfiniteQueryOptions,
   UseMutationOptions,
@@ -6,10 +6,16 @@ import {
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-export interface ApiResponse<T> {
+export interface ApiResponse<T = unknown> {
   data: T;
   message: string;
 }
+
+export const isApiResponse = <T = unknown>(
+  data: any
+): data is ApiResponse<T> => {
+  return "data" in data && "message" in data;
+};
 
 export interface ApiError<T = null> extends Error {
   data: T;
@@ -43,13 +49,13 @@ export type CursorQueryParams = {
 
 export interface PageQueryResponse<T> {
   total: number;
-  data: T;
+  data: T[];
 }
 
-export interface CursorQueryResponse<T, S> {
-  previous: S;
-  next: S;
-  data: T;
+export interface CursorQueryResponse<T> {
+  previous: Nullable<number>;
+  next: Nullable<number>;
+  data: T[];
 }
 
 export type UrlBuilder<T> = string | ((data: T) => string);
@@ -72,7 +78,7 @@ export type PageQueryOptions<T, S = PageQueryResponse<T>> = UseQueryOptions<
 
 export type InfiniteQueryOptions<
   T,
-  S = CursorQueryResponse<T, number>,
+  S = CursorQueryResponse<T>,
 > = UseInfiniteQueryOptions<S, AxiosError<ApiError>, S, S, QueryKey>;
 
 export type MutationOptions<T, S> = UseMutationOptions<

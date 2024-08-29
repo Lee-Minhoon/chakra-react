@@ -1,9 +1,14 @@
-import { User, UserUpdate, useUpdateUser, useUpdateUserInList } from "@/apis";
-import { useUpload } from "@/apis/upload";
+import {
+  User,
+  UserUpdate,
+  useUpdateUser,
+  useUpdateUserInList,
+  useUploadFile,
+} from "@/apis";
 import { FormField } from "@/components";
 import { ApiRoutes } from "@/constants";
 import { useQueryKeyParams } from "@/hooks";
-import { toUrl } from "@/utils";
+import { toPath } from "@/utils";
 import {
   Button,
   Flex,
@@ -28,7 +33,7 @@ interface UserUpdateModalProps {
 
 const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
   const [isOpen, setIsOpen] = useState(true);
-  const queryKeyParams = useQueryKeyParams(toUrl(ApiRoutes.User));
+  const queryKeyParams = useQueryKeyParams(toPath(ApiRoutes.User));
   const { control, handleSubmit } = useForm<UserUpdate>({
     defaultValues: user,
   });
@@ -42,7 +47,7 @@ const UserUpdateModal = ({ user, onClose }: UserUpdateModalProps) => {
     isLoading: updateUserInListIsLoading,
     isSuccess: updateUserInListIsSuccess,
   } = useUpdateUserInList(queryKeyParams);
-  const { mutate: upload, isLoading: uploadIsLoading } = useUpload();
+  const { mutate: upload, isLoading: uploadIsLoading } = useUploadFile();
   const [file, setFile] = useState<File>();
   const [preview, setPreview] = useState(user.profile ?? "");
   const { t } = useTranslation();

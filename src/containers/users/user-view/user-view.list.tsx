@@ -2,11 +2,11 @@ import { User, useGetUsersByCursor } from "@/apis";
 import { InfiniteList } from "@/components";
 import { usePagination } from "@/hooks";
 import { QueryParser } from "@/utils";
-import { useRouter } from "next/router";
 import { UserListItem } from "..";
+import { useSearchParams } from "react-router-dom";
 
 const UserListView = () => {
-  const router = useRouter();
+  const [searchParams] = useSearchParams();
   const { limit, sort, order } = usePagination();
 
   return (
@@ -15,7 +15,7 @@ const UserListView = () => {
         limit,
         sort,
         order,
-        search: QueryParser.toString(router.query.search) ?? "",
+        search: QueryParser.toString(searchParams.get("search")) ?? "",
       })}
       renderItem={UserListItem}
       useObserver

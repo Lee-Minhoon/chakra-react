@@ -1,7 +1,7 @@
-import { useShallow } from "@/hooks";
 import { Nullable } from "@/types";
 import { ReactNode } from "react";
 import { create } from "zustand";
+import useShallow from "./hooks";
 
 interface Modal<T> {
   modal: React.FC<T>;

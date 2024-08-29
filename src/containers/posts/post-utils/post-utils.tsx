@@ -5,8 +5,8 @@ import {
   useResetTestPosts,
 } from "@/apis";
 import { ApiRoutes, PageRoutes } from "@/constants";
-import { useQueryKeyParams, useSafePush } from "@/hooks";
-import { getRandomString, toUrl } from "@/utils";
+import { useQueryKeyParams, useRoute } from "@/hooks";
+import { randomString, toPath } from "@/utils";
 import { Button, Flex, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,8 +17,8 @@ const count = 100;
 
 const PostsUtils = () => {
   const { data: me } = useGetMe();
-  const { push } = useSafePush();
-  const queryKeyParams = useQueryKeyParams(toUrl(ApiRoutes.Post));
+  const { route } = useRoute();
+  const queryKeyParams = useQueryKeyParams(toPath(ApiRoutes.Post));
   const { mutate: createPost, isLoading: createPostIsLoading } =
     useCreatePost(queryKeyParams);
   const { mutate: createTestPosts, isLoading: createTestPostsIsLoading } =
@@ -28,15 +28,14 @@ const PostsUtils = () => {
   const { t } = useTranslation();
 
   const handleCreatePost = useCallback(() => {
-    push(PageRoutes.WritePost);
-  }, [push]);
+    route({ pathname: toPath(PageRoutes.PostWrite) });
+  }, [route]);
 
   const handleCreateRandomPost = useCallback(() => {
     if (!me) return;
     createPost({
-      title: getRandomString(10),
-      content: getRandomString(100),
-      userId: me.id,
+      title: randomString(10),
+      content: randomString(1000),
     });
   }, [createPost, me]);
 

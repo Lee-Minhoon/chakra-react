@@ -1,8 +1,9 @@
 import { Post } from "@/apis";
 import { PageRoutes } from "@/constants";
-import { useFormatDate, useSafePush } from "@/hooks";
-import { toUrl } from "@/utils";
+import { useFormatDate, useRoute } from "@/hooks";
+import { toPath } from "@/utils";
 import { Avatar, Flex, Text } from "@chakra-ui/react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 interface PostWriterProps {
@@ -10,11 +11,20 @@ interface PostWriterProps {
 }
 
 const PostWriter = ({ post }: PostWriterProps) => {
-  const { push } = useSafePush();
+  const { route } = useRoute();
   const formatDate = useFormatDate();
   const { t } = useTranslation();
 
   const user = post?.user;
+
+  const handleClick = useCallback<React.MouseEventHandler>(
+    (e) => {
+      e.stopPropagation();
+      if (!user) return;
+      route({ pathname: toPath(PageRoutes.UserDetail, { id: user.id }) });
+    },
+    [route, user]
+  );
 
   return (
     <Flex gap={"4"} align={"center"}>
@@ -25,11 +35,7 @@ const PostWriter = ({ post }: PostWriterProps) => {
         h={"10"}
         cursor={"pointer"}
         _hover={{ opacity: 0.5 }}
-        onClick={(e) => {
-          e.stopPropagation();
-          if (!user) return;
-          push(toUrl(PageRoutes.UserDetail, { id: user.id }));
-        }}
+        onClick={handleClick}
       />
       <Flex direction={"column"} gap={"2"}>
         {user ? (

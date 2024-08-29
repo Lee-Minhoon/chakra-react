@@ -1,7 +1,8 @@
 import { Order } from "@/apis";
 import { QueryParser } from "@/utils";
 import { useCallback, useMemo } from "react";
-import { useSafePush } from ".";
+import { useSearchParams } from "react-router-dom";
+import { Entries } from "type-fest";
 
 export interface OnPaginationParams {
   page?: number;
@@ -11,25 +12,33 @@ export interface OnPaginationParams {
 }
 
 const usePagination = () => {
-  const { router, push } = useSafePush();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const params = useMemo(() => {
     return {
-      page: QueryParser.toNumber(router.query.page) ?? 1,
-      limit: QueryParser.toNumber(router.query.limit) ?? 10,
-      sort: QueryParser.toString(router.query.sort) ?? "",
-      order: (QueryParser.toString(router.query.order) ?? "desc") as Order,
+      page: QueryParser.toNumber(searchParams.get("page"), 1),
+      limit: QueryParser.toNumber(searchParams.get("limit"), 10),
+      sort: QueryParser.toString(searchParams.get("sort")),
+      order: QueryParser.toString(searchParams.get("order"), "desc") as Order,
     };
-  }, [router.query]);
+  }, [searchParams]);
 
   const onPagination = useCallback<(params: OnPaginationParams) => void>(
     (params) => {
-      push({
-        pathname: router.pathname,
-        query: { ...router.query, ...params },
+      setSearchParams((prev) => {
+        (Object.entries(params) as Entries<OnPaginationParams>).forEach(
+          ([key, value]) => {
+            if (value) {
+              prev.set(key, value.toString());
+            } else {
+              prev.delete(key);
+            }
+          }
+        );
+        return prev;
       });
     },
-    [push, router.pathname, router.query]
+    [setSearchParams]
   );
 
   return { ...params, onPagination };

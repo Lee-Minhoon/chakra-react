@@ -1,55 +1,52 @@
 import { ApiRoutes, PageRoutes } from "@/constants";
-import { NextRouter, Url } from "next/dist/shared/lib/router/router";
+import { Assignable, Nullable, Optional } from "@/types";
 import { compile } from "path-to-regexp";
-import { ValueOf } from "type-fest";
 
-export const toUrl = (path: PageRoutes | ApiRoutes, params?: object) =>
-  compile(path, { encode: encodeURIComponent })(params);
+export const getProtocol = () => (import.meta.env.PROD ? "https" : "http");
 
-export class NextURL {
-  private url: Url;
+export const getHost = () =>
+  import.meta.env.PROD ? window.location.host : window.location.host;
 
-  constructor(url: Url) {
-    this.url = url;
-  }
+export const toUrl = (
+  pathname: string,
+  search?: string | Record<string, string>
+) => {
+  const searchParams =
+    typeof search === "string"
+      ? search
+      : new URLSearchParams(search).toString();
+  return `${pathname}?${searchParams}`;
+};
 
-  get pathname() {
-    if (typeof this.url === "string") {
-      return this.url.split("?")[0];
-    }
-    return this.url.pathname;
-  }
-
-  get query() {
-    if (typeof this.url === "string") {
-      const queryString = this.url.split("?")[1];
-      return Object.fromEntries(new URLSearchParams(queryString).entries());
-    }
-    return this.url.query;
-  }
-
-  toString() {
-    if (typeof this.url === "string") return this.url;
-    return (
-      this.url.pathname +
-      (this.url.query
-        ? `?${new URLSearchParams(this.url.query as { [key: string]: string })}`
-        : "")
-    );
-  }
-}
-
-type QueryValue = ValueOf<NextRouter["query"]>;
+export const toPath = (path: PageRoutes | ApiRoutes, params?: object) => {
+  return compile(path, { encode: encodeURIComponent })(
+    Object.fromEntries(
+      Object.entries(params || {}).map(([key, value]) => [
+        key,
+        value.toString(),
+      ])
+    )
+  );
+};
 
 export class QueryParser {
-  static toNumber = (query: QueryValue) => {
+  static toNumber = <T extends Optional<number>>(
+    query?: Nullable<string>,
+    defaultValue?: T
+  ): Assignable<T, number> => {
     const num = Number(query);
     if (isNaN(num)) {
-      return undefined;
+      return defaultValue as Assignable<T, number>;
     }
-    return num;
+    return num as Assignable<T, number>;
   };
-  static toString = (query: QueryValue) => {
-    return query?.toString();
+  static toString = <T extends string>(
+    query: Nullable<string>,
+    defaultValue?: T
+  ): Assignable<T, string> => {
+    if (!query) {
+      return defaultValue as Assignable<T, string>;
+    }
+    return query.toString() as Assignable<T, string>;
   };
 }

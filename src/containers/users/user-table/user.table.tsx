@@ -2,9 +2,9 @@ import { User, useApproveUser, useDeleteUser } from "@/apis";
 import { DataTable } from "@/components";
 import { ApiRoutes, PageRoutes } from "@/constants";
 import { UserUpdateModal } from "@/containers";
-import { useFormatDate, useQueryKeyParams, useSafePush } from "@/hooks";
+import { useFormatDate, useQueryKeyParams, useRoute } from "@/hooks";
 import { useModalStore } from "@/stores";
-import { toUrl } from "@/utils";
+import { toPath } from "@/utils";
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -12,9 +12,9 @@ import {
 } from "@tanstack/react-table";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import UserName from "./uesr-name";
 import UserActions from "./user-actions";
 import UserApproved from "./user-approved";
-import UserName from "./uesr-name";
 
 const columnHelper = createColumnHelper<User>();
 
@@ -26,10 +26,10 @@ interface UsersTableProps {
 const UserTable = ({ users, isLoading }: UsersTableProps) => {
   const { openModal } = useModalStore(["openModal"]);
   const { openConfirm } = useModalStore(["openConfirm"]);
-  const { push } = useSafePush();
+  const { route } = useRoute();
   const { t } = useTranslation();
   const formatDate = useFormatDate();
-  const queryKeyParams = useQueryKeyParams(toUrl(ApiRoutes.User));
+  const queryKeyParams = useQueryKeyParams(toPath(ApiRoutes.User));
   const { mutate: deleteUser } = useDeleteUser(queryKeyParams);
   const { mutate: approveUser } = useApproveUser(queryKeyParams);
 
@@ -142,9 +142,11 @@ const UserTable = ({ users, isLoading }: UsersTableProps) => {
     <DataTable<User>
       table={table}
       isLoading={isLoading}
-      onRowClick={(row) =>
-        push(toUrl(PageRoutes.UserDetail, { id: row.original.id }))
-      }
+      onRowClick={(row) => {
+        route({
+          pathname: toPath(PageRoutes.UserDetail, { id: row.original.id }),
+        });
+      }}
     />
   );
 };

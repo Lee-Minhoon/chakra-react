@@ -1,38 +1,24 @@
+import { getHost, getProtocol } from "@/utils";
 import axios, { AxiosInstance } from "axios";
 import { QueryKey, UrlBuilder } from "./types";
-
-const protoc =
-  process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? "https" : "http";
-
-const getDomain = () => {
-  return process.env.NODE_ENV === "production"
-    ? window.location.host
-    : process.env.NEXT_PUBLIC_SERVER_DOMAIN;
-};
 
 export class Api {
   static instance: AxiosInstance = axios.create({
     headers: {
       "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"),
     },
+    baseURL: `${getProtocol()}://${getHost()}`,
   });
-
-  static init = () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      Api.addToken(token);
-    }
-    Api.instance.defaults.baseURL = `${protoc}://${getDomain()}`;
-  };
 
   static addToken = (token: string) => {
     localStorage.setItem("token", token);
-    Api.instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    Api.instance.defaults.headers["Authorization"] = token;
   };
 
   static removeToken = () => {
     localStorage.removeItem("token");
-    delete Api.instance.defaults.headers.common["Authorization"];
+    delete Api.instance.defaults.headers["Authorization"];
   };
 
   static get = async <T>(url: string, params?: object) => {

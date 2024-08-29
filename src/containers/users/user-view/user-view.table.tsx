@@ -4,17 +4,17 @@ import { UserTable } from "@/containers";
 import { usePagination } from "@/hooks";
 import { QueryParser } from "@/utils";
 import { TableContainer } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import { useSearchParams } from "react-router-dom";
 
 const UserTableView = () => {
-  const router = useRouter();
+  const [searchParams] = useSearchParams();
   const { page, limit, sort, order, onPagination } = usePagination();
   const { data: usersByPage, isLoading: usersIsLoading } = useGetUsersByPage({
     page,
     limit,
     sort,
     order,
-    search: QueryParser.toString(router.query.search) ?? "",
+    search: QueryParser.toString(searchParams.get("search")) ?? "",
   });
 
   return (

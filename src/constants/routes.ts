@@ -1,16 +1,20 @@
-import { MatchFunction, match } from "path-to-regexp";
+import { MatchFunction, ParamData, match } from "path-to-regexp";
 import { IconType } from "react-icons";
 import { BsFillPostcardFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 
 export enum ApiRoutes {
-  Upload = "api/upload",
+  Upload = "api/file/upload",
   Signin = "api/auth/signin",
   Signout = "api/auth/signout",
   Me = "api/auth/me",
-  User = "api/users/:id?",
-  ApproveUser = "api/users/:id?/approve",
-  Post = "api/posts/:id?",
+  User = "api/users{/:id}?",
+  ApproveUser = "api/users{/:id}/approve",
+  CreateTestUsers = "api/users/test{/:count}",
+  ResetUsers = "api/users/test/reset",
+  Post = "api/posts{/:id}?",
+  CreateTestPosts = "api/posts/test{/:count}",
+  ResetPosts = "api/posts/test/reset",
   LikedPost = "api/posts/liked",
 }
 
@@ -21,8 +25,8 @@ export enum PageRoutes {
   UserDetail = "/users/:id",
   Posts = "/posts",
   PostDetail = "/posts/:id",
-  WritePost = "/posts/write",
-  EditPost = "/posts/:id/edit",
+  PostWrite = "/posts/write",
+  PostEdit = "/posts/:id/edit",
 }
 
 export const whiteList = [
@@ -51,16 +55,16 @@ export enum ViewQueries {
 export interface Nav {
   label: string;
   pathname: PageRoutes;
-  query?: Record<string, number | string>;
+  search?: Record<string, string>;
   icon?: IconType;
-  matcher: MatchFunction;
+  matcher: MatchFunction<ParamData>;
   children?: Nav[];
 }
 
 export const defaultQuery = {
   view: ViewQueries.Table,
-  page: 1,
-  limit: 10,
+  page: "1",
+  limit: "10",
   sort: "id",
   order: "desc",
   search: "",
@@ -75,7 +79,7 @@ export const navs: Nav[] = [
   {
     label: "Users",
     pathname: PageRoutes.Users,
-    query: defaultQuery,
+    search: defaultQuery,
     icon: FaUser,
     matcher: match(PageRoutes.Users),
     children: [
@@ -89,14 +93,14 @@ export const navs: Nav[] = [
   {
     label: "Posts",
     pathname: PageRoutes.Posts,
-    query: defaultQuery,
+    search: defaultQuery,
     icon: BsFillPostcardFill,
     matcher: match(PageRoutes.Posts),
     children: [
       {
         label: "Write Post",
-        pathname: PageRoutes.WritePost,
-        matcher: match(PageRoutes.WritePost),
+        pathname: PageRoutes.PostWrite,
+        matcher: match(PageRoutes.PostWrite),
       },
       {
         label: "Post Detail",
@@ -105,8 +109,8 @@ export const navs: Nav[] = [
       },
       {
         label: "Edit Post",
-        pathname: PageRoutes.EditPost,
-        matcher: match(PageRoutes.EditPost),
+        pathname: PageRoutes.PostEdit,
+        matcher: match(PageRoutes.PostEdit),
       },
     ],
   },

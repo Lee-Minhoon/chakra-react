@@ -1,8 +1,8 @@
 import { useCreateTestUsers, useCreateUser, useResetTestUsers } from "@/apis";
-import { ApiRoutes, styles } from "@/constants";
+import { ApiRoutes } from "@/constants";
 import { useQueryKeyParams } from "@/hooks";
 import { useModalStore } from "@/stores";
-import { getRandomPhoneNumber, getRandomString, toUrl } from "@/utils";
+import { fillZero, randomString, toPath } from "@/utils";
 import { Button, Flex, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,7 +14,7 @@ const count = 100;
 
 const UsersUtils = () => {
   const { openModal } = useModalStore(["openModal"]);
-  const queryKeyParams = useQueryKeyParams(toUrl(ApiRoutes.User));
+  const queryKeyParams = useQueryKeyParams(toPath(ApiRoutes.User));
   const { mutate: createUser, isLoading: createUserIsLoading } =
     useCreateUser(queryKeyParams);
   const { mutate: createTestUsers, isLoading: createTestUsersIsLoading } =
@@ -29,9 +29,9 @@ const UsersUtils = () => {
 
   const handleCreateRandomUser = useCallback(() => {
     createUser({
-      name: getRandomString(10),
-      email: `${getRandomString(20)}@gmail.com`,
-      phone: getRandomPhoneNumber(),
+      name: randomString(10),
+      email: `${randomString(10)}@example.com`,
+      phone: `010-${fillZero(Math.floor(Math.random() * 10000), 4)}-${fillZero(Math.floor(Math.random() * 10000), 4)}`,
     });
   }, [createUser]);
 

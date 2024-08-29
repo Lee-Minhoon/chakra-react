@@ -1,7 +1,7 @@
 import { User } from "@/apis";
 import { PageRoutes } from "@/constants";
-import { useAlphaColor, useSafePush } from "@/hooks";
-import { toUrl } from "@/utils";
+import { useAlphaColor, useRoute } from "@/hooks";
+import { toPath } from "@/utils";
 import {
   Avatar,
   Box,
@@ -23,12 +23,12 @@ interface UserListItemProps {
 
 const UserListItem = ({ data: user }: UserListItemProps) => {
   const alphaColor = useAlphaColor();
-  const { push } = useSafePush();
+  const { route } = useRoute();
   const { t } = useTranslation();
 
   const handleClick = useCallback(() => {
-    push(toUrl(PageRoutes.UserDetail, { id: user.id }));
-  }, [push, user]);
+    route({ pathname: toPath(PageRoutes.UserDetail, { id: user.id }) });
+  }, [route, user]);
 
   const attributes = useMemo(
     () => [

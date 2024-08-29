@@ -2,11 +2,11 @@ import { Post, useGetPostsByCursor } from "@/apis";
 import { InfiniteList } from "@/components";
 import { usePagination } from "@/hooks";
 import { QueryParser } from "@/utils";
-import { useRouter } from "next/router";
+import { useSearchParams } from "react-router-dom";
 import { PostListItem } from "..";
 
 const PostGridView = () => {
-  const router = useRouter();
+  const [searchParams] = useSearchParams();
   const { limit, sort, order } = usePagination();
 
   return (
@@ -15,7 +15,7 @@ const PostGridView = () => {
         limit,
         sort,
         order,
-        search: QueryParser.toString(router.query.search) ?? "",
+        search: QueryParser.toString(searchParams.get("search")) ?? "",
       })}
       renderItem={PostListItem}
       countPerRow={4}

@@ -1,7 +1,7 @@
 import { Post } from "@/apis";
 import { PageRoutes } from "@/constants";
-import { useAlphaColor, useSafePush } from "@/hooks";
-import { toUrl } from "@/utils";
+import { useAlphaColor, useRoute } from "@/hooks";
+import { toPath } from "@/utils";
 import {
   Box,
   Card,
@@ -20,12 +20,12 @@ interface PostListItemProps {
 
 const PostListItem = ({ data: post }: PostListItemProps) => {
   const alphaColor = useAlphaColor();
-  const { push } = useSafePush();
+  const { route } = useRoute();
   const { t } = useTranslation();
 
   const handleClick = useCallback(() => {
-    push(toUrl(PageRoutes.PostDetail, { id: post.id }));
-  }, [push, post]);
+    route({ pathname: toPath(PageRoutes.PostDetail, { id: post.id }) });
+  }, [route, post]);
 
   return (
     <Card

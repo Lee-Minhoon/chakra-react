@@ -1,8 +1,8 @@
 import { Post, useDeletePost, useGetMe } from "@/apis";
 import { PageRoutes, defaultQuery } from "@/constants";
-import { useSafePush } from "@/hooks";
+import { useRoute } from "@/hooks";
 import { useModalStore } from "@/stores";
-import { toUrl } from "@/utils";
+import { toPath } from "@/utils";
 import {
   Box,
   Button,
@@ -22,7 +22,7 @@ interface PostCardProps {
 }
 
 const PostCard = ({ data: post }: PostCardProps) => {
-  const { push } = useSafePush();
+  const { route } = useRoute();
   const { data: me } = useGetMe();
   const { mutate: deletePost } = useDeletePost();
   const { openConfirm } = useModalStore(["openConfirm"]);
@@ -34,12 +34,14 @@ const PostCard = ({ data: post }: PostCardProps) => {
         <Skeleton isLoaded={!!post}>
           <Flex justify={"space-between"}>
             <PostWriter post={post} />
-            {me?.id === post?.userId && (
+            {me?.id === post?.user?.id && (
               <Flex gap={"4"}>
                 <Button
                   rightIcon={<TbEdit />}
                   onClick={() =>
-                    push(toUrl(PageRoutes.EditPost, { id: post?.id }))
+                    route({
+                      pathname: toPath(PageRoutes.PostEdit, { id: post?.id }),
+                    })
                   }
                 >
                   {t("Edit")}
@@ -54,9 +56,9 @@ const PostCard = ({ data: post }: PostCardProps) => {
                       onConfirm: () =>
                         deletePost(post?.id, {
                           onSuccess: () => {
-                            push({
-                              pathname: toUrl(PageRoutes.Posts),
-                              query: defaultQuery,
+                            route({
+                              pathname: toPath(PageRoutes.Posts),
+                              search: defaultQuery,
                             });
                           },
                         }),

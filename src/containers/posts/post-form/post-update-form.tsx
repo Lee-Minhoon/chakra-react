@@ -1,8 +1,8 @@
 import { Post, PostUpdate, useUpdatePost } from "@/apis";
 import { FormField } from "@/components";
 import { PageRoutes } from "@/constants";
-import { useSafePush } from "@/hooks";
-import { toUrl } from "@/utils";
+import { useRoute } from "@/hooks";
+import { toPath } from "@/utils";
 import { Button, Flex } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
@@ -13,7 +13,7 @@ interface PostUpdateFormProps {
 }
 
 const PostUpdateForm = ({ post }: PostUpdateFormProps) => {
-  const { push } = useSafePush();
+  const { route } = useRoute();
   const { control, handleSubmit } = useForm<PostUpdate>({
     defaultValues: {
       ...post,
@@ -32,10 +32,12 @@ const PostUpdateForm = ({ post }: PostUpdateFormProps) => {
           (data) =>
             updatePost(data, {
               onSuccess: (res) => {
-                push(toUrl(PageRoutes.PostDetail, { id: res.data }));
+                route({
+                  pathname: toPath(PageRoutes.PostDetail, { id: res.data }),
+                });
               },
             }),
-          [updatePost, push]
+          [updatePost, route]
         )
       )}
     >
