@@ -7,15 +7,17 @@ export const getProtocol = () => (import.meta.env.PROD ? "https" : "http");
 export const getHost = () =>
   import.meta.env.PROD ? window.location.host : window.location.host;
 
+export const toQueryString = (search: string | Record<string, string>) => {
+  return typeof search === "string"
+    ? search
+    : new URLSearchParams(search).toString();
+};
+
 export const toUrl = (
   pathname: string,
   search?: string | Record<string, string>
 ) => {
-  const searchParams =
-    typeof search === "string"
-      ? search
-      : new URLSearchParams(search).toString();
-  return `${pathname}?${searchParams}`;
+  return `${pathname}${search ? `?${toQueryString(search)}` : ""}`;
 };
 
 export const toPath = (path: PageRoutes | ApiRoutes, params?: object) => {
