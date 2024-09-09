@@ -3,6 +3,7 @@ import HomePage from "@/pages";
 import SigninPage from "@/pages/auth/signin";
 import PostsAllPage from "@/pages/posts";
 import PostPage from "@/pages/posts/[id]";
+import PostEditPage from "@/pages/posts/[id]/edit";
 import PostWritePage from "@/pages/posts/write";
 import UsersPage from "@/pages/users";
 import UserPage from "@/pages/users/[id]";
@@ -17,6 +18,7 @@ const AppRoutes = () => {
       <Route path={PageRoutes.Posts} element={<PostsAllPage />} />
       <Route path={PageRoutes.PostDetail} element={<PostPage />} />
       <Route path={PageRoutes.PostWrite} element={<PostWritePage />} />
+      <Route path={PageRoutes.PostEdit} element={<PostEditPage />} />
       <Route path={PageRoutes.Signin} element={<SigninPage />} />
     </Routes>
   );
