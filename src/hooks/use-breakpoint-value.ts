@@ -4,8 +4,8 @@ import { useBreakpointValue as _useBreakpointValue } from "@chakra-ui/react";
 import { useCallback } from "react";
 
 // https://github.com/chakra-ui/chakra-ui/issues/6401
-const useBreakpointValue = (
-  values: Parameters<typeof _useBreakpointValue>[0]
+const useBreakpointValue = <T = any>(
+  values: Parameters<typeof _useBreakpointValue<T>>[0]
 ) => {
   const fallback = useCallback(() => {
     const width = window.innerWidth;
