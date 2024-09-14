@@ -1,16 +1,12 @@
 import { Editor } from "@/components";
 
 const FormFieldEditor = ({
-  defaultValue,
+  value,
   onChange,
   ...rest
 }: React.ComponentProps<typeof Editor>) => {
   return (
-    <Editor
-      defaultValue={defaultValue ?? "Hello, World!"}
-      onChange={onChange}
-      {...rest}
-    />
+    <Editor value={value ?? "Hello, World!"} onChange={onChange} {...rest} />
   );
 };
 

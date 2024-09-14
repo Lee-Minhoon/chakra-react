@@ -15,32 +15,29 @@ const toolbarOptions = [
   ["clean"],
 ];
 
-interface EditorProps {
-  defaultValue?: string;
+export interface EditorProps {
+  value?: string;
   onChange?: (value: string) => void;
 }
 
-const Editor = ({ defaultValue = "", onChange }: EditorProps) => {
+const Editor = ({ value = "", onChange }: EditorProps) => {
   const quill = useRef<Quill>();
   const isLoaded = useRef(false);
 
   useEffect(() => {
-    (async () => {
-      if (isLoaded.current) return;
-      isLoaded.current = true;
-      const { default: Quill } = await import("quill");
-      quill.current = new Quill("#editor", {
-        theme: "snow",
-        modules: {
-          toolbar: toolbarOptions,
-        },
-      });
-      if (!onChange) return;
-      quill.current.on("text-change", () => {
-        onChange(quill.current!.root.innerHTML);
-      });
-      quill.current.root.innerHTML = defaultValue;
-    })();
+    if (isLoaded.current) return;
+    isLoaded.current = true;
+    quill.current = new Quill("#editor", {
+      theme: "snow",
+      modules: {
+        toolbar: toolbarOptions,
+      },
+    });
+    quill.current.root.innerHTML = value;
+    if (!onChange) return;
+    quill.current.on("text-change", () => {
+      onChange(quill.current!.root.innerHTML);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onChange]);
 
