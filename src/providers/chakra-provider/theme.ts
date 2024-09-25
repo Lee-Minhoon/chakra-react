@@ -23,8 +23,8 @@ const getTheme = (primaryColor: PrimaryColor = "teal") =>
   extendTheme(
     {
       fonts: {
-        heading: "var(--font-inter)",
-        body: "var(--font-rubik)",
+        heading: `'Roboto', sans-serif`,
+        body: `'Roboto', sans-serif`,
       },
       colors: {
         primary: baseTheme.colors[primaryColor],

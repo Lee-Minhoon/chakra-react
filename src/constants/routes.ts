@@ -46,6 +46,7 @@ export const isWhiteList = (pathname: string) => {
 
 // t("Table")
 // t("List")
+// t("Grid")
 export enum ViewQueries {
   Table = "table",
   List = "list",
