@@ -1,4 +1,4 @@
-import { PageRoutes, findNavInHierarchy } from "@/constants";
+import { PageRoutes, getNavHierarchy } from "@/constants";
 import { useRoute } from "@/hooks";
 import { toPath } from "@/utils";
 import { Flex, Icon, Link, Text } from "@chakra-ui/react";
@@ -13,7 +13,7 @@ const SubHeader = () => {
   const { t } = useTranslation();
 
   const hierarchy = useMemo(
-    () => findNavInHierarchy(location.pathname),
+    () => getNavHierarchy(location.pathname),
     [location.pathname]
   );
 

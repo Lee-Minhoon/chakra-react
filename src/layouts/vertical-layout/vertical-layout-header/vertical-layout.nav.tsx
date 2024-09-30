@@ -1,4 +1,4 @@
-import { findNavInHierarchy, navs } from "@/constants";
+import { getNavHierarchy, navs } from "@/constants";
 import { useRoute } from "@/hooks";
 import { Tab, TabList, Tabs } from "@chakra-ui/react";
 import { useMemo } from "react";
@@ -11,7 +11,7 @@ const VerticalLayoutNav = () => {
   const { t } = useTranslation();
 
   const hierarchy = useMemo(
-    () => findNavInHierarchy(location.pathname),
+    () => getNavHierarchy(location.pathname),
     [location.pathname]
   );
 

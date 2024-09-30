@@ -117,7 +117,7 @@ export const navs: Nav[] = [
   },
 ];
 
-export const findNavInHierarchy = (
+export const getNavHierarchy = (
   pathname: string,
   items = navs,
   parents: Nav[] = []
@@ -126,13 +126,8 @@ export const findNavInHierarchy = (
     const matched = !!nav.matcher(pathname);
     if (matched) return [...parents, nav];
     if (nav.children) {
-      const navs = findNavInHierarchy(pathname, nav.children, [
-        ...parents,
-        nav,
-      ]);
+      const navs = getNavHierarchy(pathname, nav.children, [...parents, nav]);
       if (navs.length) return navs;
-    } else {
-      continue;
     }
   }
   return [];

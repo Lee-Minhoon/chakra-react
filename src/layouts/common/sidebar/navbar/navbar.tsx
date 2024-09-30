@@ -1,4 +1,4 @@
-import { findNavInHierarchy, navs } from "@/constants";
+import { getNavHierarchy, navs } from "@/constants";
 import { UnorderedList } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
@@ -8,7 +8,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const hierarchy = useMemo(
-    () => findNavInHierarchy(location.pathname),
+    () => getNavHierarchy(location.pathname),
     [location.pathname]
   );
 
